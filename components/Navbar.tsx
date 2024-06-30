@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex  bg-transparent justify-center w-full sticky top-0  ">
+      <nav className="flex  bg-transparent justify-center w-full sticky top-0 z-50 ">
         <div className="flex max-w-[1440px] w-full  bg-[#333333] rounded-full mx-3 md:mx-11 my-5  justify-between px-4 py-3">
           <div className="flex items-center ">
             <button className="lg:hidden mr-2" onClick={() => setIsOpen(!isOpen)}>
