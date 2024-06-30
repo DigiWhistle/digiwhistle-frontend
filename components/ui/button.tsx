@@ -3,26 +3,30 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import clsx from "clsx";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-body-lg-medium font-medium focus:ring-offset-focus-border-color/50 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-full text-body-lg-medium font-medium transition-colors disabled:pointer-events-none ",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:text-primary-foreground",
+        default:
+          "bg-primary text-tc-primary-default hover:text-tc-black-hover focus:ring-offset-focus-border-color focus:ring-opacity-50 focus:outline-none focus:ring-0 focus:ring-offset-2 disabled:bg-bb-primary-black-disabled disabled:text-tc-black-disabled",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "border border-bc-primary-white text-tc-primary-white hover:bg-gray-559 hover:text-tc-primary-white focus:border-focus-border-color disabled:opacity-50",
+        outline: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        tertiary:
+          "text-tc-primary-white hover:bg-gray-559 focus:border focus:border-focus-border-color focus:text-yellow-101 disabled:opacity-50",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 rounded-full px-4 py-[10px] text-body-lg-medium",
-        xl: "h-13 rounded-full px-4 py-[14px] text-body-lg-medium",
-        lg: "h-11 rounded-full px-4 py-3 text-body-lg-medium",
-        sm: "h-9 rounded-full px-3 py-2 text-body-md-medium",
-        xs: "h-8 rounded-full px-3 py-1.5 text-body-md-medium",
-        icon: "h-10 rounded-full w-10",
+        default: "h-10 px-4 py-[10px] text-body-lg-medium",
+        xl: "h-13 px-4 py-[14px] text-body-lg-medium",
+        lg: "h-11 px-4 py-3 text-body-lg-medium",
+        sm: "h-9 px-3 py-2 text-body-md-medium",
+        xs: "h-8 px-3 py-1.5 text-body-md-medium",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
@@ -42,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp className={clsx(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
     );
   },
 );

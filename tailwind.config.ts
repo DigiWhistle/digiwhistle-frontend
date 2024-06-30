@@ -494,7 +494,7 @@ const config = {
 
         "alert-state": "rgb(var(--alert)/0.6)",
         "focus-blue-shadow": "rgb(var(--blue-580)/0.20)",
-        "focus-border-color": "rgb(var(--yellow-101))",
+        "focus-border-color": "rgb(var(--warning)/0.80)",
         tc: {
           primary: {
             white: "rgb(var(--white-301))",
@@ -504,7 +504,7 @@ const config = {
             hover: "rgb(var(--gray-558))",
             active: "rgb(var(--black-201))",
             focus: "rgb(var(--black-201))",
-            disabled: "rgb(var(--gray-556))",
+            disabled: "rgb(var(--gray-554))",
           },
           "body-grey": "rgb(var(--gray-557))",
           ic: {
