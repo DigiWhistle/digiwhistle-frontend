@@ -11,7 +11,7 @@ const config = {
   prefix: "",
   theme: {
     screens: {
-      sm: "320px",
+      sm: "360px",
       md: "768px",
       lg: "1280px",
     },
@@ -432,6 +432,7 @@ const config = {
         "dark-green-621": "rgb(var(--dark-green-621))",
         "maroon-631": "rgb(var(--maroon-631))",
         "brown-641": "rgb(var(--brown-641)",
+        "dark-black-651":"rgb(var(--dark-black-651))",
         success: "rgb(var(--success))",
         warning: "rgb(var(--warning))",
         alert: "rgb(var(--alert))",
