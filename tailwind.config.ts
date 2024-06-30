@@ -11,10 +11,9 @@ const config = {
   prefix: "",
   theme: {
     screens: {
-      mobile: "0px",
-      tablet: "320px",
-      laptop: "768px",
-      desktop: "1440px",
+      sm: "320px",
+      md: "768px",
+      lg: "1440px",
     },
     container: {
       center: true,
