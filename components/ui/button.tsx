@@ -12,12 +12,12 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary text-tc-primary-default hover:text-tc-black-hover focus:ring-offset-focus-border-color focus:ring-opacity-50 focus:outline-none focus:ring-0 focus:ring-offset-2 disabled:bg-bb-primary-black-disabled disabled:text-tc-black-disabled",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         secondary:
           "border border-bc-primary-white text-tc-primary-white hover:bg-gray-559 hover:text-tc-primary-white focus:border-focus-border-color disabled:opacity-50",
-        outline: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         tertiary:
           "text-tc-primary-white hover:bg-gray-559 focus:border focus:border-focus-border-color focus:text-yellow-101 disabled:opacity-50",
+        outline: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
