@@ -1,6 +1,7 @@
 import BrandsMarquee from "@/components/BrandsMarquee";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
+import Offerings from "@/components/Offerings";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <BrandsMarquee />
+      <Offerings />
     </main>
   );
 }

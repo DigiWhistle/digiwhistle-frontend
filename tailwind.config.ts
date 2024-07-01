@@ -24,8 +24,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        Raleway: ["Raleway", "sans-serif"],
-        Poppins: ["Poppins", "sans-serif"],
+        sans: ["var(--font-poppins)"],
+        heading: ["var(--font-raleway)"],
       },
       fontSize: {
         "display-xl": [
@@ -431,8 +431,8 @@ const config = {
         "dark-blue-611": "rgb(var(--dark-blue-611))",
         "dark-green-621": "rgb(var(--dark-green-621))",
         "maroon-631": "rgb(var(--maroon-631))",
-        "brown-641": "rgb(var(--brown-641)",
-        "dark-black-651":"rgb(var(--dark-black-651))",
+        "brown-641": "rgb(var(--brown-641))",
+        "dark-black-651": "rgb(var(--dark-black-651))",
         success: "rgb(var(--success))",
         warning: "rgb(var(--warning))",
         alert: "rgb(var(--alert))",
@@ -494,6 +494,7 @@ const config = {
 
         "alert-state": "rgb(var(--alert)/0.6)",
         "focus-blue-shadow": "rgb(var(--blue-580)/0.20)",
+        "focus-yellow-shadow": "rgb(var(--yellow-101)/0.20)",
         "focus-border-color": "rgb(var(--warning)/0.80)",
         tc: {
           primary: {

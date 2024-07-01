@@ -93,6 +93,26 @@ const BrandsMarquee = () => {
             className="mx-5 place-self-center transition-all duration-300 ease-in-out"
           />
         ))}
+        {brandImages.map((brand, index) => (
+          <Image
+            key={index}
+            src={brand.url}
+            alt={brand.name}
+            width={126}
+            height={34}
+            className="mx-5 place-self-center transition-all duration-300 ease-in-out"
+          />
+        ))}
+        {brandImages.map((brand, index) => (
+          <Image
+            key={index}
+            src={brand.url}
+            alt={brand.name}
+            width={126}
+            height={34}
+            className="mx-5 place-self-center transition-all duration-300 ease-in-out"
+          />
+        ))}
       </Marquee>
     </div>
   );

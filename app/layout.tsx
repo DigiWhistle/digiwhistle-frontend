@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({ subsets: ["latin"], weight: "400" });
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
+});
+const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway", weight: "700" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} flex flex-col w-full h-full`}>{children}</body>
+      <body
+        className={`${poppins.variable} ${raleway.variable} font-sans flex flex-col w-full h-full`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
