@@ -43,7 +43,7 @@ const Hero = () => {
         src={"/assets/hero-section/thumb.png"}
         width={200}
         height={200}
-        className="absolute top-44 md:top-72 lg:top-80 left-1 mix-blend-hard-light w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
+        className="absolute top-48 md:top-72 lg:top-80 left-1 mix-blend-hard-light w-14 h-14 md:w-28 md:h-28 lg:w-48 lg:h-44"
         alt="thumb"
       />
       <Image
@@ -78,10 +78,12 @@ const Hero = () => {
             financials, ensuring you stay ahead in the digital marketing landscape.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48">
-          <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
-          <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM INFLUENCER</Button>
-        </div>
+        {screenSize.width && (
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48">
+            <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
+            <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM INFLUENCER</Button>
+          </div>
+        )}
       </div>
     </div>
   );

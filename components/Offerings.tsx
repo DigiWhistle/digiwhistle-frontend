@@ -5,6 +5,7 @@ import { HandThumbUpIcon, SpeakerWaveIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
 
 const OfferingsArray = [
   {
@@ -97,26 +98,44 @@ const Offerings = () => {
 
 export default Offerings;
 
-export const CountingCards = () => (
-  <div className=" flex items-center justify-center gap-3 md:gap-4 lg:gap-8">
-    {[
-      { count: 200, name: "Brands" },
-      { count: 1000, name: "Campaigns" },
-      { count: 300, name: "Creators" },
-    ].map((data, index) => (
-      <div
-        key={index}
-        className="py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] rounded-full text-center"
-      >
-        <CountUp
-          end={data.count}
-          suffix="+"
-          className="font-heading text-display-xxs md:text-display-xs lg:text-display-l"
-        />
-        <p className="text-body-sm-medium md:text-body-lg-medium lg:text-body-xl-medium">
-          {data.name}
-        </p>
-      </div>
-    ))}
-  </div>
-);
+export const CountingCards = () => {
+  const [hasCountStarted, setHasCountStarted] = useState(false);
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  useEffect(() => {
+    if (inView && !hasCountStarted) {
+      setHasCountStarted(true);
+    }
+  }, [inView, hasCountStarted]);
+
+  return (
+    <div ref={ref} className=" flex items-center justify-center gap-3 md:gap-4 lg:gap-8 ">
+      {[
+        { count: 200, name: "Brands" },
+        { count: 1000, name: "Campaigns" },
+        { count: 300, name: "Creators" },
+      ].map((data, index) => (
+        <div
+          key={index}
+          className="py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] rounded-full text-center"
+          data-aos="fade-up"
+          data-aos-delay={index * 100}
+        >
+          {hasCountStarted && (
+            <CountUp
+              end={data.count}
+              suffix="+"
+              className="font-heading text-display-xxs md:text-display-xs lg:text-display-l"
+            />
+          )}
+          <p className="text-body-sm-medium md:text-body-lg-medium lg:text-body-xl-medium">
+            {data.name}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};

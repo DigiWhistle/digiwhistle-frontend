@@ -9,10 +9,6 @@ const useScreenSize = () => {
   });
 
   useEffect(() => {
-    if (!isClient) {
-      return; // Exit early if running on the server
-    }
-
     const handleResize = () => {
       setScreenSize({
         width: window.innerWidth,
@@ -20,13 +16,18 @@ const useScreenSize = () => {
       });
     };
 
-    window.addEventListener("resize", handleResize);
+    const handleLoad = () => {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+    };
 
-    // Clean up the event listener when the component unmounts
+    window.addEventListener("load", handleLoad);
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("load", handleLoad);
     };
-  }, [isClient]);
+  }, []);
 
   return screenSize;
 };

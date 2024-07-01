@@ -132,3 +132,11 @@
     @apply font-heading;
   }
 }
+
+.smooth-marquee-wrapper .marquee-container {
+  transition: all 1s ease-in-out;
+}
+
+.smooth-marquee-wrapper:hover .marquee-container {
+  animation-play-state: paused;
+}
