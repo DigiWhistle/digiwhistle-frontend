@@ -36,6 +36,18 @@ const brandImages = [
     url: "/assets/brands/amazon.png",
   },
   {
+    name: "Cred",
+    url: "/assets/brands/cred.png",
+  },
+  {
+    name: "Groww",
+    url: "/assets/brands/groww.png",
+  },
+  {
+    name: "ICICI",
+    url: "/assets/brands/icici.png",
+  },
+  {
     name: "Amazon",
     url: "/assets/brands/amazon.png",
   },

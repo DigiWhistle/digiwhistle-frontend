@@ -19,7 +19,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative max-w-screen overflow-hidden -mt-16">
+    <div className="relative max-w-screen overflow-hidden -mt-16 ">
       <div className="w-full h-full absolute backdrop-filter backdrop-blur-2xl bg-opacity-10 -z-10"></div>
       <div className="absolute -z-20 [background:radial-gradient(circle_at_center,_rgba(var(--first-color-first-gradient),_0.4)_0,_rgba(var(--second-color-first-gradient),_0)_50%)_no-repeat] w-44 h-44 lg:w-96 lg:h-96 top-10 -right-10 animate-first lg:animate-first"></div>
       <div className="absolute -z-20 [background:radial-gradient(circle_at_center,_rgba(var(--first-color-second-gradient),_0.4)_0,_rgba(var(--second-color-second-gradient),_0)_50%)_no-repeat] w-44 h-44 lg:w-96 lg:h-96 top-10 -right-10 animate-second lg:animate-second"></div>
@@ -78,10 +78,12 @@ const Hero = () => {
             financials, ensuring you stay ahead in the digital marketing landscape.
           </p>
         </div>
-        {screenSize.width && (
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48">
+        {screenSize.width > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48 mb-20">
             <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
-            <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM INFLUENCER</Button>
+            <Button size={screenSize.width < 768 ? "sm" : "xl"} className="px-10">
+              I AM INFLUENCER
+            </Button>
           </div>
         )}
       </div>
