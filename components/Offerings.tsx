@@ -9,22 +9,22 @@ import CountUp from "react-countup";
 const OfferingsArray = [
   {
     name: "Influencer Marketing",
-    image: "/assets/offerings/influencer-marketing-desktop.png",
+    image: "/assets/Offerings/influencer-marketing-desktop.png",
     icon: SpeakerWaveIcon,
   },
   {
     name: "Talent Management",
-    image: "/assets/offerings/talent-management-desktop.png",
+    image: "/assets/Offerings/talent-management-desktop.png",
     icon: StarIcon,
   },
   {
     name: "Public Relations",
-    image: "/assets/offerings/public-relations-desktop.png",
+    image: "/assets/Offerings/public-relations-desktop.png",
     icon: HandThumbUpIcon,
   },
   {
     name: "Performance Marketing",
-    image: "/assets/offerings/performance-marketing-desktop.png",
+    image: "/assets/Offerings/performance-marketing-desktop.png",
     icon: BoltIcon,
   },
 ];
