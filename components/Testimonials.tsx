@@ -4,7 +4,6 @@ import Title from "./ui/Title";
 import Image from "next/image";
 import { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-
 import Autoplay from "embla-carousel-autoplay";
 import { useCallback } from "react";
 import { useEffect } from "react";
@@ -45,6 +44,7 @@ const dummy_testimonials = [
 const Testimonials = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentPagination, setPagination] = useState<number>(0);
+  const [currentTestimonials, setTestimonials] = useState<number>(0);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000 })]);
   const scrollPrev = useCallback(() => {
@@ -127,29 +127,60 @@ const Testimonials = () => {
             </div>
             {/*testimonial cards : we have used embla carousal for further reference visit embla carousal website*/}
             <div className="embla w-full" ref={emblaRef}>
-              <div className="embla__container ">
-                {dummy_testimonials.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-center flex-grow-0 gap-7 justify-center flex-shrink-0 basis-[100%] "
-                  >
-                    <div className="font-heading lg:text-display-l text-tc-primary-white lg:w-full md:text-display-s text-display-xxs md:w-[590px] text-center">
-                      {item.testimonial}
-                    </div>
-                    <div className="flex flex-col gap-2 items-center">
-                      <Image src={item.url} alt="" height={56} width={56} />
-                      <div className="flex flex-col gap-0 items-center">
-                        <div className=" lg:text-body-xl-medium md:text-body-lg-medium text-body-md-medium text-tc-primary-white text-center">
-                          {item.name}
-                        </div>
-                        <div className=" lg:text-body-md md:text-body-sm-medium text-body-sm-medium text-tc-primary-white text-center">
-                          {item.post}
+              {selectedIndex === 0 ? (
+                <div className="embla__container ">
+                  {dummy_testimonials.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center flex-grow-0 gap-7 justify-center flex-shrink-0 basis-[100%] "
+                    >
+                      <div className="font-heading lg:text-display-l text-tc-primary-white lg:w-full md:text-display-s text-display-xxs md:w-[590px] text-center">
+                        {item.testimonial}
+                      </div>
+                      <div className="flex flex-col gap-2 items-center">
+                        <Image src={item.url} alt="" height={56} width={56} />
+                        <div className="flex flex-col gap-0 items-center">
+                          <div className=" lg:text-body-xl-medium md:text-body-lg-medium text-body-md-medium text-tc-primary-white text-center">
+                            {item.name}
+                          </div>
+                          <div className=" lg:text-body-md md:text-body-sm-medium text-body-sm-medium text-tc-primary-white text-center">
+                            {item.post}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <></>
+              )}
+              {selectedIndex === 1 ? (
+                <div className="embla__container ">
+                  {dummy_testimonials.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center flex-grow-0 gap-7 justify-center flex-shrink-0 basis-[100%] "
+                    >
+                      <div className="font-heading lg:text-display-l text-tc-primary-white lg:w-full md:text-display-s text-display-xxs md:w-[590px] text-center">
+                        {item.testimonial}
+                      </div>
+                      <div className="flex flex-col gap-2 items-center">
+                        <Image src={item.url} alt="" height={56} width={56} />
+                        <div className="flex flex-col gap-0 items-center">
+                          <div className=" lg:text-body-xl-medium md:text-body-lg-medium text-body-md-medium text-tc-primary-white text-center">
+                            {item.name}
+                          </div>
+                          <div className=" lg:text-body-md md:text-body-sm-medium text-body-sm-medium text-tc-primary-white text-center">
+                            {item.post}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="flex flex-col gap-7">
               <div className="flex w-full justify-center gap-5">
