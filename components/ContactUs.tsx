@@ -55,12 +55,12 @@ const socialIcons = [
 
 const ContactUs = () => {
   return (
-    <div className="w-full bg-sb-black py-14 px-8 md:py-20 md:px-14">
+    <div className="w-full bg-sb-black py-14 px-8 md:py-20 md:px-14" id="contact-us">
       <div className="flex flex-col-reverse lg:flex-row gap-10 lg:gap-6">
         <div className="flex flex-col items-center justify-between lg:items-start gap-10 lg:w-2/5 ">
           <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="flex flex-col items-center lg:items-start space-y-5">
-            <Button className="bg-white px-6 py-5">
+            <Button className="bg-white px-6 py-7">
               <Image src={logosvg} alt="DIGI WHISTLE" width={160} height={80} />
             </Button>
             <p className="text-heading-s-medium font-light text-tc-black-disabled text-center lg:text-left">
@@ -93,6 +93,7 @@ const ContactUs = () => {
                 <Link
                   href={data.url}
                   key={index}
+                  target="_blank"
                   className="border rounded-full border-white-301 p-2 flex items-center justify-center"
                 >
                   <Image src={data.icon} alt={data.name} width={24} height={24} />
@@ -108,9 +109,9 @@ const ContactUs = () => {
           defaultValue="influencer"
           className="bg-sb-white lg:w-3/5 rounded-2xl p-8 flex flex-col items-center"
         >
-          <TabsList className="lg:place-self-start w-2/5">
-            <TabsTrigger value="influencer"> Influencer</TabsTrigger>
-            <TabsTrigger value="brand"> Brand</TabsTrigger>
+          <TabsList className="lg:place-self-start">
+            <TabsTrigger value="influencer">I am Influencer</TabsTrigger>
+            <TabsTrigger value="brand">I am Brand</TabsTrigger>
           </TabsList>
           <hr className=" text-gray-556 w-full my-6" />
 

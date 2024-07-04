@@ -81,7 +81,7 @@ const Hero = () => {
         {screenSize.width > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48 mb-20">
             <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
-            <Button size={screenSize.width < 768 ? "sm" : "xl"} className="px-10">
+            <Button size={screenSize.width < 768 ? "sm" : "xl"} className="!px-10">
               I AM INFLUENCER
             </Button>
           </div>

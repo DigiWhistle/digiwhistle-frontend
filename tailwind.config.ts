@@ -535,6 +535,7 @@ const config = {
       backgroundImage: theme => ({
         "gradient-1": `linear-gradient(to right, #FF12DC, #FFB912)`,
         "gradient-2": `linear-gradient(to right, #9403FD, #00ADFE)`,
+        "about-us-image":"url('/assets/about/bg_image.png')",
       }),
       dropShadow: {
         "y-elevation-xs": "0 1px 2px rgba(0, 0, 0, 0.04)",
@@ -605,6 +606,7 @@ const config = {
           },
         },
       },
+      
     },
   },
   plugins: [require("tailwindcss-animate")],

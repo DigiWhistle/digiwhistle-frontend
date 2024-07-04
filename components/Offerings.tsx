@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
+import Title from "./ui/Title";
 
 const OfferingsArray = [
   {
@@ -47,11 +48,8 @@ const Offerings = () => {
   }, [cycleImage]);
 
   return (
-    <div className="w-screen my-16 md:my-32 lg:my-40 overflow-hidden">
-      <div className="flex flex-col items-center gap-5">
-        <h3 className="text-display-xxs md:text-display-xs lg:text-display-s">Our Offerings</h3>
-        <div className="h-1 w-20 bg-gradient-2"></div>
-      </div>
+    <div className="w-full my-16 md:my-32 lg:my-40 overflow-hidden" id="offerings">
+      <Title title="Offerings" />
       <div className="mt-12 md:mt-14 lg:mt-20 flex flex-col gap-12 md:gap-16 lg:gap-20 items-center text-body-md-medium">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {OfferingsArray.map((offerings, index) => (
@@ -90,7 +88,7 @@ const Offerings = () => {
             />
           </div>
         </div>
-        <CountingCards />
+        <CountingCards section={"offerings"} />
       </div>
     </div>
   );
@@ -98,7 +96,7 @@ const Offerings = () => {
 
 export default Offerings;
 
-export const CountingCards = () => {
+export const CountingCards = ({ section }: { section: string }) => {
   const [hasCountStarted, setHasCountStarted] = useState(false);
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -110,9 +108,14 @@ export const CountingCards = () => {
       setHasCountStarted(true);
     }
   }, [inView, hasCountStarted]);
-
   return (
-    <div ref={ref} className=" flex items-center justify-center gap-3 md:gap-4 lg:gap-8 ">
+    <div
+      ref={ref}
+      className={cn(
+        ` flex items-center justify-center gap-3 md:gap-4  lg:gap-8 `,
+        section === "about" ? " w-full" : "",
+      )}
+    >
       {[
         { count: 200, name: "Brands" },
         { count: 1000, name: "Campaigns" },
@@ -120,7 +123,12 @@ export const CountingCards = () => {
       ].map((data, index) => (
         <div
           key={index}
-          className="py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] rounded-full text-center"
+          className={cn(
+            `flex flex-col items-center justify-center py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] md:rounded-full rounded-[28px]  text-center `,
+            section === "about"
+              ? "lg:px-1.5 lg:py-4 lg:gap-3 lg:w-[240px]  md:w-[180px] w-full h-full  px-0.5 md:px-1 md:py-3 md:gap-2"
+              : "",
+          )}
           data-aos="fade-up"
           data-aos-delay={index * 100}
         >
@@ -128,10 +136,20 @@ export const CountingCards = () => {
             <CountUp
               end={data.count}
               suffix="+"
-              className="font-heading text-display-xxs md:text-display-xs lg:text-display-l"
+              className={cn(
+                `font-heading text-display-xxs md:text-display-xs lg:text-display-l`,
+                section === "about"
+                  ? "md:font-sans  lg:text-[40px] lg:leading-7 md:leading-5 md:font-bold md:text-[30px]"
+                  : "",
+              )}
             />
           )}
-          <p className="text-body-sm-medium md:text-body-lg-medium lg:text-body-xl-medium">
+          <p
+            className={cn(
+              `text-body-sm-medium md:text-body-lg-medium lg:text-body-xl-medium`,
+              section === "about" ? "lg:leading-5 md:leading-4" : "",
+            )}
+          >
             {data.name}
           </p>
         </div>
