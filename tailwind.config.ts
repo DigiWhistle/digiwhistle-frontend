@@ -44,6 +44,14 @@ const config = {
             fontWeight: "700",
           },
         ],
+        "display-l-trial": [
+          "40px",
+          {
+            lineHeight: "1.75rem",
+            letterSpacing: "-0.05rem",
+            fontWeight: "700",
+          },
+        ],
         "display-m": [
           "3.5rem",
           {
