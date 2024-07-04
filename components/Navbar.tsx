@@ -3,6 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import Image from "next/image";
 const logosvg = "./assets/navbar/logo.svg";
 const bars = "./assets/navbar/bars.svg";
 const phone = "./assets/navbar/phone.svg";
@@ -52,11 +53,14 @@ const Navbar = () => {
             <Button>Login/ Signup</Button>
           </div>
           <div className=" flex  md:hidden justify-between items-center space-x-3">
-            <Button className="h-auto px-3.5 py-3.5" variant={"secondary"}>
-              <img className="m-0" src={phone} alt="C" />
+            <Button
+              className="flex items-center justify-center h-12 w-12 p-0"
+              variant={"secondary"}
+            >
+              <Image className="h-5 w-5" src={phone} alt="C" height={20} width={20} />
             </Button>
-            <Button className="h-auto px-3.5 py-3.5">
-              <img className="m-0" src={logout} alt="L" />
+            <Button className=" flex items-center justify-center h-12 w-12 ">
+              <Image className="h-5 w-5" src={logout} alt="L" height={20} width={20} />
             </Button>
           </div>
         </div>

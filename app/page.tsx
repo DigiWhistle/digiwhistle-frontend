@@ -7,6 +7,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Testimonials from "@/components/Testimonials";
+import About from "@/components/About";
+import Influencers from "@/components/Influencers";
 export default function Home() {
   useEffect(() => {
     AOS.init({
@@ -21,6 +23,8 @@ export default function Home() {
       <BrandsMarquee />
       <Offerings />
       <Testimonials />
+      <Influencers />
+      <About />
     </main>
   );
 }

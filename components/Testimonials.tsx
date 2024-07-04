@@ -44,8 +44,6 @@ const dummy_testimonials = [
 const Testimonials = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentPagination, setPagination] = useState<number>(0);
-  const [currentTestimonials, setTestimonials] = useState<number>(0);
-  const [isHovering, setIsHovering] = useState<boolean>(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 4000 })]);
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -60,7 +58,6 @@ const Testimonials = () => {
       emblaApi.on("slidesInView", () => {
         const res = emblaApi.selectedScrollSnap();
         setPagination(res);
-        console.log(currentPagination);
       });
   }, [emblaApi]);
   return (
@@ -68,7 +65,7 @@ const Testimonials = () => {
       <div className="relative flex-col w-full  space-y-20  md:pt-20 md:pb-24 lg:py-28 overflow-hidden">
         <Title title={"Testimonials"} />
         <div className="relative flex flex-col lg:h-[1020px] md:h-[776px] sm:h-[512px] justify-center items-center">
-          <div className="absolute top-0 -z-20 flex flex-col justify-center items-center  gap-7">
+          <div className="absolute top-0 -z-20 flex flex-col justify-center items-center  md:gap-7 gap-4">
             <Marquee direction="right">
               {arr.map((item, index) => (
                 <Image
@@ -115,10 +112,8 @@ const Testimonials = () => {
                   key={index}
                   className={`rounded-full w-full font-sans px-5 py-3  text-body-lg-medium text-tc-primary-default ${selectedIndex === index ? "bg-[#f5cc4c]" : "bg-white"} `}
                   onMouseEnter={() => {
-                    setIsHovering(true);
                     setSelectedIndex(index);
                   }}
-                  onMouseLeave={() => setIsHovering(false)}
                   onClick={() => setSelectedIndex(index)}
                 >
                   {item}
