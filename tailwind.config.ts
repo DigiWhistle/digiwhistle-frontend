@@ -474,6 +474,18 @@ const config = {
           },
           "blue-580": "rgb(var(--blue-580))",
         },
+        bc: {
+          "primary-white": "rgb(var(--white-301))",
+          "primary-black": "rgb(var(--black-201))",
+          yellow: "rgb(var(--warning))",
+          focus: "rgb(var(--warning))",
+          grey: "rgb(var(--gray-555))",
+          black: {
+            hover: "rgb(var(--gray-558))",
+            disabled: "rgb(var(--gray-556))",
+            active: "rgb(var(--gray-559))",
+          },
+        },
         bb: {
           primary: {
             "default-gray": "rgb(var(--gray-553))",
