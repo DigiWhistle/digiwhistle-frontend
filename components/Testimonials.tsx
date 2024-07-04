@@ -8,7 +8,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { useCallback } from "react";
 import { useEffect } from "react";
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const head_buttons = ["influencers", "Brands"];
+const head_buttons = ["Influencers", "Brands"];
 const dummy_testimonials = [
   {
     testimonial: "The Aest Influencer marketing platform in the market right now.",
@@ -199,7 +199,7 @@ const Testimonials = () => {
                 {dummy_testimonials.map((item, index) => (
                   <div
                     key={index}
-                    className={`h-[5px] bg-white rounded-full overflow-hidden ${currentPagination === index ? "w-[64px]" : "w-5"}`}
+                    className={`h-[5px] bg-white rounded-full overflow-hidden transition-all duration-300 delay-0 ${currentPagination === index ? "w-[64px]" : "w-5"}`}
                   ></div>
                 ))}
               </div>
