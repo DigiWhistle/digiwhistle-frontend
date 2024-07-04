@@ -39,27 +39,28 @@ const FormTextInput = ({
       name={formName}
       render={({ field }) => (
         <FormItem className={cn("w-full  flex flex-col justify-between ", className)}>
-          <FormLabel className="text-sm font-medium text-black ">
-            {label}
-            {required && <span className="text-destructive">*</span>}
-          </FormLabel>
-          <FormControl className="self-end">
-            <Input
-              type={type ?? "text"}
-              placeholder={placeholder}
-              {...field}
-              disabled={disabled}
-              value={defaultValue || field.value || ""}
-              className="text-sm border border-gray-300 placeholder:text-muted-foreground bg-white "
-              onChange={e => {
-                e.preventDefault();
-                type === "number"
-                  ? field.onChange(Number(e.target.value))
-                  : field.onChange(e.target.value);
-                trigger(formName);
-              }}
-            />
-          </FormControl>
+          <div className="space-y-1">
+            <FormLabel className="text-sm font-medium text-black ">
+              {label}
+              {required && <span className="text-destructive">*</span>}
+            </FormLabel>
+            <FormControl className="self-end">
+              <Input
+                type={type ?? "text"}
+                placeholder={placeholder}
+                {...field}
+                disabled={disabled}
+                value={defaultValue || field.value || ""}
+                className="text-sm border border-gray-300 placeholder:text-muted-foreground bg-white "
+                onChange={e => {
+                  e.preventDefault();
+                  type === "number"
+                    ? field.onChange(Number(e.target.value))
+                    : field.onChange(e.target.value);
+                }}
+              />
+            </FormControl>
+          </div>
           {formDescription && <FormDescription>{formDescription}</FormDescription>}
           <FormMessage />
         </FormItem>

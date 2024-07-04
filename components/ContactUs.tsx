@@ -56,34 +56,37 @@ const socialIcons = [
 const ContactUs = () => {
   return (
     <div className="w-full bg-sb-black py-14 px-8 md:py-20 md:px-14">
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="flex flex-col items-center lg:items-start gap-10 lg:w-2/5 ">
-          <hr className="lg:hidden text-gray-556 w-32" />
+      <div className="flex flex-col-reverse lg:flex-row gap-10 lg:gap-6">
+        <div className="flex flex-col items-center justify-between lg:items-start gap-10 lg:w-2/5 ">
+          <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="flex flex-col items-center lg:items-start space-y-5">
             <Button className="bg-white px-6 py-5">
               <Image src={logosvg} alt="DIGI WHISTLE" width={160} height={80} />
             </Button>
-            <p className="text-heading-s-medium text-tc-black-disabled text-center lg:text-left">
+            <p className="text-heading-s-medium font-light text-tc-black-disabled text-center lg:text-left">
               A marketing and talent management agency that handles selected roster of India’s top
               influencers. Our exclusive relationship with our influencers allows us to connect
               ambitious brands to relevant personalities.
             </p>
           </div>
-          <hr className="text-gray-556 w-32" />
+          <hr className="text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {contactOptions.map((data, index) => (
               <div className="flex gap-1" key={index}>
                 <div>{<data.icon className="text-white-301 w-5 h-5 mt-0.5" />}</div>
                 <div>
-                  <p className="text-heading-s-semibold text-tc-black-disabled">{data.name}</p>
-                  <Link href={data.url} className="text-heading-s-medium text-tc-black-disabled">
+                  <p className="text-heading-s-semibold text-white">{data.name}</p>
+                  <Link
+                    href={data.url}
+                    className="text-heading-s-medium !font-light text-tc-black-disabled"
+                  >
                     {data.information}
                   </Link>
                 </div>
               </div>
             ))}
           </div>
-          <hr className="lg:hidden text-gray-556 w-32" />
+          <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="flex flex-col items-center lg:items-start space-y-4">
             <div className="flex gap-3">
               {socialIcons.map((data, index) => (
@@ -96,7 +99,7 @@ const ContactUs = () => {
                 </Link>
               ))}
             </div>
-            <p className="text-heading-s-medium text-tc-black-disabled">
+            <p className="text-heading-s-medium text-tc-black-disabled !font-light">
               Copyright © 2023 DigiWhistle, All rights reserved.
             </p>
           </div>
@@ -105,9 +108,9 @@ const ContactUs = () => {
           defaultValue="influencer"
           className="bg-sb-white lg:w-3/5 rounded-2xl p-8 flex flex-col items-center"
         >
-          <TabsList className=" place-self-center">
-            <TabsTrigger value="influencer">I am Influencer</TabsTrigger>
-            <TabsTrigger value="brand">I am Brand</TabsTrigger>
+          <TabsList className="lg:place-self-start w-2/5">
+            <TabsTrigger value="influencer"> Influencer</TabsTrigger>
+            <TabsTrigger value="brand"> Brand</TabsTrigger>
           </TabsList>
           <hr className=" text-gray-556 w-full my-6" />
 

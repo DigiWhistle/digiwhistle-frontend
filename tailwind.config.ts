@@ -517,7 +517,7 @@ const config = {
             hover: "rgb(var(--gray-558))",
             active: "rgb(var(--black-201))",
             focus: "rgb(var(--black-201))",
-            disabled: "rgb(var(--gray-554))",
+            disabled: "rgb(var(--gray-556))",
           },
           "body-grey": "rgb(var(--gray-557))",
           ic: {
