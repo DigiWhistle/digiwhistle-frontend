@@ -123,7 +123,7 @@ export const CountingCards = ({ section }: { section: string }) => {
       ].map((data, index) => (
         <div
           key={index}
-          className={`flex flex-col items-center justify-center py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] md:rounded-full rounded-[28px]  text-center ${section === "about" ? "lg:px-1.5 lg:py-4 lg:gap-3 lg:w-[240px]  md:w-[180px] w-full  px-1 md:px-1 md:py-3 md:gap-2" : ""}`}
+          className={`flex flex-col items-center justify-center py-4 px-6 md:px-8 lg:px-16 text-[#8A6D31] bg-[#FCF8E9] md:rounded-full rounded-[28px]  text-center ${section === "about" ? "lg:px-1.5 lg:py-4 lg:gap-3 lg:w-[240px]  md:w-[180px] w-full  px-0.5 md:px-1 md:py-3 md:gap-2" : ""}`}
           data-aos="fade-up"
           data-aos-delay={index * 100}
         >
@@ -131,7 +131,7 @@ export const CountingCards = ({ section }: { section: string }) => {
             <CountUp
               end={data.count}
               suffix="+"
-              className={`font-heading text-display-xxs md:text-display-xs lg:text-display-l ${section === "about" ? " md:font-sans  lg:text-[40px] lg:leading-7 md:leading-5 md:font-bold md:text-[30px]" : ""}`}
+              className={`font-heading text-display-xxs md:text-display-xs lg:text-display-l ${section === "about" ? "md:font-sans  lg:text-[40px] lg:leading-7 md:leading-5 md:font-bold md:text-[30px]" : ""}`}
             />
           )}
           <p
