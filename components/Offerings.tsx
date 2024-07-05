@@ -48,7 +48,7 @@ const Offerings = () => {
   }, [cycleImage]);
 
   return (
-    <div className="w-full my-16 md:my-32 lg:my-40 overflow-hidden" id="offerings">
+    <section className="w-full my-16 md:my-32 lg:my-40 overflow-hidden" id="offerings">
       <Title title="Offerings" />
       <div className="mt-12 md:mt-14 lg:mt-20 flex flex-col gap-12 md:gap-16 lg:gap-20 items-center text-body-md-medium">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -90,7 +90,7 @@ const Offerings = () => {
         </div>
         <CountingCards section={"offerings"} />
       </div>
-    </div>
+    </section>
   );
 };
 

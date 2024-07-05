@@ -5,7 +5,7 @@ import { CountingCards } from "./Offerings";
 const About = () => {
   return (
     <>
-      <div
+      <section
         className="relative flex flex-col w-full gap-14  items-center  overflow-hidden"
         id="about-us"
       >
@@ -31,7 +31,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

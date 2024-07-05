@@ -62,7 +62,7 @@ const Testimonials = () => {
   }, [emblaApi]);
   return (
     <>
-      <div
+      <section
         className="relative flex-col w-full  space-y-20  md:pt-20 md:pb-24 lg:py-28 overflow-hidden"
         id="testimonials"
       >
@@ -206,7 +206,7 @@ const Testimonials = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

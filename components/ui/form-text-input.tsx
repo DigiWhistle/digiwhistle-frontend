@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { ClassValue } from "clsx";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
 
 interface IFormTextInputProps {
@@ -19,7 +20,10 @@ interface IFormTextInputProps {
   formDescription?: string;
   defaultValue?: string;
   type?: "text" | "number" | "password";
-  className?: string;
+  className?: ClassValue[];
+  inputCN?: ClassValue[];
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 const FormTextInput = ({
   formName,
@@ -31,8 +35,11 @@ const FormTextInput = ({
   defaultValue,
   type,
   className,
+  inputCN,
+  leftIcon,
+  rightIcon,
 }: IFormTextInputProps) => {
-  const { control, trigger } = useFormContext();
+  const { control } = useFormContext();
   return (
     <FormField
       control={control}
@@ -44,22 +51,35 @@ const FormTextInput = ({
               {label}
               {required && <span className="text-destructive">*</span>}
             </FormLabel>
-            <FormControl className="self-end">
-              <Input
-                type={type ?? "text"}
-                placeholder={placeholder}
-                {...field}
-                disabled={disabled}
-                value={defaultValue || field.value || ""}
-                className="text-sm border border-gray-300 placeholder:text-muted-foreground bg-white "
-                onChange={e => {
-                  e.preventDefault();
-                  type === "number"
-                    ? field.onChange(Number(e.target.value))
-                    : field.onChange(e.target.value);
-                }}
-              />
-            </FormControl>
+            <div>
+              <FormControl className="self-end">
+                <div className="relative flex items-center  border border-gray-300 rounded-full">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    {leftIcon}
+                  </div>
+                  <Input
+                    type={type ?? "text"}
+                    placeholder={placeholder}
+                    {...field}
+                    disabled={disabled}
+                    value={defaultValue || field.value || ""}
+                    className={cn(
+                      "ps-10 border-none placeholder:text-muted-foreground bg-white ",
+                      inputCN,
+                    )}
+                    onChange={e => {
+                      e.preventDefault();
+                      type === "number"
+                        ? field.onChange(Number(e.target.value))
+                        : field.onChange(e.target.value);
+                    }}
+                  />
+                  <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
+                    {rightIcon}
+                  </div>
+                </div>
+              </FormControl>
+            </div>
           </div>
           {formDescription && <FormDescription>{formDescription}</FormDescription>}
           <FormMessage />

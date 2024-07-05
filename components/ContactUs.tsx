@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import InfluencerContactForm from "./ui/influencer-contact-form";
+import ContactForm from "./ui/contact-form";
 
 const logosvg = "./assets/navbar/logo.svg";
 
@@ -55,14 +55,14 @@ const socialIcons = [
 
 const ContactUs = () => {
   return (
-    <div className="w-full bg-sb-black py-14 px-8 md:py-20 md:px-14" id="contact-us">
+    <section className="w-full bg-sb-black py-14 px-8 md:py-20 md:px-14" id="contact-us">
       <div className="flex flex-col-reverse lg:flex-row gap-10 lg:gap-6">
         <div className="flex flex-col items-center justify-between lg:items-start gap-10 lg:w-2/5 ">
           <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="flex flex-col items-center lg:items-start space-y-5">
-            <Button className="bg-white px-6 py-7">
+            <button className="bg-white px-4 py-2 rounded-full">
               <Image src={logosvg} alt="DIGI WHISTLE" width={160} height={80} />
-            </Button>
+            </button>
             <p className="text-heading-s-medium font-light text-tc-black-disabled text-center lg:text-left">
               A marketing and talent management agency that handles selected roster of India’s top
               influencers. Our exclusive relationship with our influencers allows us to connect
@@ -116,12 +116,14 @@ const ContactUs = () => {
           <hr className=" text-gray-556 w-full my-6" />
 
           <TabsContent value="influencer" className="w-full">
-            <InfluencerContactForm />
+            <ContactForm userType={"influencer"} />
           </TabsContent>
-          <TabsContent value="brand">Change your brand here.</TabsContent>
+          <TabsContent value="brand">
+            <ContactForm userType={"brand"} />
+          </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </section>
   );
 };
 

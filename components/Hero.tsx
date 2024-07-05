@@ -19,7 +19,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative max-w-screen overflow-hidden -mt-16 ">
+    <section className="relative max-w-screen overflow-hidden -mt-32" id="hero">
       <div className="w-full h-full absolute backdrop-filter backdrop-blur-2xl bg-opacity-10 -z-10"></div>
       <div className="absolute -z-20 [background:radial-gradient(circle_at_center,_rgba(var(--first-color-first-gradient),_0.4)_0,_rgba(var(--second-color-first-gradient),_0)_50%)_no-repeat] w-44 h-44 lg:w-96 lg:h-96 top-10 -right-10 animate-first lg:animate-first"></div>
       <div className="absolute -z-20 [background:radial-gradient(circle_at_center,_rgba(var(--first-color-second-gradient),_0.4)_0,_rgba(var(--second-color-second-gradient),_0)_50%)_no-repeat] w-44 h-44 lg:w-96 lg:h-96 top-10 -right-10 animate-second lg:animate-second"></div>
@@ -36,32 +36,32 @@ const Hero = () => {
         src={"/assets/hero-section/instagram.png"}
         width={200}
         height={200}
-        className="absolute top-28 lg:top-20 left-1 mix-blend-screen w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
+        className="absolute top-40 lg:top-32 left-1 mix-blend-screen w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
         alt="instagram"
       />
       <Image
         src={"/assets/hero-section/thumb.png"}
         width={200}
         height={200}
-        className="absolute top-48 md:top-72 lg:top-80 left-1 mix-blend-hard-light w-14 h-14 md:w-28 md:h-28 lg:w-48 lg:h-44"
+        className="absolute top-56 md:top-80 lg:top-[350px] left-1 mix-blend-hard-light w-14 h-14 md:w-28 md:h-28 lg:w-48 lg:h-44"
         alt="thumb"
       />
       <Image
         src={"/assets/hero-section/like.png"}
         width={200}
         height={200}
-        className="absolute top-28 lg:top-20 right-1 mix-blend-screen  w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
+        className="absolute top-40 lg:top-32 right-1 mix-blend-screen  w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
         alt="like"
       />
       <Image
         src={"/assets/hero-section/youtube.png"}
         width={200}
         height={200}
-        className="absolute top-44 md:top-72 lg:top-80 right-1 mix-blend-screen w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
+        className="absolute top-56 md:top-80 lg:top-[350px] right-1 mix-blend-screen w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
         alt="youtube"
       />
 
-      <div className="flex flex-col gap-12 items-center text-center px-8 md:px-40 lg:px-80 mt-20 z-20">
+      <div className="flex flex-col gap-12 items-center text-center px-8 md:px-40 lg:px-80 mt-40 z-20">
         <h1
           className={` font-raleway text-display-xs md:text-display-l lg:text-display-xl text-transparent bg-clip-text bg-gradient-2 text-wrap`}
         >
@@ -87,7 +87,7 @@ const Hero = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

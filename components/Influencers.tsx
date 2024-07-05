@@ -63,7 +63,7 @@ const data = [
 const Influencers = () => {
   return (
     <>
-      <div
+      <section
         className="w-full flex flex-col items-center lg:pt-28 lg:pb-20 pt-20 md:pb-40 pb-24 lg:gap-20 gap-14"
         id="star-influencers"
       >
@@ -123,7 +123,7 @@ const Influencers = () => {
         <Button className="md:w-[352px] w-[280px]" size={"xl"}>
           EXPLORE MORE TALENTS
         </Button>
-      </div>
+      </section>
     </>
   );
 };
