@@ -17,21 +17,23 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState("");
+  const isClient = typeof window === "object";
 
-  window.onscroll = () => {
-    let current: string | null = "";
-    const sections = document.querySelectorAll("section");
+  isClient &&
+    (window.onscroll = () => {
+      let current: string | null = "";
+      const sections = document.querySelectorAll("section");
 
-    sections.forEach(section => {
-      const scrollPosition = window.scrollY || window.pageYOffset;
-      const sectionTop = section.offsetTop;
-      if (scrollPosition >= sectionTop - 500) {
-        current = section.getAttribute("id");
-      }
+      sections.forEach(section => {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const sectionTop = section.offsetTop;
+        if (scrollPosition >= sectionTop - 500) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      setSelectedButton("#" + current);
     });
-
-    setSelectedButton("#" + current);
-  };
 
   const handleScroll = (url: string) => {
     setSelectedButton(url);
