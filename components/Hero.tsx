@@ -64,10 +64,11 @@ const Hero = () => {
       <div className="flex flex-col gap-12 items-center text-center px-8 md:px-40 lg:px-80 mt-40 z-20">
         <h1
           className={` font-raleway text-display-xs md:text-display-l lg:text-display-xl text-transparent bg-clip-text bg-gradient-2 text-wrap`}
+          data-aos="fade-up"
         >
           We Empower Brands & Influencers To Achieve More
         </h1>
-        <div className="flex flex-col items-center gap-5">
+        <div className="flex flex-col items-center gap-5" data-aos="fade-up" data-aos-delay="200">
           <h3
             className={`text-tc-primary-default text-display-xxs md:text-display-small lg:text-display-m`}
           >
@@ -79,7 +80,11 @@ const Hero = () => {
           </p>
         </div>
         {screenSize.width > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48 mb-20">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48 mb-20"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
             <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
             <Button size={screenSize.width < 768 ? "sm" : "xl"} className="!px-10">
               I AM INFLUENCER
