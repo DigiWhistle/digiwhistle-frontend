@@ -51,7 +51,7 @@ const Offerings = () => {
     <section className="w-full my-16 md:my-32 lg:my-40 overflow-hidden" id="offerings">
       <Title title="Offerings" />
       <div className="mt-12 md:mt-14 lg:mt-20 flex flex-col gap-12 md:gap-16 lg:gap-20 items-center text-body-md-medium">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" data-aos="fade-up">
           {OfferingsArray.map((offerings, index) => (
             <button
               className={cn(
@@ -73,9 +73,9 @@ const Offerings = () => {
             </button>
           ))}
         </div>
-        <div className="relative w-full flex flex-col items-center">
-          <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-10 transform -translate-x-20 lg:-translate-x-32  "></div>
-          <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 bottom-10  transform translate-x-20 lg:translate-x-32"></div>
+        <div className="relative w-full flex flex-col items-center" data-aos="fade-up">
+          <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-14 transform -translate-x-20 lg:-translate-x-32  "></div>
+          <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 bottom-14  transform translate-x-20 lg:translate-x-32"></div>
           <div className="relative flex flex-col items-center w-full h-full  bg-clip-content backdrop-filter backdrop-blur-2xl bg-opacity-100 ">
             <Image
               src={OfferingsArray[selectedIndex].image}

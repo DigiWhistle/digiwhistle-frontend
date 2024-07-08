@@ -87,7 +87,7 @@ const ContactUs = () => {
             ))}
           </div>
           <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
-          <div className="flex flex-col items-center lg:items-start space-y-4">
+          <div className="flex flex-col  items-center lg:items-start space-y-4">
             <div className="flex gap-3">
               {socialIcons.map((data, index) => (
                 <Link
@@ -107,7 +107,7 @@ const ContactUs = () => {
         </div>
         <Tabs
           defaultValue="influencer"
-          className="bg-sb-white lg:w-3/5 rounded-2xl p-8 flex flex-col items-center"
+          className="bg-sb-white w-full lg:w-3/5 rounded-2xl p-8 flex flex-col items-center"
         >
           <TabsList className="lg:place-self-start">
             <TabsTrigger value="influencer">I am Influencer</TabsTrigger>

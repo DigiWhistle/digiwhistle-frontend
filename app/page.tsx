@@ -13,6 +13,7 @@ import Influencers from "@/components/Influencers";
 export default function Home() {
   useEffect(() => {
     AOS.init({
+      duration: 1000,
       offset: 150,
       once: true,
     });
