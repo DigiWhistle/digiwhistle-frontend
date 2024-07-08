@@ -72,10 +72,10 @@ const Influencers = () => {
           {data.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col md:mr-10 mr-7 bg-sb-black lg:p-7 md:p-5 p-3 lg:gap-10 gap-8 lg:rounded-[28px] md:rounded-3xl rounded-[20px] lg:h-[598px] lg:w-[384px] md:h-[536px] md:w-[333px] h-[474px] w-[264px]"
+              className=" flex flex-col md:mr-10 mr-7 bg-sb-black  md:p-5 p-3  gap-8  md:rounded-3xl rounded-[20px]  md:h-[536px] md:w-[333px] h-[474px] w-[264px]"
             >
               <Image
-                className="w-full  lg:h-[320px] md:h-[298px] h-[266px] object-cover rounded-2xl lg:rounded-[20px]"
+                className="w-full  md:h-[298px] h-[266px] object-cover rounded-2xl "
                 src={item.influencer_url}
                 alt=""
                 height={320}
@@ -83,10 +83,10 @@ const Influencers = () => {
               ></Image>
               <div className="flex flex-col gap-5">
                 <div className="flex  flex-col gap-3">
-                  <div className=" font-heading text-center text-tc-primary-white text-display-xxs lg:text-display-xs">
+                  <div className=" font-heading text-center text-tc-primary-white text-display-xxs ">
                     financebyanmoll
                   </div>
-                  <div className="text-center lg:text-body-xl-light text-body-md-light text-[#BBBBBE] ">
+                  <div className="text-center  text-body-md-light text-[#BBBBBE] ">
                     Anmol Sharma | Video Creator
                   </div>
                 </div>

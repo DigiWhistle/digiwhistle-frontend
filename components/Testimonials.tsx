@@ -67,13 +67,13 @@ const Testimonials = () => {
         id="testimonials"
       >
         <Title title={"Testimonials"} />
-        <div className="relative flex flex-col lg:h-[1020px] md:h-[776px] sm:h-[512px] justify-center items-center">
+        <div className=" relative flex flex-col  md:h-[776px] sm:h-[512px] justify-center items-center">
           <div className="absolute top-0 -z-20 flex flex-col justify-center items-center  md:gap-7 gap-4">
             <Marquee direction="right">
               {arr.map((item, index) => (
                 <Image
                   key={index}
-                  className="lg:mr-10 sm:mr-7 lg:w-[320px] md:w-[240px] sm:w-[160px]"
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px]"
                   alt=""
                   width={320}
                   height={100}
@@ -85,7 +85,7 @@ const Testimonials = () => {
               {arr.map((item, index) => (
                 <Image
                   key={index}
-                  className="lg:mr-10 sm:mr-7 lg:w-[320px] md:w-[240px] sm:w-[160px] "
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px] "
                   alt=""
                   width={320}
                   height={100}
@@ -97,9 +97,9 @@ const Testimonials = () => {
               {arr.map((item, index) => (
                 <Image
                   key={index}
-                  className="lg:mr-10 sm:mr-7 lg:w-[320px] md:w-[240px] sm:w-[160px]"
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px]"
                   alt=""
-                  width={320}
+                  width={240}
                   height={100}
                   src="/assets/testimonials/card.png"
                 />
@@ -107,7 +107,7 @@ const Testimonials = () => {
             </Marquee>
           </div>
           {/*Glassmorphed container*/}
-          <div className="flex flex-col lg:gap-16 md:gap-10 gap-7 items-center lg:px-32 md:py-11 px-6 py-5 lg:w-[1160px] md:w-[670px] w-[312px] z-0  bg-white backdrop-blur-3xl bg-opacity-5 rounded-[32px] ">
+          <div className="flex flex-col  md:gap-10 gap-7 items-center lg:px-32 md:py-11 px-6 py-5 lg:w-[1160px] md:w-[670px] w-[312px] z-0  bg-white backdrop-blur-3xl bg-opacity-5 rounded-[32px] ">
             {/*testimonial sector buttons*/}
             <div className="flex justify-between md:px-3 px-2 py-2 rounded-full gap-3 items-center bg-white lg:w-[580px] md:w-[500px]">
               {head_buttons.map((item, index) => (
@@ -132,7 +132,7 @@ const Testimonials = () => {
                       key={index}
                       className="flex flex-col items-center flex-grow-0 gap-7 justify-center flex-shrink-0 basis-[100%] "
                     >
-                      <div className="font-heading lg:text-display-l text-tc-primary-white lg:w-full md:text-display-s text-display-xxs md:w-[590px] text-center">
+                      <div className="font-heading  text-tc-primary-white  lg:text-display-s md:text-display-xs text-display-xxs md:w-[590px] text-center">
                         {item.testimonial}
                       </div>
                       <div className="flex flex-col gap-2 items-center">
@@ -159,7 +159,7 @@ const Testimonials = () => {
                       key={index}
                       className="flex flex-col items-center flex-grow-0 gap-7 justify-center flex-shrink-0 basis-[100%] "
                     >
-                      <div className="font-heading lg:text-display-l text-tc-primary-white lg:w-full md:text-display-s text-display-xxs md:w-[590px] text-center">
+                      <div className="font-heading  text-tc-primary-white  lg:text-display-s md:text-display-xs text-display-xxs md:w-[590px] text-center">
                         {item.testimonial}
                       </div>
                       <div className="flex flex-col gap-2 items-center">
