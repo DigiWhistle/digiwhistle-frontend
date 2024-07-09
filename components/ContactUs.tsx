@@ -60,9 +60,9 @@ const ContactUs = () => {
         <div className="flex flex-col items-center justify-between lg:items-start gap-10 lg:w-2/5 ">
           <hr className="lg:hidden text-gray-556 w-16 md:w-24 lg:w-32" />
           <div className="flex flex-col items-center lg:items-start space-y-5">
-            <button className="bg-white px-4 py-2 rounded-full">
+            <div className="bg-white px-4 py-2 rounded-full">
               <Image src={logosvg} alt="DIGI WHISTLE" width={160} height={80} />
-            </button>
+            </div>
             <p className="text-heading-s-medium font-light text-tc-black-disabled text-center lg:text-left">
               A marketing and talent management agency that handles selected roster of India’s top
               influencers. Our exclusive relationship with our influencers allows us to connect

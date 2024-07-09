@@ -101,7 +101,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             />
             <FormTextInput
               formName="mobileNumber"
-              label="Mobile Number "
+              label="Mobile Number"
               placeholder="Enter number (without +91 or 0)"
               required
               leftIcon={<DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />}
