@@ -46,25 +46,25 @@ const dummy_brands_testimonials = [
     testimonial: "DW is the Airbnb of the Creator Economy",
     name: "Pooja Patel",
     post: "Finance Influencer",
-    url: "/assets/testimonials/Forbes.webp",
+    url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
     name: "Pooja Patel",
     post: "Finance Influencer",
-    url: "/assets/testimonials/Forbes.webp",
+    url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
     name: "Pooja Patel",
     post: "Finance Influencer",
-    url: "/assets/testimonials/Forbes.webp",
+    url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
     name: "Pooja Patel",
     post: "Finance Influencer",
-    url: "/assets/testimonials/Forbes.webp",
+    url: "/assets/testimonials/Forbes_2.webp",
   },
 ];
 const Testimonials = () => {
@@ -192,7 +192,13 @@ const Testimonials = () => {
                         <q>{item.testimonial}</q>
                       </div>
                       <div className="flex flex-col gap-2 items-center">
-                        <Image src={item.url} alt="" height={100} width={100} />
+                        <Image
+                          className="rounded-full object-cover "
+                          src={item.url}
+                          alt=""
+                          height={70}
+                          width={70}
+                        />
                       </div>
                     </div>
                   ))}
