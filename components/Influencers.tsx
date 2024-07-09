@@ -266,7 +266,6 @@ const Influencers = () => {
           direction="left"
           ref={wrapperRef}
         >
-
           {data.map((item, index) => (
             <div
               key={index}
