@@ -243,7 +243,7 @@ const Influencers = () => {
         id="star-influencers"
       >
         <Title title="Our Star Influencers" />
-        <Marquee pauseOnHover className="" direction="left">
+        <Marquee pauseOnHover pauseOnClick className="" direction="left">
           {data.map((item, index) => (
             <div
               key={index}
