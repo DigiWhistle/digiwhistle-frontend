@@ -11,22 +11,22 @@ import Title from "./ui/Title";
 const OfferingsArray = [
   {
     name: "Influencer Marketing",
-    image: "/assets/Offerings/influencer-marketing-desktop.png",
+    image: "/assets/Offerings/influencer-marketing-desktop.svg",
     icon: SpeakerWaveIcon,
   },
   {
     name: "Talent Management",
-    image: "/assets/Offerings/talent-management-desktop.png",
+    image: "/assets/Offerings/talent-management-desktop.svg",
     icon: StarIcon,
   },
   {
     name: "Public Relations",
-    image: "/assets/Offerings/public-relations-desktop.png",
+    image: "/assets/Offerings/public-relations-desktop.svg",
     icon: HandThumbUpIcon,
   },
   {
     name: "Performance Marketing",
-    image: "/assets/Offerings/performance-marketing-desktop.png",
+    image: "/assets/Offerings/performance-marketing-desktop.svg",
     icon: BoltIcon,
   },
 ];
