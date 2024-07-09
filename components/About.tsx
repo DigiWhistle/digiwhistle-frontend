@@ -22,8 +22,8 @@ const About = () => {
           className=" flex flex-col w-full z-0 bg-clip-padding  backdrop-blur-3xl lg:h-[750px] md:h-[681px] sm:h-[642px] justify-start items-center"
           data-aos="fade-up"
         >
-          <div className="w-full h-full absolute bg-clip-padding  backdrop-blur-3xl"></div>
-          <div className="flex flex-col justify-end items-center lg:h-[600px] md:h-[446px]  h-[198px] lg:w-[900px] md:w-[708px] w-[314px] bg-about-us-image bg-no-repeat bg-cover bg-bottom drop-shadow-y-elevation-xl border-[4px] rounded-[32px] border-white">
+          <div className="w-full h-full  absolute bg-clip-padding  backdrop-blur-3xl"></div>
+          <div className="flex flex-col justify-end  items-center lg:h-[600px] md:h-[446px]  h-[198px] lg:w-[900px] md:w-[708px] w-[314px] bg-about-us-image bg-no-repeat bg-cover bg-bottom drop-shadow-y-elevation-xl border-[4px] rounded-[32px] border-white">
             {/*Glassmorphed container*/}
             <div className=" flex flex-col md:gap-9 gap-6 lg:mb-5 md:-mb-32 -mb-96 border-2 border-[#E1E1DA50] bg-gradient-to-b from-white/10  to-black/10 lg:bg-white/5 bg-clip-padding backdrop-filter backdrop-blur-3xl items-center md:px-[42px] md:py-[30px] px-3 py-7 lg:w-[850px] md:w-[670px] w-[296px] z-0   rounded-[32px] ">
               {/* <div className="w-full h-full absolute top-0 bg-clip-padding  backdrop-blur-3xl -z-10 rounded-[32px]"></div> */}
