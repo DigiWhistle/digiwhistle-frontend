@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -61,6 +61,21 @@ const data = [
 ];
 
 const Influencers = () => {
+  const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
+  const [playMarquee, setPlayMarquee] = useState(true);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, false);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, false);
+    };
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      setPlayMarquee(true);
+    }
+  };
   return (
     <>
       <section
@@ -68,14 +83,21 @@ const Influencers = () => {
         id="star-influencers"
       >
         <Title title="Our Star Influencers" />
-        <Marquee pauseOnHover className="" direction="left">
+        <Marquee
+          pauseOnHover
+          pauseOnClick
+          play={playMarquee}
+          className=""
+          direction="left"
+          ref={wrapperRef}
+        >
           {data.map((item, index) => (
             <div
               key={index}
               className=" flex flex-col md:mr-10 mr-7 bg-sb-black  md:p-5 p-3  gap-8  md:rounded-3xl rounded-[20px]  md:h-[536px] md:w-[333px] h-[474px] w-[264px]"
             >
               <Image
-                className="w-full  md:h-[298px] h-[266px] object-cover rounded-2xl "
+                className="w-full  md:h-[298px] h-[266px] object-cover rounded-2xl"
                 src={item.influencer_url}
                 alt=""
                 height={320}
@@ -93,25 +115,37 @@ const Influencers = () => {
                 <div className="flex justify-between items-center bg-dark-black-651 rounded-[16px] md:px-6 md:py-4 px-3 py-3">
                   <button
                     className=" flex items-center justify-center border-2 border-white rounded-full px-[10px] py-[12px] md:h-[46px] md:w-[46px] h-10 w-10"
-                    onClick={() => window.open(item.sociallinks.instagram)}
+                    onClick={() => {
+                      window.open(item.sociallinks.instagram);
+                      setPlayMarquee(false);
+                    }}
                   >
                     <Image src="/assets/icons/instagram.svg" alt="I" height={24} width={24} />
                   </button>
                   <button
                     className=" flex items-center justify-center border-2 border-white rounded-full px-[10px] py-[12px] md:h-[46px] md:w-[46px] h-10 w-10"
-                    onClick={() => window.open(item.sociallinks.instagram)}
+                    onClick={() => {
+                      window.open(item.sociallinks.instagram);
+                      setPlayMarquee(false);
+                    }}
                   >
                     <Image src="/assets/icons/youtube.svg" alt="I" height={24} width={24} />
                   </button>
                   <button
                     className="flex items-center justify-center border-2 border-white rounded-full px-[11px] py-[12px] md:h-[46px] md:w-[46px] h-10 w-10"
-                    onClick={() => window.open(item.sociallinks.instagram)}
+                    onClick={() => {
+                      window.open(item.sociallinks.instagram);
+                      setPlayMarquee(false);
+                    }}
                   >
                     <Image src="/assets/icons/linkedin.svg" alt="I" height={24} width={24} />
                   </button>
                   <button
                     className="flex items-center justify-center border-2 border-white rounded-full px-[11px] py-[12px] md:h-[46px] md:w-[46px] h-10 w-10"
-                    onClick={() => window.open(item.sociallinks.instagram)}
+                    onClick={() => {
+                      window.open(item.sociallinks.instagram);
+                      setPlayMarquee(false);
+                    }}
                   >
                     <Image src="/assets/icons/twitter.svg" alt="I" height={24} width={24} />
                   </button>

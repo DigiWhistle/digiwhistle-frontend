@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ContactForm from "./ui/contact-form";
+import ContactForm, { PersonType } from "./ui/contact-form";
 
 const logosvg = "./assets/navbar/logo.svg";
 
@@ -12,7 +12,7 @@ const contactOptions = [
   {
     name: "Location",
     information: "Noida, Uttar Pradesh India.",
-    url: "https://digiwhistle.com",
+    url: "https://www.google.com/maps/dir//digiwhistle+address/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8db32a3f393307b9:0x5095716e2a62e26e?sa=X&ved=1t:3061&ictx=111",
     icon: MapPinIcon,
   },
   {
@@ -48,7 +48,7 @@ const socialIcons = [
   },
   {
     name: "Twitter",
-    url: "https://twitter.com/digiwhistle",
+    url: "https://x.com/DigiWhistle",
     icon: "./assets/icons/twitter.svg",
   },
 ];
@@ -70,7 +70,7 @@ const ContactUs = () => {
             </p>
           </div>
           <hr className="text-gray-556 w-16 md:w-24 lg:w-32" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 self-start md:self-auto">
             {contactOptions.map((data, index) => (
               <div className="flex gap-1" key={index}>
                 <div>{<data.icon className="text-white-301 w-5 h-5 mt-0.5" />}</div>
@@ -78,6 +78,7 @@ const ContactUs = () => {
                   <p className="text-heading-s-semibold text-white">{data.name}</p>
                   <Link
                     href={data.url}
+                    target="_blank"
                     className="text-heading-s-medium !font-light text-tc-black-disabled"
                   >
                     {data.information}
@@ -100,7 +101,7 @@ const ContactUs = () => {
                 </Link>
               ))}
             </div>
-            <p className="text-heading-s-medium text-tc-black-disabled !font-light">
+            <p className="text-heading-s-medium text-tc-black-disabled !font-light text-center">
               Copyright © 2023 DigiWhistle, All rights reserved.
             </p>
           </div>
@@ -115,12 +116,14 @@ const ContactUs = () => {
           </TabsList>
           <hr className=" text-gray-556 w-full my-6" />
 
-          <TabsContent value="influencer" className="w-full">
-            <ContactForm userType={"influencer"} />
-          </TabsContent>
-          <TabsContent value="brand">
-            <ContactForm userType={"brand"} />
-          </TabsContent>
+          <div className="w-full grid">
+            <TabsContent value="influencer" className="w-full ">
+              <ContactForm userType={PersonType.Influencer} />
+            </TabsContent>
+            <TabsContent value="brand" className="w-full lg:h-[463px] ">
+              <ContactForm userType={PersonType.Brand} />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </section>
