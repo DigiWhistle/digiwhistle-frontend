@@ -21,13 +21,13 @@ const contactOptions = [
     url: "mailto:info@digiwhistle.com",
     icon: EnvelopeIcon,
   },
-  { name: "Phone", information: "1800-0120-12xx", url: "https://digiwhistle.com", icon: PhoneIcon },
-  {
-    name: "Website",
-    information: "https://digiwhistle.com",
-    url: "https://digiwhistle.com",
-    icon: GlobeAltIcon,
-  },
+  // { name: "Phone", information: "1800-0120-12xx", url: "https://digiwhistle.com", icon: PhoneIcon },
+  // {
+  //   name: "Website",
+  //   information: "https://digiwhistle.com",
+  //   url: "https://digiwhistle.com",
+  //   icon: GlobeAltIcon,
+  // },
 ];
 
 const socialIcons = [
