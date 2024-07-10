@@ -30,31 +30,43 @@ export enum PersonType {
   Brand = "Brand",
 }
 
-const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-  followersCount: z.nativeEnum({
-    LessThan250k: "less than 250k",
-    Between250kAnd500k: "250k to 500k",
-    Between500kAnd750k: "500k to 750k",
-    MoreThan750k: "greater than 750k",
-  }),
-  profileLink: z.string().url({
-    message: "Invalid URL.",
-  }),
-  mobileNumber: z.string().refine(val => val.length === 10, {
-    message: "Mobile number must be 10 digits.",
-  }),
-  message: z.string().optional(),
-  personType: z.nativeEnum(PersonType),
-  termsCheck: z.boolean().refine(val => val === true, {
-    message: "You must agree to the terms",
-  }),
-});
+const FormSchema = z
+  .object({
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters.",
+    }),
+    email: z.string().email({
+      message: "Invalid email address.",
+    }),
+    followersCount: z
+      .nativeEnum({
+        LessThan250k: "less than 250k",
+        Between250kAnd500k: "250k to 500k",
+        Between500kAnd750k: "500k to 750k",
+        MoreThan750k: "greater than 750k",
+      })
+      .optional(),
+    profileLink: z.string().url({
+      message: "Invalid URL.",
+    }),
+    mobileNumber: z.string().refine(val => val.length === 10, {
+      message: "Mobile number must be 10 digits.",
+    }),
+    message: z.string().optional(),
+    personType: z.nativeEnum(PersonType),
+    termsCheck: z.boolean().refine(val => val === true, {
+      message: "You must agree to the terms",
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (data.personType === "Influencer" && data.followersCount === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Followers count is required ",
+        path: ["followersCount"],
+      });
+    }
+  });
 
 function ContactForm({ userType }: { userType: PersonType.Influencer | PersonType.Brand }) {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -65,7 +77,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    // console.log(data);
     try {
       const formData = {
         name: data.name,
@@ -76,12 +88,13 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
         message: data.message,
         personType: data.personType,
       };
-      const response = await postRequest("contactUs", formData);
-      console.log(response);
+      await postRequest("contactUs", formData);
+      // console.log(response);
     } catch (error) {
       console.log(error);
+    } finally {
+      form.reset();
     }
-    form.reset();
   }
 
   return (
@@ -205,11 +218,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             )}
           />
 
-          <Button
-            type="submit"
-            className="w-full disabled:text-black"
-            disabled={form.formState.isSubmitting}
-          >
+          <Button type="submit" className="w-full disabled:text-black" disabled={true}>
             {form.formState.isSubmitting ? "Thank you!" : "Send"}
           </Button>
         </div>
