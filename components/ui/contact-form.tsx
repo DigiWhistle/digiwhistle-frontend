@@ -218,7 +218,11 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             )}
           />
 
-          <Button type="submit" className="w-full disabled:text-black" disabled={true}>
+          <Button
+            type="submit"
+            className="w-full disabled:text-black"
+            disabled={form.formState.isSubmitting}
+          >
             {form.formState.isSubmitting ? "Thank you!" : "Send"}
           </Button>
         </div>
