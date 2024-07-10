@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import "./print.css";
 import Image from "next/image";
@@ -58,9 +59,12 @@ const page = () => {
     <div className="flex flex-col items-center w-full h-full">
       <nav className="flex justify-between items-center p-8 border bg-yellow-101 w-full">
         <h3>Digiwhistle</h3>
-        <button>Download Report</button>
+        <button onClick={() => window.print()}>Download Report</button>
       </nav>
-      <section className=" w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0">
+      <section
+        id="pdf-content"
+        className="print-content w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0"
+      >
         <div className="relative w-full overflow-hidden">
           <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-44 blur-2xl"></div>
           <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 top-0 right-20 blur-2xl"></div>
