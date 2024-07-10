@@ -20,7 +20,7 @@ const dummy_testimonials = [
     testimonial: "Great experience with DW; supportive and transparent team.",
     name: "CA Anamika Rana",
     post: "Finance Influencer",
-    url: "/assets/testimonials/avtar.png",
+    url: "/assets/testimonials/anamika_rana.png",
   },
   {
     testimonial: "Finglory simplifies finance concepts creatively and engagingly.",
@@ -32,7 +32,7 @@ const dummy_testimonials = [
     testimonial: "DigiWhistle feels like a family of finance influencers.",
     name: "Neha Nagar",
     post: "Finance Influencer",
-    url: "/assets/testimonials/Neha.webp",
+    url: "/assets/testimonials/neha.webp",
   },
   {
     testimonial: "DW streamlined brand deals, boosting my PR effectively.",
@@ -44,26 +44,26 @@ const dummy_testimonials = [
 const dummy_brands_testimonials = [
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
-    name: "Pooja Patel",
-    post: "Finance Influencer",
+    name: "Forbes",
+    post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
-    name: "Pooja Patel",
-    post: "Finance Influencer",
+    name: "Forbes",
+    post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
-    name: "Pooja Patel",
-    post: "Finance Influencer",
+    name: "Forbes",
+    post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
     testimonial: "DW is the Airbnb of the Creator Economy",
-    name: "Pooja Patel",
-    post: "Finance Influencer",
+    name: "Forbes",
+    post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
 ];
@@ -158,14 +158,24 @@ const Testimonials = () => {
                       <div className="font-heading  text-tc-primary-white  lg:text-display-s md:text-display-xs text-display-xxs lg:w-[650px] md:w-[590px] text-center">
                         <q>{item.testimonial}</q>
                       </div>
-                      <div className="flex flex-col gap-2 items-center">
-                        <Image
-                          className="rounded-full border-2 border-white object-cover"
-                          src={item.url}
-                          alt=""
-                          height={70}
-                          width={70}
-                        />
+                      <div className=" flex flex-col gap-2 items-center">
+                        <div className="relative">
+                          <Image
+                            className="rounded-full border-2 border-white object-cover"
+                            src={item.url}
+                            alt=""
+                            height={70}
+                            width={70}
+                          />
+                          <Image
+                            className="absolute bottom-0 right-0"
+                            src={"/assets/testimonials/outline-verified.svg"}
+                            alt=""
+                            height={20}
+                            width={20}
+                          />
+                        </div>
+
                         <div className="flex flex-col gap-0 items-center">
                           <div className=" lg:text-body-xl-medium md:text-body-lg-medium text-body-md-medium text-tc-primary-white text-center">
                             {item.name}
@@ -192,13 +202,30 @@ const Testimonials = () => {
                         <q>{item.testimonial}</q>
                       </div>
                       <div className="flex flex-col gap-2 items-center">
-                        <Image
-                          className="rounded-full object-cover "
-                          src={item.url}
-                          alt=""
-                          height={70}
-                          width={70}
-                        />
+                        <div className="relative">
+                          <Image
+                            className="rounded-full border-2 border-white object-cover"
+                            src={item.url}
+                            alt=""
+                            height={70}
+                            width={70}
+                          />
+                          <Image
+                            className="absolute bottom-0 right-0"
+                            src={"/assets/testimonials/outline-verified.svg"}
+                            alt=""
+                            height={20}
+                            width={20}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-0 items-center">
+                          <div className=" lg:text-body-xl-medium md:text-body-lg-medium text-body-md-medium text-tc-primary-white text-center">
+                            {item.name}
+                          </div>
+                          <div className=" lg:text-body-md md:text-body-sm-medium text-body-sm-medium text-tc-primary-white text-center">
+                            {item.post}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}

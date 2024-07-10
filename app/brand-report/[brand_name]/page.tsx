@@ -5,6 +5,7 @@ import Image from "next/image";
 import ReportTitle from "@/components/brand-report/ReportTitle";
 import DataCards from "@/components/brand-report/DataCard";
 import DataCard from "@/components/brand-report/DataCard";
+import { ArrowDownIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 
 const InflucenerArray = [
   {
@@ -54,12 +55,33 @@ const InflucenerArray = [
   },
 ];
 
-const page = () => {
+const page = ({
+  params: { brand_name },
+}: {
+  params: {
+    brand_name: string;
+  };
+}) => {
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <nav className="flex justify-between items-center p-8 border bg-yellow-101 w-full">
-        <h3>Digiwhistle</h3>
-        <button onClick={() => window.print()}>Download Report</button>
+      <nav className="flex justify-between items-center p-8 py-4 border bg-yellow-101 w-full">
+        <div className="bg-white rounded-full px-4 py-3 cursor-pointer">
+          <Image
+            src={"/assets/navbar/logo.svg"}
+            width={100}
+            height={50}
+            alt="digiwhistle logo"
+            onClick={() => window.open("/")}
+          />
+        </div>
+
+        <button
+          className="bg-white rounded-full px-4 py-2 text-tc-primary-default flex gap-2 items-center hover:opacity-90"
+          onClick={() => window.print()}
+        >
+          Download Report
+          <ArrowDownTrayIcon height={15} width={15} />
+        </button>
       </nav>
       <section
         id="pdf-content"
@@ -70,7 +92,7 @@ const page = () => {
           <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-44 blur-2xl"></div>
           <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 top-0 right-20 blur-2xl"></div>
 
-          <div className="container w-[450px] flex flex-col items-center gap-6 mt-32">
+          <div className="container w-[450px] flex flex-col items-center gap-14 mt-32">
             <Image src={"/assets/navbar/logo.svg"} width={100} height={50} alt="digiwhistle logo" />
             <h1 className="text-4xl font-bold text-tc-primary-default text-center">
               Influencer Marketing Campaign Report
@@ -92,7 +114,7 @@ const page = () => {
               <div className=" w-full rounded-2xl bg-gradient-2 p-0.5">
                 <div className="flex h-full w-full items-center justify-center p-3 bg-white  rounded-[15px]">
                   <Image
-                    src={"/assets/brands/airtel.webp"}
+                    src={`/assets/brands/${brand_name}.webp`}
                     className="h-7 w-auto"
                     width={200}
                     height={100}

@@ -6,7 +6,7 @@ const About = () => {
   return (
     <>
       <section
-        className="relative flex flex-col w-full gap-14  items-center  overflow-hidden"
+        className="relative flex flex-col w-full gap-14  items-center  overflow-hidden mt-16"
         id="about-us"
       >
         <Title title={"About Us"} />
