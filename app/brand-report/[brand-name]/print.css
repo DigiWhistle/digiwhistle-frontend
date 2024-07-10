@@ -1,0 +1,62 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-content,
+  .print-content * {
+    visibility: visible;
+    padding: 0;
+  }
+
+  .print-button {
+    display: none;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  #pdf-content {
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  #pdfFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: white;
+    box-sizing: border-box;
+    visibility: visible;
+  }
+
+  /* #pdfHeader, #pdfFooter {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    box-sizing: border-box;
+    visibility: visible; /* Ensure visibility */
+
+  /* #pdfHeader {
+    top: 0;
+  }
+
+
+  #pdf-body, #pdf-body-2 {
+    position: relative;
+    page-break-inside: avoid;
+   top : 25px;
+    }
+  #pdf-body-2 {
+    margin-top: 100px; /* Adjust this value as needed to ensure it does not overlap with the header */
+}
