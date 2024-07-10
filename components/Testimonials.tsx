@@ -133,7 +133,7 @@ const Testimonials = () => {
             </Marquee>
           </div>
           {/*Glassmorphed container*/}
-          <div className="flex flex-col  md:gap-10 gap-7 items-center lg:px-32 md:py-11 px-6 py-5 lg:w-[1160px] md:w-[670px] w-[312px] z-0  bg-white backdrop-blur-3xl bg-opacity-5 rounded-[32px] ">
+          <div className="flex flex-col  md:gap-10 gap-7 items-center lg:px-32 md:py-11 px-6 py-5 lg:w-[1160px] md:w-[670px] w-[312px] z-0   backdrop-blur-3xl bg-opacity-5 rounded-[32px] ">
             {/*testimonial sector buttons*/}
             <div className="flex justify-between md:px-3 px-2 py-2 rounded-full gap-3 items-center bg-white lg:w-[580px] md:w-[500px]">
               {head_buttons.map((item, index) => (

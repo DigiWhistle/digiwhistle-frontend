@@ -63,9 +63,10 @@ const page = () => {
       </nav>
       <section
         id="pdf-content"
-        className="print-content w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0"
+        className=" print-content w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0"
       >
-        <div className="relative w-full overflow-hidden">
+        {/*This is the page 1 content*/}
+        <div id="main_section_print" className=" relative w-full overflow-hidden">
           <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-44 blur-2xl"></div>
           <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 top-0 right-20 blur-2xl"></div>
 
@@ -109,7 +110,11 @@ const page = () => {
             />
           </div>
         </div>
-        <div className="w-[650px] bg-sb-blue-580 p-10 flex flex-col rounded-2xl ">
+
+        <div
+          id="first_page"
+          className="page-break w-[650px] bg-sb-blue-580 p-10 flex flex-col rounded-2xl "
+        >
           <ReportTitle title="Live Creators" />
           <div className="flex flex-wrap gap-6 items-center justify-center mt-12">
             {InflucenerArray.map((data, index) => (
@@ -120,16 +125,21 @@ const page = () => {
             ))}
           </div>
         </div>
-        <div className="w-[650px] p-10 flex flex-col gap-12 rounded-2xl ">
+
+        {/*This is the page 2 content */}
+        <div
+          id="second_page"
+          className=" page-break w-[650px] p-10 flex flex-col gap-12 rounded-2xl "
+        >
           <ReportTitle title="MS Accounting Campaign Report" />
-          <div className=" space-y-6">
+          <div className="spacer_print space-y-6">
             <div className="border rounded-2xl overflow-hidden">
               <p className="w-full text-center py-3 bg-yellow-561">Campaign CPV</p>
               <p className="w-full text-center py-3">0.7</p>
             </div>
             <div className="overflow-x-auto rounded-2xl border border-gray-555">
-              <table className="min-w-full divide-y divide-gray-555">
-                <thead className="bg-gray-50">
+              <table className=" tables_print min-w-full divide-y divide-gray-555">
+                <thead className=" bg-gray-50">
                   <tr>
                     <th
                       scope="col"
@@ -169,7 +179,7 @@ const page = () => {
                     </th> */}
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-555">
+                <tbody className=" bg-white divide-y divide-gray-555">
                   {InflucenerArray.map((data, index) => (
                     <tr key={index}>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -197,12 +207,16 @@ const page = () => {
             </div>
           </div>
         </div>
-        <div className="w-[650px] p-10 flex flex-col gap-12 rounded-2xl bg-sb-blue-580">
+
+        <div
+          id="uscpa"
+          className="page-break w-[650px] p-10 flex flex-col gap-12 rounded-2xl bg-sb-blue-580"
+        >
           <ReportTitle title="US CPA Campaign Report" />
-          <div className=" space-y-6">
+          <div className="spacer_print space-y-6">
             <DataCard title="Campaign CPV" value={"0.7"} />
-            <div className="overflow-x-auto rounded-2xl border border-gray-555">
-              <table className="min-w-full divide-y divide-gray-555">
+            <div className="tables_print overflow-x-auto rounded-2xl border border-gray-555">
+              <table className=" min-w-full divide-y divide-gray-555">
                 <thead className="bg-gray-50">
                   <tr>
                     <th
@@ -271,9 +285,10 @@ const page = () => {
             </div>
           </div>
         </div>
-        <div className="w-[650px] py-10 flex flex-col gap-12 rounded-2xl ">
+
+        <div className="page-break w-[650px] py-10 flex flex-col gap-12 rounded-2xl ">
           <ReportTitle title="Campaign Report" />
-          <div className="flex gap-2 items-center">
+          <div className="spacer_print flex gap-2 items-center">
             <div className="w-full flex flex-wrap items-center justify-center gap-4">
               <DataCard title="Total Creators" value={"5"} />
               <DataCard title="Total Reach" value={"2,66,668"} />
@@ -289,7 +304,7 @@ const page = () => {
               alt="influencer image"
             />
           </div>
-          <div className="flex flex-col items-center gap-2">
+          <div className="spacer_print flex flex-col items-center gap-2">
             <Image src={"/assets/navbar/logo.svg"} width={100} height={50} alt="digiwhistle logo" />
             <p className="text-gray-557 text-xs">
               Copyright © 2023 DigiWhistle, All rights reserved.
