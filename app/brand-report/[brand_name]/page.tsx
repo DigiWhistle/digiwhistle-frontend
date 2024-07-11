@@ -64,7 +64,7 @@ const page = ({
 }) => {
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <nav className="flex justify-between items-center p-8 py-4 border bg-yellow-101 w-full">
+      <nav className="w-full flex justify-between items-center p-4 py-2 md:p-8 md:py-4 border bg-yellow-101 ">
         <div className="bg-white rounded-full px-4 py-3 cursor-pointer">
           <Image
             src={"/assets/navbar/logo.svg"}
@@ -79,20 +79,20 @@ const page = ({
           className="bg-white rounded-full px-4 py-2 text-tc-primary-default flex gap-2 items-center hover:opacity-90"
           onClick={() => window.print()}
         >
-          Download Report
+          <p className="text-sm hidden md:block">Download Report</p>
           <ArrowDownTrayIcon height={15} width={15} />
         </button>
       </nav>
       <section
         id="pdf-content"
-        className=" print-content w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0"
+        className=" print-content w-auto md:w-[750px] h-auto flex flex-col items-center gap-8 border border-gray-200 my-10 rounded-lg p-0"
       >
         {/*This is the page 1 content*/}
         <div id="main_section_print" className=" relative w-full overflow-hidden">
           <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-44 blur-2xl"></div>
           <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 top-0 right-20 blur-2xl"></div>
 
-          <div className="container w-[450px] flex flex-col items-center gap-14 mt-32">
+          <div className="mx-auto md:w-[450px] flex flex-col items-center gap-14 mt-32">
             <Image src={"/assets/navbar/logo.svg"} width={100} height={50} alt="digiwhistle logo" />
             <h1 className="text-4xl font-bold text-tc-primary-default text-center">
               Influencer Marketing Campaign Report
@@ -135,7 +135,7 @@ const page = ({
 
         <div
           id="first_page"
-          className="page-break w-[650px] bg-sb-blue-580 p-10 flex flex-col rounded-2xl "
+          className="page-break md:w-[650px] bg-sb-blue-580 p-10 flex flex-col rounded-2xl "
         >
           <ReportTitle title="Live Creators" />
           <div className="flex flex-wrap gap-6 items-center justify-center mt-12">
@@ -151,7 +151,7 @@ const page = ({
         {/*This is the page 2 content */}
         <div
           id="second_page"
-          className=" page-break w-[650px] p-10 flex flex-col gap-12 rounded-2xl "
+          className=" page-break md:w-[650px] p-10 flex flex-col gap-12 rounded-2xl "
         >
           <ReportTitle title="MS Accounting Campaign Report" />
           <div className="spacer_print space-y-6">
@@ -232,7 +232,7 @@ const page = ({
 
         <div
           id="uscpa"
-          className="page-break w-[650px] p-10 flex flex-col gap-12 rounded-2xl bg-sb-blue-580"
+          className="page-break md:w-[650px] p-10 flex flex-col gap-12 rounded-2xl bg-sb-blue-580"
         >
           <ReportTitle title="US CPA Campaign Report" />
           <div className="spacer_print space-y-6">
@@ -308,7 +308,7 @@ const page = ({
           </div>
         </div>
 
-        <div className="page-break w-[650px] py-10 flex flex-col gap-12 rounded-2xl ">
+        <div className="page-break md:w-[650px] py-10 flex flex-col gap-12 rounded-2xl ">
           <ReportTitle title="Campaign Report" />
           <div className="spacer_print flex gap-2 items-center">
             <div className="w-full flex flex-wrap items-center justify-center gap-4">
