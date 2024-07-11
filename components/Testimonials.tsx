@@ -43,25 +43,25 @@ const dummy_testimonials = [
 ];
 const dummy_brands_testimonials = [
   {
-    testimonial: "DW is the Airbnb of the Creator Economy",
+    testimonial: "Digiwhistle is the Airbnb for the Creator Economy and the Companies",
     name: "Forbes",
     post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
-    testimonial: "DW is the Airbnb of the Creator Economy",
+    testimonial: "Digiwhistle is the Airbnb for the Creator Economy and the Companies",
     name: "Forbes",
     post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
-    testimonial: "DW is the Airbnb of the Creator Economy",
+    testimonial: "Digiwhistle is the Airbnb for the Creator Economy and the Companies",
     name: "Forbes",
     post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",
   },
   {
-    testimonial: "DW is the Airbnb of the Creator Economy",
+    testimonial: "Digiwhistle is the Airbnb for the Creator Economy and the Companies",
     name: "Forbes",
     post: "Magazine Company",
     url: "/assets/testimonials/Forbes_2.webp",

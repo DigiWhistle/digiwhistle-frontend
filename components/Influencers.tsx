@@ -3,6 +3,7 @@ import Marquee from "react-fast-marquee";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Title from "./ui/Title";
+import { cn } from "@/lib/utils";
 const data = [
   {
     influencer_url: "/assets/influencers/neha.webp",
@@ -238,6 +239,7 @@ const data = [
 const Influencers = () => {
   const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
   const [playMarquee, setPlayMarquee] = useState(true);
+  const [selectedInfluencer, setSelectedInfluencer] = useState("");
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, false);
@@ -249,8 +251,11 @@ const Influencers = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
       setPlayMarquee(true);
+      setSelectedInfluencer("");
     }
   };
+
+  console.log(selectedInfluencer);
   return (
     <>
       <section
@@ -269,7 +274,10 @@ const Influencers = () => {
           {data.map((item, index) => (
             <div
               key={index}
-              className=" flex flex-col md:mr-10 mr-7 bg-sb-black  md:p-5 p-3  gap-8  md:rounded-3xl rounded-[20px]  md:h-[536px] md:w-[333px] h-[474px] w-[264px]"
+              className={cn(
+                " flex flex-col md:mr-10 mr-7 bg-sb-black  md:p-5 p-3  gap-8  md:rounded-3xl rounded-[20px]  md:h-[536px] md:w-[333px] h-[474px] w-[264px]",
+                selectedInfluencer === item.influencer_url ? " border-4 border-yellow-101" : null,
+              )}
             >
               <Image
                 className="w-full  md:h-[298px] h-[266px] object-cover rounded-2xl"
@@ -293,6 +301,7 @@ const Influencers = () => {
                     onClick={() => {
                       window.open(item.sociallinks.instagram);
                       setPlayMarquee(false);
+                      setSelectedInfluencer(item.influencer_url);
                     }}
                   >
                     <Image src="/assets/icons/instagram.svg" alt="I" height={24} width={24} />
@@ -302,6 +311,7 @@ const Influencers = () => {
                     onClick={() => {
                       window.open(item.sociallinks.instagram);
                       setPlayMarquee(false);
+                      setSelectedInfluencer(item.influencer_url);
                     }}
                   >
                     <Image src="/assets/icons/youtube.svg" alt="I" height={24} width={24} />
@@ -311,6 +321,7 @@ const Influencers = () => {
                     onClick={() => {
                       window.open(item.sociallinks.instagram);
                       setPlayMarquee(false);
+                      setSelectedInfluencer(item.influencer_url);
                     }}
                   >
                     <Image src="/assets/icons/linkedin.svg" alt="I" height={24} width={24} />
@@ -320,6 +331,7 @@ const Influencers = () => {
                     onClick={() => {
                       window.open(item.sociallinks.instagram);
                       setPlayMarquee(false);
+                      setSelectedInfluencer(item.influencer_url);
                     }}
                   >
                     <Image src="/assets/icons/twitter.svg" alt="I" height={24} width={24} />
