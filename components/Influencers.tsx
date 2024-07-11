@@ -162,7 +162,7 @@ const data = [
     },
   },
   {
-    influencer_url: "/assets/influencers/prabhjot.webp",
+    influencer_url: "/assets/influencers/Prabhjot.webp",
     name: "Prabhjot Singh",
     tagname: "prabhjot.speaks",
     category: "Infotainment",
