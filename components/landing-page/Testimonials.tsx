@@ -1,6 +1,6 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
-import Title from "./ui/Title";
+import Title from "../ui/Title";
 import Image from "next/image";
 import { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";

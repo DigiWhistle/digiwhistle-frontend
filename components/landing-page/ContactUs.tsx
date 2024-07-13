@@ -2,9 +2,9 @@ import { EnvelopeIcon, GlobeAltIcon, MapPinIcon, PhoneIcon } from "@heroicons/re
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ContactForm, { PersonType } from "./ui/contact-form";
+import ContactForm, { PersonType } from "../ui/contact-form";
 
 const logosvg = "./assets/navbar/logo.svg";
 

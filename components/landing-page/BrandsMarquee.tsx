@@ -146,13 +146,11 @@ const halfIndex = Math.ceil(brandImages.length / 2);
 const firstHalf = brandImages.slice(0, halfIndex);
 const secondHalf = brandImages.slice(halfIndex);
 
-console.log(brandImages.length, firstHalf.length);
-
 const BrandsMarquee = () => {
   return (
     <div className="my-10 space-y-8 w-full h-full overflow-hidden">
       <Marquee pauseOnHover pauseOnClick gradient>
-        {brandImages.map((brand, index) => (
+        {firstHalf.map((brand, index) => (
           <Image
             key={index}
             src={brand.url}
@@ -165,7 +163,7 @@ const BrandsMarquee = () => {
         ))}
       </Marquee>
       <Marquee pauseOnHover pauseOnClick gradient direction="right">
-        {brandImages.map((brand, index) => (
+        {secondHalf.map((brand, index) => (
           <Image
             key={index}
             src={brand.url}

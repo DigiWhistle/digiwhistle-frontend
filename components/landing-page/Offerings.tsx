@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import Title from "./ui/Title";
+import Title from "../ui/Title";
 
 const OfferingsArray = [
   {

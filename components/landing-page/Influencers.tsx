@@ -1,8 +1,8 @@
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
-import { Button } from "./ui/button";
-import Title from "./ui/Title";
+import { Button } from "../ui/button";
+import Title from "../ui/Title";
 import { cn } from "@/lib/utils";
 const data = [
   {
