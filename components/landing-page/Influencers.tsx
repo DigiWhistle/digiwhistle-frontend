@@ -255,7 +255,6 @@ const Influencers = () => {
     }
   };
 
-  console.log(selectedInfluencer);
   return (
     <>
       <section
