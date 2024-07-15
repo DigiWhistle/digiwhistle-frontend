@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ContactForm, { PersonType } from "../ui/contact-form";
+import ContactForm, { PersonType } from "./contact-form";
 
 const logosvg = "./assets/navbar/logo.svg";
 

@@ -14,15 +14,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import FormTextInput from "./form-text-input";
-import { Textarea } from "./textarea";
+import FormTextInput from "../ui/form/form-text-input";
+import { Textarea } from "../ui/textarea";
 import {
   DevicePhoneMobileIcon,
   EnvelopeIcon,
   LinkIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import { Checkbox } from "./checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { postRequest } from "@/lib/config/axios";
 
 export enum PersonType {

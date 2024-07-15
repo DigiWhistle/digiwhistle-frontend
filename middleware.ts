@@ -21,7 +21,6 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/login" ||
     request.nextUrl.pathname === "/reset-password"
   ) {
-    // Clearing the userToken and companyId cookies when /sign-up, /login & /reset-password routes are called
     response = NextResponse.next();
 
     response.cookies.delete("userToken");

@@ -52,11 +52,13 @@ const FormTextInput = ({
               {required && <span className="text-destructive">*</span>}
             </FormLabel>
             <div>
-              <FormControl className="self-end">
+              <FormControl className="">
                 <div className="relative flex items-center  border border-gray-300 rounded-full">
-                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    {leftIcon}
-                  </div>
+                  {leftIcon && (
+                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      {leftIcon}
+                    </div>
+                  )}
                   <Input
                     type={type ?? "text"}
                     placeholder={placeholder}
@@ -64,7 +66,9 @@ const FormTextInput = ({
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     className={cn(
-                      "ps-10 border-none placeholder:text-muted-foreground bg-white ",
+                      " border-none placeholder:text-muted-foreground bg-white ",
+                      leftIcon ? "ps-10" : null,
+                      rightIcon ? "pe-10" : null,
                       inputCN,
                     )}
                     onChange={e => {
