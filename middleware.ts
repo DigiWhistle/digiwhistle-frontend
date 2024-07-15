@@ -1,11 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 function shouldSkipRequest(pathname: string) {
-  const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", "/icon.ico"];
+  const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", ".ico"];
   let shouldSkip = false;
 
   shouldSkip = prefixes.some(prefix => pathname.startsWith(prefix));
-  if (pathname === "/") {
+  console.log(pathname, shouldSkip);
+  if (pathname === "/" || pathname.match(/\.(png|webp|ico)$/)) {
     shouldSkip = true;
   }
   return shouldSkip;
@@ -26,7 +27,7 @@ export function middleware(request: NextRequest) {
     response.cookies.delete("userToken");
   } else {
     if (!request.cookies.has("userToken")) {
-      response = NextResponse.redirect(new URL("/login", request.url));
+      response = NextResponse.redirect(new URL("/sign-up", request.url));
     } else {
       response = NextResponse.next();
     }
@@ -37,7 +38,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|.*\\.png$).*)",
+    "/((?!api|_next/static|_next/image|.*\\.svg$|.*\\.webp$|.*\\.png$).*)",
     "//_next|/assets|/brand|/favicon.ico/|/icon.ico",
   ],
 };

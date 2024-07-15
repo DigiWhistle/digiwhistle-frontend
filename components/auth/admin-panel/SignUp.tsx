@@ -27,19 +27,20 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
+import { Button } from "@/components/ui/button";
 
-const signUpSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().optional(),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z
-    .string()
-    .min(8, "Confirm Password must be at least 8 characters")
-    .refine((value, context) => value === context.parent.password, {
-      message: "Passwords do not match",
-    }),
-});
+const signUpSchema = z
+  .object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().optional(),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const PanelSignUp = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
@@ -106,6 +107,10 @@ const PanelSignUp = ({ className }: { className?: string }) => {
                 triggerOnInput
               />
             </div>
+            <hr className="w-full" />
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
           </form>
         </Form>
       </CardContent>
