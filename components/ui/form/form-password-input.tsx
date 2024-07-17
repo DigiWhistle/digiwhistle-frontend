@@ -53,7 +53,7 @@ const FormPasswordInput = ({
       control={control}
       name={formName}
       render={({ field }) => (
-        <FormItem className={cn("w-full  flex flex-col justify-between ")}>
+        <FormItem className={cn("w-full  flex flex-col ")}>
           <div className="flex gap-2 justify-between">
             <FormLabel className="text-sm font-medium text-black ">
               {label}

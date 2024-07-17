@@ -50,12 +50,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp className={clsx(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
         {loading ? (
           <>
-            <span className="loading loading-spinner loading-sm"></span>
+            <span className="loading loading-spinner loading-sm "></span>
           </>
         ) : (
-          ""
+          props.children
         )}
-        {props.children}
       </Comp>
     );
   },

@@ -222,6 +222,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             type="submit"
             className="w-full disabled:text-black"
             disabled={form.formState.isSubmitting}
+            loading={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? "Thank you!" : "Send"}
           </Button>

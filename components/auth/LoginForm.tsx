@@ -21,7 +21,15 @@ const LoginSchema = z.object({
 const LoginForm = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
 
-  const handleLogin = () => {};
+  const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
+    try {
+      //   await postRequest("login", data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      form.reset();
+    }
+  };
 
   return (
     <Card className={className}>
@@ -61,7 +69,12 @@ const LoginForm = ({ className }: { className?: string }) => {
               </div>
             </div>
             <hr className="w-full" />
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              loading={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting}
+            >
               Login
             </Button>
           </form>

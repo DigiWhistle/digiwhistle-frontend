@@ -12,6 +12,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
+import { postRequest } from "@/lib/config/axios";
 
 const signUpSchema = z
   .object({
@@ -20,6 +21,13 @@ const signUpSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
+    mobileNumber: z
+      .number()
+      .int()
+      .positive()
+      .refine(value => value.toString().length === 10, {
+        message: "Mobile number must be a 10-digit number",
+      }),
   })
   .refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -29,7 +37,15 @@ const signUpSchema = z
 const PanelSignUp = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
 
-  const handleSignUp = () => {};
+  const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
+    try {
+      // await postRequest("signup", data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      form.reset();
+    }
+  };
 
   return (
     <Card className={className}>
@@ -98,16 +114,22 @@ const PanelSignUp = ({ className }: { className?: string }) => {
                   />
                 </div>
                 <FormTextInput
-                  formName="confirmPassword"
+                  formName="mobileNumber"
                   label="Enter Mobile Number"
                   placeholder="Enter number"
                   required
+                  type="number"
                   leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
                 />
               </div>
             </div>
             <hr className="w-full" />
-            <Button type="submit" className="w-full" loading>
+            <Button
+              type="submit"
+              className="w-full"
+              loading={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting}
+            >
               Sign Up
             </Button>
           </form>

@@ -19,7 +19,7 @@ interface IFormTextInputProps {
   disabled?: boolean;
   formDescription?: string;
   defaultValue?: string;
-  type?: "text" | "number" | "password";
+  type?: "text" | "number";
   className?: ClassValue[];
   inputCN?: ClassValue[];
   leftIcon?: React.ReactNode;
@@ -45,7 +45,7 @@ const FormTextInput = ({
       control={control}
       name={formName}
       render={({ field }) => (
-        <FormItem className={cn("w-full  flex flex-col justify-between ", className)}>
+        <FormItem className={cn("w-full  flex flex-col ", className)}>
           <div className="space-y-1">
             <FormLabel className="text-sm font-medium text-black ">
               {label}
