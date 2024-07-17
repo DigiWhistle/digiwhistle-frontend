@@ -1,30 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import React from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
@@ -62,7 +46,7 @@ const PanelSignUp = ({ className }: { className?: string }) => {
         <Form {...form}>
           <form
             action=""
-            className="flex flex-col gap-4 items-center w-full"
+            className="flex flex-col gap-6 items-center w-full"
             onSubmit={form.handleSubmit(handleSignUp)}
           >
             <FormRadioGroup
@@ -74,38 +58,44 @@ const PanelSignUp = ({ className }: { className?: string }) => {
               ]}
             />
             <hr className="w-full" />
-            <div className="flex gap-3  w-full">
-              <FormTextInput
-                formName="firstName"
-                label="First Name"
-                placeholder="Enter first name"
-                required
-              />
-              <FormTextInput formName="lastName" label="Last Name" placeholder="Enter last name" />
-            </div>
-            <div className="w-full space-y-4">
-              <FormTextInput
-                formName="email"
-                label="Email"
-                placeholder="Enter email"
-                required
-                leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
-              />
-              <FormPasswordInput
-                formName="password"
-                label="Password"
-                placeholder="Enter password"
-                required
-                leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-              />
-              <FormPasswordInput
-                formName="confirmPassword"
-                label="Confirm Password"
-                placeholder="Enter password"
-                required
-                leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                triggerOnInput
-              />
+            <div className="flex flex-col w-full gap-4 ">
+              <div className="flex gap-3  w-full">
+                <FormTextInput
+                  formName="firstName"
+                  label="First Name"
+                  placeholder="Enter first name"
+                  required
+                />
+                <FormTextInput
+                  formName="lastName"
+                  label="Last Name"
+                  placeholder="Enter last name"
+                />
+              </div>
+              <div className="w-full space-y-4">
+                <FormTextInput
+                  formName="email"
+                  label="Email"
+                  placeholder="Enter email"
+                  required
+                  leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
+                />
+                <FormPasswordInput
+                  formName="password"
+                  label="Password"
+                  placeholder="Enter password"
+                  required
+                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                />
+                <FormPasswordInput
+                  formName="confirmPassword"
+                  label="Confirm Password"
+                  placeholder="Enter password"
+                  required
+                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                  triggerOnInput
+                />
+              </div>
             </div>
             <hr className="w-full" />
             <Button type="submit" className="w-full">
