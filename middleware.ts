@@ -23,11 +23,17 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/reset-password"
   ) {
     response = NextResponse.next();
-
     response.cookies.delete("userToken");
+  } else if (request.nextUrl.pathname.startsWith("admin")) {
+    // if (
+    //   typeof request.cookies.get("role") === "string" &&
+    //   ![("admin", "employee")].includes(request.cookies.get("role"))
+    // ) {
+    //   response = NextResponse.rewrite(new URL("/not-allowed", request.url));
+    // }
   } else {
     if (!request.cookies.has("userToken")) {
-      response = NextResponse.redirect(new URL("/sign-up", request.url));
+      response = NextResponse.rewrite(new URL("/login", request.url));
     } else {
       response = NextResponse.next();
     }

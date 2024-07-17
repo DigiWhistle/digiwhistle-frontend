@@ -40,13 +40,23 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, loading = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp className={clsx(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp className={clsx(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+        {loading ? (
+          <>
+            <span className="loading loading-spinner loading-sm"></span>
+          </>
+        ) : (
+          ""
+        )}
+        {props.children}
+      </Comp>
     );
   },
 );

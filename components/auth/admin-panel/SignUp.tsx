@@ -50,7 +50,7 @@ const PanelSignUp = ({ className }: { className?: string }) => {
             onSubmit={form.handleSubmit(handleSignUp)}
           >
             <FormRadioGroup
-              formName="lastName"
+              formName="role"
               label="Select your role"
               radioOptions={[
                 { label: "Admin", value: "admin" },
@@ -80,26 +80,35 @@ const PanelSignUp = ({ className }: { className?: string }) => {
                   required
                   leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <FormPasswordInput
-                  formName="password"
-                  label="Password"
-                  placeholder="Enter password"
-                  required
-                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                />
-                <FormPasswordInput
+                <div className="flex gap-3">
+                  <FormPasswordInput
+                    formName="password"
+                    label="Password"
+                    placeholder="Enter password"
+                    required
+                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                  />
+                  <FormPasswordInput
+                    formName="confirmPassword"
+                    label="Confirm Password"
+                    placeholder="Enter password"
+                    required
+                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                    triggerOnInput
+                  />
+                </div>
+                <FormTextInput
                   formName="confirmPassword"
-                  label="Confirm Password"
-                  placeholder="Enter password"
+                  label="Enter Mobile Number"
+                  placeholder="Enter number"
                   required
                   leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                  triggerOnInput
                 />
               </div>
             </div>
             <hr className="w-full" />
-            <Button type="submit" className="w-full">
-              Submit
+            <Button type="submit" className="w-full" loading>
+              Sign Up
             </Button>
           </form>
         </Form>
