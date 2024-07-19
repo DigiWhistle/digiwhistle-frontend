@@ -22,6 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/lib/config/firebase";
 
 const signUpSchema = z
   .object({
@@ -56,6 +58,16 @@ const PanelSignUp = ({ className }: { className?: string }) => {
       console.log(error);
     } finally {
       form.reset();
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const response = await signInWithPopup(auth, provider);
+      console.log(response);
+    } catch (error) {
+      // setError(error.message);
     }
   };
 
@@ -165,6 +177,9 @@ const PanelSignUp = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
+        <Button className="w-full " onClick={() => handleGoogleSignUp()}>
+          Sign up with Google ID
+        </Button>
       </CardContent>
     </Card>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${raleway.variable} font-sans flex flex-col w-full h-full`}
       >
         <ReduxProvider>{children}</ReduxProvider>
+        <Toaster />
       </body>
     </html>
   );

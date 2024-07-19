@@ -9,12 +9,14 @@ import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import FormTextInput from "@/components/ui/form/form-text-input";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { postRequest } from "@/lib/config/axios";
+import { cn } from "@/lib/utils";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,6 +30,7 @@ const OtpSchema = z.object({
 const LoginForm = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [showOtpInput, setShowOtpInput] = useState(false);
+  const [showMobileInput, setShowMobileInput] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
   const otpForm = useForm<z.infer<typeof OtpSchema>>({ resolver: zodResolver(OtpSchema) });
@@ -112,28 +115,59 @@ const LoginForm = ({ className }: { className?: string }) => {
           <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
         </div>
-        {showOtpInput && (
+        {showMobileInput && (
           <Form {...form}>
             <form
               className="flex flex-col gap-6 items-center w-full"
               onSubmit={form.handleSubmit(handleOtpLogin)}
             >
-              <div className="flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
+              <div
+                className="relative flex flex-col w-full"
+                data-aos="zoom-in"
+                data-aos-delay={300}
+              >
+                <button
+                  type="button"
+                  className={cn(
+                    "absolute flex gap-1 items-center text-sm  self-end mt-1 disabled:cursor-not-allowed",
+                    showOtpInput ? "text-success" : "underline",
+                  )}
+                  disabled={showOtpInput}
+                  onClick={() => {
+                    setShowOtpInput(true);
+                  }}
+                >
+                  {showOtpInput ? "Sent" : "Send OTP"}
+                  {showOtpInput && <CheckCircleIcon className=" w-4 h-4" />}
+                </button>
                 <FormTextInput
-                  formName="otp"
-                  label="Enter OTP"
-                  placeholder="Enter OTP"
+                  formName="mobileNumber"
+                  label="Mobile Number"
+                  placeholder="Enter Number"
                   required
                   leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <button className="text-sm underline self-end mt-1">resend OTP</button>
               </div>
+              {showOtpInput && (
+                <div className="flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
+                  <FormTextInput
+                    formName="otp"
+                    label="Enter OTP"
+                    placeholder="Enter OTP"
+                    required
+                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                  />
+                  <button className="text-sm underline self-end mt-1" type="button">
+                    resend OTP
+                  </button>
+                </div>
+              )}
               <Button className="w-full ">Login using OTP on Whatsapp</Button>
             </form>
           </Form>
         )}
-        {!showOtpInput && (
-          <Button className="w-full " onClick={() => setShowOtpInput(true)}>
+        {!showMobileInput && (
+          <Button className="w-full " onClick={() => setShowMobileInput(true)}>
             Login using OTP on Whatsapp
           </Button>
         )}
