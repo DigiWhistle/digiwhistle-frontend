@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { postRequest } from "@/lib/config/axios";
 import { cn } from "@/lib/utils";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/lib/config/firebase";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -53,6 +55,16 @@ const LoginForm = ({ className }: { className?: string }) => {
       console.log(error);
     } finally {
       form.reset();
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const response = await signInWithPopup(auth, provider);
+      console.log(response);
+    } catch (error) {
+      // setError(error.message);
     }
   };
 
@@ -110,7 +122,9 @@ const LoginForm = ({ className }: { className?: string }) => {
             </Button>
           </form>
         </Form>
-        <Button className="w-full ">Login with Google ID</Button>
+        <Button className="w-full " onClick={() => handleGoogleSignUp()}>
+          Login with Google ID
+        </Button>
         <div className="relative inline-flex items-center justify-center w-full">
           <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
