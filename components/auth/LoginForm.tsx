@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { z } from "zod";
@@ -12,18 +12,40 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { postRequest } from "@/lib/config/axios";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+const OtpSchema = z.object({
+  otp: z.number(),
+});
+
 const LoginForm = ({ className }: { className?: string }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [showOtpInput, setShowOtpInput] = useState(false);
+
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
+  const otpForm = useForm<z.infer<typeof OtpSchema>>({ resolver: zodResolver(OtpSchema) });
 
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
-      //   await postRequest("login", data);
+      // const response = await postRequest("login", data);
+      //  dispatch(setUser(response));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      form.reset();
+    }
+  };
+  const handleOtpLogin = async (data: z.infer<typeof LoginSchema>) => {
+    try {
+      // const response = await postRequest("login", data);
+      //  dispatch(setUser(response));
     } catch (error) {
       console.log(error);
     } finally {
@@ -34,15 +56,15 @@ const LoginForm = ({ className }: { className?: string }) => {
   return (
     <Card className={className}>
       <CardHeader className="space-y-3">
-        <CardTitle className="text-display-s">Log In</CardTitle>
+        <CardTitle className="text-display-xs">Log In</CardTitle>
         <CardDescription className="text-body-lg-medium">
           Already a user ?{" "}
-          <Link href={"/login"} className="underline text-link">
+          <Link href={"/sign-up"} className="underline text-link">
             Signup here
           </Link>
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-3">
         <Form {...form}>
           <form
             action=""
@@ -59,26 +81,62 @@ const LoginForm = ({ className }: { className?: string }) => {
                   required
                   leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <FormPasswordInput
-                  formName="password"
-                  label="Password"
-                  placeholder="Enter password"
-                  required
-                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                />
+                <div className="flex flex-col w-full">
+                  <FormPasswordInput
+                    formName="password"
+                    label="Password"
+                    placeholder="Enter password"
+                    required
+                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                  />
+                  <a href="/reset-password" className=" self-end mt-1">
+                    <button type="button" className="text-sm underline">
+                      Forgot Password?
+                    </button>
+                  </a>
+                </div>
               </div>
             </div>
-            <hr className="w-full" />
             <Button
               type="submit"
               className="w-full"
               loading={form.formState.isSubmitting}
               disabled={form.formState.isSubmitting}
             >
-              Login
+              Login using email id
             </Button>
           </form>
         </Form>
+        <Button className="w-full ">Login with Google ID</Button>
+        <div className="relative inline-flex items-center justify-center w-full">
+          <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
+          <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
+        </div>
+        {showOtpInput && (
+          <Form {...form}>
+            <form
+              className="flex flex-col gap-6 items-center w-full"
+              onSubmit={form.handleSubmit(handleOtpLogin)}
+            >
+              <div className="flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
+                <FormTextInput
+                  formName="otp"
+                  label="Enter OTP"
+                  placeholder="Enter OTP"
+                  required
+                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                />
+                <button className="text-sm underline self-end mt-1">resend OTP</button>
+              </div>
+              <Button className="w-full ">Login using OTP on Whatsapp</Button>
+            </form>
+          </Form>
+        )}
+        {!showOtpInput && (
+          <Button className="w-full " onClick={() => setShowOtpInput(true)}>
+            Login using OTP on Whatsapp
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

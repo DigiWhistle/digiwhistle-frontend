@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
+import ReduxProvider from "./ReduxProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${raleway.variable} font-sans flex flex-col w-full h-full`}
       >
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );
