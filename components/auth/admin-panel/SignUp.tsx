@@ -25,8 +25,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
 
+enum Role {
+  Admin = "admin",
+  Employee = "employee",
+}
+
 const signUpSchema = z
   .object({
+    role: z.nativeEnum(Role),
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().optional(),
     email: z.string().email("Invalid email address"),

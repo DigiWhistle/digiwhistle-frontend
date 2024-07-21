@@ -47,7 +47,7 @@ const LoginForm = ({ className }: { className?: string }) => {
       form.reset();
     }
   };
-  const handleOtpLogin = async (data: z.infer<typeof LoginSchema>) => {
+  const handleOtpLogin = async (data: z.infer<typeof OtpSchema>) => {
     try {
       // const response = await postRequest("login", data);
       //  dispatch(setUser(response));
@@ -130,10 +130,10 @@ const LoginForm = ({ className }: { className?: string }) => {
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
         </div>
         {showMobileInput && (
-          <Form {...form}>
+          <Form {...otpForm}>
             <form
               className="flex flex-col gap-6 items-center w-full"
-              onSubmit={form.handleSubmit(handleOtpLogin)}
+              onSubmit={otpForm.handleSubmit(handleOtpLogin)}
             >
               <div
                 className="relative flex flex-col w-full"
