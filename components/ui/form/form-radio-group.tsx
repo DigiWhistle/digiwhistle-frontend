@@ -26,6 +26,7 @@ interface IFormRadioGroupProps {
   formDescription?: string;
   defaultValue?: string;
   className?: ClassValue[];
+  triggerOnChange?: boolean;
 }
 const FormRadioGroup = ({
   formName,
@@ -37,8 +38,9 @@ const FormRadioGroup = ({
   formDescription,
   defaultValue,
   className,
+  triggerOnChange = false,
 }: IFormRadioGroupProps) => {
-  const { control } = useFormContext();
+  const { control, trigger } = useFormContext();
   return (
     <FormField
       control={control}
@@ -53,7 +55,10 @@ const FormRadioGroup = ({
             <div>
               <FormControl className="self-end">
                 <RadioGroup
-                  onValueChange={field.onChange}
+                  onValueChange={value => {
+                    field.onChange(value);
+                    triggerOnChange && trigger(formName);
+                  }}
                   defaultValue={field.value || defaultValue}
                   className={cn("flex flex-wrap gap-3", groupCN)}
                   disabled={disabled}

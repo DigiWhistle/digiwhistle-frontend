@@ -22,8 +22,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
+import { toast } from "sonner";
 
 enum Role {
   Admin = "admin",
@@ -54,26 +60,52 @@ const signUpSchema = z
     path: ["confirmPassword"],
   });
 
-const PanelSignUp = ({ className }: { className?: string }) => {
+const AdminSignUp = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
 
   const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
     try {
-      // await postRequest("signup", data);
-    } catch (error) {
-      console.log(error);
+      const response: any = await createUserWithEmailAndPassword(auth, data.email, data.password);
+
+      const userDetails = {
+        idToken: response._tokenResponse.idToken,
+        role: form.getValues("role"),
+      };
+
+      const result = await postRequest("auth/signup", userDetails);
+
+      toast.success(result.message);
+      toast.info("Please wait for admin approval");
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       form.reset();
     }
   };
-
+  form.watch("role");
   const handleGoogleSignUp = async () => {
+    if (!form.getValues("role")) {
+      form.setError("role", { message: "Select the role" }, { shouldFocus: true });
+      toast.error("Select a Role first");
+      return;
+    }
+
     const provider = new GoogleAuthProvider();
     try {
-      const response = await signInWithPopup(auth, provider);
-      console.log(response);
-    } catch (error) {
-      // setError(error.message);
+      const response: any = await signInWithPopup(auth, provider);
+      const data = {
+        idToken: response._tokenResponse.idToken,
+        role: form.getValues("role"),
+      };
+
+      const result = await postRequest("auth/signup", data);
+
+      toast.success(result.message);
+      toast.info("Please wait for admin approval");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      form.reset();
     }
   };
 
@@ -102,6 +134,7 @@ const PanelSignUp = ({ className }: { className?: string }) => {
                 { label: "Admin", value: "admin" },
                 { label: "Employee", value: "employee" },
               ]}
+              triggerOnChange
             />
             <hr className="w-full" />
             <div className="flex flex-col w-full gap-4 ">
@@ -183,7 +216,7 @@ const PanelSignUp = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-        <Button className="w-full " onClick={() => handleGoogleSignUp()}>
+        <Button className="w-full mt-4" onClick={() => handleGoogleSignUp()}>
           Sign up with Google ID
         </Button>
       </CardContent>
@@ -191,4 +224,4 @@ const PanelSignUp = ({ className }: { className?: string }) => {
   );
 };
 
-export default PanelSignUp;
+export default AdminSignUp;

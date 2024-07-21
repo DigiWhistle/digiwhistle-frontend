@@ -17,54 +17,51 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { postRequest } from "@/lib/config/axios";
 import { cn } from "@/lib/utils";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
+import { toast } from "sonner";
+import OTPLogin from "./OTPLogin";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const OtpSchema = z.object({
-  otp: z.number(),
-});
-
 const LoginForm = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const [showMobileInput, setShowMobileInput] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
-  const otpForm = useForm<z.infer<typeof OtpSchema>>({ resolver: zodResolver(OtpSchema) });
 
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
-      // const response = await postRequest("login", data);
+      const response: any = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const googleData = {
+        idToken: response._tokenResponse.idToken,
+      };
+
+      const result = await postRequest("auth/login", googleData);
+      toast.success(result.message);
+
       //  dispatch(setUser(response));
-    } catch (error) {
-      console.log(error);
-    } finally {
-      form.reset();
-    }
-  };
-  const handleOtpLogin = async (data: z.infer<typeof OtpSchema>) => {
-    try {
-      // const response = await postRequest("login", data);
-      //  dispatch(setUser(response));
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       form.reset();
     }
   };
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleLogIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const response = await signInWithPopup(auth, provider);
-      console.log(response);
-    } catch (error) {
-      // setError(error.message);
+      const response: any = await signInWithPopup(auth, provider);
+      const data = {
+        idToken: response._tokenResponse.idToken,
+      };
+
+      const result = await postRequest("auth/login", data);
+      toast.success(result.message);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -122,70 +119,15 @@ const LoginForm = ({ className }: { className?: string }) => {
             </Button>
           </form>
         </Form>
-        <Button className="w-full " onClick={() => handleGoogleSignUp()}>
+        <Button className="w-full " onClick={() => handleGoogleLogIn()}>
           Login with Google ID
         </Button>
         <div className="relative inline-flex items-center justify-center w-full">
           <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
         </div>
-        {showMobileInput && (
-          <Form {...otpForm}>
-            <form
-              className="flex flex-col gap-6 items-center w-full"
-              onSubmit={otpForm.handleSubmit(handleOtpLogin)}
-            >
-              <div
-                className="relative flex flex-col w-full"
-                data-aos="zoom-in"
-                data-aos-delay={300}
-              >
-                <button
-                  type="button"
-                  className={cn(
-                    "absolute flex gap-1 items-center text-sm  self-end mt-1 disabled:cursor-not-allowed",
-                    showOtpInput ? "text-success" : "underline",
-                  )}
-                  disabled={showOtpInput}
-                  onClick={() => {
-                    setShowOtpInput(true);
-                  }}
-                >
-                  {showOtpInput ? "Sent" : "Send OTP"}
-                  {showOtpInput && <CheckCircleIcon className=" w-4 h-4" />}
-                </button>
-                <FormTextInput
-                  formName="mobileNumber"
-                  label="Mobile Number"
-                  placeholder="Enter Number"
-                  required
-                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                />
-              </div>
-              {showOtpInput && (
-                <div className="flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
-                  <FormTextInput
-                    formName="otp"
-                    label="Enter OTP"
-                    placeholder="Enter OTP"
-                    required
-                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                  />
-                  <button className="text-sm underline self-end mt-1" type="button">
-                    resend OTP
-                  </button>
-                </div>
-              )}
-              <Button className="w-full ">Login using OTP on Whatsapp</Button>
-            </form>
-          </Form>
-        )}
-        {!showMobileInput && (
-          <Button className="w-full " onClick={() => setShowMobileInput(true)}>
-            Login using OTP on Whatsapp
-          </Button>
-        )}
       </CardContent>
+      <OTPLogin />
     </Card>
   );
 };
