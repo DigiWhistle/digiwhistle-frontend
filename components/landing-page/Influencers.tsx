@@ -1,9 +1,11 @@
+"use client";
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Title from "../ui/Title";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 const data = [
   {
     influencer_url: "/assets/influencers/neha.webp",
@@ -340,9 +342,11 @@ const Influencers = () => {
             </div>
           ))}
         </Marquee>
-        <Button className="md:w-[352px] w-[280px]" size={"xl"}>
-          EXPLORE MORE TALENTS
-        </Button>
+        <Link href={"/sign-up"}>
+          <Button className="md:w-[352px] w-[280px]" size={"xl"}>
+            EXPLORE MORE TALENTS
+          </Button>
+        </Link>
       </section>
     </>
   );

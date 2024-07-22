@@ -4,6 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import Link from "next/link";
 const logosvg = "./assets/navbar/logo.svg";
 const bars = "./assets/navbar/bars.svg";
 const phone = "./assets/navbar/phone.svg";
@@ -73,7 +74,9 @@ const Navbar = () => {
             <Button variant={"secondary"} onClick={() => handleScroll("#contact-us")}>
               Contact Us
             </Button>
-            <Button>Login/ Signup</Button>
+            <Link href={"/sign-up"}>
+              <Button>Login/ Signup</Button>
+            </Link>
           </div>
           <div className=" flex  md:hidden justify-between items-center space-x-3">
             <Button

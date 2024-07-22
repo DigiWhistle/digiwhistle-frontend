@@ -86,7 +86,7 @@ const OTPLogin = () => {
         className="flex flex-col gap-6 items-center w-full"
         onSubmit={form.handleSubmit(handleOtpLogin)}
       >
-        <div className="relative flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
+        <div className="relative flex flex-col w-full">
           <button
             type="button"
             className={cn(
@@ -109,7 +109,12 @@ const OTPLogin = () => {
           />
         </div>
         {showOtpInput && (
-          <div className="flex flex-col w-full" data-aos="zoom-in" data-aos-delay={300}>
+          <div
+            className="flex flex-col w-full"
+            data-aos="zoom-in"
+            data-aos-easing="linear"
+            data-aos-duration="100"
+          >
             <FormTextInput
               formName="otp"
               label="Enter OTP"

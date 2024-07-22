@@ -13,7 +13,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { postRequest } from "@/lib/config/axios";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
 import OTPLogin from "./OTPLogin";
+import { User, setUser } from "@/store/UserSlice";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -29,9 +30,11 @@ const LoginSchema = z.object({
 
 const LoginForm = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(User);
 
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
 
+  console.log("Current User:", user);
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
       const response: any = await signInWithEmailAndPassword(auth, data.email, data.password);
@@ -42,7 +45,7 @@ const LoginForm = ({ className }: { className?: string }) => {
       const result = await postRequest("auth/login", googleData);
       toast.success(result.message);
 
-      //  dispatch(setUser(response));
+      dispatch(setUser(result.data.user));
     } catch (error: any) {
       toast.error(error.message);
     } finally {

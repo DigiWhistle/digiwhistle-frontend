@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import useScreenSize from "@/hooks/useScreenSize";
+import Link from "next/link";
 
 const firstColorGradientOne = "255, 18, 220";
 const secondColorGradientOne = "255, 185, 18";
@@ -84,10 +85,16 @@ const Hero = () => {
 
         {screenSize.width > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5 min-w-48 mb-20">
-            <Button size={screenSize.width < 768 ? "sm" : "xl"}>I AM BRAND</Button>
-            <Button size={screenSize.width < 768 ? "sm" : "xl"} className="!px-10">
-              I AM INFLUENCER
-            </Button>
+            <Link href="/sign-up?role=brand" className="w-full">
+              <Button size={screenSize.width < 768 ? "sm" : "xl"} className="w-full">
+                I AM BRAND
+              </Button>
+            </Link>
+            <Link href="/sign-up?role=influencer" className="w-full">
+              <Button size={screenSize.width < 768 ? "sm" : "xl"} className="!px-10">
+                I AM INFLUENCER
+              </Button>
+            </Link>
           </div>
         )}
       </div>

@@ -1,3 +1,4 @@
+"use client";
 import Aos from "aos";
 import React, { useEffect } from "react";
 
@@ -9,7 +10,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       once: true,
     });
   }, []);
-  return <main className="flex min-h-screen flex-col items-center relative">{children}</main>;
+  return <div>{children}</div>;
 };
 
 export default Providers;

@@ -82,7 +82,6 @@ const AdminSignUp = ({ className }: { className?: string }) => {
       form.reset();
     }
   };
-  form.watch("role");
   const handleGoogleSignUp = async () => {
     if (!form.getValues("role")) {
       form.setError("role", { message: "Select the role" }, { shouldFocus: true });

@@ -3,6 +3,7 @@ import { Poppins, Raleway } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./ReduxProvider";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "./Providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${raleway.variable} font-sans flex flex-col w-full h-full `}
       >
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <Providers>{children}</Providers>
+        </ReduxProvider>
         <Toaster
           position="top-center"
           expand={true}
