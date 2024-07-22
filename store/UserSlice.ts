@@ -26,3 +26,4 @@ export const { setUser, clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
 export const User = (state: RootState) => state.user.user;
+export const UserRole = (state: RootState) => (state.user.user ? state.user.user.role : null);

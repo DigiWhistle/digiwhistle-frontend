@@ -21,7 +21,7 @@ import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
 import OTPLogin from "./OTPLogin";
-import { User, setUser } from "@/store/UserSlice";
+import { User, UserRole, setUser } from "@/store/UserSlice";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -31,10 +31,11 @@ const LoginSchema = z.object({
 const LoginForm = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(User);
+  const userRole = useSelector(UserRole);
 
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
 
-  console.log("Current User:", user);
+  console.log("Current User:", user, userRole);
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
       const response: any = await signInWithEmailAndPassword(auth, data.email, data.password);
@@ -45,6 +46,7 @@ const LoginForm = ({ className }: { className?: string }) => {
       const result = await postRequest("auth/login", googleData);
       toast.success(result.message);
 
+      console.log(result.data.user);
       dispatch(setUser(result.data.user));
     } catch (error: any) {
       toast.error(error.message);
@@ -63,6 +65,7 @@ const LoginForm = ({ className }: { className?: string }) => {
 
       const result = await postRequest("auth/login", data);
       toast.success(result.message);
+      dispatch(setUser(result.data.user));
     } catch (error: any) {
       toast.error(error.message);
     }

@@ -1,4 +1,4 @@
-import AdminSignUp from "@/components/auth/admin-panel/SignUp";
+import AdminSignUp from "@/components/auth/admin-panel/AdminSignUp";
 import React from "react";
 
 const page = () => {
