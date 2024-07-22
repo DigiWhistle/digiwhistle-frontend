@@ -66,7 +66,7 @@ const FormRadioGroup = ({
                   {radioOptions.map((option, index) => (
                     <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
                       <FormControl>
-                        <RadioGroupItem value={option.value} id="r1" />
+                        <RadioGroupItem value={option.value} id={option.value} />
                       </FormControl>
                       <FormLabel className="font-normal">{option.label}</FormLabel>
                     </FormItem>

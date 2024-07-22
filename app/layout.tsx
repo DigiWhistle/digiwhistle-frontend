@@ -25,25 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning
         className={`${poppins.variable} ${raleway.variable} font-sans flex flex-col w-full h-full `}
       >
         <ReduxProvider>
           <Providers>{children}</Providers>
         </ReduxProvider>
-        <Toaster
-          position="top-center"
-          expand={true}
-          richColors
-          // toastOptions={{
-          //   // unstyled: true,
-          //   classNames: {
-          //     error: "bg-white text-alert",
-          //     success: "bg-white text-success",
-          //     warning: "bg-white text-warning",
-          //     info: "bg-white text-link",
-          //   },
-          // }}
-        />
+        <Toaster position="top-center" expand={true} richColors />
       </body>
     </html>
   );
