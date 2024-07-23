@@ -13,10 +13,10 @@ const page = () => {
       </div>
       <div className="flex flex-col space-y-5">
         <hr className="w-full" />
-        <Link href={"/sign-up/admin"}>
+        <Link href={"/sign-up/user"}>
           <Button className="w-full">I am Brand/ Influencer/ Agency</Button>
         </Link>
-        <Link href={"/sign-up/user"}>
+        <Link href={"/sign-up/admin"}>
           <Button className="w-full">I am Admin/ Employee</Button>
         </Link>
         {/* <AdminSignUp className="flex flex-col w-full h-full p-0 border-0" /> */}

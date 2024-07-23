@@ -14,7 +14,7 @@ import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "@/lib/config/store";
 import { postRequest } from "@/lib/config/axios";
 import { cn } from "@/lib/utils";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";

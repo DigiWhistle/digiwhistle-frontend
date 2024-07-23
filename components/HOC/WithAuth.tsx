@@ -1,4 +1,4 @@
-import { RootState } from "@/lib/store";
+import { RootState } from "@/lib/config/store";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 

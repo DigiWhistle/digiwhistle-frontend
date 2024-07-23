@@ -1,4 +1,4 @@
-import { RootState } from "@/lib/store";
+import { RootState } from "@/lib/config/store";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 export interface IUser {

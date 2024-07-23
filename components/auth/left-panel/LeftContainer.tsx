@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 const LeftContainer = () => {
   return (
-    <div className="flex flex-col w-full items-center bg-light-purple-511 order-3 lg:order-1   md:px-12 md:pt-12 md:pb-0 p-6">
+    <div className="flex flex-col flex-grow  w-full items-center bg-light-purple-511 order-3 lg:order-1  md:px-12 md:pt-12 md:pb-0 p-6">
       <div className="flex flex-col lg:w-[592px] md:w-[640px]  w-full gap-5">
         <div className="flex flex-col  items-center gap-4">
           <div className=" md:text-display-s text-display-xxs font-heading  ">
