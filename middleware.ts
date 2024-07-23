@@ -4,8 +4,9 @@ function shouldSkipRequest(pathname: string) {
   const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", ".ico"];
   let shouldSkip = false;
 
-  shouldSkip = prefixes.some(prefix => pathname.startsWith(prefix));
-  // console.log(pathname, shouldSkip);
+  shouldSkip = prefixes.some(prefix => pathname.includes(prefix));
+  console.log(pathname, shouldSkip);
+
   if (pathname === "/" || pathname.match(/\.(png|webp|ico)$/)) {
     shouldSkip = true;
   }
@@ -24,19 +25,13 @@ export function middleware(request: NextRequest) {
   ) {
     response = NextResponse.next();
     response.cookies.delete("userToken");
-  } else if (request.nextUrl.pathname.startsWith("admin")) {
-    // if (
-    //   typeof request.cookies.get("role") === "string" &&
-    //   ![("admin", "employee")].includes(request.cookies.get("role"))
-    // ) {
-    //   response = NextResponse.rewrite(new URL("/not-allowed", request.url));
-    // }
   } else {
-    if (!request.cookies.has("userToken")) {
-      response = NextResponse.rewrite(new URL("/login", request.url));
-    } else {
-      response = NextResponse.next();
-    }
+    // if (!request.cookies.has("userToken")) {
+    //   response = NextResponse.rewrite(new URL("/login", request.url));
+    // }
+    // else {
+    response = NextResponse.next();
+    // }
   }
 
   return response;
@@ -44,7 +39,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|.*\\.svg$|.*\\.webp$|.*\\.png$).*)",
+    "/((?!api|_next/static|_next/image|.\\.svg$|.\\.webp$|.\\.png$).)",
     "//_next|/assets|/brand|/favicon.ico/|/icon.ico",
   ],
 };
