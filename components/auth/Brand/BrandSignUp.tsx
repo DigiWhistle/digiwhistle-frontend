@@ -7,7 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { LinkIcon, DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
@@ -26,73 +26,42 @@ import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } f
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
 
-enum Role {
-  Admin = "admin",
-  Employee = "employee",
-}
-
-const signUpSchema = z
-  .object({
-    role: z.nativeEnum(Role),
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().optional(),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
-    mobileNumber: z
-      .number()
-      .int()
-      .positive()
-      .refine(value => value.toString().length === 10, {
-        message: "Mobile number must be a 10-digit number",
-      }),
-    termsCheck: z.boolean().refine(val => val === true, {
-      message: "You must agree to the terms",
+const signUpSchema = z.object({
+  BrandName: z.string().min(1, "First name is required"),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().optional(),
+  BrandWebsiteLink: z
+    .string()
+    .optional()
+    .refine(
+      value => !value || /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})(\/[\w.-]*)*\/?$/.test(value),
+      {
+        message: "Please provide a valid URL",
+      },
+    ),
+  mobileNumber: z
+    .number()
+    .int()
+    .positive()
+    .refine(value => value.toString().length === 10, {
+      message: "Mobile number must be a 10-digit number",
     }),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+  termsCheck: z.boolean().refine(val => val === true, {
+    message: "You must agree to the terms",
+  }),
+});
 
-const AdminSignUp = ({ className }: { className?: string }) => {
+const BrandSignUp = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
 
   const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
     try {
-      const response: any = await createUserWithEmailAndPassword(auth, data.email, data.password);
-
+      const response: any = null;
       const userDetails = {
         idToken: response._tokenResponse.idToken,
-        role: form.getValues("role"),
       };
 
       const result = await postRequest("auth/signup", userDetails);
-
-      toast.success(result.message);
-      toast.info("Please wait for admin approval");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      form.reset();
-    }
-  };
-  const handleGoogleSignUp = async () => {
-    if (!form.getValues("role")) {
-      form.setError("role", { message: "Select the role" }, { shouldFocus: true });
-      toast.error("Select a Role first");
-      return;
-    }
-
-    const provider = new GoogleAuthProvider();
-    try {
-      const response: any = await signInWithPopup(auth, provider);
-      const data = {
-        idToken: response._tokenResponse.idToken,
-        role: form.getValues("role"),
-      };
-
-      const result = await postRequest("auth/signup", data);
 
       toast.success(result.message);
       toast.info("Please wait for admin approval");
@@ -121,67 +90,41 @@ const AdminSignUp = ({ className }: { className?: string }) => {
             className="flex flex-col gap-6 mt-4 items-center w-full"
             onSubmit={form.handleSubmit(handleSignUp)}
           >
-            <FormRadioGroup
-              formName="role"
-              label="Select your role"
-              radioOptions={[
-                { label: "Admin", value: "admin" },
-                { label: "Employee", value: "employee" },
-              ]}
-              triggerOnChange
-            />
-            <hr className="w-full" />
             <div className="flex flex-col w-full gap-4 ">
+              <FormTextInput formName="BrandName" label="Brand Name" placeholder="Brand Name" />
               <div className="flex gap-3  w-full">
                 <FormTextInput
                   formName="firstName"
-                  label="First Name"
+                  label="Brand POC First Name"
                   placeholder="Enter first name"
                   required
                 />
                 <FormTextInput
                   formName="lastName"
-                  label="Last Name"
+                  label="Brand POC Last Name"
                   placeholder="Enter last name"
+                  required
                 />
               </div>
               <div className="w-full space-y-4">
                 <FormTextInput
-                  formName="email"
-                  label="Email"
-                  placeholder="Enter email"
-                  required
-                  leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
+                  formName="BrandWebsiteLink"
+                  label="Brand Website Link"
+                  placeholder="https://www.Brand.com"
+                  leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <div className="flex gap-3">
-                  <FormPasswordInput
-                    formName="password"
-                    label="Password"
-                    placeholder="Enter password"
-                    required
-                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                  />
-                  <FormPasswordInput
-                    formName="confirmPassword"
-                    label="Confirm Password"
-                    placeholder="Enter password"
-                    required
-                    leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                    triggerOnInput
-                  />
-                </div>
                 <FormTextInput
                   formName="mobileNumber"
                   label="Enter Mobile Number"
                   placeholder="Enter number"
                   required
                   type="number"
-                  leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+                  leftIcon={<DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />}
                 />
               </div>
             </div>
             <hr className="w-full" />
-            <div className="w-full space-y-2">
+            <div className="w-full space-y-4">
               <FormField
                 control={form.control}
                 name="termsCheck"
@@ -201,21 +144,18 @@ const AdminSignUp = ({ className }: { className?: string }) => {
               />
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full "
                 loading={form.formState.isSubmitting}
                 disabled={form.formState.isSubmitting}
               >
-                Sign Up
+                Submit signup request for approval
               </Button>
             </div>
           </form>
         </Form>
-        <Button className="w-full mt-4" onClick={() => handleGoogleSignUp()}>
-          Sign up with Google ID
-        </Button>
       </CardContent>
     </Card>
   );
 };
 
-export default AdminSignUp;
+export default BrandSignUp;

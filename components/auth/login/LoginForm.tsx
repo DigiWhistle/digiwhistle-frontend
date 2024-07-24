@@ -38,7 +38,9 @@ const LoginForm = ({ className }: { className?: string }) => {
   console.log("Current User:", user, userRole);
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
+      console.log("called");
       const response: any = await signInWithEmailAndPassword(auth, data.email, data.password);
+      console.log("response", response);
       const googleData = {
         idToken: response._tokenResponse.idToken,
       };

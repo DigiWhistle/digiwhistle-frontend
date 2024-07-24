@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 export interface IUser {
   name: string;
-  role: "admin" | "employee" | "influencer" | "brand";
+  role: "admin" | "employee" | "influencer" | "brand" | "agency";
+  onboarded: boolean;
+  isverified: boolean;
   token: string;
 }
 
