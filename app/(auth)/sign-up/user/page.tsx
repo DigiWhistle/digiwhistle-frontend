@@ -1,8 +1,5 @@
 import React from "react";
-import UserSignUpMain from "@/components/auth/user-panel/UserSignUpMain";
-import InfluencerSignUp from "@/components/auth/influencer/InfluencerSignUp";
-import BrandSignUp from "@/components/auth/Brand/BrandSignUp";
-import AgencySignUp from "@/components/auth/Agency/AgencySignUp";
+import UserSignUpMain from "@/components/auth/sign-up/user-panel/UserSignUpMain";
 const page = () => {
   return <UserSignUpMain />;
 };

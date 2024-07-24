@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import type { AxiosResponse } from "axios";
+import { getCookie } from "cookies-next";
 
 interface AxiosClientConfig {
   baseURL: string;
@@ -8,6 +10,13 @@ interface AxiosClientConfig {
   };
   timeout: number;
   withCredentials: boolean;
+}
+
+export interface ApiResponse<T> {
+  data: T | null;
+  message: string | null;
+  error: string | null;
+  status: number;
 }
 
 const axiosClient = axios.create({
@@ -20,22 +29,173 @@ const axiosClient = axios.create({
   // withCredentials: true,
 } as AxiosClientConfig);
 
-export async function getRequest(URL: string): Promise<any> {
-  const response = await axiosClient.get(`/${URL}`);
-  return response.data;
+function getAuthToken(): string | null {
+  const token = getCookie("authToken") as string | null;
+  if (!token) {
+    console.warn("Auth token not found in cookies");
+  }
+  return token;
 }
 
-export async function postRequest(URL: string, payload: any): Promise<any> {
-  const response = await axiosClient.post(`/${URL}`, payload);
-  return response.data;
+async function handleRequest<T>(
+  requestPromise: Promise<AxiosResponse<T>>,
+  setLoading?: (loading: boolean) => void,
+  customError?: { message: string; status: number },
+): Promise<ApiResponse<T>> {
+  setLoading?.(true);
+  try {
+    if (customError) {
+      throw new Error(customError.message);
+    }
+    const response = await requestPromise;
+    setLoading?.(false);
+    const responseData = response.data as { data: T; message: string };
+
+    return {
+      data: responseData.data,
+      message: responseData.message,
+      error: null,
+      status: response.status,
+    };
+  } catch (error) {
+    setLoading?.(false);
+    if (customError) {
+      return {
+        data: null,
+        message: null,
+        error: customError.message,
+        status: customError.status,
+      };
+    }
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const errorMessage =
+        axiosError.response?.data &&
+        typeof axiosError.response.data === "object" &&
+        "message" in axiosError.response.data
+          ? (axiosError.response.data as { message: string }).message
+          : axiosError.message;
+      return {
+        data: null,
+        message: null,
+        error: errorMessage,
+        status: axiosError.response?.status || 500,
+      };
+    }
+    return {
+      data: null,
+      message: null,
+      error: "An unexpected error occurred",
+      status: 500,
+    };
+  }
 }
 
-export async function patchRequest(URL: string, payload: any): Promise<any> {
-  const response = await axiosClient.patch(`/${URL}`, payload);
-  return response.data;
+export async function getRequest<T>(
+  URL: string,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  return handleRequest<T>(axiosClient.get<T>(`/${URL}`), setLoading);
 }
 
-export async function deleteRequest(URL: string): Promise<any> {
-  const response = await axiosClient.delete(`/${URL}`);
-  return response;
+export async function postRequest<T>(
+  URL: string,
+  payload: any,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  return handleRequest<T>(axiosClient.post<T>(`/${URL}`, payload), setLoading);
+}
+
+export async function patchRequest<T>(
+  URL: string,
+  payload: any,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  return handleRequest<T>(axiosClient.patch<T>(`/${URL}`, payload), setLoading);
+}
+
+export async function deleteRequest<T>(
+  URL: string,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  return handleRequest<T>(axiosClient.delete<T>(`/${URL}`), setLoading);
+}
+
+// Authorized request functions
+export async function getAuthorizedRequest<T>(
+  URL: string,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  const token = getAuthToken();
+  if (!token) {
+    return handleRequest<T>(Promise.reject(), setLoading, {
+      message: "Authorization token not found",
+      status: 401,
+    });
+  }
+  return handleRequest<T>(
+    axiosClient.get<T>(`/${URL}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    setLoading,
+  );
+}
+
+export async function postAuthorizedRequest<T>(
+  URL: string,
+  payload: any,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  const token = getAuthToken();
+  if (!token) {
+    return handleRequest<T>(Promise.reject(), setLoading, {
+      message: "Authorization token not found",
+      status: 401,
+    });
+  }
+  return handleRequest<T>(
+    axiosClient.post<T>(`/${URL}`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    setLoading,
+  );
+}
+
+export async function patchAuthorizedRequest<T>(
+  URL: string,
+  payload: any,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  const token = getAuthToken();
+  if (!token) {
+    return handleRequest<T>(Promise.reject(), setLoading, {
+      message: "Authorization token not found",
+      status: 401,
+    });
+  }
+  return handleRequest<T>(
+    axiosClient.patch<T>(`/${URL}`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    setLoading,
+  );
+}
+
+export async function deleteAuthorizedRequest<T>(
+  URL: string,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  const token = getAuthToken();
+  if (!token) {
+    return handleRequest<T>(Promise.reject(), setLoading, {
+      message: "Authorization token not found",
+      status: 401,
+    });
+  }
+  return handleRequest<T>(
+    axiosClient.delete<T>(`/${URL}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    setLoading,
+  );
 }

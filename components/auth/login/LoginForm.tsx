@@ -21,7 +21,10 @@ import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
 import OTPLogin from "./OTPLogin";
-import { User, UserRole, setUser } from "@/store/UserSlice";
+import { IUser, User, UserRole, setUser } from "@/store/UserSlice";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
+import { ILoginResponse } from "@/types/auth/response-types";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -30,30 +33,28 @@ const LoginSchema = z.object({
 
 const LoginForm = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector(User);
-  const userRole = useSelector(UserRole);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema) });
 
-  console.log("Current User:", user, userRole);
   const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
     try {
-      console.log("called");
       const response: any = await signInWithEmailAndPassword(auth, data.email, data.password);
-      console.log("response", response);
       const googleData = {
         idToken: response._tokenResponse.idToken,
       };
 
-      const result = await postRequest("auth/login", googleData);
-      toast.success(result.message);
+      await handleBackendLogin(googleData);
 
-      console.log(result.data.user);
-      dispatch(setUser(result.data.user));
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
       form.reset();
+    } catch (error: any) {
+      if (error.code === "auth/user-not-found") {
+        toast.error("User not found");
+      } else if (error.code === "auth/invalid-credential") {
+        toast.error("Invalid credentials");
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -61,16 +62,36 @@ const LoginForm = ({ className }: { className?: string }) => {
     const provider = new GoogleAuthProvider();
     try {
       const response: any = await signInWithPopup(auth, provider);
-      const data = {
+      const googleData = {
         idToken: response._tokenResponse.idToken,
       };
 
-      const result = await postRequest("auth/login", data);
-      toast.success(result.message);
-      dispatch(setUser(result.data.user));
+      await handleBackendLogin(googleData);
     } catch (error: any) {
-      toast.error(error.message);
+      if (error.code === "auth/user-not-found") {
+        toast.error("User not found");
+      } else if (error.code === "auth/invalid-credential") {
+        toast.error("Invalid credentials");
+      } else {
+        toast.error(error.message);
+      }
     }
+  };
+
+  const handleBackendLogin = async (googleData: { idToken: string }) => {
+    const result = await postRequest<ILoginResponse>("auth/login", googleData);
+    toast.success(result.message);
+
+    if (result.data) {
+      if (result.data.user.isOnBoarded === false) {
+        router.push("/user/onboarding");
+      }
+      if (result.data.user.isVerified === false) {
+        toast.info("Please wait for admin approval");
+      }
+      setCookie("token", result.data.token);
+      dispatch(setUser(result.data.user));
+    } else if (result.error) toast.error(result.message);
   };
 
   return (

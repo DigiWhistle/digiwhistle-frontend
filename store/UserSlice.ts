@@ -2,10 +2,11 @@ import { RootState } from "@/lib/config/store";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 export interface IUser {
-  name: string;
+  name?: string;
   role: "admin" | "employee" | "influencer" | "brand" | "agency";
-  onboarded: boolean;
-  isverified: boolean;
+  email: string;
+  isOnBoarded: boolean;
+  isVerified: boolean;
   token: string;
 }
 

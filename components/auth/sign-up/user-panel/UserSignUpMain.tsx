@@ -10,7 +10,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
-import { postRequest } from "@/lib/config/axios";
+import { ApiResponse, postRequest } from "@/lib/config/axios";
 import { redirect } from "next/navigation";
 import {
   Form,
@@ -29,6 +29,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { User, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
+import { ISignUpResponse } from "@/types/auth/response-types";
+
 enum Role {
   Influencer = "influencer",
   Brand = "brand",
@@ -50,36 +52,23 @@ const signUpSchema = z
 const UserSignUpMain = ({ className }: { className?: string }) => {
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
   const dispatch = useDispatch();
-  const user = useSelector(User);
   const router = useRouter();
-  console.log("this is the user", user);
 
-  const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
+  const handlePasswordSignUp = async (data: z.infer<typeof signUpSchema>) => {
     try {
       const response: any = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const userDetails = {
+      const googleData = {
         idToken: response._tokenResponse.idToken,
         role: form.getValues("role"),
       };
-      console.log("this is the response", response);
-      const result = await postRequest("auth/signup", userDetails);
-      const user_info = {
-        name: form.getValues("email"),
-        role: form.getValues("role"),
-        onboarded: false,
-        isverified: false,
-        token: result.data.id,
-      };
-      dispatch(setUser(user_info));
-      router.push("/sign-up/user/user-verification");
-      console.log("this is the result", result);
-      toast.success(result.message);
-      toast.info("Please wait for admin approval");
+
+      await handleBackendSignUp(googleData);
     } catch (error: any) {
-      console.log("this is the error", error);
-      toast.error(error.message);
-    } finally {
-      form.reset();
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("User already exists with this email. Please sign in");
+      } else {
+        toast.error(error.message);
+      }
     }
   };
   const handleGoogleSignUp = async () => {
@@ -92,26 +81,38 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
     const provider = new GoogleAuthProvider();
     try {
       const response: any = await signInWithPopup(auth, provider);
-      const data = {
+      const googleData = {
         idToken: response._tokenResponse.idToken,
         role: form.getValues("role"),
       };
 
-      const result = await postRequest("auth/signup", data);
+      await handleBackendSignUp(googleData);
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("User already exists with this email. Please sign in");
+      } else {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const handleBackendSignUp = async (googleData: { idToken: string; role: string }) => {
+    const result = await postRequest<ISignUpResponse>("auth/signup", googleData);
+    if (result.data) {
       const user_info = {
-        name: form.getValues("email"),
-        role: form.getValues("role"),
-        onboarded: false,
-        isverified: false,
+        email: result.data.email,
+        role: result.data.role,
+        isOnBoarded: false,
+        isVerified: false,
         token: result.data.id,
       };
       dispatch(setUser(user_info));
-      toast.success(result.message.data.id);
+      router.push("/sign-up/user/onboarding");
+      toast.success(result.message);
       toast.info("Please wait for admin approval");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
       form.reset();
+    } else if (result.error) {
+      toast.error(result.error);
     }
   };
 
@@ -131,7 +132,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
           <form
             action=""
             className="flex flex-col mt-4 gap-6 items-center w-full"
-            onSubmit={form.handleSubmit(handleSignUp)}
+            onSubmit={form.handleSubmit(handlePasswordSignUp)}
           >
             <FormRadioGroup
               formName="role"

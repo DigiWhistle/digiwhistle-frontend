@@ -25,6 +25,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
+import { setUser } from "@/store/UserSlice";
+import { useRouter } from "next/navigation";
+import { ISignUpResponse } from "@/types/auth/response-types";
 
 enum Role {
   Admin = "admin",
@@ -56,25 +59,25 @@ const signUpSchema = z
   });
 
 const AdminSignUp = ({ className }: { className?: string }) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
 
   const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
     try {
       const response: any = await createUserWithEmailAndPassword(auth, data.email, data.password);
 
-      const userDetails = {
+      const googleData = {
         idToken: response._tokenResponse.idToken,
         role: form.getValues("role"),
       };
 
-      const result = await postRequest("auth/signup", userDetails);
-
-      toast.success(result.message);
-      toast.info("Please wait for admin approval");
+      await handleBackendSignUp(googleData);
     } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      form.reset();
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("User already exists with this email. Please sign in");
+      } else {
+        toast.error(error.message);
+      }
     }
   };
   const handleGoogleSignUp = async () => {
@@ -87,19 +90,37 @@ const AdminSignUp = ({ className }: { className?: string }) => {
     const provider = new GoogleAuthProvider();
     try {
       const response: any = await signInWithPopup(auth, provider);
-      const data = {
+      const googleData = {
         idToken: response._tokenResponse.idToken,
         role: form.getValues("role"),
       };
 
-      const result = await postRequest("auth/signup", data);
+      await handleBackendSignUp(googleData);
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("User already exists with this email. Please sign in");
+      } else {
+        toast.error(error.message);
+      }
+    }
+  };
 
+  const handleBackendSignUp = async (googleData: { idToken: string; role: string }) => {
+    const result = await postRequest<ISignUpResponse>("auth/signup", googleData);
+    if (result.data) {
+      const user_info = {
+        email: result.data.email,
+        role: result.data.role,
+        isOnBoarded: false,
+        isVerified: false,
+        token: result.data.id,
+      };
+      dispatch(setUser(user_info));
       toast.success(result.message);
       toast.info("Please wait for admin approval");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
       form.reset();
+    } else if (result.error) {
+      toast.error(result.error);
     }
   };
 
@@ -219,3 +240,6 @@ const AdminSignUp = ({ className }: { className?: string }) => {
 };
 
 export default AdminSignUp;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}

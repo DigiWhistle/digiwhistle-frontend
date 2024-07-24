@@ -4,22 +4,23 @@ import { useSelector } from "react-redux";
 import { User } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import InfluencerSignUp from "@/components/auth/influencer/InfluencerSignUp";
-import AgencySignUp from "@/components/auth/Agency/AgencySignUp";
-import BrandSignUp from "@/components/auth/Brand/BrandSignUp";
+import InfluencerSignUp from "@/components/auth/sign-up/user-panel/InfluencerSignUp";
+import AgencySignUp from "@/components/auth/sign-up/user-panel/AgencySignUp";
+import BrandSignUp from "@/components/auth/sign-up/user-panel/BrandSignUp";
 const Verification = () => {
-  const user_info = useSelector(User);
+  const user = useSelector(User);
   const router = useRouter();
   let role: string | null = null;
-  if (user_info === null) {
+  if (user === null) {
+    toast.info("Please login first");
     router.push("/login");
-  } else if (user_info.isverified) {
+  } else if (user.isOnBoarded) {
+    toast.info("Please wait for admin approval");
+    router.push("/login");
+  } else if (user.isVerified) {
     toast("you will get redirected to dashboard");
-    console.log("redirect to dashboard");
-  } else if (user_info.onboarded) {
-    toast("please be patient to get verified soon");
   } else {
-    role = user_info.role;
+    role = user.role;
   }
 
   return (
