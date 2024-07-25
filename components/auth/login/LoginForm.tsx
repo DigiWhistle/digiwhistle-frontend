@@ -25,7 +25,6 @@ import { IUser, User, UserRole, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { ILoginResponse } from "@/types/auth/response-types";
-import { setAuthUser } from "@/store/AuthUserSlice";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),

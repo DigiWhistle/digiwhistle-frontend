@@ -27,8 +27,8 @@ import { Checkbox } from "../ui/checkbox";
 import { postRequest } from "@/lib/config/axios";
 
 export enum PersonType {
-  Influencer = "Influencer",
-  Brand = "Brand",
+  Influencer = "influencer",
+  Brand = "brand",
 }
 
 const FormSchema = z
@@ -50,9 +50,13 @@ const FormSchema = z
     profileLink: z.string().url({
       message: "Invalid URL.",
     }),
-    mobileNo: z.string().refine(val => val.length === 10, {
-      message: "Mobile number must be 10 digits.",
-    }),
+    mobileNo: z
+      .number()
+      .int()
+      .positive()
+      .refine(value => value.toString().length === 10, {
+        message: "Mobile number must be a 10-digit number",
+      }),
     message: z.string().optional(),
     personType: z.nativeEnum(PersonType),
     termsCheck: z.boolean().refine(val => val === true, {
@@ -60,7 +64,7 @@ const FormSchema = z
     }),
   })
   .superRefine((data, ctx) => {
-    if (data.personType === "Influencer" && data.followersCount === undefined) {
+    if (data.personType === "influencer" && data.followersCount === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Followers count is required ",
@@ -115,9 +119,10 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             />
             <FormTextInput
               formName="mobileNo"
-              label="Mobile Number"
-              placeholder="Enter number (without +91 or 0)"
+              label="Enter Mobile Number"
+              placeholder="Enter number"
               required
+              type="number"
               leftIcon={<DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />}
             />
             <FormTextInput
@@ -148,6 +153,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
+                      value={field.value || undefined}
                       defaultValue={field.value}
                       className="flex flex-wrap gap-2 justify-between"
                     >

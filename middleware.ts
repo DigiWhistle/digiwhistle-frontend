@@ -5,7 +5,6 @@ function shouldSkipRequest(pathname: string) {
   let shouldSkip = false;
 
   shouldSkip = prefixes.some(prefix => pathname.includes(prefix));
-  console.log(pathname, shouldSkip);
 
   if (pathname === "/" || pathname.match(/\.(png|webp|ico)$/)) {
     shouldSkip = true;

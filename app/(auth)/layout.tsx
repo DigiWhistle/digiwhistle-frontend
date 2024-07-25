@@ -1,5 +1,4 @@
 import LeftContainer from "@/components/auth/left-panel/LeftContainer";
-import { AuthUser } from "@/store/AuthUserSlice";
 import { User, UserRole } from "@/store/UserSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
