@@ -86,8 +86,16 @@ const LoginForm = ({ className }: { className?: string }) => {
 
       dispatch(setUser(result.data.user));
 
-      if (result.data.user.isOnBoarded === false) {
-        // router.push("/user/onboarding");
+      if (!result.data.user.isOnBoarded) {
+        if (result.data.user.role === "admin" || result.data.user.role === "employee") {
+          router.push("/sign-up/admin");
+        } else if (
+          result.data.user.role === "influencer" ||
+          result.data.user.role === "brand" ||
+          result.data.user.role === "agency"
+        ) {
+          router.push("/onboarding");
+        }
       }
       if (!result.data.user.isVerified) {
         toast.info("Please wait for admin approval");
@@ -103,7 +111,7 @@ const LoginForm = ({ className }: { className?: string }) => {
       <CardHeader className="space-y-3">
         <CardTitle className="text-display-xs">Log In</CardTitle>
         <CardDescription className="text-body-lg-medium">
-          Already a user ?{" "}
+          New User ?{" "}
           <Link href={"/sign-up"} className="underline text-link">
             Signup here
           </Link>

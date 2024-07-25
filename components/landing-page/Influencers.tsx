@@ -342,7 +342,7 @@ const Influencers = () => {
             </div>
           ))}
         </Marquee>
-        <Link href={"/sign-up"}>
+        <Link href={"/sign-up/user"}>
           <Button className="md:w-[352px] w-[280px]" size={"xl"}>
             EXPLORE MORE TALENTS
           </Button>

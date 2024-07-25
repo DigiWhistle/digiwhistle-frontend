@@ -9,6 +9,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       offset: 150,
       once: true,
     });
+    Aos.refresh();
   }, []);
   return <div>{children}</div>;
 };

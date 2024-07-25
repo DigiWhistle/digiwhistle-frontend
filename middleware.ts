@@ -18,19 +18,54 @@ export function middleware(request: NextRequest) {
   if (shouldSkipRequest(request.nextUrl.pathname)) {
     response = NextResponse.next();
   } else if (
-    request.nextUrl.pathname === "/sign-up" ||
+    request.nextUrl.pathname.startsWith("/sign-up") ||
     request.nextUrl.pathname === "/login" ||
-    request.nextUrl.pathname === "/reset-password"
+    request.nextUrl.pathname === "/reset-password" ||
+    request.nextUrl.pathname === "/onboarding"
   ) {
-    response = NextResponse.next();
-    response.cookies.delete("userToken");
+    if (request.cookies.has("token") && request.cookies.has("role")) {
+      if (
+        request.cookies.get("role")?.value === "admin" ||
+        request.cookies.get("role")?.value === "employee"
+      ) {
+        response = NextResponse.rewrite(new URL("/admin/dashboard", request.url));
+      } else if (
+        request.cookies.get("role")?.value === "influencer" ||
+        request.cookies.get("role")?.value === "brand" ||
+        request.cookies.get("role")?.value === "agency"
+      ) {
+        response = NextResponse.rewrite(new URL("/user/dashboard", request.url));
+      } else {
+        response = NextResponse.next();
+        response.cookies.delete("token");
+        response.cookies.delete("role");
+      }
+    }
   } else {
-    // if (!request.cookies.has("userToken")) {
-    //   response = NextResponse.rewrite(new URL("/login", request.url));
-    // }
-    // else {
-    response = NextResponse.next();
-    // }
+    if (!request.cookies.has("token") || !request.cookies.has("role")) {
+      response = NextResponse.rewrite(new URL("/login", request.url));
+    } else if (request.nextUrl.pathname.startsWith("/admin")) {
+      if (
+        request.cookies.get("role")?.value !== "admin" ||
+        request.cookies.get("role")?.value !== "employee"
+      ) {
+        response = NextResponse.rewrite(new URL("/unauthorised", request.url));
+      } else {
+        response = NextResponse.next();
+      }
+    } else if (request.nextUrl.pathname.startsWith("/user")) {
+      if (
+        request.cookies.get("role")?.value !== "influencer" ||
+        request.cookies.get("role")?.value !== "brand" ||
+        request.cookies.get("role")?.value !== "agency"
+      ) {
+        response = NextResponse.rewrite(new URL("/unauthorised", request.url));
+      } else {
+        response = NextResponse.next();
+      }
+    } else {
+      response = NextResponse.next();
+    }
   }
 
   return response;
