@@ -59,6 +59,7 @@ const FormRadioGroup = ({
                     field.onChange(value);
                     triggerOnChange && trigger(formName);
                   }}
+                  value={field.value || null}
                   defaultValue={field.value || defaultValue}
                   className={cn("flex flex-wrap gap-3", groupCN)}
                   disabled={disabled}

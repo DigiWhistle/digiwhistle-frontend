@@ -50,7 +50,7 @@ const FormSchema = z
     profileLink: z.string().url({
       message: "Invalid URL.",
     }),
-    mobileNumber: z.string().refine(val => val.length === 10, {
+    mobileNo: z.string().refine(val => val.length === 10, {
       message: "Mobile number must be 10 digits.",
     }),
     message: z.string().optional(),
@@ -85,7 +85,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
         email: data.email,
         followersCount: data.followersCount,
         profileLink: data.profileLink,
-        mobileNo: data.mobileNumber,
+        mobileNo: data.mobileNo,
         message: data.message,
         personType: data.personType,
       };
@@ -114,7 +114,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
               leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
             />
             <FormTextInput
-              formName="mobileNumber"
+              formName="mobileNo"
               label="Mobile Number"
               placeholder="Enter number (without +91 or 0)"
               required
@@ -207,7 +207,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0  ">
                 <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none ">
                   <FormLabel className="font-normal">

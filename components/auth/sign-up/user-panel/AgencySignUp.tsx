@@ -25,8 +25,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
+import { setUserProfile, User } from "@/store/UserSlice";
+import { useAppDispatch } from "@/lib/config/store";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { IBrandResponse } from "@/types/auth/response-types";
 
-const signUpSchema = z.object({
+const AgencyOnboardingSchema = z.object({
   AgencyName: z.string().min(1, "First name is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
@@ -39,7 +44,7 @@ const signUpSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  mobileNumber: z
+  mobileNo: z
     .number()
     .int()
     .positive()
@@ -52,23 +57,36 @@ const signUpSchema = z.object({
 });
 
 const AgencySignUp = ({ className }: { className?: string }) => {
-  const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
+  const dispatch = useAppDispatch();
+  const user = useSelector(User);
+  const router = useRouter();
 
-  const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
-    try {
-      const response: any = null;
-      const userDetails = {
-        idToken: response._tokenResponse.idToken,
-      };
+  const form = useForm<z.infer<typeof AgencyOnboardingSchema>>({
+    resolver: zodResolver(AgencyOnboardingSchema),
+  });
 
-      const result = await postRequest("auth/signup", userDetails);
+  const handleAgencyOnboarding = async (data: z.infer<typeof AgencyOnboardingSchema>) => {
+    if (user) {
+      const result = await postRequest<IBrandResponse>("agency/profile", {
+        ...data,
+        user: user.id,
+      });
+      if (result.data) {
+        dispatch(setUserProfile(result.data));
 
-      toast.success(result.message);
-      toast.info("Please wait for admin approval");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      form.reset();
+        toast.success(result.message);
+        if (!user.isVerified) {
+          toast.info("Please wait for admin approval");
+        } else {
+          router.push("/user/dashboard");
+        }
+
+        form.reset();
+      } else if (result.error) {
+        toast.error(result.error);
+      }
+    } else {
+      toast.error("User not found. Please login first");
     }
   };
 
@@ -88,7 +106,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
           <form
             action=""
             className="flex flex-col gap-6 mt-4 items-center w-full"
-            onSubmit={form.handleSubmit(handleSignUp)}
+            onSubmit={form.handleSubmit(handleAgencyOnboarding)}
           >
             <div className="flex flex-col w-full gap-4 ">
               <FormTextInput formName="AgencyName" label="Agency Name" placeholder="Agency Name" />
@@ -114,7 +132,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
                 <FormTextInput
-                  formName="mobileNumber"
+                  formName="mobileNo"
                   label="Enter Mobile Number"
                   placeholder="Enter number"
                   required
@@ -131,7 +149,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0  ">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none ">
                       <FormLabel className="font-normal">

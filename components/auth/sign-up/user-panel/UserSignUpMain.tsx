@@ -100,16 +100,15 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
     const result = await postRequest<ISignUpResponse>("auth/signup", googleData);
     if (result.data) {
       const user_info = {
+        id: result.data.id,
         email: result.data.email,
         role: result.data.role,
         isOnBoarded: false,
-        isVerified: false,
-        token: result.data.id,
+        isVerified: result.data.isVerified,
       };
-      dispatch(setUser(user_info));
-      router.push("/sign-up/user/onboarding");
       toast.success(result.message);
-      toast.info("Please wait for admin approval");
+      dispatch(setUser(user_info));
+      router.push("/onboarding");
       form.reset();
     } else if (result.error) {
       toast.error(result.error);
@@ -177,7 +176,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0  ">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none ">
                       <FormLabel className="font-normal">

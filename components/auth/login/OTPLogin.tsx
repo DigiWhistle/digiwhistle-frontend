@@ -13,7 +13,7 @@ import { postRequest } from "@/lib/config/axios";
 
 const OtpSchema = z.object({
   otp: z.number(),
-  mobileNumber: z
+  mobileNo: z
     .number()
     .int()
     .positive()
@@ -42,19 +42,16 @@ const OTPLogin = () => {
   const form = useForm<z.infer<typeof OtpSchema>>({ resolver: zodResolver(OtpSchema) });
 
   const handleSendOtp = async () => {
-    const mobileNumber = form.getValues("mobileNumber");
-    form.trigger("mobileNumber");
-    if (!mobileNumber || !OtpSchema.shape.mobileNumber.safeParse(mobileNumber).success) {
+    const mobileNo = form.getValues("mobileNo");
+    form.trigger("mobileNo");
+    if (!mobileNo || !OtpSchema.shape.mobileNo.safeParse(mobileNo).success) {
       return;
     }
 
     setLoadingResend(true);
 
     try {
-      const response = await postRequest(
-        "auth/generate-mobile-otp",
-        form.getValues("mobileNumber"),
-      );
+      const response = await postRequest("auth/generate-mobile-otp", form.getValues("mobileNo"));
 
       if (!showOtpInput) {
         setShowOtpInput(true);
@@ -100,7 +97,7 @@ const OTPLogin = () => {
             {showOtpInput && <CheckCircleIcon className=" w-4 h-4" />}
           </button>
           <FormTextInput
-            formName="mobileNumber"
+            formName="mobileNo"
             label="Mobile Number"
             placeholder="Enter Number"
             required

@@ -1,13 +1,15 @@
 import { RootState } from "@/lib/config/store";
+import { IAdminResponse, IBrandResponse, IInfluencerResponse } from "@/types/auth/response-types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 export interface IUser {
-  name?: string;
+  id: string;
   role: "admin" | "employee" | "influencer" | "brand" | "agency";
   email: string;
   isOnBoarded: boolean;
   isVerified: boolean;
-  token: string;
+  profile?: IInfluencerResponse | IAdminResponse | IBrandResponse;
 }
 
 const initialState: { user: IUser | null } = { user: null };
@@ -19,13 +21,21 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
+    setUserProfile: (
+      state,
+      action: PayloadAction<IInfluencerResponse | IAdminResponse | IBrandResponse>,
+    ) => {
+      if (state.user) {
+        state.user.profile = action.payload;
+      }
+    },
     clearUser: state => {
       state.user = null;
     },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, setUserProfile, clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
 export const User = (state: RootState) => state.user.user;

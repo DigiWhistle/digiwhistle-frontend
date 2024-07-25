@@ -25,6 +25,7 @@ import { IUser, User, UserRole, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { ILoginResponse } from "@/types/auth/response-types";
+import { setAuthUser } from "@/store/AuthUserSlice";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -80,18 +81,22 @@ const LoginForm = ({ className }: { className?: string }) => {
 
   const handleBackendLogin = async (googleData: { idToken: string }) => {
     const result = await postRequest<ILoginResponse>("auth/login", googleData);
-    toast.success(result.message);
 
     if (result.data) {
-      if (result.data.user.isOnBoarded === false) {
-        router.push("/user/onboarding");
-      }
-      if (result.data.user.isVerified === false) {
-        toast.info("Please wait for admin approval");
-      }
-      setCookie("token", result.data.token);
+      toast.success(result.message);
+
       dispatch(setUser(result.data.user));
-    } else if (result.error) toast.error(result.message);
+
+      if (result.data.user.isOnBoarded === false) {
+        // router.push("/user/onboarding");
+      }
+      if (!result.data.user.isVerified) {
+        toast.info("Please wait for admin approval");
+      } else {
+        setCookie("token", result.data.token);
+        setCookie("role", result.data.user.role);
+      }
+    } else if (result.error) toast.error(result.error);
   };
 
   return (

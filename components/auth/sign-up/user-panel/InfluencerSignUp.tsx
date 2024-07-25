@@ -25,11 +25,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/config/firebase";
 import { toast } from "sonner";
+import { IInfluencerResponse } from "@/types/auth/response-types";
+import { useAppDispatch } from "@/lib/config/store";
+import { setUserProfile, User } from "@/store/UserSlice";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
-const signUpSchema = z.object({
+const InfluencerOnboardingSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
-  Insta_Link: z
+  instagramURL: z
     .string()
     .optional()
     .refine(
@@ -38,7 +43,7 @@ const signUpSchema = z.object({
         message: "Please provide a valid Instagram URL",
       },
     ),
-  YouTube_Link: z
+  youtubeURL: z
     .string()
     .optional()
     .refine(
@@ -60,7 +65,7 @@ const signUpSchema = z.object({
         message: "Please provide a valid X (Twitter) URL",
       },
     ),
-  mobileNumber: z
+  mobileNo: z
     .number()
     .int()
     .positive()
@@ -73,23 +78,36 @@ const signUpSchema = z.object({
 });
 
 const InfluencerSignUp = ({ className }: { className?: string }) => {
-  const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
+  const dispatch = useAppDispatch();
+  const user = useSelector(User);
+  const router = useRouter();
 
-  const handleSignUp = async (data: z.infer<typeof signUpSchema>) => {
-    try {
-      const response: any = null;
-      const userDetails = {
-        idToken: response._tokenResponse.idToken,
-      };
+  const form = useForm<z.infer<typeof InfluencerOnboardingSchema>>({
+    resolver: zodResolver(InfluencerOnboardingSchema),
+  });
 
-      const result = await postRequest("auth/signup", userDetails);
+  const handleInfluencerOnboarding = async (data: z.infer<typeof InfluencerOnboardingSchema>) => {
+    if (user) {
+      const result = await postRequest<IInfluencerResponse>("influencer/profile", {
+        ...data,
+        user: user.id,
+      });
+      if (result.data) {
+        dispatch(setUserProfile(result.data));
 
-      toast.success(result.message);
-      toast.info("Please wait for admin approval");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      form.reset();
+        toast.success(result.message);
+        if (!user.isVerified) {
+          toast.info("Please wait for admin approval");
+        } else {
+          router.push("/user/dashboard");
+        }
+
+        form.reset();
+      } else if (result.error) {
+        toast.error(result.error);
+      }
+    } else {
+      toast.error("User not found. Please login first");
     }
   };
 
@@ -109,7 +127,7 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
           <form
             action=""
             className="flex flex-col gap-6 mt-4 items-center w-full"
-            onSubmit={form.handleSubmit(handleSignUp)}
+            onSubmit={form.handleSubmit(handleInfluencerOnboarding)}
           >
             <div className="flex flex-col w-full gap-4 ">
               <div className="flex gap-3  w-full">
@@ -128,13 +146,13 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
               </div>
               <div className="w-full space-y-4">
                 <FormTextInput
-                  formName="Insta_Link"
+                  formName="instagramURL"
                   label="Instagram Profile Link"
                   placeholder="https://www.instagram.com/username/"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
                 <FormTextInput
-                  formName="Youtube_Link"
+                  formName="youtubeURL"
                   label="Youtube Profile Link"
                   placeholder="https://www.youtube.com/username/"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
@@ -146,7 +164,7 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
                 <FormTextInput
-                  formName="mobileNumber"
+                  formName="mobileNo"
                   label="Enter Mobile Number"
                   placeholder="Enter number"
                   required
@@ -163,7 +181,7 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0  ">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none ">
                       <FormLabel className="font-normal">
