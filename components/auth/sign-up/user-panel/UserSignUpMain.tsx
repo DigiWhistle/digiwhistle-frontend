@@ -11,7 +11,7 @@ import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
 import { ApiResponse, postRequest } from "@/lib/config/axios";
-import { redirect } from "next/navigation";
+import { redirect, useParams, useSearchParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -50,9 +50,20 @@ const signUpSchema = z
     path: ["confirmPassword"],
   });
 const UserSignUpMain = ({ className }: { className?: string }) => {
-  const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema) });
   const dispatch = useDispatch();
   const router = useRouter();
+  const params = useSearchParams();
+  const paramsRole = params.get("role") as Role;
+
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      role:
+        paramsRole === "agency" || paramsRole === "brand" || paramsRole === "influencer"
+          ? paramsRole
+          : undefined,
+    },
+  });
 
   const handlePasswordSignUp = async (data: z.infer<typeof signUpSchema>) => {
     try {
