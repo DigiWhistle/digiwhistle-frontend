@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 function shouldSkipRequest(pathname: string) {
-  console.log("WE ARE HERE IN CONDITION!!");
-
   const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", ".ico"];
   let shouldSkip = false;
 
@@ -16,11 +14,8 @@ function shouldSkipRequest(pathname: string) {
 
 export function middleware(request: NextRequest) {
   let response;
-  console.log("WE ARE HERE IN MIDDLEWARE!!");
 
   if (shouldSkipRequest(request.nextUrl.pathname)) {
-    console.log("WE ARE HERE IN STARTING!!");
-
     response = NextResponse.next();
   } else if (
     request.nextUrl.pathname.startsWith("/sign-up") ||
@@ -28,37 +23,37 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/reset-password" ||
     request.nextUrl.pathname === "/onboarding"
   ) {
-    console.log("WE ARE HERE IN LOGIN!!");
-
     if (request.cookies.has("token") && request.cookies.has("role")) {
       if (
         request.cookies.get("role")?.value === "admin" ||
         request.cookies.get("role")?.value === "employee"
       ) {
-        response = NextResponse.rewrite(new URL("/admin/dashboard", request.url));
+        response = NextResponse.redirect(new URL("/admin/dashboard", request.url));
       } else if (
         request.cookies.get("role")?.value === "influencer" ||
         request.cookies.get("role")?.value === "brand" ||
         request.cookies.get("role")?.value === "agency"
       ) {
-        response = NextResponse.rewrite(new URL("/user/dashboard", request.url));
+        response = NextResponse.redirect(new URL("/user/dashboard", request.url));
       } else {
         response = NextResponse.next();
         response.cookies.delete("token");
         response.cookies.delete("role");
       }
+    } else {
+      response = NextResponse.next();
+      response.cookies.delete("token");
+      response.cookies.delete("role");
     }
   } else {
-    console.log("WE ARE HERE IN ELSE!!");
     if (!request.cookies.has("token") || !request.cookies.has("role")) {
-      console.log("WE ARE HERE !!");
-      response = NextResponse.rewrite(new URL("/login", request.url));
+      response = NextResponse.redirect(new URL("/login", request.url));
     } else if (request.nextUrl.pathname.startsWith("/admin")) {
       if (
         request.cookies.get("role")?.value !== "admin" ||
         request.cookies.get("role")?.value !== "employee"
       ) {
-        response = NextResponse.rewrite(new URL("/unauthorised", request.url));
+        response = NextResponse.redirect(new URL("/unauthorised", request.url));
       } else {
         response = NextResponse.next();
       }
@@ -68,7 +63,7 @@ export function middleware(request: NextRequest) {
         request.cookies.get("role")?.value !== "brand" ||
         request.cookies.get("role")?.value !== "agency"
       ) {
-        response = NextResponse.rewrite(new URL("/unauthorised", request.url));
+        response = NextResponse.redirect(new URL("/unauthorised", request.url));
       } else {
         response = NextResponse.next();
       }
