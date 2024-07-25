@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 function shouldSkipRequest(pathname: string) {
+  console.log("WE ARE HERE IN CONDITION!!");
+
   const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", ".ico"];
   let shouldSkip = false;
 
@@ -14,8 +16,11 @@ function shouldSkipRequest(pathname: string) {
 
 export function middleware(request: NextRequest) {
   let response;
+  console.log("WE ARE HERE IN MIDDLEWARE!!");
 
   if (shouldSkipRequest(request.nextUrl.pathname)) {
+    console.log("WE ARE HERE IN STARTING!!");
+
     response = NextResponse.next();
   } else if (
     request.nextUrl.pathname.startsWith("/sign-up") ||
@@ -23,6 +28,8 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/reset-password" ||
     request.nextUrl.pathname === "/onboarding"
   ) {
+    console.log("WE ARE HERE IN LOGIN!!");
+
     if (request.cookies.has("token") && request.cookies.has("role")) {
       if (
         request.cookies.get("role")?.value === "admin" ||
@@ -42,7 +49,9 @@ export function middleware(request: NextRequest) {
       }
     }
   } else {
+    console.log("WE ARE HERE IN ELSE!!");
     if (!request.cookies.has("token") || !request.cookies.has("role")) {
+      console.log("WE ARE HERE !!");
       response = NextResponse.rewrite(new URL("/login", request.url));
     } else if (request.nextUrl.pathname.startsWith("/admin")) {
       if (
@@ -71,9 +80,15 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
+// export const config = {
+//   matcher: [
+//     "/((?!api|_next/static|_next/image|.\\.svg$|.\\.webp$|.\\.png$).)",
+//     "//_next|/assets|/brand|/favicon.ico/|/icon.ico",
+//   ],
+// };
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|.\\.svg$|.\\.webp$|.\\.png$).)",
-    "//_next|/assets|/brand|/favicon.ico/|/icon.ico",
+    "/((?!api|_next/static|_next/image|.*\\.png$).*)",
+    "//_next|/assets|/brand|/favicon.ico/",
   ],
 };
