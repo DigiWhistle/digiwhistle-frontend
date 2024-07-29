@@ -30,7 +30,7 @@ import { useAppDispatch } from "@/lib/config/store";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setUserProfile, User } from "@/store/UserSlice";
-
+import FormPhoneInput from "@/components/ui/form/form-phone-input";
 const BrandOnboardingSchema = z.object({
   BrandName: z.string().min(1, "First name is required"),
   firstName: z.string().min(1, "First name is required"),
@@ -44,13 +44,10 @@ const BrandOnboardingSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  mobileNo: z
-    .number()
-    .int()
-    .positive()
-    .refine(value => value.toString().length === 10, {
-      message: "Mobile number must be a 10-digit number",
-    }),
+  countryCode: z.string().refine(value => value.toString()[0] === "+", {
+    message: "Add '+'",
+  }),
+  mobileNo: z.number().int().positive(),
   termsCheck: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms",
   }),
@@ -133,14 +130,7 @@ const BrandSignUp = ({ className }: { className?: string }) => {
                   placeholder="https://www.Brand.com"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <FormTextInput
-                  formName="mobileNo"
-                  label="Enter Mobile Number"
-                  placeholder="Enter number"
-                  required
-                  type="number"
-                  leftIcon={<DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />}
-                />
+                <FormPhoneInput codeFormName="countryCode" mobileFormName="mobileNo" required />
               </div>
             </div>
             <hr className="w-full" />

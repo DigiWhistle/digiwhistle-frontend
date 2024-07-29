@@ -1,5 +1,5 @@
 "use client";
-
+import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
@@ -43,13 +43,10 @@ const adminSignUpSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
-    mobileNo: z
-      .number()
-      .int()
-      .positive()
-      .refine(value => value.toString().length === 10, {
-        message: "Mobile number must be a 10-digit number",
-      }),
+    countryCode: z.string().refine(value => value.toString()[0] === "+", {
+      message: "Add '+'",
+    }),
+    mobileNo: z.number().int().positive(),
     termsCheck: z.boolean().refine(val => val === true, {
       message: "You must agree to the terms",
     }),
@@ -82,6 +79,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
           firstName: data.firstName,
           lastName: data.lastName,
           mobileNo: data.mobileNo,
+          countryCode: data.countryCode,
           user: result.data.id,
         });
         if (respond.data) {
@@ -230,14 +228,15 @@ const AdminSignUp = ({ className }: { className?: string }) => {
                     triggerOnInput
                   />
                 </div>
-                <FormTextInput
+                {/* <FormTextInput
                   formName="mobileNo"
                   label="Enter Mobile Number"
                   placeholder="Enter number"
                   required
                   type="number"
                   leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-                />
+                /> */}
+                <FormPhoneInput codeFormName="countryCode" mobileFormName="mobileNo" required />
               </div>
             </div>
             <hr className="w-full" />
