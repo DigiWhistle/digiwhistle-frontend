@@ -102,6 +102,16 @@ const LoginForm = ({ className }: { className?: string }) => {
       } else {
         setCookie("token", result.data.token);
         setCookie("role", result.data.user.role);
+
+        if (result.data.user.role === "admin" || result.data.user.role === "employee") {
+          router.push("/admin/dashboard");
+        } else if (
+          result.data.user.role === "influencer" ||
+          result.data.user.role === "brand" ||
+          result.data.user.role === "agency"
+        ) {
+          router.push("/user/dashboard");
+        }
       }
     } else if (result.error) toast.error(result.error);
   };

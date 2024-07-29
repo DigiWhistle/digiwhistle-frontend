@@ -66,9 +66,11 @@ const AgencySignUp = ({ className }: { className?: string }) => {
   });
 
   const handleAgencyOnboarding = async (data: z.infer<typeof AgencyOnboardingSchema>) => {
+    const { termsCheck, ...filteredData } = data;
+
     if (user) {
       const result = await postRequest<IBrandResponse>("agency/profile", {
-        ...data,
+        ...filteredData,
         user: user.id,
       });
       if (result.data) {

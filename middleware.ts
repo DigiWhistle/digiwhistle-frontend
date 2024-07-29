@@ -50,22 +50,22 @@ export function middleware(request: NextRequest) {
       response = NextResponse.redirect(new URL("/login", request.url));
     } else if (request.nextUrl.pathname.startsWith("/admin")) {
       if (
-        request.cookies.get("role")?.value !== "admin" ||
-        request.cookies.get("role")?.value !== "employee"
+        request.cookies.get("role")?.value === "admin" ||
+        request.cookies.get("role")?.value === "employee"
       ) {
-        response = NextResponse.redirect(new URL("/unauthorised", request.url));
-      } else {
         response = NextResponse.next();
+      } else {
+        response = NextResponse.redirect(new URL("/unauthorised", request.url));
       }
     } else if (request.nextUrl.pathname.startsWith("/user")) {
       if (
-        request.cookies.get("role")?.value !== "influencer" ||
-        request.cookies.get("role")?.value !== "brand" ||
-        request.cookies.get("role")?.value !== "agency"
+        request.cookies.get("role")?.value === "influencer" ||
+        request.cookies.get("role")?.value === "brand" ||
+        request.cookies.get("role")?.value === "agency"
       ) {
-        response = NextResponse.redirect(new URL("/unauthorised", request.url));
-      } else {
         response = NextResponse.next();
+      } else {
+        response = NextResponse.redirect(new URL("/unauthorised", request.url));
       }
     } else {
       response = NextResponse.next();

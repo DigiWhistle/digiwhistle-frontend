@@ -66,9 +66,11 @@ const BrandSignUp = ({ className }: { className?: string }) => {
   });
 
   const handleBrandOnboarding = async (data: z.infer<typeof BrandOnboardingSchema>) => {
+    const { termsCheck, ...filteredData } = data;
+
     if (user) {
       const result = await postRequest<IBrandResponse>("brand/profile", {
-        ...data,
+        ...filteredData,
         user: user.id,
       });
       if (result.data) {

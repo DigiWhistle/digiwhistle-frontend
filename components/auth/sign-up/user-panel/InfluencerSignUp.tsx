@@ -87,9 +87,10 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
   });
 
   const handleInfluencerOnboarding = async (data: z.infer<typeof InfluencerOnboardingSchema>) => {
+    const { termsCheck, ...filteredData } = data;
     if (user) {
       const result = await postRequest<IInfluencerResponse>("influencer/profile", {
-        ...data,
+        ...filteredData,
         user: user.id,
       });
       if (result.data) {
