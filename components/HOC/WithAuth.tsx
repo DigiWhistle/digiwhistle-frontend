@@ -1,20 +1,22 @@
-import { RootState } from "@/lib/config/store";
+import { UserRole } from "@/store/UserSlice";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const WithAuth = (WrappedComponent: React.ComponentType, allowedRoles: string[]) => {
   const ComponentWithAuth = (props: any) => {
     const router = useRouter();
-    const user = useSelector((state: RootState) => state.user.user);
+    const role = useSelector(UserRole);
 
     if (typeof window !== "undefined") {
-      if (!user) {
+      if (!role) {
+        toast.error("User not found");
         router.replace("/login");
         return null;
       }
 
-      if (user && !allowedRoles.includes(user.role)) {
-        router.replace("/unauthorized");
+      if (role && !allowedRoles.includes(role)) {
+        // router.replace("/unauthorized");
         return null;
       }
     }

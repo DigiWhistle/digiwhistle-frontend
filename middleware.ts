@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
       ) {
         response = NextResponse.next();
       } else {
-        response = NextResponse.redirect(new URL("/unauthorised", request.url));
+        response = NextResponse.redirect(new URL("/unauthorized", request.url));
       }
     } else if (request.nextUrl.pathname.startsWith("/user")) {
       if (
@@ -65,7 +65,7 @@ export function middleware(request: NextRequest) {
       ) {
         response = NextResponse.next();
       } else {
-        response = NextResponse.redirect(new URL("/unauthorised", request.url));
+        response = NextResponse.redirect(new URL("/unauthorized", request.url));
       }
     } else {
       response = NextResponse.next();
