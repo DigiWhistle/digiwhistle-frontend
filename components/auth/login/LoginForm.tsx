@@ -152,11 +152,26 @@ const LoginForm = ({ className }: { className?: string }) => {
                     required
                     leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
                   />
-                  <a href="/reset-password" className=" self-end mt-1">
-                    <button type="button" className="text-sm underline">
-                      Forgot Password?
-                    </button>
-                  </a>
+                  <button
+                    type="button"
+                    className="self-end mt-1 text-sm underline"
+                    onClick={async () => {
+                      if (form.getValues("email")) {
+                        form.clearErrors("email");
+                        await postRequest("auth/reset-password-email", {
+                          email: form.getValues("email"),
+                        });
+                      } else {
+                        form.setError(
+                          "email",
+                          { message: "Enter your email id" },
+                          { shouldFocus: true },
+                        );
+                      }
+                    }}
+                  >
+                    Forgot Password?
+                  </button>
                 </div>
               </div>
             </div>
