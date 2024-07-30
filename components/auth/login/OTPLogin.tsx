@@ -58,8 +58,12 @@ const OTPLogin = () => {
       if (!showOtpInput) {
         setShowOtpInput(true);
       }
+      if (response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success("OTP sent!");
+      }
 
-      toast.success("OTP sent!");
       setEnableResend(false);
       setResendTimer(30);
     } catch (error: any) {
@@ -77,7 +81,7 @@ const OTPLogin = () => {
     console.log(typeof user_info, user_info);
     try {
       const response: any = await postRequest("auth/verify-mobile-otp", user_info);
-      if (response.status === 200) {
+      if (response.error) {
         const user_data = {
           id: response.data.user.id,
           role: response.data.user.role.name,
@@ -87,6 +91,8 @@ const OTPLogin = () => {
         };
         dispatch(setUser(user_data));
         dispatch(setUserProfile(response.data.user.profile));
+      } else {
+        toast.error(response.error);
       }
     } catch (error: any) {
       toast.error(error.message);
