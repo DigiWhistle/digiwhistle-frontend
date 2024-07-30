@@ -1374,6 +1374,11 @@ classlist-polyfill@^1.0.3:
   resolved "https://registry.npmjs.org/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz"
   integrity sha512-GzIjNdcEtH4ieA2S8NmrSxv7DfEV5fmixQeyTmqmRmRJPGpRBaSnA2a0VrCjyT8iW8JjEdMbKzDotAJf+ajgaQ==
 
+classnames@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
+
 client-only@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
@@ -1439,6 +1444,11 @@ cookies-next@^4.2.1:
   dependencies:
     "@types/cookie" "^0.6.0"
     cookie "^0.6.0"
+
+country-flag-icons@^1.5.11:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/country-flag-icons/-/country-flag-icons-1.5.13.tgz#963596b7fca6602b4b389a4e7b711ef3f33cc0b1"
+  integrity sha512-4JwHNqaKZ19doQoNcBjsoYA+I7NqCH/mC/6f5cBWvdKzcK5TMmzLpq3Z/syVHMHJuDGFwJ+rPpGizvrqJybJow==
 
 countup.js@^2.8.0:
   version "2.8.0"
@@ -2370,6 +2380,13 @@ inherits@2:
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
+input-format@^0.3.10:
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/input-format/-/input-format-0.3.10.tgz#e8a8855e2e89e3b1cd995333f6277c14865f0e35"
+  integrity sha512-5cFv/kOZD7Ch0viprVkuYPDkAU7HBZYBx8QrIpQ6yXUWbAQ0+RQ8IIojDJOf/RO6FDJLL099HDSK2KoVZ2zevg==
+  dependencies:
+    prop-types "^15.8.1"
+
 internal-slot@^1.0.7:
   version "1.0.7"
   resolved "https://registry.npmjs.org/internal-slot/-/internal-slot-1.0.7.tgz"
@@ -2675,6 +2692,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+libphonenumber-js@^1.11.2:
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.5.tgz#50a441da5ff9ed9a322d796a14f1e9cbc0fdabdf"
+  integrity sha512-TwHR5BZxGRODtAfz03szucAkjT5OArXr+94SMtAM2pYXIlQNVMrxvb6uSCbnaJJV6QXEyICk7+l6QPgn72WHhg==
 
 lilconfig@^2.1.0:
   version "2.1.0"
@@ -3187,6 +3209,17 @@ react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-phone-number-input@^3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.4.4.tgz#b3f2f039543605e0a7b8139fedea29bfbea585a3"
+  integrity sha512-zeyZeS1Iazhj3vTHj6qOyTTguBf/WFLAe9OtA8s0Itycy7AOoQI0vFlpxKDaEcyvYup7Wt79lKu+nl/nJwyLdw==
+  dependencies:
+    classnames "^2.5.1"
+    country-flag-icons "^1.5.11"
+    input-format "^0.3.10"
+    libphonenumber-js "^1.11.2"
+    prop-types "^15.8.1"
 
 react-redux@^9.1.2:
   version "9.1.2"

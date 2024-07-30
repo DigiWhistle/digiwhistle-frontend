@@ -31,6 +31,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setUserProfile, User } from "@/store/UserSlice";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
+import { mobileNoSchema } from "@/lib/validationSchema";
 
 const BrandOnboardingSchema = z.object({
   name: z.string().min(1, "First name is required"),
@@ -45,20 +46,7 @@ const BrandOnboardingSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  mobileNo: z.string().refine(
-    value => {
-      // Check if the first character is not '+'
-      if (value[0] === "+") {
-        return false;
-      }
-      // Check if the value contains only alphanumeric characters
-      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
-      return alphanumericRegex.test(value);
-    },
-    {
-      message: "Mobile number should be alphanumeric and without '+'",
-    },
-  ),
+  mobileNo: mobileNoSchema,
   termsCheck: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms",
   }),

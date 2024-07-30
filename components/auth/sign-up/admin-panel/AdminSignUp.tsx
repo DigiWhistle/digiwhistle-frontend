@@ -29,6 +29,8 @@ import { setUser, setUserProfile, User } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { IAdminResponse, ISignUpResponse } from "@/types/auth/response-types";
 import { useAppDispatch } from "@/lib/config/store";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { mobileNoSchema } from "@/lib/validationSchema";
 
 enum Role {
   Admin = "admin",
@@ -43,20 +45,7 @@ const adminSignUpSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
-    mobileNo: z.string().refine(
-      value => {
-        // Check if the first character is not '+'
-        if (value[0] === "+") {
-          return false;
-        }
-        // Check if the value contains only alphanumeric characters
-        const alphanumericRegex = /^[a-zA-Z0-9]*$/;
-        return alphanumericRegex.test(value);
-      },
-      {
-        message: "Mobile number should be alphanumeric and without '+'",
-      },
-    ),
+    mobileNo: mobileNoSchema,
     termsCheck: z.boolean().refine(val => val === true, {
       message: "You must agree to the terms",
     }),

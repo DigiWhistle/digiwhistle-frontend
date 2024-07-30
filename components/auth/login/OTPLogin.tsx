@@ -13,22 +13,10 @@ import { postRequest } from "@/lib/config/axios";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import { useDispatch } from "react-redux";
 import { setUser, setUserProfile } from "@/store/UserSlice";
+import { mobileNoSchema } from "@/lib/validationSchema";
 const OtpSchema = z.object({
   otp: z.string(),
-  mobileNo: z.string().refine(
-    value => {
-      // Check if the first character is not '+'
-      if (value[0] === "+") {
-        return false;
-      }
-      // Check if the value contains only alphanumeric characters
-      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
-      return alphanumericRegex.test(value);
-    },
-    {
-      message: "Mobile number should be alphanumeric and without '+'",
-    },
-  ),
+  mobileNo: mobileNoSchema,
 });
 
 const OTPLogin = () => {

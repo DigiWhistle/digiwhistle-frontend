@@ -1,3 +1,4 @@
+"use client";
 import {
   FormControl,
   FormDescription,
@@ -12,6 +13,10 @@ import { ClassValue } from "clsx";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
 import FormTextInput from "./form-text-input";
 import { DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
+import "react-phone-number-input/style.css";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import React from "react";
+
 interface IFormTextInputProps {
   mobileFormName: string;
   codeFormName?: string;
@@ -22,6 +27,12 @@ interface IFormTextInputProps {
   className?: ClassValue[];
   inputCN?: ClassValue[];
 }
+
+const CustomInputComponent = React.forwardRef<HTMLInputElement>((props, ref) => (
+  <Input {...props} ref={ref} className={cn("border-none focus-visible:ring-0 h-9")} />
+));
+CustomInputComponent.displayName = "CustomInputComponent";
+
 const FormPhoneInput = ({
   mobileFormName,
   codeFormName,
@@ -32,75 +43,36 @@ const FormPhoneInput = ({
   className,
   inputCN,
 }: IFormTextInputProps) => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  console.log(
+    watch(mobileFormName),
+    watch(mobileFormName) ? isValidPhoneNumber(watch(mobileFormName)) : "",
+  );
   return (
     <div className="flex flex-col w-full gap-2 ">
       <FormLabel className="text-sm font-medium text-black ">
-        {"Mobile Number With Country Code"}
+        {"Mobile Number"}
         {required && <span className="text-destructive">*</span>}
       </FormLabel>{" "}
       <div className="flex gap-3">
-        {/* <div className=" md:w-[150px] w-[130px]">
-          <FormField
-            control={control}
-            name={codeFormName}
-            render={({ field }) => (
-              <FormItem className={cn("w-full  flex flex-col ", className)}>
-                <FormControl className="">
-                  <div className="relative flex items-center  border border-gray-300 rounded-full">
-                    <div className="absolute inset-y-0 start-0 hidden md:flex items-center ps-3 pointer-events-none ">
-                      <DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />
-                    </div>
-
-                    <Input
-                      type={"text"}
-                      placeholder={"e.g.,+91"}
-                      {...field}
-                      disabled={disabled}
-                      value={defaultValue || field.value || ""}
-                      className={cn(
-                        " border-none placeholder:text-muted-foreground bg-white md:ps-10 ",
-                        inputCN,
-                      )}
-                      onChange={e => {
-                        e.preventDefault();
-                        field.onChange(e.target.value);
-                      }}
-                    />
-                  </div>
-                </FormControl>
-
-                {formDescription && <FormDescription>{formDescription}</FormDescription>}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div> */}
         <FormField
           control={control}
           name={mobileFormName}
           render={({ field }) => (
             <FormItem className={cn("w-full  flex flex-col ", className)}>
               <FormControl className="">
-                <div className="relative flex items-center  border border-gray-300 rounded-full">
-                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none ">
-                    <DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />
-                  </div>
-                  <Input
-                    placeholder={"Enter Mobile Number without '+'"}
-                    {...field}
-                    disabled={disabled}
-                    value={defaultValue || field.value || ""}
-                    className={cn(
-                      " border-none placeholder:text-muted-foreground bg-white ps-10  ",
-                      inputCN,
-                    )}
-                    onChange={e => {
-                      e.preventDefault();
-                      field.onChange(e.target.value);
-                    }}
-                  />
-                </div>
+                <PhoneInput
+                  defaultCountry="IN"
+                  placeholder="Enter phone number"
+                  {...field}
+                  disabled={disabled}
+                  value={field.value || defaultValue || ""}
+                  className={cn(
+                    "flex gap-1 h-10 border border-gray-300 ring-offset-background rounded-full px-4 py-2 text-sm  bg-white hoevr:border-ring focus-visible:ring-[1px] focus-visible:ring-ring focus-visible:ring-offset-0  ",
+                    inputCN,
+                  )}
+                  inputComponent={CustomInputComponent}
+                />
               </FormControl>
 
               {formDescription && <FormDescription>{formDescription}</FormDescription>}
