@@ -14,7 +14,7 @@ import FormTextInput from "./form-text-input";
 import { DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
 interface IFormTextInputProps {
   mobileFormName: string;
-  codeFormName: string;
+  codeFormName?: string;
   required?: boolean;
   disabled?: boolean;
   formDescription?: string;
@@ -40,7 +40,7 @@ const FormPhoneInput = ({
         {required && <span className="text-destructive">*</span>}
       </FormLabel>{" "}
       <div className="flex gap-3">
-        <div className=" md:w-[150px] w-[130px]">
+        {/* <div className=" md:w-[150px] w-[130px]">
           <FormField
             control={control}
             name={codeFormName}
@@ -75,7 +75,7 @@ const FormPhoneInput = ({
               </FormItem>
             )}
           />
-        </div>
+        </div> */}
         <FormField
           control={control}
           name={mobileFormName}
@@ -83,19 +83,21 @@ const FormPhoneInput = ({
             <FormItem className={cn("w-full  flex flex-col ", className)}>
               <FormControl className="">
                 <div className="relative flex items-center  border border-gray-300 rounded-full">
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none ">
+                    <DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />
+                  </div>
                   <Input
-                    type={"number"}
-                    placeholder={"Enter Mobile Number"}
+                    placeholder={"Enter Mobile Number without '+'"}
                     {...field}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     className={cn(
-                      " border-none placeholder:text-muted-foreground bg-white ",
+                      " border-none placeholder:text-muted-foreground bg-white ps-10  ",
                       inputCN,
                     )}
                     onChange={e => {
                       e.preventDefault();
-                      field.onChange(Number(e.target.value));
+                      field.onChange(e.target.value);
                     }}
                   />
                 </div>

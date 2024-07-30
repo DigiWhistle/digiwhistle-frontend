@@ -44,10 +44,21 @@ const BrandOnboardingSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  countryCode: z.string().refine(value => value.toString()[0] === "+", {
-    message: "Add '+'",
-  }),
-  mobileNo: z.number().int().positive(),
+  countryCode: z.string(),
+  mobileNo: z.string().refine(
+    value => {
+      // Check if the first character is not '+'
+      if (value[0] === "+") {
+        return false;
+      }
+      // Check if the value contains only alphanumeric characters
+      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
+      return alphanumericRegex.test(value);
+    },
+    {
+      message: "Mobile number should be alphanumeric and without '+'",
+    },
+  ),
   termsCheck: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms",
   }),
@@ -128,7 +139,7 @@ const BrandSignUp = ({ className }: { className?: string }) => {
                   placeholder="https://www.Brand.com"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <FormPhoneInput codeFormName="countryCode" mobileFormName="mobileNo" required />
+                <FormPhoneInput mobileFormName="mobileNo" required />
               </div>
             </div>
             <hr className="w-full" />

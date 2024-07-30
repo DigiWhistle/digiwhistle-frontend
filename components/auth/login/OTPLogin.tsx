@@ -10,26 +10,34 @@ import { LockClosedIcon } from "@heroicons/react/24/outline";
 import FormTextInput from "@/components/ui/form/form-text-input";
 import { Button } from "@/components/ui/button";
 import { postRequest } from "@/lib/config/axios";
-
+import FormPhoneInput from "@/components/ui/form/form-phone-input";
 const OtpSchema = z.object({
   otp: z.number(),
-  mobileNo: z
-    .number()
-    .int()
-    .positive()
-    .refine(value => value.toString().length === 10, {
-      message: "Mobile number must be a 10-digit number",
-    }),
+  mobileNo: z.string().refine(
+    value => {
+      // Check if the first character is not '+'
+      if (value[0] === "+") {
+        return false;
+      }
+      // Check if the value contains only alphanumeric characters
+      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
+      return alphanumericRegex.test(value);
+    },
+    {
+      message: "Mobile number should be alphanumeric and without '+'",
+    },
+  ),
 });
 
 const OTPLogin = () => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [showMobileInput, setShowMobileInput] = useState(false);
   const [loadingResend, setLoadingResend] = useState(false);
-  const [resendTimer, setResendTimer] = useState(30);
-  const [enableResend, setEnableResend] = useState(false);
-
+  const [resendTimer, setResendTimer] = useState(0);
+  const [enableResend, setEnableResend] = useState(true);
+  console.log("resend timer", resendTimer);
   useEffect(() => {
+    console.log("called");
     if (!enableResend && resendTimer > 0) {
       setTimeout(() => {
         setResendTimer(resendTimer - 1);
@@ -49,10 +57,13 @@ const OTPLogin = () => {
     }
 
     setLoadingResend(true);
-
+    const user_info = {
+      mobileNo: form.getValues("mobileNo"),
+    };
+    console.log(typeof Number(form.getValues("mobileNo")));
     try {
-      const response = await postRequest("auth/generate-mobile-otp", form.getValues("mobileNo"));
-
+      const response = await postRequest("auth/generate-mobile-otp", user_info);
+      console.log(response);
       if (!showOtpInput) {
         setShowOtpInput(true);
       }
@@ -68,8 +79,23 @@ const OTPLogin = () => {
   };
 
   const handleOtpLogin = async (data: z.infer<typeof OtpSchema>) => {
+    const user_info = {
+      mobileNo: form.getValues("mobileNo"),
+      otp: form.getValues("otp"),
+    };
     try {
-      const response = await postRequest("auth/verify-mobile-otp", form.getValues);
+      const response = await postRequest("auth/verify-mobile-otp", user_info);
+      if (response.status === 200) {
+        const user_data = {
+          id: response.data.user.id,
+          role: response.data.user.role.name,
+          email: response.data.user.email,
+          isOnBoarded: response.data.isOnBoarded,
+          isVerified: response.data.user.isVerified,
+          profile: response.data.user.profile,
+        };
+      }
+
       //  dispatch(setUser(response));
     } catch (error: any) {
       toast.error(error.message);
@@ -96,14 +122,7 @@ const OTPLogin = () => {
             {showOtpInput ? "Sent" : "Send OTP"}
             {showOtpInput && <CheckCircleIcon className=" w-4 h-4" />}
           </button>
-          <FormTextInput
-            formName="mobileNo"
-            label="Mobile Number"
-            placeholder="Enter Number"
-            required
-            type="number"
-            leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-          />
+          <FormPhoneInput mobileFormName="mobileNo" required />
         </div>
         {showOtpInput && (
           <div
