@@ -268,9 +268,9 @@ const AdminSignUp = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-        <Button className="w-full mt-4" onClick={() => handleGoogleSignUp()}>
+        {/* <Button className="w-full mt-4" onClick={() => handleGoogleSignUp()}>
           Sign up with Google ID
-        </Button>
+        </Button> */}
       </CardContent>
     </Card>
   );

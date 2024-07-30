@@ -25,6 +25,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { Checkbox } from "../ui/checkbox";
 import { postRequest } from "@/lib/config/axios";
+import FormPhoneInput from "../ui/form/form-phone-input";
+import { mobileNoSchema } from "@/lib/validationSchema";
 
 export enum PersonType {
   Influencer = "influencer",
@@ -50,13 +52,7 @@ const FormSchema = z
     profileLink: z.string().url({
       message: "Invalid URL.",
     }),
-    mobileNo: z
-      .number()
-      .int()
-      .positive()
-      .refine(value => value.toString().length === 10, {
-        message: "Mobile number must be a 10-digit number",
-      }),
+    mobileNo: mobileNoSchema,
     message: z.string().optional(),
     personType: z.nativeEnum(PersonType),
     termsCheck: z.boolean().refine(val => val === true, {
@@ -117,14 +113,16 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
               required
               leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
             />
-            <FormTextInput
+            {/* <FormTextInput
               formName="mobileNo"
               label="Enter Mobile Number"
               placeholder="Enter number"
               required
               type="number"
               leftIcon={<DevicePhoneMobileIcon className="text-[#0F172A] w-5 h-5" />}
-            />
+            /> */}
+            <FormPhoneInput mobileFormName="mobileNo" required />
+
             <FormTextInput
               formName="name"
               label={userType === PersonType.Influencer ? "Full Name" : "Brand Name"}
