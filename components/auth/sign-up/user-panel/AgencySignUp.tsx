@@ -33,8 +33,8 @@ import { IBrandResponse } from "@/types/auth/response-types";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 const AgencyOnboardingSchema = z.object({
   AgencyName: z.string().min(1, "First name is required"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().optional(),
+  pocFirstName: z.string().min(1, "First name is required"),
+  pocLastName: z.string().optional(),
   AgencyWebsiteLink: z
     .string()
     .optional()
@@ -44,10 +44,20 @@ const AgencyOnboardingSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  countryCode: z.string().refine(value => value.toString()[0] === "+", {
-    message: "Add '+'",
-  }),
-  mobileNo: z.number().int().positive(),
+  mobileNo: z.string().refine(
+    value => {
+      // Check if the first character is not '+'
+      if (value[0] === "+") {
+        return false;
+      }
+      // Check if the value contains only alphanumeric characters
+      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
+      return alphanumericRegex.test(value);
+    },
+    {
+      message: "Mobile number should be alphanumeric and without '+'",
+    },
+  ),
   termsCheck: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms",
   }),
@@ -111,13 +121,13 @@ const AgencySignUp = ({ className }: { className?: string }) => {
               <FormTextInput formName="AgencyName" label="Agency Name" placeholder="Agency Name" />
               <div className="flex gap-3  w-full">
                 <FormTextInput
-                  formName="firstName"
+                  formName="pocFirstName"
                   label="Agency POC First Name"
                   placeholder="Enter first name"
                   required
                 />
                 <FormTextInput
-                  formName="lastName"
+                  formName="pocLastName"
                   label="Agency POC Last Name"
                   placeholder="Enter last name"
                   required
@@ -130,7 +140,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
                   placeholder="https://www.Agency.com"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
-                <FormPhoneInput codeFormName="countryCode" mobileFormName="mobileNo" required />
+                <FormPhoneInput mobileFormName="mobileNo" required />
               </div>
             </div>
             <hr className="w-full" />

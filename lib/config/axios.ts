@@ -30,9 +30,9 @@ const axiosClient = axios.create({
 } as AxiosClientConfig);
 
 function getAuthToken(): string | null {
-  const token = getCookie("authToken") as string | null;
+  const token = getCookie("token") as string | null;
   if (!token) {
-    console.warn("Auth token not found in cookies");
+    console.error("Auth token not found in cookies");
   }
   return token;
 }
