@@ -11,6 +11,8 @@ import FormTextInput from "@/components/ui/form/form-text-input";
 import { Button } from "@/components/ui/button";
 import { postRequest } from "@/lib/config/axios";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
+import { useDispatch } from "react-redux";
+import { setUser, setUserProfile } from "@/store/UserSlice";
 const OtpSchema = z.object({
   otp: z.number(),
   mobileNo: z.string().refine(
@@ -35,6 +37,7 @@ const OTPLogin = () => {
   const [loadingResend, setLoadingResend] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const [enableResend, setEnableResend] = useState(true);
+  const dispatch = useDispatch();
   console.log("resend timer", resendTimer);
   useEffect(() => {
     console.log("called");
@@ -84,7 +87,7 @@ const OTPLogin = () => {
       otp: form.getValues("otp"),
     };
     try {
-      const response = await postRequest("auth/verify-mobile-otp", user_info);
+      const response: any = await postRequest("auth/verify-mobile-otp", user_info);
       if (response.status === 200) {
         const user_data = {
           id: response.data.user.id,
@@ -92,11 +95,10 @@ const OTPLogin = () => {
           email: response.data.user.email,
           isOnBoarded: response.data.isOnBoarded,
           isVerified: response.data.user.isVerified,
-          profile: response.data.user.profile,
         };
+        dispatch(setUser(user_data));
+        dispatch(setUserProfile(response.data.user.profile));
       }
-
-      //  dispatch(setUser(response));
     } catch (error: any) {
       toast.error(error.message);
     } finally {
