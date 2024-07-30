@@ -161,6 +161,7 @@ const LoginForm = ({ className }: { className?: string }) => {
                         await postRequest("auth/reset-password-email", {
                           email: form.getValues("email"),
                         });
+                        toast.success("Password reset link sent to your email id");
                       } else {
                         form.setError(
                           "email",
