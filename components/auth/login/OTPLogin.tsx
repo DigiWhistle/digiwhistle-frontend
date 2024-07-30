@@ -14,7 +14,7 @@ import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import { useDispatch } from "react-redux";
 import { setUser, setUserProfile } from "@/store/UserSlice";
 const OtpSchema = z.object({
-  otp: z.number(),
+  otp: z.string(),
   mobileNo: z.string().refine(
     value => {
       // Check if the first character is not '+'
@@ -86,6 +86,7 @@ const OTPLogin = () => {
       mobileNo: form.getValues("mobileNo"),
       otp: form.getValues("otp"),
     };
+    console.log(typeof user_info, user_info);
     try {
       const response: any = await postRequest("auth/verify-mobile-otp", user_info);
       if (response.status === 200) {
@@ -127,42 +128,44 @@ const OTPLogin = () => {
           <FormPhoneInput mobileFormName="mobileNo" required />
         </div>
         {showOtpInput && (
-          <div
-            className="flex flex-col w-full"
-            data-aos="zoom-in"
-            data-aos-easing="linear"
-            data-aos-duration="100"
-          >
-            <FormTextInput
-              formName="otp"
-              label="Enter OTP"
-              placeholder="Enter OTP"
-              required
-              leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
-            />
-            <button
-              className="text-sm underline self-end mt-1"
-              type="button"
-              onClick={handleSendOtp}
-              disabled={!enableResend}
+          <>
+            <div
+              className="flex flex-col w-full"
+              data-aos="zoom-in"
+              data-aos-easing="linear"
+              data-aos-duration="100"
             >
-              <p>
-                {enableResend ? (
-                  loadingResend ? (
-                    <>
-                      <span className="loading loading-spinner loading-sm">Sending OTP ...</span>
-                    </>
+              <FormTextInput
+                formName="otp"
+                label="Enter OTP"
+                placeholder="Enter OTP"
+                required
+                leftIcon={<LockClosedIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <button
+                className="text-sm underline self-end mt-1"
+                type="button"
+                onClick={handleSendOtp}
+                disabled={!enableResend}
+              >
+                <p>
+                  {enableResend ? (
+                    loadingResend ? (
+                      <>
+                        <span className="loading loading-spinner loading-sm">Sending OTP ...</span>
+                      </>
+                    ) : (
+                      <span>Resend OTP</span>
+                    )
                   ) : (
-                    <span>Resend OTP</span>
-                  )
-                ) : (
-                  <span>Resend OTP in {resendTimer} seconds</span>
-                )}
-              </p>
-            </button>
-          </div>
+                    <span>Resend OTP in {resendTimer} seconds</span>
+                  )}
+                </p>
+              </button>
+            </div>
+            <Button className="w-full ">Login using OTP on Whatsapp</Button>
+          </>
         )}
-        <Button className="w-full ">Login using OTP on Whatsapp</Button>
       </form>
     </Form>
   ) : (
