@@ -55,12 +55,13 @@ const OTPLogin = () => {
     try {
       const response = await postRequest("auth/generate-mobile-otp", user_info);
       console.log(response);
-      if (!showOtpInput) {
-        setShowOtpInput(true);
-      }
+
       if (response.error) {
         toast.error(response.error);
       } else {
+        if (!showOtpInput) {
+          setShowOtpInput(true);
+        }
         toast.success("OTP sent!");
       }
 
