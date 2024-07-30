@@ -33,7 +33,7 @@ import { setUserProfile, User } from "@/store/UserSlice";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 
 const BrandOnboardingSchema = z.object({
-  BrandName: z.string().min(1, "First name is required"),
+  name: z.string().min(1, "First name is required"),
   pocFirstName: z.string().min(1, "First name is required"),
   pocLastName: z.string().optional(),
   websiteURL: z

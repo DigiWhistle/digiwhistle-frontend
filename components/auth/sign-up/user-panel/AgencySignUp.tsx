@@ -32,7 +32,7 @@ import { useRouter } from "next/navigation";
 import { IBrandResponse } from "@/types/auth/response-types";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 const AgencyOnboardingSchema = z.object({
-  AgencyName: z.string().min(1, "First name is required"),
+  name: z.string().min(1, "First name is required"),
   pocFirstName: z.string().min(1, "First name is required"),
   pocLastName: z.string().optional(),
   AgencyWebsiteLink: z
