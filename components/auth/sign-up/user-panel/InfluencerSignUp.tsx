@@ -56,7 +56,7 @@ const InfluencerOnboardingSchema = z.object({
         message: "Please provide a valid YouTube URL",
       },
     ),
-  X_Link: z
+  twitterURL: z
     .string()
     .optional()
     .refine(
@@ -166,7 +166,7 @@ const InfluencerSignUp = ({ className }: { className?: string }) => {
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
                 />
                 <FormTextInput
-                  formName="X_Link"
+                  formName="twitterURL"
                   label="X Profile Link"
                   placeholder="https://www.x.com/username/"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}

@@ -31,11 +31,12 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setUserProfile, User } from "@/store/UserSlice";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
+
 const BrandOnboardingSchema = z.object({
   BrandName: z.string().min(1, "First name is required"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().optional(),
-  BrandWebsiteLink: z
+  pocFirstName: z.string().min(1, "First name is required"),
+  pocLastName: z.string().optional(),
+  websiteURL: z
     .string()
     .optional()
     .refine(
@@ -44,7 +45,6 @@ const BrandOnboardingSchema = z.object({
         message: "Please provide a valid URL",
       },
     ),
-  countryCode: z.string(),
   mobileNo: z.string().refine(
     value => {
       // Check if the first character is not '+'
@@ -122,13 +122,13 @@ const BrandSignUp = ({ className }: { className?: string }) => {
               <FormTextInput formName="BrandName" label="Brand Name" placeholder="Brand Name" />
               <div className="flex gap-3  w-full">
                 <FormTextInput
-                  formName="firstName"
+                  formName="pocFirstName"
                   label="Brand POC First Name"
                   placeholder="Enter first name"
                   required
                 />
                 <FormTextInput
-                  formName="lastName"
+                  formName="pocLastName"
                   label="Brand POC Last Name"
                   placeholder="Enter last name"
                   required
@@ -136,7 +136,7 @@ const BrandSignUp = ({ className }: { className?: string }) => {
               </div>
               <div className="w-full space-y-4">
                 <FormTextInput
-                  formName="BrandWebsiteLink"
+                  formName="websiteURL"
                   label="Brand Website Link"
                   placeholder="https://www.Brand.com"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
