@@ -119,7 +119,7 @@ const BrandSignUp = ({ className }: { className?: string }) => {
             onSubmit={form.handleSubmit(handleBrandOnboarding)}
           >
             <div className="flex flex-col w-full gap-4 ">
-              <FormTextInput formName="BrandName" label="Brand Name" placeholder="Brand Name" />
+              <FormTextInput formName="name" label="Brand Name" placeholder="Brand Name" />
               <div className="flex gap-3  w-full">
                 <FormTextInput
                   formName="pocFirstName"

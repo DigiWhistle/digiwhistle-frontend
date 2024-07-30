@@ -118,7 +118,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
             onSubmit={form.handleSubmit(handleAgencyOnboarding)}
           >
             <div className="flex flex-col w-full gap-4 ">
-              <FormTextInput formName="AgencyName" label="Agency Name" placeholder="Agency Name" />
+              <FormTextInput formName="name" label="Agency Name" placeholder="Agency Name" />
               <div className="flex gap-3  w-full">
                 <FormTextInput
                   formName="pocFirstName"
