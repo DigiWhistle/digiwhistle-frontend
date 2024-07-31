@@ -117,7 +117,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
         isOnBoarded: false,
         isVerified: result.data.isVerified,
       };
-      toast.success(result.message);
+      toast.success("Signed up successfully. Please complete your profile");
       dispatch(setUser(user_info));
       router.push("/onboarding");
       form.reset();

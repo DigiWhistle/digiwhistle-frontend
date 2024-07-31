@@ -61,7 +61,8 @@ const InfluencerOnboardingSchema = z.object({
     .string()
     .optional()
     .refine(
-      value => !value || /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]+\/?$/.test(value),
+      value =>
+        !value || /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+\/?$/.test(value),
       {
         message: "Please provide a valid X (Twitter) URL",
       },

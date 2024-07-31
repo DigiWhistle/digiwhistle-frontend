@@ -80,7 +80,6 @@ const AdminSignUp = ({ className }: { className?: string }) => {
           mobileNo: data.mobileNo,
           user: result.data.id,
         });
-        console.log(respond);
         if (respond.data) {
           const user_info = {
             id: result.data.id,
@@ -98,11 +97,11 @@ const AdminSignUp = ({ className }: { className?: string }) => {
           } else {
             router.push("/admin/dashboard");
           }
+          toast.success(result.message);
         } else if (respond.error) {
           toast.error(respond.error);
         }
 
-        toast.success(result.message);
         form.reset();
       } else if (result.error) {
         toast.error(result.error);

@@ -156,16 +156,34 @@ const LoginForm = ({ className }: { className?: string }) => {
                     type="button"
                     className="self-end mt-1 text-sm underline"
                     onClick={async () => {
+                      const email = form.getValues("email");
+                      const isValidEmail = LoginSchema.shape.email.safeParse(email).success;
+                      if (!isValidEmail) {
+                        form.setError(
+                          "email",
+                          { message: "Enter a valid email address" },
+                          { shouldFocus: true },
+                        );
+                        return;
+                      }
                       if (form.getValues("email")) {
                         form.clearErrors("email");
-                        await postRequest("auth/reset-password-email", {
+                        const response = await postRequest("auth/reset-password-email", {
                           email: form.getValues("email"),
                         });
+                        if (response.error) {
+                          form.setError(
+                            "email",
+                            { message: response.error },
+                            { shouldFocus: true },
+                          );
+                          return;
+                        }
                         toast.success("Password reset link sent to your email id");
                       } else {
                         form.setError(
                           "email",
-                          { message: "Enter your email id" },
+                          { message: "PLease enter a valid email" },
                           { shouldFocus: true },
                         );
                       }

@@ -31,16 +31,7 @@ export default function RootLayout({
         <ReduxProvider>
           <Providers>{children}</Providers>
         </ReduxProvider>
-        <Toaster
-          position="top-center"
-          expand={true}
-          richColors
-          toastOptions={{
-            style: {
-              background: "white",
-            },
-          }}
-        />
+        <Toaster position="top-center" expand={true} richColors theme="light" />
       </body>
     </html>
   );
