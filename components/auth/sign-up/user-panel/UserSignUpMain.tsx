@@ -117,7 +117,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
         isOnBoarded: false,
         isVerified: result.data.isVerified,
       };
-      toast.success("Signed up successfully. Please complete your profile");
+      toast.success(result.message);
       dispatch(setUser(user_info));
       router.push("/onboarding");
       form.reset();
@@ -204,7 +204,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
                 loading={form.formState.isSubmitting}
                 disabled={form.formState.isSubmitting}
               >
-                Create Account
+                Proceed
               </Button>
             </div>
           </form>
