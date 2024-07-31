@@ -19,7 +19,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         if (getCookie("token") && getCookie("role")) {
           const role = getCookie("role");
           const response = await getAuthorizedRequest<IUser>(`${role}/profile`);
-          console.log(response);
           if (response.data) {
             dispatch(setUser(response.data));
           } else if (response.error) {

@@ -26,9 +26,8 @@ const OTPLogin = () => {
   const [resendTimer, setResendTimer] = useState(0);
   const [enableResend, setEnableResend] = useState(true);
   const dispatch = useDispatch();
-  console.log("resend timer", resendTimer);
+
   useEffect(() => {
-    console.log("called");
     if (!enableResend && resendTimer > 0) {
       setTimeout(() => {
         setResendTimer(resendTimer - 1);
@@ -51,10 +50,8 @@ const OTPLogin = () => {
     const user_info = {
       mobileNo: form.getValues("mobileNo"),
     };
-    console.log(typeof Number(form.getValues("mobileNo")));
     try {
       const response = await postRequest("auth/generate-mobile-otp", user_info);
-      console.log(response);
 
       if (response.error) {
         toast.error(response.error);
@@ -79,7 +76,6 @@ const OTPLogin = () => {
       mobileNo: form.getValues("mobileNo"),
       otp: form.getValues("otp"),
     };
-    console.log(typeof user_info, user_info);
     try {
       const response: any = await postRequest("auth/verify-mobile-otp", user_info);
       if (response.error) {

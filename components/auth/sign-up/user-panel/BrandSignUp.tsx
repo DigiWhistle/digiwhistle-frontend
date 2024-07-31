@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setUserProfile, User } from "@/store/UserSlice";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
-import { mobileNoSchema } from "@/lib/validationSchema";
+import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 
 const BrandOnboardingSchema = z.object({
   name: z.string().min(1, "First name is required"),
@@ -47,9 +47,7 @@ const BrandOnboardingSchema = z.object({
       },
     ),
   mobileNo: mobileNoSchema,
-  termsCheck: z.boolean().refine(val => val === true, {
-    message: "You must agree to the terms",
-  }),
+  termsCheck: termsCheckSchema,
 });
 
 const BrandSignUp = ({ className }: { className?: string }) => {

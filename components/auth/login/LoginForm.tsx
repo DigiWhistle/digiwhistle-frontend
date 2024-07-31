@@ -96,8 +96,7 @@ const LoginForm = ({ className }: { className?: string }) => {
         ) {
           router.push("/onboarding");
         }
-      }
-      if (!result.data.user.isVerified) {
+      } else if (!result.data.user.isVerified) {
         toast.info("Please wait for admin approval");
       } else {
         setCookie("token", result.data.token);

@@ -11,3 +11,6 @@ export const mobileNoSchema = z.string().refine(
     message: "Invalid phone number",
   },
 );
+export const termsCheckSchema = z.boolean().refine(val => val === true, {
+  message: "You must agree to the terms",
+});

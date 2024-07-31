@@ -44,10 +44,7 @@ const FormPhoneInput = ({
   inputCN,
 }: IFormTextInputProps) => {
   const { control, watch } = useFormContext();
-  console.log(
-    watch(mobileFormName),
-    watch(mobileFormName) ? isValidPhoneNumber(watch(mobileFormName)) : "",
-  );
+
   return (
     <div className="flex flex-col w-full gap-2 ">
       <FormLabel className="text-sm font-medium text-black ">

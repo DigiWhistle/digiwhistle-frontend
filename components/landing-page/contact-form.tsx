@@ -26,7 +26,7 @@ import {
 import { Checkbox } from "../ui/checkbox";
 import { postRequest } from "@/lib/config/axios";
 import FormPhoneInput from "../ui/form/form-phone-input";
-import { mobileNoSchema } from "@/lib/validationSchema";
+import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 
 export enum PersonType {
   Influencer = "influencer",
@@ -55,9 +55,7 @@ const FormSchema = z
     mobileNo: mobileNoSchema,
     message: z.string().optional(),
     personType: z.nativeEnum(PersonType),
-    termsCheck: z.boolean().refine(val => val === true, {
-      message: "You must agree to the terms",
-    }),
+    termsCheck: termsCheckSchema,
   })
   .superRefine((data, ctx) => {
     if (data.personType === "influencer" && data.followersCount === undefined) {
@@ -78,7 +76,6 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data);
     try {
       const formData = {
         name: data.name,
@@ -90,7 +87,6 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
         personType: data.personType,
       };
       await postRequest("contactUs", formData);
-      // console.log(response);
     } catch (error) {
       console.log(error);
     } finally {

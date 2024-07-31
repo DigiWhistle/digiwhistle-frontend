@@ -31,7 +31,7 @@ import { setUserProfile, User } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
-import { mobileNoSchema } from "@/lib/validationSchema";
+import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 const InfluencerOnboardingSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
@@ -50,11 +50,9 @@ const InfluencerOnboardingSchema = z.object({
     .refine(
       value =>
         !value ||
-        /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/|c\/|user\/)?[A-Za-z0-9_-]+|youtu\.be\/[A-Za-z0-9_-]+)(\/.*)?$/.test(
-          value,
-        ),
+        /^(https?:\/\/)?(www\.)?youtube\.com\/(channel\/|c\/|user\/|@)[\w-]{1,}/.test(value),
       {
-        message: "Please provide a valid YouTube URL",
+        message: "Please provide a valid YouTube channel or user URL",
       },
     ),
   twitterURL: z
@@ -68,9 +66,7 @@ const InfluencerOnboardingSchema = z.object({
       },
     ),
   mobileNo: mobileNoSchema,
-  termsCheck: z.boolean().refine(val => val === true, {
-    message: "You must agree to the terms",
-  }),
+  termsCheck: termsCheckSchema,
 });
 
 const InfluencerSignUp = ({ className }: { className?: string }) => {

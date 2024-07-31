@@ -31,12 +31,12 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { IBrandResponse } from "@/types/auth/response-types";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
-import { mobileNoSchema } from "@/lib/validationSchema";
+import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 const AgencyOnboardingSchema = z.object({
   name: z.string().min(1, "First name is required"),
   pocFirstName: z.string().min(1, "First name is required"),
   pocLastName: z.string().optional(),
-  AgencyWebsiteLink: z
+  websiteURL: z
     .string()
     .optional()
     .refine(
@@ -46,9 +46,7 @@ const AgencyOnboardingSchema = z.object({
       },
     ),
   mobileNo: mobileNoSchema,
-  termsCheck: z.boolean().refine(val => val === true, {
-    message: "You must agree to the terms",
-  }),
+  termsCheck: termsCheckSchema,
 });
 
 const AgencySignUp = ({ className }: { className?: string }) => {
@@ -123,7 +121,7 @@ const AgencySignUp = ({ className }: { className?: string }) => {
               </div>
               <div className="w-full space-y-4">
                 <FormTextInput
-                  formName="AgencyWebsiteLink"
+                  formName="websiteURL"
                   label="Agency Website Link"
                   placeholder="https://www.Agency.com"
                   leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}

@@ -30,7 +30,7 @@ import { useRouter } from "next/navigation";
 import { IAdminResponse, ISignUpResponse } from "@/types/auth/response-types";
 import { useAppDispatch } from "@/lib/config/store";
 import { isValidPhoneNumber } from "react-phone-number-input";
-import { mobileNoSchema } from "@/lib/validationSchema";
+import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 
 enum Role {
   Admin = "admin",
@@ -46,9 +46,7 @@ const adminSignUpSchema = z
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
     mobileNo: mobileNoSchema,
-    termsCheck: z.boolean().refine(val => val === true, {
-      message: "You must agree to the terms",
-    }),
+    termsCheck: termsCheckSchema,
   })
   .refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",

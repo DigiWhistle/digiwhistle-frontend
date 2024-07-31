@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import { User, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { ISignUpResponse } from "@/types/auth/response-types";
+import { termsCheckSchema } from "@/lib/validationSchema";
 
 enum Role {
   Influencer = "influencer",
@@ -43,7 +44,7 @@ const signUpSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters"),
-    remember: z.boolean(),
+    termsCheck: termsCheckSchema,
   })
   .refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -183,7 +184,7 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
             <div className="w-full space-y-4">
               <FormField
                 control={form.control}
-                name="remember"
+                name="termsCheck"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0  ">
                     <FormControl>
