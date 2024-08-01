@@ -14,6 +14,7 @@ import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import { useDispatch } from "react-redux";
 import { setUser, setUserProfile } from "@/store/UserSlice";
 import { mobileNoSchema } from "@/lib/validationSchema";
+import Image from "next/image";
 const OtpSchema = z.object({
   otp: z.string(),
   mobileNo: mobileNoSchema,
@@ -160,9 +161,13 @@ const OTPLogin = () => {
       </form>
     </Form>
   ) : (
-    <Button className="w-full " onClick={() => setShowMobileInput(true)}>
-      Login using OTP on Whatsapp
-    </Button>
+    <button
+      className="w-full border rounded-full bg-[#25D366]  text-white h-10 flex items-center justify-center gap-4 hover:opacity-90"
+      onClick={() => setShowMobileInput(true)}
+    >
+      <Image src="/assets/icons/whatsapp.svg" alt="whatsapp icon" width={25} height={25} />
+      Sign in with Whatsapp
+    </button>
   );
 };
 

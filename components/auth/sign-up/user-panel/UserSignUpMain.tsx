@@ -31,6 +31,7 @@ import { User, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { ISignUpResponse } from "@/types/auth/response-types";
 import { termsCheckSchema } from "@/lib/validationSchema";
+import Image from "next/image";
 
 enum Role {
   Influencer = "influencer",
@@ -210,8 +211,12 @@ const UserSignUpMain = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-        <Button className="w-full mt-4" onClick={() => handleGoogleSignUp()}>
-          Use Google ID and Proceed
+        <Button
+          className="w-full h-10 border rounded-full bg-white flex items-center justify-center gap-4 hover:opacity-85 mt-4"
+          onClick={() => handleGoogleSignUp()}
+        >
+          <Image src="/assets/icons/google.svg" alt="google icon" width={20} height={20} />
+          Sign up with Google
         </Button>
       </CardContent>
     </Card>

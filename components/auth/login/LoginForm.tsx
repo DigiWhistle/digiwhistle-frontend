@@ -25,6 +25,7 @@ import { IUser, User, UserRole, setUser } from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { ILoginResponse } from "@/types/auth/response-types";
+import Image from "next/image";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -199,13 +200,17 @@ const LoginForm = ({ className }: { className?: string }) => {
               loading={form.formState.isSubmitting}
               disabled={form.formState.isSubmitting}
             >
-              Login using email id
+              Sign in
             </Button>
           </form>
         </Form>
-        <Button className="w-full " onClick={() => handleGoogleLogIn()}>
-          Login with Google ID
-        </Button>
+        <button
+          className="w-full h-10 border rounded-full bg-white flex items-center justify-center gap-4 hover:opacity-85"
+          onClick={() => handleGoogleLogIn()}
+        >
+          <Image src="/assets/icons/google.svg" alt="google icon" width={20} height={20} />
+          Sign in with Google
+        </button>
         <div className="relative inline-flex items-center justify-center w-full">
           <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
