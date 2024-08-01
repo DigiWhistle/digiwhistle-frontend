@@ -78,7 +78,7 @@ const OTPLogin = () => {
     };
     try {
       const response: any = await postRequest("auth/verify-mobile-otp", user_info);
-      if (response.error) {
+      if (response.data) {
         const user_data = {
           id: response.data.user.id,
           role: response.data.user.role.name,
