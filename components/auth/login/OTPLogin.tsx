@@ -155,7 +155,13 @@ const OTPLogin = () => {
                 </p>
               </button>
             </div>
-            <Button className="w-full ">Login using OTP on Whatsapp</Button>
+            <button
+              type="submit"
+              className="w-full border rounded-full bg-[#25D366]  text-white h-10 flex items-center justify-center gap-4 hover:opacity-90"
+            >
+              <Image src="/assets/icons/whatsapp.svg" alt="whatsapp icon" width={25} height={25} />
+              Sign in with Whatsapp
+            </button>
           </>
         )}
       </form>
