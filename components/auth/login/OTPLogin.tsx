@@ -157,7 +157,7 @@ const OTPLogin = () => {
             </div>
             <button
               type="submit"
-              className="w-full border rounded-full bg-[#25D366]  text-white h-10 flex items-center justify-center gap-4 hover:opacity-90"
+              className="w-full border rounded-md bg-white h-12 flex items-center justify-center gap-4 hover:opacity-90"
             >
               <Image src="/assets/icons/whatsapp.svg" alt="whatsapp icon" width={25} height={25} />
               Sign in with Whatsapp
@@ -168,7 +168,7 @@ const OTPLogin = () => {
     </Form>
   ) : (
     <button
-      className="w-full border rounded-full bg-[#25D366]  text-white h-10 flex items-center justify-center gap-4 hover:opacity-90"
+      className="w-full border rounded-md bg-white h-12 flex items-center justify-center gap-4 hover:opacity-90"
       onClick={() => setShowMobileInput(true)}
     >
       <Image src="/assets/icons/whatsapp.svg" alt="whatsapp icon" width={25} height={25} />

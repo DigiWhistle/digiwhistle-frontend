@@ -196,7 +196,7 @@ const LoginForm = ({ className }: { className?: string }) => {
             </div>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full md:w-4/5"
               loading={form.formState.isSubmitting}
               disabled={form.formState.isSubmitting}
             >
@@ -204,19 +204,22 @@ const LoginForm = ({ className }: { className?: string }) => {
             </Button>
           </form>
         </Form>
+
+        <div className="relative inline-flex items-center justify-center w-full">
+          <hr className="w-full h-px my-4 bg-gray-200 border-0  mb-6" />
+          <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
+        </div>
+      </CardContent>
+      <div className="flex flex-col md:flex-row gap-4">
+        <OTPLogin />
         <button
-          className="w-full h-10 border rounded-full bg-white flex items-center justify-center gap-4 hover:opacity-85"
+          className="w-full h-12 border rounded-md bg-white flex items-center justify-center gap-4 hover:opacity-85"
           onClick={() => handleGoogleLogIn()}
         >
           <Image src="/assets/icons/google.svg" alt="google icon" width={20} height={20} />
           Sign in with Google
         </button>
-        <div className="relative inline-flex items-center justify-center w-full">
-          <hr className="w-full h-px my-4 bg-gray-200 border-0 " />
-          <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 text-sm">OR</div>
-        </div>
-      </CardContent>
-      <OTPLogin />
+      </div>
     </Card>
   );
 };
