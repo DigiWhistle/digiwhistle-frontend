@@ -19,7 +19,7 @@ const OnBoarding = () => {
     if (user.role === "influencer" || user.role === "agency" || user.role === "brand") {
       router.push("/user/dashboard");
     } else if (user.role === "admin" || user.role === "employee") {
-      router.push("/admin/dashboard");
+      router.push("/admin/new-requests");
     }
     return null;
   } else if (user.isOnBoarded) {

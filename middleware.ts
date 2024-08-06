@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
         request.cookies.get("role")?.value === "admin" ||
         request.cookies.get("role")?.value === "employee"
       ) {
-        response = NextResponse.redirect(new URL("/admin/dashboard", request.url));
+        response = NextResponse.redirect(new URL("/admin/new-requests", request.url));
       } else if (
         request.cookies.get("role")?.value === "influencer" ||
         request.cookies.get("role")?.value === "brand" ||

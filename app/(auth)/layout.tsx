@@ -13,7 +13,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   // if (user) {
   //   if (role === "admin" || role === "employee") {
-  //     router.push("/admin/dashboard");
+  //     router.push("/admin/new-requests");
   //   } else if (role === "influencer" || role === "brand" || role === "agency") {
   //     router.push("/user/dashboard");
   //   }
@@ -21,7 +21,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   // if (authUser) {
   //   if (authUser.role === "admin" || authUser.role === "employee") {
-  //     router.push("/admin/dashboard");
+  //     router.push("/admin/new-requests");
   //   } else if (
   //     authUser.role === "influencer" ||
   //     authUser.role === "brand" ||

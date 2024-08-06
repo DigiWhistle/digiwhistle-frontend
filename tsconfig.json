@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,29 +12,27 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
+    "types": ["@tanstack/react-table"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-  ]
+    ".next/types/**/*.ts",
+    "node_modules/@tanstack/react-table/dist/index.d.ts"
+  ],
   // "exclude": ["node_modules"]
   // "exclude": [
   //   "node_modules"
   // ]
-  ,
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

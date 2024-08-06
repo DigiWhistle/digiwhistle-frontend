@@ -93,7 +93,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
           if (!result.data.isVerified) {
             toast.info("Please wait for admin approval");
           } else {
-            router.push("/admin/dashboard");
+            router.push("/admin/new-requests");
           }
           toast.success(result.message);
         } else if (respond.error) {
@@ -141,7 +141,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
         if (!result.data.isVerified) {
           toast.info("Please wait for admin approval");
         } else {
-          router.push("/admin/dashboard");
+          router.push("/admin/new-requests");
         }
         form.reset();
       } else if (result.error) {

@@ -2,13 +2,14 @@
 
 import React from "react";
 import { useState } from "react";
-import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
-const logosvg = "./assets/navbar/logo.svg";
-const bars = "./assets/navbar/bars.svg";
 import { UserIcon } from "@heroicons/react/24/outline";
-const Dashboard_Navbar = () => {
+
+const logosvg = "/assets/navbar/logo.svg";
+const bars = "/assets/navbar/bars.svg";
+
+const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -42,4 +43,4 @@ const Dashboard_Navbar = () => {
   );
 };
 
-export default Dashboard_Navbar;
+export default AdminNavbar;

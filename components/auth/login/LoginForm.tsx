@@ -104,7 +104,7 @@ const LoginForm = ({ className }: { className?: string }) => {
         setCookie("role", result.data.user.role);
 
         if (result.data.user.role === "admin" || result.data.user.role === "employee") {
-          router.push("/admin/dashboard");
+          router.push("/admin/new-requests");
         } else if (
           result.data.user.role === "influencer" ||
           result.data.user.role === "brand" ||
