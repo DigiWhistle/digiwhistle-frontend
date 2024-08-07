@@ -5,19 +5,24 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
+import { User, UserRole } from "@/store/UserSlice";
 
 const logosvg = "/assets/navbar/logo.svg";
 const bars = "/assets/navbar/bars.svg";
-
-const AdminNavbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+interface AdminNavbarinterface {
+  drawerView: boolean;
+  setDrawerView: any;
+}
+const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
+  const userInfo = useSelector(User);
+  console.log("usetr", userInfo);
   return (
     <>
       <nav className="flex bg-transparent justify-center w-full sticky top-0 z-50 ">
         <div className="relative flex max-w-[1440px] w-full  bg-[#333333] rounded-full mx-3 md:mx-11 my-5  justify-between px-4 py-3">
           <div className="flex items-center ">
-            <button className="lg:hidden mr-2" onClick={() => setIsOpen(!isOpen)}>
+            <button className="lg:hidden mr-2" onClick={() => setDrawerView(!drawerView)}>
               <img src={bars} alt="|||" />
             </button>
             <button className="bg-white px-4 py-2 rounded-full">
