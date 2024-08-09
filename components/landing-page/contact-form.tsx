@@ -27,10 +27,11 @@ import { Checkbox } from "../ui/checkbox";
 import { postRequest } from "@/lib/config/axios";
 import FormPhoneInput from "../ui/form/form-phone-input";
 import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
+import { toast } from "sonner";
 
 export enum PersonType {
-  Influencer = "influencer",
-  Brand = "brand",
+  Influencer = "Influencer",
+  Brand = "Brand",
 }
 
 const FormSchema = z
@@ -42,12 +43,16 @@ const FormSchema = z
       message: "Invalid email address.",
     }),
     followersCount: z
-      .nativeEnum({
-        LessThan250k: "less than 250k",
-        Between250kAnd500k: "250k to 500k",
-        Between500kAnd750k: "500k to 750k",
-        MoreThan750k: "greater than 750k",
-      })
+      .union([
+        z.nativeEnum({
+          LessThan250k: "less than 250k",
+          Between250kAnd500k: "250k to 500k",
+          Between500kAnd750k: "500k to 750k",
+          MoreThan750k: "greater than 750k",
+        }),
+        z.null(),
+        z.undefined(),
+      ])
       .optional(),
     profileLink: z.string().url({
       message: "Invalid URL.",
@@ -58,7 +63,7 @@ const FormSchema = z
     termsCheck: termsCheckSchema,
   })
   .superRefine((data, ctx) => {
-    if (data.personType === "influencer" && data.followersCount === undefined) {
+    if (data.personType === "Influencer" && data.followersCount === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Followers count is required ",
@@ -71,27 +76,27 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      followersCount: undefined,
       personType: userType,
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      const formData = {
-        name: data.name,
-        email: data.email,
-        followersCount: data.followersCount,
-        profileLink: data.profileLink,
-        mobileNo: data.mobileNo,
-        message: data.message,
-        personType: data.personType,
-      };
-      await postRequest("contactUs", formData);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      form.reset();
+    const formData = {
+      name: data.name,
+      email: data.email,
+      followersCount: data.followersCount,
+      profileLink: data.profileLink,
+      mobileNo: data.mobileNo,
+      message: data.message,
+      personType: data.personType,
+    };
+    const response = await postRequest("contactUs", formData);
+    if (response.error) {
+      toast.error(response.error);
+      return;
     }
+    form.reset();
   }
 
   return (
@@ -148,7 +153,6 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
                     <RadioGroup
                       onValueChange={field.onChange}
                       value={field.value || undefined}
-                      defaultValue={field.value}
                       className="flex flex-wrap gap-2 justify-between"
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -192,6 +196,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
                   <Textarea
                     className="h-full"
                     {...field}
+                    value={field.value || ""}
                     placeholder="Please type your message here"
                   />
                 </FormControl>

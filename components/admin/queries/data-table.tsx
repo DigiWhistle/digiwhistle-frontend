@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { DataTablePagination } from "../../../lib/pagination";
+import { DataTablePagination } from "../lib/pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

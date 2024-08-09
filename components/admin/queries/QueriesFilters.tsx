@@ -8,21 +8,22 @@ import { fetchBrandRequestsData } from "@/store/admin/new-requests/BrandRequests
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PAGE_LIMIT } from ".";
+import { PAGE_LIMIT } from "./QueriesTable";
 import { debounce } from "lodash";
 import { usePathname, useRouter } from "next/navigation";
+import { fetchQueriesTableData } from "@/store/admin/queries/QueriesTableSlice";
 
-const BrandFilters = () => {
+const QueriesFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const currentPath = usePathname();
-  const [approved, setApproved] = useState(false);
-  const [rejected, setRejected] = useState(false);
+  const [influencerCheck, setInfluencerCheck] = useState(false);
+  const [brandCheck, setBrandCheck] = useState(false);
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
-      dispatch(fetchBrandRequestsData({ page: 1, limit: PAGE_LIMIT, name: query }));
+      dispatch(fetchQueriesTableData({ page: 1, limit: PAGE_LIMIT, name: query }));
     }, 300),
     [dispatch, PAGE_LIMIT],
   );
@@ -55,41 +56,42 @@ const BrandFilters = () => {
       <div className="flex gap-2 items-center">
         <div className="flex items-center space-x-2">
           <Switch
-            id="approve-only"
+            id="brands-only"
             onCheckedChange={value => {
-              setApproved(value);
+              setBrandCheck(value);
               dispatch(
-                fetchBrandRequestsData({
+                fetchQueriesTableData({
                   page: 1,
                   limit: PAGE_LIMIT,
-                  approved: value,
-                  rejected: rejected,
+                  brands: value,
+                  influencer: influencerCheck,
                 }),
               );
             }}
           />
-          <Label htmlFor="approve-only">Approve only</Label>
+          <Label htmlFor="brands-only">Brands only</Label>
         </div>
         <div className="flex items-center space-x-2">
           <Switch
-            id="rejected-only"
+            id="influencer-only"
+            checked={influencerCheck}
             onCheckedChange={value => {
-              setRejected(value);
+              setInfluencerCheck(value);
               dispatch(
-                fetchBrandRequestsData({
+                fetchQueriesTableData({
                   page: 1,
                   limit: PAGE_LIMIT,
-                  approved: approved,
-                  rejected: value,
+                  brands: brandCheck,
+                  influencer: value,
                 }),
               );
             }}
           />
-          <Label htmlFor="rejected-only">Rejected only</Label>
+          <Label htmlFor="influencer-only">Influencers only</Label>
         </div>
       </div>
     </div>
   );
 };
 
-export default BrandFilters;
+export default QueriesFilters;

@@ -19,7 +19,7 @@ import { AppDispatch, useAppSelector } from "@/lib/config/store";
 import type { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { PAGE_LIMIT } from ".";
+import { PAGE_LIMIT } from "../new-requests/TableSection/brand-table";
 
 import {
   Pagination,
