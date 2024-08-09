@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname } from "next/navigation";
 
-export const PAGE_LIMIT = 2;
+export const PAGE_LIMIT = 5;
 const BrandTable = () => {
   const currentPath = usePathname();
   const dispatch: AppDispatch = useDispatch();
@@ -28,7 +28,7 @@ const BrandTable = () => {
   }, []);
 
   const updateData = useCallback(
-    (id: string, isApproved: boolean) => {
+    (id: string, isApproved: boolean | null) => {
       dispatch(updateBrandApproval({ id, isApproved }));
     },
     [dispatch],
@@ -37,7 +37,7 @@ const BrandTable = () => {
   const columns = useMemo(() => createColumns(updateData), [updateData]);
   return (
     <div className="py-10">
-      <DataTable columns={columns} data={data.data} totalPages={data.totalPages} />
+      <DataTable columns={columns} data={data.data} allData={data} />
     </div>
   );
 };

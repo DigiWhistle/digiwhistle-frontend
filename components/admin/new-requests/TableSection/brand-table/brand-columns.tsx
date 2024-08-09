@@ -21,10 +21,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
 
-interface ExtendedTableMeta extends TableMeta<Brand> {
-  rerender: () => void;
-}
-
 export type Brand = {
   id: string;
   name: string;
@@ -36,13 +32,13 @@ export type Brand = {
     id: string;
     email: string;
     isVerified: boolean;
-    isApproved: boolean;
+    isApproved: boolean | null;
     isPaused: boolean;
   };
 };
 
 export const createColumns = (
-  updateData: (id: string, value: boolean) => void,
+  updateData: (id: string, value: boolean | null) => void,
 ): ColumnDef<Brand>[] => [
   {
     accessorKey: "name",
@@ -109,7 +105,19 @@ export const createColumns = (
       if (isApproved) {
         return (
           <div className=" flex gap-2  items-center">
-            <button type="button">
+            <button
+              type="button"
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/revertAction", {
+                  userId: row.original.user.id,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  updateData(row.original.id, null);
+                }
+              }}
+            >
               <ArrowUturnLeftIcon className="h-4 w-4 " />
             </button>
             <p className="text-success">Approved</p>
@@ -119,7 +127,19 @@ export const createColumns = (
       if (isApproved === false) {
         return (
           <div className=" flex gap-2  items-center">
-            <button type="button">
+            <button
+              type="button"
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/revertAction", {
+                  userId: row.original.user.id,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  updateData(row.original.id, null);
+                }
+              }}
+            >
               <ArrowUturnLeftIcon className="h-4 w-4 " />
             </button>
             <p className="text-destructive">Rejected</p>
@@ -144,7 +164,6 @@ export const createColumns = (
                   toast.error(response.error);
                 } else {
                   updateData(row.original.id, true);
-                  // update the table with the approval status
                 }
               }}
             >

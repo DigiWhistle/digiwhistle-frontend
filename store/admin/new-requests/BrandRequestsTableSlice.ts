@@ -58,7 +58,10 @@ export const brandRequestsTableSlice = createSlice({
   name: "brandRequestsTable",
   initialState,
   reducers: {
-    updateBrandApproval: (state, action: PayloadAction<{ id: string; isApproved: boolean }>) => {
+    updateBrandApproval: (
+      state,
+      action: PayloadAction<{ id: string; isApproved: boolean | null }>,
+    ) => {
       const { id, isApproved } = action.payload;
       const brand = state.data.data.find(brand => brand.id === id);
       if (brand) {

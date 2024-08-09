@@ -8,10 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AppDispatch, useAppSelector } from "@/lib/config/store";
-import {
-  BrandRequestsTableData,
-  fetchBrandRequestsData,
-} from "@/store/admin/new-requests/BrandRequestsTableSlice";
+
 // import { botRawDataOptions } from "@/store/bot";
 // import {
 //   ChevronLeftIcon,
@@ -23,13 +20,7 @@ import type { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PAGE_LIMIT } from ".";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/24/outline";
-// import { useRecoilState } from "recoil";
+
 import {
   Pagination,
   PaginationContent,
@@ -42,15 +33,11 @@ import {
 import { usePathname } from "next/navigation";
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>;
-  totalPages: number;
+  data: any;
 }
 
-export function DataTablePagination<TData>({ table, totalPages }: DataTablePaginationProps<TData>) {
-  const data = useAppSelector(BrandRequestsTableData);
-  const dispatch: AppDispatch = useDispatch();
+export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TData>) {
   const currentPath = usePathname();
-  const sanitizedPath = currentPath.replace(/\/\d+$/, "");
 
   console.log(data.totalPages);
   return (
