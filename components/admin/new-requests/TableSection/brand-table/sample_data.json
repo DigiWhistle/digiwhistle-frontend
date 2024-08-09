@@ -1,67 +1,147 @@
-[
-  {
-    "id": "1",
-    "firstName": "John",
-    "lastName": "Doe",
-    "mobileNo": "+1234567890",
-    "user": {
-      "id": "u1",
-      "username": "johndoe",
-      "email": "john.doe@example.com",
-      "isVerified": true,
-      "isRejected": false
+{
+  "totalPages": 5,
+  "currentPage": 1,
+  "totalCount": 5,
+  "data": [
+    {
+      "id": "1",
+      "name": "Tech Innovators",
+      "pocFirstName": "Alice",
+      "pocLastName": "Johnson",
+      "mobileNo": "123-456-7890",
+      "websiteURL": "https://techinnovators.com",
+      "user": {
+        "id": "101",
+        "email": "alice.johnson@techinnovators.com",
+        "isVerified": true,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "2",
+      "name": "Creative Solutions",
+      "pocFirstName": "Bob",
+      "pocLastName": "Smith",
+      "mobileNo": "234-567-8901",
+      "websiteURL": "https://creativesolutions.com",
+      "user": {
+        "id": "102",
+        "email": "bob.smith@creativesolutions.com",
+        "isVerified": true,
+        "isPaused": true
+      }
+    },
+    {
+      "id": "3",
+      "name": "Future Tech",
+      "pocFirstName": "Carol",
+      "pocLastName": "Davis",
+      "mobileNo": "345-678-9012",
+      "websiteURL": "https://futuretech.com",
+      "user": {
+        "id": "103",
+        "email": "carol.davis@futuretech.com",
+        "isVerified": false,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "4",
+      "name": "Innovatech",
+      "pocFirstName": "David",
+      "pocLastName": "Williams",
+      "mobileNo": "456-789-0123",
+      "websiteURL": "https://innovatech.com",
+      "user": {
+        "id": "104",
+        "email": "david.williams@innovatech.com",
+        "isVerified": true,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "5",
+      "name": "Tech Nexus",
+      "pocFirstName": "Eve",
+      "pocLastName": "Brown",
+      "mobileNo": "567-890-1234",
+      "websiteURL": "https://technexus.com",
+      "user": {
+        "id": "105",
+        "email": "eve.brown@technexus.com",
+        "isVerified": true,
+        "isPaused": true
+      }
+    },
+    {
+      "id": "6",
+      "name": "Alpha Tech",
+      "pocFirstName": "Frank",
+      "pocLastName": "Jones",
+      "mobileNo": "678-901-2345",
+      "websiteURL": "https://alphatech.com",
+      "user": {
+        "id": "106",
+        "email": "frank.jones@alphatech.com",
+        "isVerified": false,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "7",
+      "name": "Beta Solutions",
+      "pocFirstName": "Grace",
+      "pocLastName": "Garcia",
+      "mobileNo": "789-012-3456",
+      "websiteURL": "https://betasolutions.com",
+      "user": {
+        "id": "107",
+        "email": "grace.garcia@betasolutions.com",
+        "isVerified": true,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "8",
+      "name": "Gamma Innovations",
+      "pocFirstName": "Hank",
+      "pocLastName": "Martinez",
+      "mobileNo": "890-123-4567",
+      "websiteURL": "https://gammainnovations.com",
+      "user": {
+        "id": "108",
+        "email": "hank.martinez@gammainnovations.com",
+        "isVerified": true,
+        "isPaused": true
+      }
+    },
+    {
+      "id": "9",
+      "name": "Delta Tech",
+      "pocFirstName": "Ivy",
+      "pocLastName": "Robinson",
+      "mobileNo": "901-234-5678",
+      "websiteURL": "https://deltatech.com",
+      "user": {
+        "id": "109",
+        "email": "ivy.robinson@deltatech.com",
+        "isVerified": false,
+        "isPaused": false
+      }
+    },
+    {
+      "id": "10",
+      "name": "Zeta Systems",
+      "pocFirstName": "Jack",
+      "pocLastName": "Clark",
+      "mobileNo": "012-345-6789",
+      "websiteURL": "https://zetasystems.com",
+      "user": {
+        "id": "110",
+        "email": "jack.clark@zetasystems.com",
+        "isVerified": true,
+        "isPaused": false
+      }
     }
-  },
-  {
-    "id": "2",
-    "firstName": "Jane",
-    "lastName": "Smith",
-    "mobileNo": "+0987654321",
-    "user": {
-      "id": "u2",
-      "username": "janesmith",
-      "email": "jane.smith@example.com",
-      "isVerified": false,
-      "isRejected": true
-    }
-  },
-  {
-    "id": "3",
-    "firstName": "Emily",
-    "lastName": "Johnson",
-    "mobileNo": "+1122334455",
-    "user": {
-      "id": "u3",
-      "username": "emilyjohnson",
-      "email": "emily.johnson@example.com",
-      "isVerified": true,
-      "isRejected": false
-    }
-  },
-  {
-    "id": "4",
-    "firstName": "Michael",
-    "lastName": "Brown",
-    "mobileNo": "+5566778899",
-    "user": {
-      "id": "u4",
-      "username": "michaelbrown",
-      "email": "michael.brown@example.com",
-      "isVerified": true,
-      "isRejected": true
-    }
-  },
-  {
-    "id": "5",
-    "firstName": "Alice",
-    "lastName": "Williams",
-    "mobileNo": "+6677889900",
-    "user": {
-      "id": "u5",
-      "username": "alicewilliams",
-      "email": "alice.williams@example.com",
-      "isVerified": false,
-      "isRejected": false
-    }
-  }
-]
+  ]
+}

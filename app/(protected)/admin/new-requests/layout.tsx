@@ -1,13 +1,14 @@
 import TableSection from "@/components/admin/new-requests/TableSection";
 import React from "react";
 
-const page = () => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full">
       New Requests
       <TableSection />
+      {children}
     </div>
   );
 };
 
-export default page;
+export default Layout;

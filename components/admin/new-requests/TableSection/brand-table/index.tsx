@@ -1,19 +1,43 @@
-import React from "react";
-import { Brand, columns } from "./brand-columns";
-import SAMPLE_DATA from "./sample_data.json";
+"use client";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Brand, createColumns } from "./brand-columns";
 import { DataTable } from "./data-table";
+import {
+  BrandRequestsTable,
+  BrandRequestsTableData,
+  fetchBrandRequestsData,
+  updateBrandApproval,
+} from "@/store/admin/new-requests/BrandRequestsTableSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/lib/config/store";
+import { usePathname } from "next/navigation";
 
-const BrandTable = async () => {
-  async function getData(): Promise<Brand[]> {
-    // Fetch data from your API here.
-    return SAMPLE_DATA;
-  }
-  const data = await getData();
+export const PAGE_LIMIT = 2;
+const BrandTable = () => {
+  const currentPath = usePathname();
+  const dispatch: AppDispatch = useDispatch();
+  const data = useAppSelector(BrandRequestsTableData);
 
-  console.log(data);
+  useEffect(() => {
+    dispatch(
+      fetchBrandRequestsData({
+        page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
+        limit: PAGE_LIMIT,
+      }),
+    );
+  }, []);
+
+  const updateData = useCallback(
+    (id: string, isApproved: boolean) => {
+      dispatch(updateBrandApproval({ id, isApproved }));
+    },
+    [dispatch],
+  );
+
+  const columns = useMemo(() => createColumns(updateData), [updateData]);
   return (
     <div className="py-10">
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data.data} totalPages={data.totalPages} />
     </div>
   );
 };

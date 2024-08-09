@@ -12,13 +12,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { DataTablePagination } from "./pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  totalPages: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  totalPages,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -26,57 +32,63 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader className="bg-gray-552 text-gray-555">
-          {table.getHeaderGroups().map(headerGroup => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className={header.id === "isRejected" ? "after:content-none" : ""}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
-              <TableRow
-                key={row.id}
-                className={cn("my-10", row.getValue("isRejected") ? "bg-gray-552" : "")}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell
-                    key={cell.id}
-                    className={cn(
-                      cell.column.id === "isRejected" ? "after:content-none" : "",
-                      //   cell.column.id === "brandName"
-                      //     ? "before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-8 before:bg-red-800"
-                      //     : "",
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+    <div className="space-y-4 pb-6">
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader className="bg-gray-552 text-gray-555">
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className={
+                        header.index === table.getAllColumns().length - 1
+                          ? "after:content-none"
+                          : ""
+                      }
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  className={cn("my-10", row.getValue("isApproved") ? "bg-gray-552" : "")}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        cell.column.id === table.getAllColumns().at(-1)?.id
+                          ? "after:content-none"
+                          : "",
+                      )}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <DataTablePagination table={table} totalPages={totalPages} />
     </div>
   );
 }

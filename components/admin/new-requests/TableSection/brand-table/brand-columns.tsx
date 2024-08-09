@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, TableMeta } from "@tanstack/react-table";
 
 import {
   DropdownMenu,
@@ -18,25 +18,34 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { postAuthorizedRequest } from "@/lib/config/axios";
+import { toast } from "sonner";
+
+interface ExtendedTableMeta extends TableMeta<Brand> {
+  rerender: () => void;
+}
 
 export type Brand = {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  pocFirstName: string;
+  pocLastName: string;
   mobileNo: string;
+  websiteURL: string;
   user: {
     id: string;
-    username: string;
     email: string;
     isVerified: boolean;
-    isRejected: boolean;
+    isApproved: boolean;
+    isPaused: boolean;
   };
 };
 
-export const columns: ColumnDef<Brand>[] = [
+export const createColumns = (
+  updateData: (id: string, value: boolean) => void,
+): ColumnDef<Brand>[] => [
   {
-    id: "brandName",
-    accessorKey: "user.username",
+    accessorKey: "name",
     header: () => <div className="">Brand Name</div>,
     cell: ({ row }) => {
       return (
@@ -46,33 +55,39 @@ export const columns: ColumnDef<Brand>[] = [
             <AvatarImage src="" />
             <AvatarFallback>BN</AvatarFallback>
           </Avatar>
-          {row.getValue("firstName")}
+          {row.getValue("name")}
         </div>
       );
     },
   },
   {
-    accessorKey: "firstName",
+    accessorKey: "websiteURL",
     header: "Brand Website",
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">
-          <Link href={row.getValue("firstName")} target="_blank">
+          <Link
+            href={`//${String(row.getValue("websiteURL")).replace(/(^\w+:|^)\/\//, "")}`}
+            target="_blank"
+          >
             <ArrowTopRightOnSquareIcon className="h-4 w-4 text-link" />
           </Link>
-          {row.getValue("firstName")}
+          {row.getValue("websiteURL")}
         </div>
       );
     },
   },
   {
-    accessorKey: "firstName",
+    id: "pocName",
+    accessorFn: row => row.pocFirstName + " " + row.pocLastName,
     header: "POC Name",
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">
-          <UserIcon className="h-4 w-4" />
-          {row.getValue("firstName")}
+          <div>
+            <UserIcon className="h-4 w-4" />
+          </div>
+          {row.getValue("pocName")}
         </div>
       );
     },
@@ -86,12 +101,22 @@ export const columns: ColumnDef<Brand>[] = [
     header: "POC Email",
   },
   {
-    id: "isRejected",
-    accessorKey: "user.isRejected",
+    id: "isApproved",
+    accessorKey: "user.isApproved",
     header: "Actions",
-    cell: ({ row }) => {
-      const isRejected = row.getValue("isRejected");
-      if (isRejected) {
+    cell: ({ row, table, column }) => {
+      const isApproved = row.getValue("isApproved");
+      if (isApproved) {
+        return (
+          <div className=" flex gap-2  items-center">
+            <button type="button">
+              <ArrowUturnLeftIcon className="h-4 w-4 " />
+            </button>
+            <p className="text-success">Approved</p>
+          </div>
+        );
+      }
+      if (isApproved === false) {
         return (
           <div className=" flex gap-2  items-center">
             <button type="button">
@@ -110,13 +135,36 @@ export const columns: ColumnDef<Brand>[] = [
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-            {/* <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
+            <DropdownMenuItem
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/approve", {
+                  userId: row.original.user.id,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  updateData(row.original.id, true);
+                  // update the table with the approval status
+                }
+              }}
+            >
+              Approve
             </DropdownMenuItem>
-            <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>Approve</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-white focus:bg-destructive">
+            <DropdownMenuItem
+              className="text-destructive focus:text-white focus:bg-destructive"
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/reject", {
+                  userId: row.original.user.id,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  updateData(row.original.id, false);
+
+                  // update the table with the approval status
+                }
+              }}
+            >
               Reject
             </DropdownMenuItem>
           </DropdownMenuContent>
