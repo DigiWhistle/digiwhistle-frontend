@@ -37,7 +37,7 @@ const BrandTable = () => {
   const columns = useMemo(() => createColumns(updateData), [updateData]);
   return (
     <div className="py-10">
-      <DataTable columns={columns} data={data.data} allData={data} />
+      <DataTable columns={columns} data={data} />
     </div>
   );
 };

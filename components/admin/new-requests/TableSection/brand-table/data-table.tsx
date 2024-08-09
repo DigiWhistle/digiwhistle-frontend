@@ -16,8 +16,7 @@ import { DataTablePagination } from "./pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  allData: {
+  data: {
     totalCount: number;
     totalPages: number;
     currentPage: number;
@@ -25,13 +24,9 @@ interface DataTableProps<TData, TValue> {
   };
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  allData,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
-    data,
+    data: data.data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -93,7 +88,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination data={allData} />
+      <DataTablePagination data={data} />
     </div>
   );
 }

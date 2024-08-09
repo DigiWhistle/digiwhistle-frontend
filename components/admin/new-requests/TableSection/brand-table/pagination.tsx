@@ -39,7 +39,6 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TData>) {
   const currentPath = usePathname();
 
-  console.log(data.totalPages);
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex items-center space-x-6 lg:space-x-8 ml-auto">

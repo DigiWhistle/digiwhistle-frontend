@@ -28,6 +28,8 @@ export type Brand = {
   pocLastName: string;
   mobileNo: string;
   websiteURL: string;
+  createdAt: string;
+  updatedAt: string;
   user: {
     id: string;
     email: string;
@@ -97,10 +99,29 @@ export const createColumns = (
     header: "POC Email",
   },
   {
+    accessorKey: "createdAt",
+    header: "Request Date and time",
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-wrap items-center gap-1 justify-center">
+          <p>{new Date(row.getValue("createdAt")).toLocaleDateString("en-US")} </p>
+          <p className="text-sm text-tc-body-grey">
+            @
+            {new Date(row.getValue("createdAt")).toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
+          </p>
+        </div>
+      );
+    },
+  },
+  {
     id: "isApproved",
     accessorKey: "user.isApproved",
     header: "Actions",
-    cell: ({ row, table, column }) => {
+    cell: ({ row }) => {
       const isApproved = row.getValue("isApproved");
       if (isApproved) {
         return (
@@ -179,12 +200,24 @@ export const createColumns = (
                   toast.error(response.error);
                 } else {
                   updateData(row.original.id, false);
-
-                  // update the table with the approval status
                 }
               }}
             >
               Reject
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/approve", {
+                  userId: row.original.user.id,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  updateData(row.original.id, true);
+                }
+              }}
+            >
+              View Remarks
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
