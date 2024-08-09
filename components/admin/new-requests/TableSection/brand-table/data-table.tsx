@@ -68,9 +68,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     <TableCell
                       key={cell.id}
                       className={cn(
-                        cell.column.id === table.getAllColumns().at(-1)?.id
-                          ? "after:content-none"
-                          : "",
+                        cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
                       )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

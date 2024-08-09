@@ -230,7 +230,7 @@ function ContactForm({ userType }: { userType: PersonType.Influencer | PersonTyp
             disabled={form.formState.isSubmitting}
             loading={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? "Thank you!" : "Send"}
+            {form.formState.isSubmitSuccessful ? "Thank you!" : "Send"}
           </Button>
         </div>
       </form>

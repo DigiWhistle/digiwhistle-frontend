@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { clearUser } from "@/store/UserSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,7 @@ const SidebarLinks = [
 
   {
     icon: <CursorArrowRaysIcon className="text-tc-ic-black-default" />,
-    link: "/admin/new-requests",
+    link: "/admin/new-requests/brand/1",
     linkText: "New requests",
   },
 ];

@@ -14,7 +14,7 @@ export interface IQueryTable {
 
 const initialState = {
   data: { currentPage: 1, totalCount: 10, totalPages: 0, data: [] as Query[] },
-  loading: false,
+  loading: true,
   error: null as string | null,
 };
 
@@ -58,12 +58,16 @@ export const brandRequestsTableSlice = createSlice({
   name: "queriesTable",
   initialState,
   reducers: {
-    updateBrandApproval: (state, action: PayloadAction<{ id: number; viewed: boolean }>) => {
+    setViewQuery: (state, action: PayloadAction<{ id: string; viewed: boolean }>) => {
       const { id, viewed } = action.payload;
       const query = state.data.data.find(query => query.id === id);
       if (query) {
         query.viewed = viewed;
       }
+    },
+    deleteQueryByID: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.data.data = state.data.data.filter(query => query.id !== id);
     },
   },
   extraReducers: builder => {
@@ -87,7 +91,7 @@ export const brandRequestsTableSlice = createSlice({
       });
   },
 });
-export const { updateBrandApproval } = brandRequestsTableSlice.actions;
+export const { setViewQuery, deleteQueryByID } = brandRequestsTableSlice.actions;
 
 export const queriesTableReducer = brandRequestsTableSlice.reducer;
 

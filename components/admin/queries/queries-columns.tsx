@@ -18,15 +18,25 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { deleteAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export enum PersonType {
   INFLUENCER = "Influencer",
   BRAND = "Brand",
 }
 export type Query = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   followersCount?: string | null;
@@ -38,7 +48,8 @@ export type Query = {
 };
 
 export const createColumns = (
-  updateData: (id: string, value: boolean | null) => void,
+  updateData: (id: string, value: boolean) => void,
+  deleteQuery: (id: string) => void,
 ): ColumnDef<Query>[] => [
   {
     accessorKey: "name",
@@ -52,7 +63,7 @@ export const createColumns = (
           {row.original.personType === "Influencer" ? (
             <div>
               {row.getValue("name")}
-              <p className="text-sm text-tc-body-grey">
+              <p className="text-xs text-tc-body-grey">
                 {` ${row.original.followersCount} followers`}
               </p>
             </div>
@@ -123,30 +134,52 @@ export const createColumns = (
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/approve", {
-                  userId: row.original.email,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.email, true);
-                }
-              }}
-            >
-              View query
-            </DropdownMenuItem>
+            {/* <DropdownMenuItem
+              
+            > */}
+            <Dialog>
+              <DialogTrigger className="items-center rounded-sm px-2 py-1.5 text-sm focus:text-tc-ic-black-hover ">
+                View Query
+              </DialogTrigger>
+              <DialogContent className="max-h-96">
+                <DialogHeader>
+                  <DialogTitle className="mt-3">View Query</DialogTitle>
+                </DialogHeader>
+                <div className=" overflow-hidden relative mt-3">
+                  <p className="text-sm mb-2">User&apos;s Query Message</p>
+                  <div className="h-36 rounded-lg text-sm text-tc-body-grey border bg-gray-554 px-3 py-2 overflow-auto">
+                    <p className="overflow-auto">{row.original.message}</p>
+                  </div>
+                </div>
+                <hr className="my-3 text-tc-body-grey" />
+                <Button
+                  size={"sm"}
+                  className="w-min place-self-center px-4 focus:ring-offset-0"
+                  onClick={async () => {
+                    const response = await postAuthorizedRequest("contactUs/view", {
+                      id: row.original.id,
+                    });
+                    if (response.error) {
+                      toast.error(response.error);
+                    } else {
+                      updateData(row.original.id, true);
+                    }
+                  }}
+                >
+                  Mark as read
+                </Button>
+              </DialogContent>
+            </Dialog>
+            {/* </DropdownMenuItem> */}
             <DropdownMenuItem
               className="text-destructive focus:text-white focus:bg-destructive"
               onClick={async () => {
-                const response = await postAuthorizedRequest("contactUs", {
-                  userId: row.original.email,
-                });
+                const response = await deleteAuthorizedRequest(`contactUs/${row.original.id}`);
                 if (response.error) {
                   toast.error(response.error);
                 } else {
-                  updateData(row.original.email, false);
+                  deleteQuery(row.original.id);
+                  toast.success("Query deleted successfully");
                 }
               }}
             >
