@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { DataTablePagination } from "../../../lib/pagination";
+import { DataTablePagination } from "../lib/pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -69,6 +69,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
+                        cell.column.id === "name" && (row.original as any).viewed
+                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:border-blue-581"
+                          : "",
                       )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

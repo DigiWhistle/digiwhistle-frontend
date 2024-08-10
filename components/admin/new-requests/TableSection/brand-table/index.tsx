@@ -5,18 +5,20 @@ import { DataTable } from "./data-table";
 import {
   BrandRequestsTable,
   BrandRequestsTableData,
+  BrandRequestsTableLoading,
   fetchBrandRequestsData,
   updateBrandApproval,
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/lib/config/store";
+import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname } from "next/navigation";
 
 export const PAGE_LIMIT = 5;
 const BrandTable = () => {
   const currentPath = usePathname();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const data = useAppSelector(BrandRequestsTableData);
+  const loading = useAppSelector(BrandRequestsTableLoading);
 
   useEffect(() => {
     dispatch(
@@ -37,7 +39,13 @@ const BrandTable = () => {
   const columns = useMemo(() => createColumns(updateData), [updateData]);
   return (
     <div className="py-10">
-      <DataTable columns={columns} data={data} />
+      {loading ? (
+        <div className="flex w-full items-center h-48 justify-center">
+          <span className="loading loading-spinner loading-sm "></span>
+        </div>
+      ) : (
+        <DataTable columns={columns} data={data} />
+      )}
     </div>
   );
 };

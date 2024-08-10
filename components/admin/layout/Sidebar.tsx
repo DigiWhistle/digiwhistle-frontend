@@ -7,10 +7,13 @@ import {
   CursorArrowRaysIcon,
   InformationCircleIcon,
   ArrowRightEndOnRectangleIcon,
+  QuestionMarkCircleIcon,
+  IdentificationIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { clearUser } from "@/store/UserSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -29,6 +32,24 @@ const SidebarLinks = [
     link: "/admin/new-requests/brand/1",
     linkText: "New requests",
     keyword: "new-requests",
+  },
+  {
+    icon: <QuestionMarkCircleIcon className="text-tc-ic-black-default" />,
+    link: "/admin/queries/1",
+    linkText: "Queries",
+    keyword: "queries",
+  },
+  {
+    icon: <IdentificationIcon className="text-tc-ic-black-default" />,
+    link: "/admin/queries/1",
+    linkText: "Profile control",
+    keyword: "profile",
+  },
+  {
+    icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
+    link: "/admin/queries/1",
+    linkText: "Explore influencers",
+    keyword: "explore",
   },
 ];
 const HelpCenterLink = {
@@ -60,7 +81,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
   return (
     <div
       className={cn(
-        "flex flex-col lg:w-60 md:w-auto sm:w-60 z-10 absolute lg:relative transition-all duration-300 ease-in-out bg-white h-full  pt-3 pb-5  ",
+        "flex flex-col lg:w-72 md:w-auto sm:w-60 z-10 absolute lg:relative transition-all duration-300 ease-in-out bg-white h-full  pt-3 pb-3  ",
         className,
       )}
       style={{ boxShadow: "inset -1px 0 0 rgba(240, 240, 241, 1)" }}
@@ -89,24 +110,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
           ))}
         </div>
 
-        <div className="flex-col ">
-          <Link
-            href={HelpCenterLink.link}
-            className={cn(
-              "flex space-x-5 px-5 py-3 hover:bg-[#FCF8E9]",
-              pathname === HelpCenterLink.link ? "bg-[#FCF8E9] border-r-4 border-[#8A6D31]" : "",
-            )}
-          >
-            <div className="flex justify-center items-center w-6 h-6">{HelpCenterLink.icon}</div>
-            <div
-              className={cn(
-                "lg:flex  text-body-md-light text-tc-primary-default",
-                drawerView ? "" : "md:hidden",
-              )}
-            >
-              {HelpCenterLink.linkText}
-            </div>
-          </Link>
+        <div className="flex-col border-t-[1px] pt-2  ">
           {signoutcookie ? (
             <div
               onClick={handleLogout}
