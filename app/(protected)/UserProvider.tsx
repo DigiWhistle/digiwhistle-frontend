@@ -18,12 +18,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (!user) {
         if (getCookie("token") && getCookie("role")) {
           const role = getCookie("role");
-          // const response = await getAuthorizedRequest<IUser>(`${role}/profile`);
-          // if (response.data) {
-          //   dispatch(setUser(response.data));
-          // } else if (response.error) {
-          //   toast.error(response.error);
-          // }
+          const response = await getAuthorizedRequest<IUser>(`user`);
+          if (response.data) {
+            dispatch(setUser(response.data));
+          } else if (response.error) {
+            toast.error(response.error);
+          }
         }
       }
     };

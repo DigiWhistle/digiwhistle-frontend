@@ -30,6 +30,7 @@ export interface IAdminResponse {
   firstName: string;
   lastName: string;
   mobileNo: string;
+  profilePic: string;
   user: string;
 }
 export interface IBrandResponse {

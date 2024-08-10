@@ -8,9 +8,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [drawerView, setDrawerView] = useState(false);
 
   return (
-    <div className="flex flex-col h-[100vh] ">
+    <div className="flex flex-col  h-[100vh]   ">
       <AdminNavbar drawerView={drawerView} setDrawerView={setDrawerView} />
-      <div className="flex h-full">
+      <div className="flex relative h-full overflow-hidden ">
         <Sidebar
           drawerView={drawerView}
           className={drawerView ? "-left-0" : "-left-60 md:-left-0 "}
@@ -20,7 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           onClick={() => {
             setDrawerView(false);
           }}
-          className=" w-full  p-7 lg:p-7 md:py-7 md:pr-7 md:pl-24 overflow-hidden"
+          className=" w-full h-full p-7 mt-1 lg:p-7 md:py-7 md:pr-7 md:pl-24 overflow-y-auto "
         >
           {children}
         </div>

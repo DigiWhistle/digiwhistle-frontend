@@ -32,10 +32,11 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
 
           <div className=" flex  justify-between items-center space-x-6">
             <div className="flex items-center space-x-2">
-              <div className="flex w-11 h-11 bg-black border-2 border-white rounded-[110px] justify-center items-center" />{" "}
+              <div className="flex w-11 h-11 bg-black border-2 border-white rounded-[110px] justify-center items-center" />
+              {userInfo?.profile?.profilePic}
               <div className="flex-col space-y-1">
-                <div className="text-body-lg-medium text-white">Ajay Maurya</div>
-                <div className="text-body-sm-light text-white">Employee</div>
+                <div className="text-body-lg-medium text-white">{userInfo?.profile?.firstName}</div>
+                <div className="text-body-sm-light text-white">{userInfo?.role}</div>
               </div>
             </div>
             <div className="flex w-11 h-11 bg-sb-gray-555 rounded-[110px] justify-center items-center">
