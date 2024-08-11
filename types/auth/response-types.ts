@@ -24,6 +24,7 @@ export interface IInfluencerResponse {
   instagramURL: string;
   youtubeURL: string;
   linkedInURL: string;
+  profilePic?: string;
   user: string;
 }
 export interface IAdminResponse {
@@ -39,5 +40,6 @@ export interface IBrandResponse {
   pocLastName: string;
   mobileNo: string;
   websiteURL: string;
+  profilePic?: string;
   user: string;
 }

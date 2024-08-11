@@ -62,13 +62,19 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  className={cn("my-10", row.getValue("isApproved") ? "bg-gray-552" : "")}
+                  className={cn("my-10", row.getValue("isApproved") !== null ? "bg-gray-552" : "")}
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
+                        cell === row.getVisibleCells().at(0) && row.getValue("isApproved")
+                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-success"
+                          : cell === row.getVisibleCells().at(0) &&
+                              row.getValue("isApproved") === false
+                            ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-destructive"
+                            : "",
                       )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

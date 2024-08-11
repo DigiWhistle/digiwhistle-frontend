@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Brand, createColumns } from "./brand-columns";
+import { createColumns } from "./brand-columns";
 import { DataTable } from "./data-table";
 import {
   BrandRequestsTable,
@@ -13,6 +13,23 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname } from "next/navigation";
 
+export interface Brand {
+  id: string;
+  name: string;
+  pocFirstName: string;
+  pocLastName: string;
+  mobileNo: string;
+  websiteURL: string;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    email: string;
+    isVerified: boolean;
+    isApproved: boolean | null;
+    isPaused: boolean;
+  };
+}
 export const PAGE_LIMIT = 5;
 const BrandTable = () => {
   const currentPath = usePathname();
@@ -27,7 +44,7 @@ const BrandTable = () => {
         limit: PAGE_LIMIT,
       }),
     );
-  }, []);
+  }, [currentPath, dispatch]);
 
   const updateData = useCallback(
     (id: string, isApproved: boolean | null) => {

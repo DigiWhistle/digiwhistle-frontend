@@ -1,5 +1,4 @@
-import { Brand } from "@/components/admin/new-requests/TableSection/brand-table/brand-columns";
-import { Query } from "@/components/admin/queries/queries-columns";
+import { Query } from "@/components/admin/queries/QueriesTable";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";

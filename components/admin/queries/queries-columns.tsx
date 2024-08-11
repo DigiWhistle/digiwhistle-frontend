@@ -30,22 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
-export enum PersonType {
-  INFLUENCER = "Influencer",
-  BRAND = "Brand",
-}
-export type Query = {
-  id: string;
-  name: string;
-  email: string;
-  followersCount?: string | null;
-  profileLink?: string | null;
-  mobileNo?: string | null;
-  message?: string | null;
-  personType: PersonType;
-  viewed: boolean;
-};
+import { Query } from "./QueriesTable";
 
 export const createColumns = (
   updateData: (id: string, value: boolean) => void,

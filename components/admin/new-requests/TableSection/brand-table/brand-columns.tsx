@@ -20,24 +20,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
-
-export type Brand = {
-  id: string;
-  name: string;
-  pocFirstName: string;
-  pocLastName: string;
-  mobileNo: string;
-  websiteURL: string;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    id: string;
-    email: string;
-    isVerified: boolean;
-    isApproved: boolean | null;
-    isPaused: boolean;
-  };
-};
+import { Brand } from ".";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
