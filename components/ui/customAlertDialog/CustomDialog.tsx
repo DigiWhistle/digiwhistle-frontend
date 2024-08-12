@@ -34,6 +34,8 @@ const CustomDialog = ({
           <XMarkIcon cursor={"Pointer"} className="h-6 w-6 text-tc-ic-black-default" />
         </AlertDialogCancel>
         <AlertDialogHeader className="flex flex-col space-y-2">
+          <AlertDialogTitle />
+          <AlertDialogDescription />
           <div className="font-sans text-heading-l-semibold text-tc-primary-default">
             {headerTitle}
           </div>
