@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef, TableMeta } from "@tanstack/react-table";
-
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,8 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
-
+import ApproveForm from "./ApproveForm";
+import RejectForm from "./RejectForm";
 export type Brand = {
   id: string;
   name: string;
@@ -135,6 +136,7 @@ export const createColumns = (
                 if (response.error) {
                   toast.error(response.error);
                 } else {
+                  toast.success(response.message);
                   updateData(row.original.id, null);
                 }
               }}
@@ -157,6 +159,7 @@ export const createColumns = (
                 if (response.error) {
                   toast.error(response.error);
                 } else {
+                  toast.success(response.message);
                   updateData(row.original.id, null);
                 }
               }}
@@ -175,36 +178,44 @@ export const createColumns = (
               <EllipsisVerticalIcon className="h-5 w-5" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/approve", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, true);
-                }
-              }}
+          <DropdownMenuContent className="p-1" align="end">
+            <CustomDialog
+              className="w-[400px]"
+              headerTitle="Approve profile"
+              headerDescription="Please note that this action will add the user to the DW platform."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  Approve
+                </div>
+              }
             >
-              Approve
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-destructive focus:text-white focus:bg-destructive"
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/reject", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, false);
-                }
-              }}
+              <ApproveForm
+                updateData={updateData}
+                updateid={row.original.id}
+                name={row.getValue("name")}
+                url=""
+                userId={row.original.user.id}
+              />
+            </CustomDialog>
+
+            <CustomDialog
+              className="w-[400px]"
+              headerTitle="Reject profile ?"
+              headerDescription="Please note that this action is temporary and reversible in nature."
+              triggerElement={
+                <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                  Reject
+                </div>
+              }
             >
-              Reject
-            </DropdownMenuItem>
+              <RejectForm
+                updateData={updateData}
+                updateid={row.original.id}
+                name={row.getValue("name")}
+                url=""
+                userId={row.original.user.id}
+              />
+            </CustomDialog>
             <DropdownMenuItem
               onClick={async () => {
                 const response = await postAuthorizedRequest("user/approve", {

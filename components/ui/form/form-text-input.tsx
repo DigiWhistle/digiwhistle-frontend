@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
+import { useState } from "react";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
 
 interface IFormTextInputProps {
@@ -20,7 +21,7 @@ interface IFormTextInputProps {
   formDescription?: string;
   defaultValue?: string;
   type?: "text" | "number";
-  className?: ClassValue[];
+  className?: string;
   inputCN?: ClassValue[];
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
