@@ -31,11 +31,9 @@ const RejectForm = ({
     resolver: zodResolver(RejectFormSchema),
   });
   const handleForm = async (data: z.infer<typeof RejectFormSchema>) => {
-    console.log("called");
     const response = await postAuthorizedRequest("user/reject", {
       userId: userId,
     });
-    console.log("this is the response", response);
     if (response.error) {
       toast.error(response.error);
     } else {

@@ -120,7 +120,6 @@ export const createColumns = (
                 if (response.error) {
                   toast.error(response.error);
                 } else {
-                  toast.success(response.message);
                   updateData(row.original.id, null);
                 }
               }}
@@ -143,7 +142,6 @@ export const createColumns = (
                 if (response.error) {
                   toast.error(response.error);
                 } else {
-                  toast.success(response.message);
                   updateData(row.original.id, null);
                 }
               }}
