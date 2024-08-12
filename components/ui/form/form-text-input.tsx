@@ -20,8 +20,8 @@ interface IFormTextInputProps {
   formDescription?: string;
   defaultValue?: string;
   type?: "text" | "number";
-  className?: ClassValue[];
-  inputCN?: ClassValue[];
+  className?: string;
+  inputCN?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }

@@ -25,7 +25,7 @@ interface IFormRadioGroupProps {
   disabled?: boolean;
   formDescription?: string;
   defaultValue?: string;
-  className?: ClassValue[];
+  className?: string;
   triggerOnChange?: boolean;
 }
 const FormRadioGroup = ({

@@ -24,8 +24,8 @@ interface IFormTextInputProps {
   disabled?: boolean;
   formDescription?: string;
   defaultValue?: string;
-  className?: ClassValue[];
-  inputCN?: ClassValue[];
+  className?: string;
+  inputCN?: string;
 }
 
 const CustomInputComponent = React.forwardRef<HTMLInputElement>((props, ref) => (
