@@ -28,7 +28,7 @@ export const fetchQueriesTableData = createAsyncThunk(
   }: {
     page: number;
     limit: number;
-    name?: string;
+    name?: string | null;
     brands?: boolean;
     influencer?: boolean;
   }) => {

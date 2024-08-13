@@ -9,7 +9,7 @@ import {
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/config/store";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { DataTable } from "./data-table";
 import {
   deleteQueryByID,
@@ -38,15 +38,34 @@ export type Query = {
 export const PAGE_LIMIT = 5;
 const QueriesTable = () => {
   const currentPath = usePathname();
+  const searchParams = useSearchParams();
+
   const dispatch: AppDispatch = useDispatch();
   const data = useAppSelector(QueriesTableData);
   const loading = useAppSelector(QueriesTableLoading);
 
   useEffect(() => {
+    const name = searchParams.get("name");
+    const brands =
+      searchParams.get("brands") === "true"
+        ? true
+        : searchParams.get("brands") === "false"
+          ? false
+          : undefined;
+    const influencer =
+      searchParams.get("influencer") === "true"
+        ? true
+        : searchParams.get("influencer") === "false"
+          ? false
+          : undefined;
+
     dispatch(
       fetchQueriesTableData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
         limit: PAGE_LIMIT,
+        name,
+        brands,
+        influencer,
       }),
     );
   }, []);

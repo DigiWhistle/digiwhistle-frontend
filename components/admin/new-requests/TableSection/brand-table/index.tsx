@@ -11,7 +11,7 @@ import {
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export interface Brand {
   id: string;
@@ -33,15 +33,33 @@ export interface Brand {
 export const PAGE_LIMIT = 5;
 const BrandTable = () => {
   const currentPath = usePathname();
+  const searchParams = useSearchParams();
   const dispatch: AppDispatch = useAppDispatch();
   const data = useAppSelector(BrandRequestsTableData);
   const loading = useAppSelector(BrandRequestsTableLoading);
 
   useEffect(() => {
+    const name = searchParams.get("name");
+    const rejected =
+      searchParams.get("rejected") === "true"
+        ? true
+        : searchParams.get("rejected") === "false"
+          ? false
+          : undefined;
+    const approved =
+      searchParams.get("approved") === "true"
+        ? true
+        : searchParams.get("approved") === "false"
+          ? false
+          : undefined;
+
     dispatch(
       fetchBrandRequestsData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
         limit: PAGE_LIMIT,
+        name,
+        rejected,
+        approved,
       }),
     );
   }, [currentPath, dispatch]);

@@ -15,11 +15,17 @@ import { fetchQueriesTableData } from "@/store/admin/queries/QueriesTableSlice";
 
 const QueriesFilters = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const currentPath = usePathname();
-  const [influencerCheck, setInfluencerCheck] = useState(false);
-  const [brandCheck, setBrandCheck] = useState(false);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const defaultInfluencer = searchParams.get("influencer") === "true";
+  const defaultBrand = searchParams.get("brand") === "true";
+  const defaultSearchTerm = searchParams.get("name");
+
+  const [influencerCheck, setInfluencerCheck] = useState(defaultInfluencer);
+  const [brandCheck, setBrandCheck] = useState(defaultBrand);
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm || "");
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
@@ -28,11 +34,18 @@ const QueriesFilters = () => {
     [dispatch, PAGE_LIMIT],
   );
 
+  const pushUrl = (paramName: string, value: string) => {
+    const newPath = currentPath.replace(/\/\d+$/, "/1");
+    const url = new URL(window.location.href);
+    url.pathname = newPath;
+    url.searchParams.set(paramName, value);
+    router.push(url.toString());
+  };
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
 
-    const newPath = currentPath.replace(/\/\d+$/, "/1");
-    router.push(newPath);
+    pushUrl("name", query);
     setSearchTerm(query);
     debouncedFetchData(query);
   };
@@ -57,6 +70,7 @@ const QueriesFilters = () => {
         <div className="flex items-center space-x-2">
           <Switch
             id="brands-only"
+            checked={brandCheck}
             onCheckedChange={value => {
               setBrandCheck(value);
               dispatch(
@@ -67,6 +81,7 @@ const QueriesFilters = () => {
                   influencer: influencerCheck,
                 }),
               );
+              pushUrl("brands", value ? "true" : "false");
             }}
           />
           <Label htmlFor="brands-only">Brands only</Label>
@@ -85,6 +100,7 @@ const QueriesFilters = () => {
                   influencer: value,
                 }),
               );
+              pushUrl("influencer", value ? "true" : "false");
             }}
           />
           <Label htmlFor="influencer-only">Influencers only</Label>

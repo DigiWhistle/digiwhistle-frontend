@@ -14,11 +14,17 @@ import { usePathname, useRouter } from "next/navigation";
 
 const BrandFilters = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const currentPath = usePathname();
-  const [approved, setApproved] = useState(false);
-  const [rejected, setRejected] = useState(false);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const defaultApproved = searchParams.get("approved") === "true";
+  const defaultRejected = searchParams.get("rejected") === "true";
+  const defaultSearchTerm = searchParams.get("name");
+
+  const [approved, setApproved] = useState(defaultApproved);
+  const [rejected, setRejected] = useState(defaultRejected);
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm || "");
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
@@ -27,11 +33,17 @@ const BrandFilters = () => {
     [dispatch, PAGE_LIMIT],
   );
 
+  const pushUrl = (paramName: string, value: string) => {
+    const newPath = currentPath.replace(/\/\d+$/, "/1");
+    const url = new URL(window.location.href);
+    url.pathname = newPath;
+    url.searchParams.set(paramName, value);
+    router.push(url.toString());
+  };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
 
-    const newPath = currentPath.replace(/\/\d+$/, "/1");
-    router.push(newPath);
+    pushUrl("name", query);
     setSearchTerm(query);
     debouncedFetchData(query);
   };
@@ -56,6 +68,7 @@ const BrandFilters = () => {
         <div className="flex items-center space-x-2">
           <Switch
             id="approve-only"
+            checked={approved}
             onCheckedChange={value => {
               setApproved(value);
               dispatch(
@@ -66,13 +79,15 @@ const BrandFilters = () => {
                   rejected: rejected,
                 }),
               );
+              pushUrl("approved", value ? "true" : "false");
             }}
           />
-          <Label htmlFor="approve-only">Approve only</Label>
+          <Label htmlFor="approve-only">Approved only</Label>
         </div>
         <div className="flex items-center space-x-2">
           <Switch
             id="rejected-only"
+            checked={rejected}
             onCheckedChange={value => {
               setRejected(value);
               dispatch(
@@ -83,6 +98,7 @@ const BrandFilters = () => {
                   rejected: value,
                 }),
               );
+              pushUrl("rejected", value ? "true" : "false");
             }}
           />
           <Label htmlFor="rejected-only">Rejected only</Label>

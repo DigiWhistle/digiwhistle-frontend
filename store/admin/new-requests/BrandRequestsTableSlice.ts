@@ -29,7 +29,7 @@ export const fetchBrandRequestsData = createAsyncThunk(
   }: {
     page: number;
     limit: number;
-    name?: string;
+    name?: string | null;
     rejected?: boolean;
     approved?: boolean;
   }) => {

@@ -32,12 +32,12 @@ export const createColumns = (
     header: () => <div className="">Brand Name</div>,
     cell: ({ row }) => {
       return (
-        <div className="flex items-center gap-3">
-          <Avatar>
-            {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-            <AvatarImage src="" />
+        <div className="flex items-center gap-3 h-8">
+          {/* <Avatar> */}
+          {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+          {/* <AvatarImage src="" />
             <AvatarFallback>BN</AvatarFallback>
-          </Avatar>
+          </Avatar> */}
           {row.getValue("name")}
         </div>
       );

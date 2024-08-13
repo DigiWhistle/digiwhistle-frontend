@@ -39,6 +39,12 @@ interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TData>) {
   const currentPath = usePathname();
 
+  const redirectUrl = (page: number) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const newPath = `${currentPath.replace(/\/\d+$/, `/${page}`)}?${searchParams.toString()}`;
+    return newPath;
+  };
+
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex items-center space-x-6 lg:space-x-8 ml-auto">
@@ -74,7 +80,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
             <PaginationItem>
               <PaginationPrevious
                 // href={`/${sanitizedPath}/${data.currentPage - 1}`}
-                href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 1).toString()}`)}
+                href={redirectUrl(data.currentPage - 1)}
                 // onClick={() =>
                 // dispatch(
                 // fetchBrandRequestsData({ page: data.currentPage - 1, limit: PAGE_LIMIT }),
@@ -90,7 +96,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                 <PaginationLink
                   isActive={false}
                   // href={`/${sanitizedPath}/${data.currentPage - 2}`}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 2).toString()}`)}
+                  href={redirectUrl(data.currentPage - 2)}
 
                   // href={"#"}
                   // onClick={() => {
@@ -109,7 +115,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // href={"#"}
                   // href={`/${sanitizedPath}/${data.currentPage - 1}`}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 1).toString()}`)}
+                  href={redirectUrl(data.currentPage - 1)}
 
                   // onClick={() =>
                   // dispatch(
@@ -140,7 +146,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // href={`/${sanitizedPath}/${data.currentPage + 1}`}
                   // href={currentPath.replace(/\/\d+$/, (data.currentPage + 1).toString())}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 1).toString()}`)}
+                  href={redirectUrl(data.currentPage + 1)}
 
                   // href={"#"}
                   // onClick={() => {
@@ -159,7 +165,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // {`/${}`}
                   // href={currentPath.replace(/\/\d+$/, (data.currentPage + 2).toString())}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 2).toString()}`)}
+                  href={redirectUrl(data.currentPage + 2)}
                 >
                   {data.currentPage + 2}
                 </PaginationLink>
@@ -179,7 +185,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
               <PaginationNext
                 // href={`/${sanitizedPath}/${data.currentPage + 1}`}
 
-                href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 1).toString()}`)}
+                href={redirectUrl(data.currentPage + 1)}
                 // onClick={() =>
                 // dispatch(
                 // fetchBrandRequestsData({ page: data.currentPage + 1, limit: PAGE_LIMIT }),
