@@ -235,21 +235,6 @@ export const createColumns = (
                 userId={row.original.user.id}
               />
             </CustomDialog>
-
-            <DropdownMenuItem
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/approve", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, true);
-                }
-              }}
-            >
-              View Remarks
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
