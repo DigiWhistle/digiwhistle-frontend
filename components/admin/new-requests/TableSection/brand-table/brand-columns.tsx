@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { Brand } from ".";
 import ApproveForm from "./ApproveForm";
 import RejectForm from "./RejectForm";
+import ViewRemarks from "./ViewRemarks";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -198,20 +199,24 @@ export const createColumns = (
                 userId={row.original.user.id}
               />
             </CustomDialog>
-            <DropdownMenuItem
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/approve", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, true);
-                }
-              }}
+            <CustomDialog
+              className="w-[538px]"
+              headerTitle="View remarks"
+              headerDescription="Please note that this action is permanent and irreversible in nature."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  View remarks
+                </div>
+              }
             >
-              View Remarks
-            </DropdownMenuItem>
+              <ViewRemarks
+                updateData={updateData}
+                updateid={row.original.id}
+                name={row.getValue("name")}
+                url=""
+                userId={row.original.user.id}
+              />
+            </CustomDialog>
           </DropdownMenuContent>
         </DropdownMenu>
       );

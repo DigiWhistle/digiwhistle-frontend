@@ -16,7 +16,6 @@ interface AdminNavbarinterface {
 }
 const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
   const userInfo = useSelector(User);
-  console.log("usetr", userInfo);
   return (
     <>
       <nav className="flex bg-transparent justify-center w-full sticky top-0 z-50 ">
