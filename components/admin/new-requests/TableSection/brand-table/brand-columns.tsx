@@ -22,6 +22,7 @@ import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
 import ApproveForm from "./ApproveForm";
 import RejectForm from "./RejectForm";
+import ViewRemarks from "./ViewRemarks";
 export type Brand = {
   id: string;
   name: string;
@@ -216,6 +217,25 @@ export const createColumns = (
                 userId={row.original.user.id}
               />
             </CustomDialog>
+            <CustomDialog
+              className="w-[538px]"
+              headerTitle="View remarks"
+              headerDescription="Please note that this action is permanent and irreversible in nature."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  View remarks
+                </div>
+              }
+            >
+              <ViewRemarks
+                updateData={updateData}
+                updateid={row.original.id}
+                name={row.getValue("name")}
+                url=""
+                userId={row.original.user.id}
+              />
+            </CustomDialog>
+
             <DropdownMenuItem
               onClick={async () => {
                 const response = await postAuthorizedRequest("user/approve", {
