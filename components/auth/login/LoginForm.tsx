@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { ILoginResponse } from "@/types/auth/response-types";
 import Image from "next/image";
+import { ADMIN_DEFAULT_ROUTE, USER_DEFAULT_ROUTE } from "@/lib/constants";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -104,13 +105,13 @@ const LoginForm = ({ className }: { className?: string }) => {
         setCookie("role", result.data.user.role);
 
         if (result.data.user.role === "admin" || result.data.user.role === "employee") {
-          router.push("/admin/new-requests");
+          router.push(ADMIN_DEFAULT_ROUTE);
         } else if (
           result.data.user.role === "influencer" ||
           result.data.user.role === "brand" ||
           result.data.user.role === "agency"
         ) {
-          router.push("/user/dashboard");
+          router.push(USER_DEFAULT_ROUTE);
         }
       }
     } else if (result.error) toast.error(result.error);

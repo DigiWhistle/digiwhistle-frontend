@@ -31,6 +31,7 @@ import { IAdminResponse, ISignUpResponse } from "@/types/auth/response-types";
 import { useAppDispatch } from "@/lib/config/store";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
+import { ADMIN_DEFAULT_ROUTE } from "@/lib/constants";
 
 enum Role {
   Admin = "admin",
@@ -93,7 +94,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
           if (!result.data.isVerified) {
             toast.info("Please wait for admin approval");
           } else {
-            router.push("/admin/new-requests");
+            router.push(ADMIN_DEFAULT_ROUTE);
           }
           toast.success(result.message);
         } else if (respond.error) {
@@ -141,7 +142,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
         if (!result.data.isVerified) {
           toast.info("Please wait for admin approval");
         } else {
-          router.push("/admin/new-requests");
+          router.push(ADMIN_DEFAULT_ROUTE);
         }
         form.reset();
       } else if (result.error) {

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { getAuthorizedRequest } from "@/lib/config/axios";
 import { IUser, setUser, User } from "@/store/UserSlice";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
@@ -16,11 +16,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!user) {
-        if (getCookie("token") && getCookie("role")) {
-          const role = getCookie("role");
+        if (getCookie("token")) {
           const response = await getAuthorizedRequest<IUser>(`user`);
           if (response.data) {
             dispatch(setUser(response.data));
+            setCookie("role", response.data.role);
           } else if (response.error) {
             toast.error(response.error);
           }
@@ -29,8 +29,9 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchUserProfile();
-  }, [user]);
+  }, [dispatch, user]);
 
+  console.log("user", user);
   return <>{children}</>;
 };
 
