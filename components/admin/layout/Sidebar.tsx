@@ -60,7 +60,6 @@ const HelpCenterLink = {
 
 const Sidebar = ({ className, drawerView }: { className?: string; drawerView: boolean }) => {
   const [signoutcookie, signoutcookieSetter] = useState(false);
-  console.log(drawerView);
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();

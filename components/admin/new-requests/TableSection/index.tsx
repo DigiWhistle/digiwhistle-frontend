@@ -13,7 +13,11 @@ import BrandFilters from "./brand-table/BrandFilters";
 const TableSection = () => {
   const router = useRouter();
   return (
-    <Tabs defaultValue="brand" className="w-full" onValueChange={value => console.log(value)}>
+    <Tabs
+      defaultValue="brand"
+      className="w-full"
+      onValueChange={value => router.push(`/admin/new-requests/${value}/1`)}
+    >
       <div className="w-full flex items-center justify-between gap-2">
         <TabsContent value="influencer"></TabsContent>
         <TabsContent value="brand">
@@ -22,25 +26,13 @@ const TableSection = () => {
         <TabsContent value="agency"></TabsContent>
 
         <TabsList className="text-body-md-medium p-1">
-          <TabsTrigger
-            value="influencer"
-            className="py-2 px-5"
-            onClick={() => router.push("/admin/new-requests/influencer/1")}
-          >
+          <TabsTrigger value="influencer" className="py-2 px-5">
             Influencer
           </TabsTrigger>
-          <TabsTrigger
-            value="brand"
-            className="py-2 px-5"
-            onClick={() => router.push("/admin/new-requests/brand/1")}
-          >
+          <TabsTrigger value="brand" className="py-2 px-5">
             Brand
           </TabsTrigger>
-          <TabsTrigger
-            value="agency"
-            className="py-2 px-5"
-            onClick={() => router.push("/admin/new-requests/agency/1")}
-          >
+          <TabsTrigger value="agency" className="py-2 px-5">
             Agency
           </TabsTrigger>
         </TabsList>

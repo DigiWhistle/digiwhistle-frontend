@@ -31,7 +31,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUserProfile();
   }, [dispatch, user]);
 
-  console.log("user", user);
   return <>{children}</>;
 };
 

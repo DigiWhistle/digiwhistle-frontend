@@ -85,7 +85,6 @@ const LoginForm = ({ className }: { className?: string }) => {
 
     if (result.data) {
       toast.success(result.message);
-      console.log("this is the login info", result.data.user);
       await dispatch(setUser(result.data.user));
 
       if (!result.data.user.isOnBoarded) {
