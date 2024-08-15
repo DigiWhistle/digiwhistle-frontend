@@ -14,6 +14,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import EditableRemark from "./EditableRemark";
 import { useSelector } from "react-redux";
 import { User } from "@/store/UserSlice";
+import { FormDescription } from "@/components/ui/form";
 const RemarksFormSchema = z.object({
   remarks: z.string().max(400, "characters should be less than 400"),
 });
@@ -60,7 +61,7 @@ const ViewRemarks = ({
   };
   return (
     <div className="flex flex-col ">
-      <div className="flex flex-col gap-5 pb-8 max-h-[250px] overflow-y-scroll ">
+      <div className="flex -mr-4 p-2 flex-col  gap-5 pb-8 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-corner-inherits scrollbar-thumb-gray-500 ">
         {allRemarks.map((item: any) => (
           <EditableRemark
             key={item.name}
@@ -74,8 +75,8 @@ const ViewRemarks = ({
         ))}
       </div>
       {mainEditor ? (
-        <div className="flex items-center justify-start gap-3 w-full border-y-2 py-8">
-          <Avatar className="w-11 h-10 bg-slate-100 rounded-full ">
+        <div className="flex items-start justify-start gap-3 w-full border-y-2 py-8">
+          <Avatar className="w-11 h-10 bg-slate-100 rounded-full mt-1 ">
             {url ? (
               <AvatarImage src="https://github.com/shadcn.png" />
             ) : (
@@ -85,7 +86,7 @@ const ViewRemarks = ({
           <Form {...form}>
             <form
               action=""
-              className="flex flex-col gap-6 items-center w-full"
+              className="flex flex-col gap-2 items-center w-full"
               onSubmit={form.handleSubmit(handleForm)}
             >
               <FormTextInput
@@ -93,8 +94,13 @@ const ViewRemarks = ({
                 formName="remarks"
                 label=""
                 placeholder="Add new remark here..."
+                maxLength={400}
                 rightIcon={<PaperAirplaneIcon className="text-tc-ic-black-default w-4 h-4" />}
               />
+              <FormDescription className="flex w-full pl-2">
+                {form.watch("remarks") ? 400 - form.watch("remarks").length : "400"}/400 characters
+                remaining
+              </FormDescription>
             </form>
           </Form>
         </div>

@@ -614,9 +614,12 @@ const config = {
           },
         },
       },
+      scrollbar: {
+        width: '4px', // or any width you need
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar'),],
 } satisfies Config;
 
 export default config;

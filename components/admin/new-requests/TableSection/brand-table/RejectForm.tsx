@@ -70,6 +70,7 @@ const RejectForm = ({
                 label="Add remarks"
                 placeholder="Write here."
                 required
+                maxLength={400}
               />
               <FormDescription className="flex w-full">
                 {form.watch("remarks") ? 400 - form.watch("remarks").length : "400"}/400 characters

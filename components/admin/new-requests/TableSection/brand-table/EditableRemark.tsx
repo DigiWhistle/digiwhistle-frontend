@@ -11,7 +11,7 @@ import FormTextInput from "@/components/ui/form/form-text-input";
 import { toast } from "sonner";
 import { PaperAirplaneIcon, PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Pointer } from "lucide-react";
-
+import { FormDescription } from "@/components/ui/form";
 const timeSince = (date: any) => {
   const now: any = new Date();
   const updatedAt: any = new Date(date);
@@ -59,8 +59,7 @@ const EditableRemark = ({
   });
 
   const handleindividualForm = async (data: z.infer<typeof UpdateRemarksFormSchema>) => {
-    console.log("called");
-    toast.success("called");
+    toast.success("updated successfully");
     individualform.reset();
     setActive(false);
     SetEditorMode(true);
@@ -112,11 +111,12 @@ const EditableRemark = ({
       <Form {...individualform}>
         <form
           action=""
-          className="flex flex-col gap-6 items-center w-full"
+          className="flex flex-col gap-2 items-center w-full"
           onSubmit={individualform.handleSubmit(handleindividualForm)}
         >
           <FormTextInput
             className={""}
+            inputCN={item.name.includes(name) ? "" : "bg-[#F0F0F1] "}
             formName="editremarks"
             disabled={!activeEdit}
             label=""
@@ -130,6 +130,16 @@ const EditableRemark = ({
               )
             }
           />
+          {activeEdit ? (
+            <FormDescription className="flex w-full pl-2">
+              {individualform.watch("editremarks")
+                ? 400 - individualform.watch("editremarks").length
+                : "400"}
+              /400 characters remaining
+            </FormDescription>
+          ) : (
+            <></>
+          )}
         </form>
       </Form>
     </div>

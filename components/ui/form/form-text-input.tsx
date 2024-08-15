@@ -22,9 +22,10 @@ interface IFormTextInputProps {
   defaultValue?: string;
   type?: "text" | "number";
   className?: string;
-  inputCN?: ClassValue[];
+  inputCN?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  maxLength?: number;
 }
 const FormTextInput = ({
   formName,
@@ -39,6 +40,7 @@ const FormTextInput = ({
   inputCN,
   leftIcon,
   rightIcon,
+  maxLength,
 }: IFormTextInputProps) => {
   const { control } = useFormContext();
   return (
@@ -66,6 +68,7 @@ const FormTextInput = ({
                     {...field}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
+                    maxLength={maxLength ? maxLength : undefined}
                     className={cn(
                       " border-none placeholder:text-muted-foreground bg-white ",
                       leftIcon ? "ps-10" : null,
