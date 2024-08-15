@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { ClassValue } from "clsx";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
@@ -23,8 +22,8 @@ interface IFormPasswordInputProps {
   formDescription?: string;
   defaultValue?: string;
   type?: "text" | "number" | "password";
-  className?: ClassValue[];
-  inputCN?: ClassValue[];
+  className?: string;
+  inputCN?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   triggerOnInput?: boolean;

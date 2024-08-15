@@ -1,6 +1,6 @@
-import { Brand } from "@/components/admin/new-requests/TableSection/brand-table/brand-columns";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
+import { Brand } from "@/types/admin/new-requests-types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -29,7 +29,7 @@ export const fetchBrandRequestsData = createAsyncThunk(
   }: {
     page: number;
     limit: number;
-    name?: string;
+    name?: string | null;
     rejected?: boolean;
     approved?: boolean;
   }) => {

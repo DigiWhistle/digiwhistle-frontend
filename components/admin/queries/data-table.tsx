@@ -69,8 +69,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
-                        cell.column.id === "name" && (row.original as any).viewed
-                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:border-blue-581"
+                        cell === row.getVisibleCells().at(0) && (row.original as any).viewed
+                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-blue-581"
                           : "",
                       )}
                     >

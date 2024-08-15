@@ -13,21 +13,21 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   // if (user) {
   //   if (role === "admin" || role === "employee") {
-  //     router.push("/admin/new-requests");
+  //     router.push(ADMIN_DEFAULT_ROUTE);
   //   } else if (role === "influencer" || role === "brand" || role === "agency") {
-  //     router.push("/user/dashboard");
+  //     router.push(USER_DEFAULT_ROUTE);
   //   }
   // }
 
   // if (authUser) {
   //   if (authUser.role === "admin" || authUser.role === "employee") {
-  //     router.push("/admin/new-requests");
+  //     router.push(ADMIN_DEFAULT_ROUTE);
   //   } else if (
   //     authUser.role === "influencer" ||
   //     authUser.role === "brand" ||
   //     authUser.role === "agency"
   //   ) {
-  //     router.push("/user/dashboard");
+  //     router.push(USER_DEFAULT_ROUTE);
   //   }
   // }
 

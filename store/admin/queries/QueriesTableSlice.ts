@@ -1,7 +1,6 @@
-import { Brand } from "@/components/admin/new-requests/TableSection/brand-table/brand-columns";
-import { Query } from "@/components/admin/queries/queries-columns";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
+import { Query } from "@/types/admin/queries-types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -29,7 +28,7 @@ export const fetchQueriesTableData = createAsyncThunk(
   }: {
     page: number;
     limit: number;
-    name?: string;
+    name?: string | null;
     brands?: boolean;
     influencer?: boolean;
   }) => {

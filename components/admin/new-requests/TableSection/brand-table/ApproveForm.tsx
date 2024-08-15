@@ -32,11 +32,9 @@ const ApproveForm = ({
     resolver: zodResolver(ApproveFormSchema),
   });
   const handleForm = async (data: z.infer<typeof ApproveFormSchema>) => {
-    console.log("called");
     const response = await postAuthorizedRequest("user/approve", {
       userId: userId,
     });
-    console.log("this is the response", response);
     if (response.error) {
       toast.error(response.error);
     } else {

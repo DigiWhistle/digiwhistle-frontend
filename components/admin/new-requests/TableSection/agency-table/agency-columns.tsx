@@ -20,17 +20,17 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
-import ApproveForm from "./ApproveForm";
-import RejectForm from "./RejectForm";
-import ViewRemarks from "./ViewRemarks";
-import { Brand } from "@/types/admin/new-requests-types";
+import { Agency } from "@/types/admin/new-requests-types";
+import ApproveForm from "../brand-table/ApproveForm";
+import RejectForm from "../brand-table/RejectForm";
+import ViewRemarks from "../brand-table/ViewRemarks";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
-): ColumnDef<Brand>[] => [
+): ColumnDef<Agency>[] => [
   {
     accessorKey: "name",
-    header: () => <div className="">Brand Name</div>,
+    header: () => <div className="">Agency Name</div>,
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-3 h-8">
@@ -46,7 +46,7 @@ export const createColumns = (
   },
   {
     accessorKey: "websiteURL",
-    header: "Brand Website",
+    header: "Agency Website",
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">

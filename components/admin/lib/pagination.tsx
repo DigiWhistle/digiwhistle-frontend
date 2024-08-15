@@ -19,7 +19,6 @@ import { AppDispatch, useAppSelector } from "@/lib/config/store";
 import type { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { PAGE_LIMIT } from "../new-requests/TableSection/brand-table";
 
 import {
   Pagination,
@@ -38,6 +37,13 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TData>) {
   const currentPath = usePathname();
+
+  const redirectUrl = (page: number) => {
+    if (window === undefined) return "";
+    const searchParams = new URLSearchParams(window.location.search);
+    const newPath = `${currentPath.replace(/\/\d+$/, `/${page}`)}?${searchParams.toString()}`;
+    return newPath;
+  };
 
   return (
     <div className="flex items-center justify-between px-2">
@@ -74,10 +80,10 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
             <PaginationItem>
               <PaginationPrevious
                 // href={`/${sanitizedPath}/${data.currentPage - 1}`}
-                href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 1).toString()}`)}
+                href={redirectUrl(data.currentPage - 1)}
                 // onClick={() =>
                 // dispatch(
-                // fetchBrandRequestsData({ page: data.currentPage - 1, limit: PAGE_LIMIT }),
+                // fetchBrandRequestsData({ page: data.currentPage - 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                 // )
                 // }
                 className={
@@ -90,12 +96,12 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                 <PaginationLink
                   isActive={false}
                   // href={`/${sanitizedPath}/${data.currentPage - 2}`}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 2).toString()}`)}
+                  href={redirectUrl(data.currentPage - 2)}
 
                   // href={"#"}
                   // onClick={() => {
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage - 2, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage - 2, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // );
                   // }}
                 >
@@ -109,11 +115,11 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // href={"#"}
                   // href={`/${sanitizedPath}/${data.currentPage - 1}`}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage - 1).toString()}`)}
+                  href={redirectUrl(data.currentPage - 1)}
 
                   // onClick={() =>
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage - 1, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage - 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // )
                   // }
                 >
@@ -128,7 +134,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
 
                 href={"#"}
                 // onClick={() =>
-                // dispatch(fetchBrandRequestsData({ page: data.currentPage, limit: PAGE_LIMIT }))
+                // dispatch(fetchBrandRequestsData({ page: data.currentPage, limit: BRAND_TABLE_PAGE_LIMIT }))
                 // }
               >
                 {data.currentPage}
@@ -140,12 +146,12 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // href={`/${sanitizedPath}/${data.currentPage + 1}`}
                   // href={currentPath.replace(/\/\d+$/, (data.currentPage + 1).toString())}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 1).toString()}`)}
+                  href={redirectUrl(data.currentPage + 1)}
 
                   // href={"#"}
                   // onClick={() => {
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage + 1, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage + 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // );
                   // }}
                 >
@@ -159,7 +165,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   isActive={false}
                   // {`/${}`}
                   // href={currentPath.replace(/\/\d+$/, (data.currentPage + 2).toString())}
-                  href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 2).toString()}`)}
+                  href={redirectUrl(data.currentPage + 2)}
                 >
                   {data.currentPage + 2}
                 </PaginationLink>
@@ -179,10 +185,10 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
               <PaginationNext
                 // href={`/${sanitizedPath}/${data.currentPage + 1}`}
 
-                href={currentPath.replace(/\/\d+$/, `/${(data.currentPage + 1).toString()}`)}
+                href={redirectUrl(data.currentPage + 1)}
                 // onClick={() =>
                 // dispatch(
-                // fetchBrandRequestsData({ page: data.currentPage + 1, limit: PAGE_LIMIT }),
+                // fetchBrandRequestsData({ page: data.currentPage + 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                 // )
                 // }
                 className={

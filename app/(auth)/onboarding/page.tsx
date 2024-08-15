@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import InfluencerSignUp from "@/components/auth/sign-up/user-panel/InfluencerSignUp";
 import AgencySignUp from "@/components/auth/sign-up/user-panel/AgencySignUp";
 import BrandSignUp from "@/components/auth/sign-up/user-panel/BrandSignUp";
+import { ADMIN_DEFAULT_ROUTE, USER_DEFAULT_ROUTE } from "@/lib/constants";
 const OnBoarding = () => {
   const user = useSelector(User);
   const router = useRouter();
@@ -17,9 +18,9 @@ const OnBoarding = () => {
     return null;
   } else if (user.isOnBoarded && user.isVerified) {
     if (user.role === "influencer" || user.role === "agency" || user.role === "brand") {
-      router.push("/user/dashboard");
+      router.push(USER_DEFAULT_ROUTE);
     } else if (user.role === "admin" || user.role === "employee") {
-      router.push("/admin/new-requests");
+      router.push(ADMIN_DEFAULT_ROUTE);
     }
     return null;
   } else if (user.isOnBoarded) {

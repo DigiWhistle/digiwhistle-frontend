@@ -17,7 +17,6 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { deleteAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
@@ -30,22 +29,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
-export enum PersonType {
-  INFLUENCER = "Influencer",
-  BRAND = "Brand",
-}
-export type Query = {
-  id: string;
-  name: string;
-  email: string;
-  followersCount?: string | null;
-  profileLink?: string | null;
-  mobileNo?: string | null;
-  message?: string | null;
-  personType: PersonType;
-  viewed: boolean;
-};
+import { Query } from "@/types/admin/queries-types";
 
 export const createColumns = (
   updateData: (id: string, value: boolean) => void,

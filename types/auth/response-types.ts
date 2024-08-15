@@ -24,20 +24,22 @@ export interface IInfluencerResponse {
   instagramURL: string;
   youtubeURL: string;
   linkedInURL: string;
+  profilePic?: string;
   user: string;
 }
 export interface IAdminResponse {
   firstName: string;
   lastName: string;
   mobileNo: string;
-  profilePic: string;
+  profilePic?: string;
   user: string;
 }
 export interface IBrandResponse {
   name: string;
-  pocFirstName: string;
-  pocLastName: string;
+  firstName: string;
+  lastName: string;
   mobileNo: string;
   websiteURL: string;
+  profilePic?: string;
   user: string;
 }

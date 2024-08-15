@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { ADMIN_DEFAULT_ROUTE, USER_DEFAULT_ROUTE } from "./lib/constants";
 
 function shouldSkipRequest(pathname: string) {
   const prefixes = ["/_next", "/assets", "/brand", "/favicon.ico", ".ico"];
@@ -28,13 +29,13 @@ export function middleware(request: NextRequest) {
         request.cookies.get("role")?.value === "admin" ||
         request.cookies.get("role")?.value === "employee"
       ) {
-        response = NextResponse.redirect(new URL("/admin/new-requests", request.url));
+        response = NextResponse.redirect(new URL(ADMIN_DEFAULT_ROUTE, request.url));
       } else if (
         request.cookies.get("role")?.value === "influencer" ||
         request.cookies.get("role")?.value === "brand" ||
         request.cookies.get("role")?.value === "agency"
       ) {
-        response = NextResponse.redirect(new URL("/user/dashboard", request.url));
+        response = NextResponse.redirect(new URL(USER_DEFAULT_ROUTE, request.url));
       } else {
         response = NextResponse.next();
         response.cookies.delete("token");
