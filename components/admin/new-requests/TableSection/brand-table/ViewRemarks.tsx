@@ -60,8 +60,8 @@ const ViewRemarks = ({
     form.reset();
   };
   return (
-    <div className="flex flex-col ">
-      <div className="flex -mr-4 p-2 flex-col  gap-5 pb-8 max-h-[250px] overflow-y-auto scrollbar-thin scrollbar-corner-inherits scrollbar-thumb-gray-500 ">
+    <div className="flex flex-col  ">
+      <div className="flex -mr-4 pr-2 flex-col  gap-5 pb-8 max-h-[160px] overflow-y-auto scrollbar-thin  scrollbar-track-white scrollbar-thumb-slate-600 scrollbar-thumb-rounded">
         {allRemarks.map((item: any) => (
           <EditableRemark
             key={item.name}
@@ -75,7 +75,7 @@ const ViewRemarks = ({
         ))}
       </div>
       {mainEditor ? (
-        <div className="flex items-start justify-start gap-3 w-full border-y-2 py-8">
+        <div className="flex items-start justify-start gap-3 w-full border-y-2 pt-6 pb-4">
           <Avatar className="w-11 h-10 bg-slate-100 rounded-full mt-1 ">
             {url ? (
               <AvatarImage src="https://github.com/shadcn.png" />

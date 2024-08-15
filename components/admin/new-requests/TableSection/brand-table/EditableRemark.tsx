@@ -43,7 +43,7 @@ const EditableRemark = ({
   fetchOrNot,
 }: {
   item: any;
-  name: string;
+  name?: string;
   SetEditorMode: any;
   mainEditor: boolean;
   SetFetcher: any;
