@@ -1,23 +1,31 @@
 "use client";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { createColumns } from "./brand-columns";
-import { DataTable } from "./data-table";
+import { createColumns } from "./agency-columns";
 import {
+  BrandRequestsTable,
   BrandRequestsTableData,
   BrandRequestsTableLoading,
   fetchBrandRequestsData,
   updateBrandApproval,
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
+import { useDispatch } from "react-redux";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname, useSearchParams } from "next/navigation";
-import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
+import { AGENCY_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
+import {
+  AgencyRequestsTableData,
+  AgencyRequestsTableLoading,
+  fetchAgencyRequestsData,
+  updateAgencyApproval,
+} from "@/store/admin/new-requests/AgencyRequestsTableSlice";
+import { DataTable } from "./data-table";
 
-const BrandTable = () => {
+const AgencyTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
   const dispatch: AppDispatch = useAppDispatch();
-  const data = useAppSelector(BrandRequestsTableData);
-  const loading = useAppSelector(BrandRequestsTableLoading);
+  const data = useAppSelector(AgencyRequestsTableData);
+  const loading = useAppSelector(AgencyRequestsTableLoading);
 
   useEffect(() => {
     const name = searchParams.get("name");
@@ -35,9 +43,9 @@ const BrandTable = () => {
           : undefined;
 
     dispatch(
-      fetchBrandRequestsData({
+      fetchAgencyRequestsData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
-        limit: BRAND_TABLE_PAGE_LIMIT,
+        limit: AGENCY_TABLE_PAGE_LIMIT,
         name,
         rejected,
         approved,
@@ -47,7 +55,7 @@ const BrandTable = () => {
 
   const updateData = useCallback(
     (id: string, isApproved: boolean | null) => {
-      dispatch(updateBrandApproval({ id, isApproved }));
+      dispatch(updateAgencyApproval({ id, isApproved }));
     },
     [dispatch],
   );
@@ -66,4 +74,4 @@ const BrandTable = () => {
   );
 };
 
-export default BrandTable;
+export default AgencyTable;

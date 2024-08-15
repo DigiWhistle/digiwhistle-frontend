@@ -1,6 +1,6 @@
-import { Brand } from "@/components/admin/new-requests/TableSection/brand-table";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
+import { Brand } from "@/types/admin/new-requests-types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";

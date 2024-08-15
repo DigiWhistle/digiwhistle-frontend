@@ -1,6 +1,6 @@
-import { Query } from "@/components/admin/queries/QueriesTable";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
+import { Query } from "@/types/admin/queries-types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 

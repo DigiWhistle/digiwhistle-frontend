@@ -4,11 +4,13 @@ import type { TypedUseSelectorHook } from "react-redux";
 import { userReducer } from "@/store/UserSlice";
 import { brandRequestsTableReducer } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { queriesTableReducer } from "@/store/admin/queries/QueriesTableSlice";
+import { agencyRequestsTableReducer } from "@/store/admin/new-requests/AgencyRequestsTableSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     brandRequestsTable: brandRequestsTableReducer,
+    agencyRequestsTable: agencyRequestsTableReducer,
     queriesTable: queriesTableReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),

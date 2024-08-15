@@ -18,24 +18,8 @@ import {
   QueriesTableLoading,
   setViewQuery,
 } from "@/store/admin/queries/QueriesTableSlice";
+import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries-types";
 
-export enum PersonType {
-  INFLUENCER = "Influencer",
-  BRAND = "Brand",
-}
-export type Query = {
-  id: string;
-  name: string;
-  email: string;
-  followersCount?: string | null;
-  profileLink?: string | null;
-  mobileNo?: string | null;
-  message?: string | null;
-  personType: PersonType;
-  viewed: boolean;
-};
-
-export const PAGE_LIMIT = 5;
 const QueriesTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
@@ -62,7 +46,7 @@ const QueriesTable = () => {
     dispatch(
       fetchQueriesTableData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
-        limit: PAGE_LIMIT,
+        limit: QUERY_TABLE_PAGE_LIMIT,
         name,
         brands,
         influencer,

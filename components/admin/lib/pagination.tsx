@@ -19,7 +19,6 @@ import { AppDispatch, useAppSelector } from "@/lib/config/store";
 import type { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { PAGE_LIMIT } from "../new-requests/TableSection/brand-table";
 
 import {
   Pagination,
@@ -40,6 +39,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
   const currentPath = usePathname();
 
   const redirectUrl = (page: number) => {
+    if (window === undefined) return "";
     const searchParams = new URLSearchParams(window.location.search);
     const newPath = `${currentPath.replace(/\/\d+$/, `/${page}`)}?${searchParams.toString()}`;
     return newPath;
@@ -83,7 +83,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                 href={redirectUrl(data.currentPage - 1)}
                 // onClick={() =>
                 // dispatch(
-                // fetchBrandRequestsData({ page: data.currentPage - 1, limit: PAGE_LIMIT }),
+                // fetchBrandRequestsData({ page: data.currentPage - 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                 // )
                 // }
                 className={
@@ -101,7 +101,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   // href={"#"}
                   // onClick={() => {
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage - 2, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage - 2, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // );
                   // }}
                 >
@@ -119,7 +119,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
 
                   // onClick={() =>
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage - 1, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage - 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // )
                   // }
                 >
@@ -134,7 +134,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
 
                 href={"#"}
                 // onClick={() =>
-                // dispatch(fetchBrandRequestsData({ page: data.currentPage, limit: PAGE_LIMIT }))
+                // dispatch(fetchBrandRequestsData({ page: data.currentPage, limit: BRAND_TABLE_PAGE_LIMIT }))
                 // }
               >
                 {data.currentPage}
@@ -151,7 +151,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                   // href={"#"}
                   // onClick={() => {
                   // dispatch(
-                  // fetchBrandRequestsData({ page: data.currentPage + 1, limit: PAGE_LIMIT }),
+                  // fetchBrandRequestsData({ page: data.currentPage + 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                   // );
                   // }}
                 >
@@ -188,7 +188,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
                 href={redirectUrl(data.currentPage + 1)}
                 // onClick={() =>
                 // dispatch(
-                // fetchBrandRequestsData({ page: data.currentPage + 1, limit: PAGE_LIMIT }),
+                // fetchBrandRequestsData({ page: data.currentPage + 1, limit: BRAND_TABLE_PAGE_LIMIT }),
                 // )
                 // }
                 className={

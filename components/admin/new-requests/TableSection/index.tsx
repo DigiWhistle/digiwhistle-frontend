@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import BrandFilters from "./brand-table/BrandFilters";
+import AgencyFilters from "./agency-table/AgencyFilters";
 
 const TableSection = () => {
   const router = useRouter();
@@ -23,7 +24,9 @@ const TableSection = () => {
         <TabsContent value="brand">
           <BrandFilters />
         </TabsContent>
-        <TabsContent value="agency"></TabsContent>
+        <TabsContent value="agency">
+          <AgencyFilters />
+        </TabsContent>
 
         <TabsList className="text-body-md-medium p-1">
           <TabsTrigger value="influencer" className="py-2 px-5">

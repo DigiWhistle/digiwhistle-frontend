@@ -8,16 +8,16 @@ import { fetchBrandRequestsData } from "@/store/admin/new-requests/BrandRequests
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PAGE_LIMIT } from ".";
 import { debounce } from "lodash";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
 
 const BrandFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
   const currentPath = usePathname();
 
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   const defaultApproved = searchParams.get("approved") === "true";
   const defaultRejected = searchParams.get("rejected") === "true";
   const defaultSearchTerm = searchParams.get("name");
@@ -28,9 +28,9 @@ const BrandFilters = () => {
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
-      dispatch(fetchBrandRequestsData({ page: 1, limit: PAGE_LIMIT, name: query }));
+      dispatch(fetchBrandRequestsData({ page: 1, limit: BRAND_TABLE_PAGE_LIMIT, name: query }));
     }, 300),
-    [dispatch, PAGE_LIMIT],
+    [dispatch, BRAND_TABLE_PAGE_LIMIT],
   );
 
   const pushUrl = (paramName: string, value: string) => {
@@ -74,7 +74,7 @@ const BrandFilters = () => {
               dispatch(
                 fetchBrandRequestsData({
                   page: 1,
-                  limit: PAGE_LIMIT,
+                  limit: BRAND_TABLE_PAGE_LIMIT,
                   approved: value,
                   rejected: rejected,
                 }),
@@ -93,7 +93,7 @@ const BrandFilters = () => {
               dispatch(
                 fetchBrandRequestsData({
                   page: 1,
-                  limit: PAGE_LIMIT,
+                  limit: BRAND_TABLE_PAGE_LIMIT,
                   approved: approved,
                   rejected: value,
                 }),

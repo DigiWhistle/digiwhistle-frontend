@@ -4,34 +4,33 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { AppDispatch } from "@/lib/config/store";
 import { cn } from "@/lib/utils";
-import { fetchBrandRequestsData } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { fetchQueriesTableData } from "@/store/admin/queries/QueriesTableSlice";
-import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries-types";
+import { AGENCY_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
+import { fetchAgencyRequestsData } from "@/store/admin/new-requests/AgencyRequestsTableSlice";
 
-const QueriesFilters = () => {
+const AgencyFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
   const currentPath = usePathname();
 
   const searchParams = useSearchParams();
-  const defaultInfluencer = searchParams.get("influencer") === "true";
-  const defaultBrand = searchParams.get("brand") === "true";
+  const defaultApproved = searchParams.get("approved") === "true";
+  const defaultRejected = searchParams.get("rejected") === "true";
   const defaultSearchTerm = searchParams.get("name");
 
-  const [influencerCheck, setInfluencerCheck] = useState(defaultInfluencer);
-  const [brandCheck, setBrandCheck] = useState(defaultBrand);
+  const [approved, setApproved] = useState(defaultApproved);
+  const [rejected, setRejected] = useState(defaultRejected);
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm || "");
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
-      dispatch(fetchQueriesTableData({ page: 1, limit: QUERY_TABLE_PAGE_LIMIT, name: query }));
+      dispatch(fetchAgencyRequestsData({ page: 1, limit: AGENCY_TABLE_PAGE_LIMIT, name: query }));
     }, 300),
-    [dispatch, QUERY_TABLE_PAGE_LIMIT],
+    [dispatch, AGENCY_TABLE_PAGE_LIMIT],
   );
 
   const pushUrl = (paramName: string, value: string) => {
@@ -41,7 +40,6 @@ const QueriesFilters = () => {
     url.searchParams.set(paramName, value);
     router.push(url.toString());
   };
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
 
@@ -69,45 +67,45 @@ const QueriesFilters = () => {
       <div className="flex gap-2 items-center">
         <div className="flex items-center space-x-2">
           <Switch
-            id="brands-only"
-            checked={brandCheck}
+            id="approve-only"
+            checked={approved}
             onCheckedChange={value => {
-              setBrandCheck(value);
+              setApproved(value);
               dispatch(
-                fetchQueriesTableData({
+                fetchAgencyRequestsData({
                   page: 1,
-                  limit: QUERY_TABLE_PAGE_LIMIT,
-                  brands: value,
-                  influencer: influencerCheck,
+                  limit: AGENCY_TABLE_PAGE_LIMIT,
+                  approved: value,
+                  rejected: rejected,
                 }),
               );
-              pushUrl("brands", value ? "true" : "false");
+              pushUrl("approved", value ? "true" : "false");
             }}
           />
-          <Label htmlFor="brands-only">Brands only</Label>
+          <Label htmlFor="approve-only">Approved only</Label>
         </div>
         <div className="flex items-center space-x-2">
           <Switch
-            id="influencer-only"
-            checked={influencerCheck}
+            id="rejected-only"
+            checked={rejected}
             onCheckedChange={value => {
-              setInfluencerCheck(value);
+              setRejected(value);
               dispatch(
-                fetchQueriesTableData({
+                fetchAgencyRequestsData({
                   page: 1,
-                  limit: QUERY_TABLE_PAGE_LIMIT,
-                  brands: brandCheck,
-                  influencer: value,
+                  limit: AGENCY_TABLE_PAGE_LIMIT,
+                  approved: approved,
+                  rejected: value,
                 }),
               );
-              pushUrl("influencer", value ? "true" : "false");
+              pushUrl("rejected", value ? "true" : "false");
             }}
           />
-          <Label htmlFor="influencer-only">Influencers only</Label>
+          <Label htmlFor="rejected-only">Rejected only</Label>
         </div>
       </div>
     </div>
   );
 };
 
-export default QueriesFilters;
+export default AgencyFilters;
