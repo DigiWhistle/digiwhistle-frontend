@@ -5,6 +5,7 @@ export interface ISignUpResponse {
   email: string;
   role: "influencer" | "brand" | "agency" | "admin" | "employee";
   isVerified: boolean;
+  isPaused: boolean;
 }
 
 export interface ILoginResponse {

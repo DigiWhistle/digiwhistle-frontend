@@ -86,6 +86,7 @@ const AdminSignUp = ({ className }: { className?: string }) => {
             role: result.data.role,
             isOnBoarded: false,
             isVerified: result.data.isVerified,
+            isPaused: result.data.isPaused,
             profile: respond.data,
           };
 

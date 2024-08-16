@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { PaperAirplaneIcon, PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Pointer } from "lucide-react";
 import { FormDescription } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 const timeSince = (date: any) => {
   const now: any = new Date();
   const updatedAt: any = new Date(date);
@@ -116,7 +117,7 @@ const EditableRemark = ({
         >
           <FormTextInput
             className={""}
-            inputCN={item.name.includes(name) ? "" : "bg-[#F0F0F1] "}
+            inputCN={cn("py-0 h-3", item.name.includes(name) ? "" : "bg-[#F0F0F1] ")}
             formName="editremarks"
             disabled={!activeEdit}
             label=""
