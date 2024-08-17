@@ -81,7 +81,7 @@ const FormTextInput = ({
                         : field.onChange(e.target.value);
                     }}
                   />
-                  <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
+                  <div className="absolute z-50 cursor-pointer inset-y-0 end-0 flex items-center pe-3 ">
                     {rightIcon}
                   </div>
                 </div>

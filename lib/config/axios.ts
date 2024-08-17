@@ -161,6 +161,26 @@ export async function postAuthorizedRequest<T>(
   );
 }
 
+export async function putAuthorizedRequest<T>(
+  URL: string,
+  payload: any,
+  setLoading?: (loading: boolean) => void,
+): Promise<ApiResponse<T>> {
+  const token = getAuthToken();
+  if (!token) {
+    return handleRequest<T>(Promise.reject(), setLoading, {
+      message: "Authorization token not found",
+      status: 401,
+    });
+  }
+  return handleRequest<T>(
+    axiosClient.put<T>(`/${URL}`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    setLoading,
+  );
+}
+
 export async function patchAuthorizedRequest<T>(
   URL: string,
   payload: any,
