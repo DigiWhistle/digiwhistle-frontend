@@ -86,6 +86,7 @@ const OTPLogin = () => {
           email: response.data.user.email,
           isOnBoarded: response.data.isOnBoarded,
           isVerified: response.data.user.isVerified,
+          isPaused: response.data.user.isPaused,
         };
         dispatch(setUser(user_data));
         dispatch(setUserProfile(response.data.user.profile));

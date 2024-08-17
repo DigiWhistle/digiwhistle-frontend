@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   isOnBoarded: boolean;
   isVerified: boolean;
-  isPaused: boolean;
+  isPaused?: boolean;
   profile?: IInfluencerResponse | IAdminResponse | IBrandResponse;
 }
 

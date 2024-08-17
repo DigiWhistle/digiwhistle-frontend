@@ -21,6 +21,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             setDrawerView(false);
           }}
           className=" w-full h-full p-7 mt-1 lg:p-7 md:py-7 md:pr-7 md:pl-24 overflow-y-auto "
+          style={{ scrollbarGutter: "stable" }}
         >
           {children}
         </div>

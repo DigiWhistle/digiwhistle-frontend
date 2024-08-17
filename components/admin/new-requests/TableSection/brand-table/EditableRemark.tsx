@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Pointer } from "lucide-react";
 import { FormDescription } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 import { deleteAuthorizedRequest, putAuthorizedRequest } from "@/lib/config/axios";
 const timeSince = (date: any) => {
   const now: any = new Date();
@@ -153,7 +154,10 @@ const EditableRemark = ({
         <form action="" className="flex flex-col gap-2 items-center w-full">
           <FormTextInput
             className={""}
-            inputCN={item.name.includes(name) ? "h-8 placeholder-black" : " h-8 bg-[#F0F0F1]  "}
+            inputCN={cn(
+              "py-0 h-3",
+              item.name.includes(name) ? "h-8 placeholder-black" : " h-8 bg-[#F0F0F1]  ",
+            )}
             formName="editremarks"
             disabled={!activeEdit}
             label=""
