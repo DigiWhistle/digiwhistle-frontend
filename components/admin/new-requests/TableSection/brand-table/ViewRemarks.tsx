@@ -83,7 +83,7 @@ const ViewRemarks = ({
   };
   return (
     <div className="flex flex-col  ">
-      <div className="flex -mr-4 pr-2 flex-col  gap-5 pb-8 max-h-[160px] overflow-y-auto scrollbar-thin  scrollbar-track-white scrollbar-thumb-slate-600 scrollbar-thumb-rounded">
+      <div className="flex -mr-4 pr-2 flex-col  gap-5 pb-8 max-h-[160px] overflow-y-auto ">
         {allRemarks.map((item: any) => (
           <EditableRemark
             key={item.id}
@@ -137,7 +137,10 @@ const ViewRemarks = ({
 
       <div className="flex w-full gap-3 pt-6">
         <div className="flex w-full">
-          <CancelButton text="Clear all remarks" handleClick={handleClearRemarks} />
+          <CancelButton
+            text="Clear all remarks"
+            handleClick={mainEditor ? handleClearRemarks : () => {}}
+          />
         </div>
         <div className="flex w-full">
           <ActionButton onClick={mainEditor ? form.handleSubmit(handleForm) : () => {}}>

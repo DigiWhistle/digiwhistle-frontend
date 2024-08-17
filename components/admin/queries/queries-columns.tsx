@@ -30,7 +30,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Query } from "@/types/admin/queries-types";
-
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
+import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 export const createColumns = (
   updateData: (id: string, value: boolean) => void,
   deleteQuery: (id: string) => void,
@@ -118,57 +120,67 @@ export const createColumns = (
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuItem
-              
-            > */}
-            <Dialog>
-              <DialogTrigger className="items-center rounded-sm px-2 py-1.5 text-sm focus:text-tc-ic-black-hover ">
-                View Query
-              </DialogTrigger>
-              <DialogContent className="max-h-96">
-                <DialogHeader>
-                  <DialogTitle className="mt-3">View Query</DialogTitle>
-                </DialogHeader>
-                <div className=" overflow-hidden relative mt-3">
-                  <p className="text-sm mb-2">User&apos;s Query Message</p>
-                  <div className="h-36 rounded-lg text-sm text-tc-body-grey border bg-gray-554 px-3 py-2 overflow-auto">
-                    <p className="overflow-auto">{row.original.message}</p>
-                  </div>
+            <CustomDialog
+              className="w-[600px]"
+              headerTitle="View Query"
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  View query
                 </div>
-                <hr className="my-3 text-tc-body-grey" />
-                <Button
-                  size={"sm"}
-                  className="w-min place-self-center px-4 focus:ring-offset-0"
+              }
+            >
+              <div className=" overflow-hidden relative mt-3">
+                <p className="text-sm mb-2">User&apos;s Query Message</p>
+                <div className="h-36 rounded-lg text-sm text-tc-body-grey border bg-gray-554 px-3 py-2 overflow-auto">
+                  <p className="overflow-auto">{row.original.message}</p>
+                </div>
+              </div>
+              <hr className="my-3 text-tc-body-grey" />
+              <Button
+                size={"sm"}
+                className="w-min place-self-center px-4 focus:ring-offset-0"
+                onClick={async () => {
+                  const response = await postAuthorizedRequest("contactUs/view", {
+                    id: row.original.id,
+                  });
+                  if (response.error) {
+                    toast.error(response.error);
+                  } else {
+                    updateData(row.original.id, true);
+                  }
+                }}
+              >
+                Mark as read
+              </Button>
+            </CustomDialog>
+            <CustomDialog
+              className="w-[400px]"
+              headerTitle="Delete query"
+              headerDescription="Please note that this action is permanent and irreversible in nature."
+              triggerElement={
+                <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                  Delete query
+                </div>
+              }
+            >
+              <div className="flex w-full gap-3 pt-6 border-t-2">
+                <CancelButton />
+                <ActionButton
+                  className="bg-red-600 text-white"
                   onClick={async () => {
-                    const response = await postAuthorizedRequest("contactUs/view", {
-                      id: row.original.id,
-                    });
+                    const response = await deleteAuthorizedRequest(`contactUs/${row.original.id}`);
                     if (response.error) {
                       toast.error(response.error);
                     } else {
-                      updateData(row.original.id, true);
+                      deleteQuery(row.original.id);
+                      toast.success("Query deleted successfully");
                     }
                   }}
                 >
-                  Mark as read
-                </Button>
-              </DialogContent>
-            </Dialog>
-            {/* </DropdownMenuItem> */}
-            <DropdownMenuItem
-              className="text-destructive focus:text-white focus:bg-destructive"
-              onClick={async () => {
-                const response = await deleteAuthorizedRequest(`contactUs/${row.original.id}`);
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  deleteQuery(row.original.id);
-                  toast.success("Query deleted successfully");
-                }
-              }}
-            >
-              Delete query
-            </DropdownMenuItem>
+                  Delete
+                </ActionButton>
+              </div>
+            </CustomDialog>
           </DropdownMenuContent>
         </DropdownMenu>
       );
