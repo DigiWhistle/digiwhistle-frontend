@@ -200,7 +200,7 @@ export const createColumns = (
               />
             </CustomDialog>
             <CustomDialog
-              className="w-[538px]"
+              className="w-[580px]"
               headerTitle="View remarks"
               headerDescription="Please note that this action is permanent and irreversible in nature."
               triggerElement={

@@ -42,9 +42,12 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
                 <div className="text-body-sm-light text-white">{userInfo?.role}</div>
               </div>
             </div>
-            <div className="flex w-11 h-11 bg-sb-gray-555 rounded-[110px] justify-center items-center">
+            <Link
+              href={"/admin/profile/1"}
+              className="flex w-11 h-11 bg-sb-gray-555 rounded-[110px] justify-center items-center"
+            >
               <UserIcon className="text-[#FFF] w-7 h-7" />
-            </div>
+            </Link>
           </div>
         </div>
       </nav>

@@ -43,7 +43,7 @@ const SidebarLinks = [
     icon: <IdentificationIcon className="text-tc-ic-black-default" />,
     link: "/admin/queries/1",
     linkText: "Profile control",
-    keyword: "profile",
+    keyword: "profile_influencer",
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,

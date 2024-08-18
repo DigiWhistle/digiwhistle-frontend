@@ -8,7 +8,9 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
+::file-selector-button {
+  display: none;
+}
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;

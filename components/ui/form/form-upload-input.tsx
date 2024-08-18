@@ -26,7 +26,7 @@ interface IFormTextInputProps {
   rightIcon?: React.ReactNode;
   maxLength?: number;
 }
-const FormTextInput = ({
+const FormUploadInput = ({
   formName,
   label,
   placeholder,
@@ -62,14 +62,14 @@ const FormTextInput = ({
                     </div>
                   )}
                   <Input
-                    type={type ?? "text"}
+                    type={"file"}
                     placeholder={placeholder}
                     {...field}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     maxLength={maxLength ? maxLength : undefined}
                     className={cn(
-                      " border-none placeholder:text-muted-foreground bg-white ",
+                      " border-none h-9 placeholder:text-muted-foreground bg-white items-center ",
                       leftIcon ? "ps-10" : null,
                       rightIcon ? "pe-10" : null,
                       inputCN,
@@ -97,4 +97,4 @@ const FormTextInput = ({
   );
 };
 
-export default FormTextInput;
+export default FormUploadInput;

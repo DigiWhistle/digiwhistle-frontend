@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
-
+import { Textarea } from "../textarea";
 interface IFormTextInputProps {
   formName: string;
   label: string;
@@ -26,7 +26,7 @@ interface IFormTextInputProps {
   rightIcon?: React.ReactNode;
   maxLength?: number;
 }
-const FormTextInput = ({
+const FormTextareaInput = ({
   formName,
   label,
   placeholder,
@@ -55,26 +55,19 @@ const FormTextInput = ({
             </FormLabel>
             <div>
               <FormControl className="">
-                <div className="relative flex items-center  border border-gray-300 rounded-full">
+                <div className="relative flex items-center   ">
                   {leftIcon && (
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                       {leftIcon}
                     </div>
                   )}
-                  <Input
-                    type={type ?? "text"}
+                  <Textarea
                     placeholder={placeholder}
                     {...field}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     maxLength={maxLength ? maxLength : undefined}
-                    className={cn(
-                      " border-none placeholder:text-muted-foreground bg-white ",
-                      leftIcon ? "ps-10" : null,
-                      rightIcon ? "pe-10" : null,
-                      inputCN,
-                      disabled ? "bg-[#D0D0D3]" : "",
-                    )}
+                    className={cn(" border-[1px]", inputCN)}
                     onChange={e => {
                       e.preventDefault();
                       type === "number"
@@ -82,6 +75,7 @@ const FormTextInput = ({
                         : field.onChange(e.target.value);
                     }}
                   />
+
                   <div className="absolute z-50 cursor-pointer inset-y-0 end-0 flex items-center pe-3 ">
                     {rightIcon}
                   </div>
@@ -97,4 +91,4 @@ const FormTextInput = ({
   );
 };
 
-export default FormTextInput;
+export default FormTextareaInput;

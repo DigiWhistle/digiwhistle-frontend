@@ -3,6 +3,8 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import AddInfluencers from "@/components/admin/layout/AddInfluencers";
+import InviteInfluencer from "@/components/admin/layout/InviteInfluencer";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full">
@@ -15,15 +17,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <CustomDialog
             className="w-[700px]"
             headerTitle={"Invite influencers"}
+            headerDescription="Please enter below details."
             triggerElement={
-              <Button className="flex rounded-3xl items-center justify-center   bg-white focus:ring-offset-0 border-[1px] border-bc-primary-black text-tc-primary-default font-sans text-body-lg-medium">
+              <Button
+                variant={"outline"}
+                className="flex rounded-3xl items-center justify-center   bg-white a border-[1px] border-bc-primary-black text-tc-primary-default font-sans text-body-lg-medium"
+              >
                 {" "}
                 <EnvelopeIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
                 Invite influencer
               </Button>
             }
           >
-            hello
+            <InviteInfluencer />
           </CustomDialog>
           <CustomDialog
             className="w-[700px]"
@@ -36,7 +42,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Button>
             }
           >
-            hello
+            <AddInfluencers />
           </CustomDialog>
         </div>
       </div>

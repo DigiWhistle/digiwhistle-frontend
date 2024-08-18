@@ -29,7 +29,7 @@ interface IFormTextInputProps {
 }
 
 const CustomInputComponent = React.forwardRef<HTMLInputElement>((props, ref) => (
-  <Input {...props} ref={ref} className={cn("border-none focus-visible:ring-0 h-9")} />
+  <Input {...props} ref={ref} className={cn("border-none focus-visible:ring-0 h-9  ")} />
 ));
 CustomInputComponent.displayName = "CustomInputComponent";
 
@@ -56,7 +56,13 @@ const FormPhoneInput = ({
           control={control}
           name={mobileFormName}
           render={({ field }) => (
-            <FormItem className={cn("w-full  flex flex-col ", className)}>
+            <FormItem
+              className={cn(
+                "w-full rounded-full flex flex-col ",
+                className,
+                disabled ? "bg-[#D0D0D390]" : "",
+              )}
+            >
               <FormControl className="">
                 <PhoneInput
                   defaultCountry="IN"
@@ -65,7 +71,7 @@ const FormPhoneInput = ({
                   disabled={disabled}
                   value={field.value || defaultValue || ""}
                   className={cn(
-                    "flex gap-1 h-10 border border-gray-300 ring-offset-background rounded-full px-4 py-2 text-sm  bg-white hoevr:border-ring focus-visible:ring-[1px] focus-visible:ring-ring focus-visible:ring-offset-0  ",
+                    "flex gap-1 h-10 border border-gray-300 ring-offset-background rounded-full px-4 py-2 text-sm   hoevr:border-ring focus-visible:ring-[1px] focus-visible:ring-ring focus-visible:ring-offset-0  ",
                     inputCN,
                   )}
                   inputComponent={CustomInputComponent}

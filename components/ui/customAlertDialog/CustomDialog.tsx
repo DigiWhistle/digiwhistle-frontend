@@ -29,7 +29,9 @@ const CustomDialog = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{triggerElement}</AlertDialogTrigger>
-      <AlertDialogContent className={cn("flex flex-col  pt-10 pb-5 border-none ", className)}>
+      <AlertDialogContent
+        className={cn("flex flex-col  pt-10 pb-5 border-none max-w-[1000px] ", className)}
+      >
         <AlertDialogCancel className="absolute top-4 right-4 p-0 bg-white hover:bg-white" asChild>
           <XMarkIcon cursor={"Pointer"} className="h-6 w-6 text-tc-ic-black-default" />
         </AlertDialogCancel>
