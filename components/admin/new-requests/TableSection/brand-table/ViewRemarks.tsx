@@ -120,7 +120,7 @@ const ViewRemarks = ({
               label=""
               disabled={!mainEditor}
               placeholder="Add new remark here..."
-              maxLength={400}
+              inputProps={{ maxLength: 400 }}
               rightIcon={<PaperAirplaneIcon className="text-tc-ic-black-default w-4 h-4" />}
             />
             {mainEditor ? (

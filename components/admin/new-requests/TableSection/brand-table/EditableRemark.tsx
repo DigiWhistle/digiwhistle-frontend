@@ -63,6 +63,9 @@ const EditableRemark = ({
   }, [item.updatedAt]);
   const individualform = useForm<z.infer<typeof UpdateRemarksFormSchema>>({
     resolver: zodResolver(UpdateRemarksFormSchema),
+    defaultValues: {
+      editremarks: item.message,
+    },
   });
 
   const handleUpdateIndividualForm = async (
@@ -121,7 +124,7 @@ const EditableRemark = ({
           </Avatar>
           <div className="flex flex-col">
             <div className="text-body-md-medium">{item.name}</div>
-            <div className="text-body-sm-light text-tc-body-grey"> {timeAgo}</div>
+            <div className="text-body-xs-light text-tc-body-grey"> {timeAgo}</div>
           </div>
         </div>
         {(mainEditor || activeEdit) && item.name.includes(name) ? (
@@ -130,19 +133,19 @@ const EditableRemark = ({
               <PencilSquareIcon
                 onClick={handleEdit}
                 cursor={"pointer"}
-                className="text-tc-ic-black-default w-5 h-5"
+                className="text-tc-ic-black-default w-[18px] h-[18px] hover:text-tc-ic-black-default/90"
               />
               <TrashIcon
                 onClick={handleDeleteIndividualForm}
                 cursor={"pointer"}
-                className="text-tc-ic-black-default w-5 h-5"
+                className="text-destructive w-[18px] h-[18px] hover:text-destructive/90"
               />
             </div>
           ) : (
             <XCircleIcon
               onClick={handleCloseEdit}
               cursor={"pointer"}
-              className="text-tc-ic-black-default w-6 h-6"
+              className="text-tc-ic-black-default w-5 h-5"
             />
           )
         ) : (
@@ -155,15 +158,23 @@ const EditableRemark = ({
           <FormTextInput
             className={""}
             inputCN={cn(
-              "py-0 h-3",
-              item.name.includes(name) ? "h-8 placeholder-black" : " h-8 bg-[#F0F0F1]  ",
+              "py-0 h-6 disabled:bg-gray-300",
+              item.name.includes(name) ? " placeholder:text-tc-ic-black-default" : "    ",
             )}
             formName="editremarks"
             disabled={!activeEdit}
             label=""
-            maxLength={400}
-            // placeholder="Add new remark here..."
-            placeholder={item.message}
+            inputProps={{
+              onKeyDown: e => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  individualform.handleSubmit(handleUpdateIndividualForm)(e);
+                }
+              },
+              maxLength: 400,
+            }}
+            placeholder="Add new remark here..."
+            // placeholder={item.message}
             rightIcon={
               activeEdit ? (
                 <PaperAirplaneIcon

@@ -8,7 +8,7 @@ import {
   XMarkIcon,
   ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/outline";
-import { UserRole } from "@/store/UserSlice";
+import { User, UserRole } from "@/store/UserSlice";
 import { useSelector } from "react-redux";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,9 @@ import { Form } from "@/components/ui/form";
 import { mobileNoSchema } from "@/lib/validationSchema";
 import FormUploadInput from "@/components/ui/form/form-upload-input";
 import { size } from "lodash";
+import { useAppSelector } from "@/lib/config/store";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 const MAX_FILE_SIZE = 50000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const adminProfileSchema = z.object({
@@ -39,19 +42,12 @@ const employeeProfileSchema = z.object({
 });
 
 const ProfileInformation = () => {
-  const [profile, setProfile] = useState<any>({});
   const [upload, setUpload] = useState<boolean>(false);
-  const userRole = useSelector(UserRole);
+  const userRole = useAppSelector(UserRole);
+  const user = useAppSelector(User);
   const [editable, setEditor] = useState(false);
-  console.log("profile", profile);
-  useEffect(() => {
-    const fetchInformation = async () => {
-      const Information = await getAuthorizedRequest("admin/profile");
-      console.log(Information);
-      setProfile(Information.data);
-    };
-    fetchInformation();
-  }, []);
+  const router = useRouter();
+
   const adminForm = useForm<z.infer<typeof adminProfileSchema>>({
     resolver: zodResolver(adminProfileSchema),
   });
@@ -64,12 +60,18 @@ const ProfileInformation = () => {
   const handleFormSubmit = async (data: z.infer<typeof uploadImageSchema>) => {
     console.log(data.image);
   };
+
+  if (!user) {
+    toast.error("User does not exist");
+    router.push("/login");
+    return null;
+  }
   return (
     <div className=" flex flex-col gap-8">
       <div className="w-full text-display-xxs font-heading">Personal Information</div>
       <div className="flex gap-10">
         <Avatar className=" relative w-40 h-40 bg-slate-100 rounded-full ">
-          {!profile.profilePic ? (
+          {!user.profile?.profilePic ? (
             <AvatarImage
               className="rounded-full border-4 w-full h-full shado"
               src="https://github.com/shadcn.png"
@@ -100,14 +102,14 @@ const ProfileInformation = () => {
                     <FormTextInput
                       formName="firstName"
                       label="First Name"
-                      defaultValue={profile.firstName}
+                      defaultValue={user.profile?.firstName}
                       //   disabled={!editable}
                       placeholder="Enter first name"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
-                      defaultValue={profile.lastName}
+                      defaultValue={user.profile?.lastName}
                       //   disabled={!editable}
                       label="Last Name"
                       placeholder="Enter last name"
@@ -116,7 +118,7 @@ const ProfileInformation = () => {
                   </div>
                   <div className="flex gap-5  w-full">
                     <FormPhoneInput
-                      defaultValue={profile.mobileNo}
+                      defaultValue={user.profile?.mobileNo}
                       //   disabled={!editable}
                       mobileFormName="mobileNo"
                       required
@@ -124,7 +126,7 @@ const ProfileInformation = () => {
                     <FormTextInput
                       formName="email"
                       label="Email"
-                      defaultValue={profile.user.email}
+                      defaultValue={user.email}
                       //   disabled={!editable}
                       placeholder="Enter email"
                       required
@@ -138,7 +140,7 @@ const ProfileInformation = () => {
               <Form {...uploadForm}>
                 <form action="">
                   <FormUploadInput
-                    defaultValue={profile.profilePic}
+                    defaultValue={user.profile?.profilePic}
                     formName="image"
                     label=""
                     placeholder=""
@@ -163,14 +165,14 @@ const ProfileInformation = () => {
                     <FormTextInput
                       formName="firstName"
                       label="First Name"
-                      defaultValue={profile.firstName}
+                      defaultValue={user.profile?.firstName}
                       //   disabled={!editable}
                       placeholder="Enter first name"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
-                      defaultValue={profile.lastName}
+                      defaultValue={user.profile?.lastName}
                       //   disabled={!editable}
                       label="Last Name"
                       placeholder="Enter last name"
@@ -180,7 +182,7 @@ const ProfileInformation = () => {
                   <FormTextInput
                     formName="email"
                     label="Email"
-                    defaultValue={profile.user.email}
+                    defaultValue={user.email}
                     disabled={!editable}
                     placeholder="Enter email"
                     required
@@ -189,14 +191,14 @@ const ProfileInformation = () => {
 
                   <div className="flex gap-5  w-full">
                     <FormPhoneInput
-                      defaultValue={profile.mobileNo}
+                      defaultValue={user.profile?.mobileNo}
                       disabled={!editable}
                       mobileFormName="mobileNo"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
-                      defaultValue={profile.lastName}
+                      defaultValue={user.profile?.lastName}
                       disabled={!editable}
                       label="Last Name"
                       placeholder="Enter last name"

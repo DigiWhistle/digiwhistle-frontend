@@ -28,6 +28,7 @@ const InviteInfluencer = () => {
     resolver: zodResolver(MessageSchema),
   });
   const handleEmailAdd = (data: z.infer<typeof AddEmailSchema>) => {
+    toast.info("Insid ethis");
     setEmails([...allEmails, data.email]);
     emailForm.reset();
   };
@@ -62,6 +63,14 @@ const InviteInfluencer = () => {
             label=""
             placeholder="Type email ID of user you want to invite"
             leftIcon={<MagnifyingGlassIcon className="text-[#0F172A] w-5 h-5" />}
+            inputProps={{
+              onKeyDown: e => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  emailForm.handleSubmit(handleEmailAdd)(e);
+                }
+              },
+            }}
             rightIcon={
               <PlusCircleIcon
                 onClick={emailForm.handleSubmit(handleEmailAdd)}
