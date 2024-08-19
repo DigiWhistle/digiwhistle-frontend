@@ -61,6 +61,7 @@ const EditableRemark = ({
   useEffect(() => {
     setTimeAgo(timeSince(item.updatedAt));
   }, [item.updatedAt]);
+
   const individualform = useForm<z.infer<typeof UpdateRemarksFormSchema>>({
     resolver: zodResolver(UpdateRemarksFormSchema),
     defaultValues: {
@@ -79,13 +80,13 @@ const EditableRemark = ({
     });
     if (response.error) {
       toast.error(response.error);
+      individualform.reset();
     } else {
       toast.success(response.message);
     }
     setActive(false);
     SetEditorMode(true);
     SetFetcher(fetchOrNot + 1);
-    individualform.reset();
   };
   const handleDeleteIndividualForm = async (e: any) => {
     e.preventDefault();
