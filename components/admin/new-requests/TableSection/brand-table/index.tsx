@@ -10,7 +10,7 @@ import {
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname, useSearchParams } from "next/navigation";
-import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
+import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests";
 
 const BrandTable = () => {
   const currentPath = usePathname();
@@ -54,7 +54,7 @@ const BrandTable = () => {
 
   const columns = useMemo(() => createColumns(updateData), [updateData]);
   return (
-    <div className="py-10">
+    <div className="py-6">
       {loading ? (
         <div className="flex w-full items-center h-48 justify-center">
           <span className="loading loading-spinner loading-sm "></span>

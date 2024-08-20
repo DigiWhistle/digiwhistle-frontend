@@ -5,22 +5,30 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BrandTable from "./brand-table";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import BrandFilters from "./brand-table/BrandFilters";
 import AgencyFilters from "./agency-table/AgencyFilters";
+import InfluencerFilters from "./influencer-table/InfluencerFilters";
 
 const TableSection = () => {
   const router = useRouter();
+  const currentPath = usePathname();
   return (
     <Tabs
-      defaultValue="brand"
+      defaultValue={
+        ["brand", "influencer", "agency"].find(value => currentPath.includes(value)) || "brand"
+      }
       className="w-full"
       onValueChange={value => router.push(`/admin/new-requests/${value}/1`)}
     >
       <div className="w-full flex items-center justify-between gap-2">
-        <TabsContent value="influencer"></TabsContent>
+        <TabsContent value="influencer">
+          <div>
+            <InfluencerFilters />
+          </div>
+        </TabsContent>
         <TabsContent value="brand">
           <BrandFilters />
         </TabsContent>
@@ -40,8 +48,6 @@ const TableSection = () => {
           </TabsTrigger>
         </TabsList>
       </div>
-
-      <div></div>
     </Tabs>
   );
 };

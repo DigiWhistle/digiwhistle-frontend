@@ -17,5 +17,6 @@ export interface Brand {
 }
 
 export interface Agency extends Brand {}
+
 export const BRAND_TABLE_PAGE_LIMIT = 5;
 export const AGENCY_TABLE_PAGE_LIMIT = 5;

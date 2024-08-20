@@ -10,7 +10,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests-types";
+import { BRAND_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests";
 
 const BrandFilters = () => {
   const dispatch: AppDispatch = useDispatch();

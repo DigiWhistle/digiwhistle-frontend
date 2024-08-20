@@ -1,6 +1,7 @@
+import { INFLUENCER_TABLE_PAGE_LIMIT } from "@/components/admin/new-requests/TableSection/influencer-table";
 import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
-import { Brand } from "@/types/admin/new-requests-types";
+import { Brand } from "@/types/admin/new-requests";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -22,7 +23,7 @@ export const fetchBrandRequestsData = createAsyncThunk(
   "brandRequestsTable/fetchBrandRequestsData",
   async ({
     page,
-    limit,
+    limit = INFLUENCER_TABLE_PAGE_LIMIT,
     name,
     rejected,
     approved,

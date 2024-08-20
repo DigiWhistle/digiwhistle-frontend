@@ -29,7 +29,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Query } from "@/types/admin/queries-types";
+import { Query } from "@/types/admin/queries";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";

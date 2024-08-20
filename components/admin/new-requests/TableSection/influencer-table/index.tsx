@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { createColumns } from "./agency-columns";
+import { createColumns } from "./influencer-columns";
 import {
   BrandRequestsTable,
   BrandRequestsTableData,
@@ -11,7 +11,6 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname, useSearchParams } from "next/navigation";
-import { AGENCY_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests";
 import {
   AgencyRequestsTableData,
   AgencyRequestsTableLoading,
@@ -19,13 +18,25 @@ import {
   updateAgencyApproval,
 } from "@/store/admin/new-requests/AgencyRequestsTableSlice";
 import { DataTable } from "./data-table";
+import {
+  fetchInfluencerRequestsData,
+  InfluencerRequestsTableData,
+  InfluencerRequestsTableLoading,
+  updateInfluencerApproval,
+} from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
+import { InfluencerPlatforms } from "@/types/admin/influencer";
 
-const AgencyTable = () => {
+export const INFLUENCER_TABLE_PAGE_LIMIT = 5;
+
+const InfluencerTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
   const dispatch: AppDispatch = useAppDispatch();
-  const data = useAppSelector(AgencyRequestsTableData);
-  const loading = useAppSelector(AgencyRequestsTableLoading);
+  const data = useAppSelector(InfluencerRequestsTableData);
+  const loading = useAppSelector(InfluencerRequestsTableLoading);
+
+  const platform =
+    (searchParams.get("platform") as InfluencerPlatforms) ?? InfluencerPlatforms.INSTAGRAM;
 
   useEffect(() => {
     const name = searchParams.get("name");
@@ -43,24 +54,22 @@ const AgencyTable = () => {
           : undefined;
 
     dispatch(
-      fetchAgencyRequestsData({
+      fetchInfluencerRequestsData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
-        limit: AGENCY_TABLE_PAGE_LIMIT,
+        limit: INFLUENCER_TABLE_PAGE_LIMIT,
+        platform,
         name,
         rejected,
         approved,
       }),
     );
-  }, [currentPath, dispatch]);
+  }, [currentPath, platform]);
 
-  const updateData = useCallback(
-    (id: string, isApproved: boolean | null) => {
-      dispatch(updateAgencyApproval({ id, isApproved }));
-    },
-    [dispatch],
-  );
+  const updateData = useCallback((id: string, isApproved: boolean | null) => {
+    dispatch(updateInfluencerApproval({ id, isApproved }));
+  }, []);
 
-  const columns = useMemo(() => createColumns(updateData), [updateData]);
+  const columns = useMemo(() => createColumns(updateData, platform), [updateData, platform]);
   return (
     <div className="py-6">
       {loading ? (
@@ -74,4 +83,4 @@ const AgencyTable = () => {
   );
 };
 
-export default AgencyTable;
+export default InfluencerTable;

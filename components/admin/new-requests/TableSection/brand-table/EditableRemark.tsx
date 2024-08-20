@@ -92,15 +92,15 @@ const EditableRemark = ({
     e.preventDefault();
 
     const response = await deleteAuthorizedRequest(`remarks/${item.id}`);
+    setActive(false);
+    SetEditorMode(true);
+    SetFetcher(fetchOrNot + 1);
+    individualform.reset();
     if (response.error) {
       toast.error(response.error);
     } else {
       toast.success(response.message);
     }
-    setActive(false);
-    SetEditorMode(true);
-    SetFetcher(fetchOrNot + 1);
-    individualform.reset();
   };
   const handleEdit = () => {
     setActive(true);

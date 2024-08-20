@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetchQueriesTableData } from "@/store/admin/queries/QueriesTableSlice";
-import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries-types";
+import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries";
 
 const QueriesFilters = () => {
   const dispatch: AppDispatch = useDispatch();

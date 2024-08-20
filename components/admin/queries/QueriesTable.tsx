@@ -18,7 +18,7 @@ import {
   QueriesTableLoading,
   setViewQuery,
 } from "@/store/admin/queries/QueriesTableSlice";
-import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries-types";
+import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries";
 
 const QueriesTable = () => {
   const currentPath = usePathname();

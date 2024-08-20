@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import ApproveForm from "./ApproveForm";
 import RejectForm from "./RejectForm";
 import ViewRemarks from "./ViewRemarks";
-import { Brand } from "@/types/admin/new-requests-types";
+import { Brand } from "@/types/admin/new-requests";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,

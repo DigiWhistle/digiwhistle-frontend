@@ -39,7 +39,7 @@ export function DataTablePagination<TData>({ data }: DataTablePaginationProps<TD
   const currentPath = usePathname();
 
   const redirectUrl = (page: number) => {
-    if (window === undefined) return "";
+    if (typeof window === "undefined") return "";
     const searchParams = new URLSearchParams(window.location.search);
     const newPath = `${currentPath.replace(/\/\d+$/, `/${page}`)}?${searchParams.toString()}`;
     return newPath;

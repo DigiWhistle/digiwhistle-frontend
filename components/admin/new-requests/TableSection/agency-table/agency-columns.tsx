@@ -20,7 +20,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
-import { Agency } from "@/types/admin/new-requests-types";
+import { Agency } from "@/types/admin/new-requests";
 import ApproveForm from "../brand-table/ApproveForm";
 import RejectForm from "../brand-table/RejectForm";
 import ViewRemarks from "../brand-table/ViewRemarks";
