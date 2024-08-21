@@ -22,6 +22,8 @@ import { size } from "lodash";
 import { useAppSelector } from "@/lib/config/store";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "@/lib/config/firebase";
 const MAX_FILE_SIZE = 50000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const adminProfileSchema = z.object({
@@ -43,6 +45,7 @@ const employeeProfileSchema = z.object({
 
 const ProfileInformation = () => {
   const [upload, setUpload] = useState<boolean>(false);
+  const [file, setFile] = useState<any>(null);
   const userRole = useAppSelector(UserRole);
   const user = useAppSelector(User);
   const [editable, setEditor] = useState(false);
@@ -57,8 +60,20 @@ const ProfileInformation = () => {
   const uploadForm = useForm<z.infer<typeof uploadImageSchema>>({
     resolver: zodResolver(uploadImageSchema),
   });
-  const handleFormSubmit = async (data: z.infer<typeof uploadImageSchema>) => {
-    console.log(data.image);
+  const handleFormSubmit = async () => {
+    if (!file) return; // Return if no file is selected
+    const storageRef = ref(storage, `images/${file.name}`); // Create a reference to the file in Firebase Storage
+
+    try {
+      await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
+      const url = await getDownloadURL(storageRef); // Get the download URL of the uploaded file
+      console.log("File Uploaded Successfully");
+      console.log("this is the url", url);
+    } catch (error) {
+      console.error("Error uploading the file", error);
+    } finally {
+      toast.success("uploaded successfully");
+    }
   };
 
   if (!user) {
@@ -140,7 +155,7 @@ const ProfileInformation = () => {
               <Form {...uploadForm}>
                 <form action="">
                   <FormUploadInput
-                    defaultValue={user.profile?.profilePic}
+                    setFile={setFile}
                     formName="image"
                     label=""
                     placeholder=""
@@ -148,7 +163,7 @@ const ProfileInformation = () => {
                   />
                 </form>
                 <ArrowUpOnSquareIcon
-                  onClick={uploadForm.handleSubmit(handleFormSubmit)}
+                  onClick={handleFormSubmit}
                   className="text-[#0F172A] cursor-pointer  w-5 h-5"
                 />
               </Form>
