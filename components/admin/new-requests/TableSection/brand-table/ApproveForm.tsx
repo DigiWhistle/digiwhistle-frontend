@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,8 @@ import FormTextInput from "@/components/ui/form/form-text-input";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { FormDescription } from "@/components/ui/form";
+import { UserIcon } from "@heroicons/react/24/outline";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const ApproveFormSchema = z.object({
   remarks: z.string().max(400, "characters should be less than 400"),
 });
@@ -52,12 +53,11 @@ const ApproveForm = ({
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-3">
-        <Avatar className="w-10 h-10 bg-slate-100 rounded-full ">
-          {url ? (
-            <AvatarImage src="https://github.com/shadcn.png" />
-          ) : (
-            <div className="flex w-full h-full items-center justify-center">BV</div>
-          )}
+        <Avatar>
+          <AvatarImage src={url} />
+          <AvatarFallback>
+            <UserIcon className="w-5 h-5" />
+          </AvatarFallback>
         </Avatar>
         {name}
       </div>

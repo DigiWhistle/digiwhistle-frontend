@@ -28,6 +28,7 @@ import ViewRemarks from "../brand-table/ViewRemarks";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import RequestsAction from "../../RequestsAction";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -43,7 +44,9 @@ export const createColumns = (
             <div className="flex items-center gap-3">
               <Avatar>
                 <AvatarImage src={row.original.profileUrl} />
-                <AvatarFallback>IN</AvatarFallback>
+                <AvatarFallback>
+                  <UserIcon className="w-5 h-5" />
+                </AvatarFallback>
               </Avatar>
               <div>
                 <p>{row.getValue("name")}</p>
@@ -104,117 +107,19 @@ export const createColumns = (
       accessorKey: "user.isApproved",
       header: "Actions",
       cell: ({ row }: { row: Row<Influencer> }) => {
-        const isApproved = row.getValue("isApproved");
-        if (isApproved) {
-          return (
-            <div className=" flex gap-2  items-center">
-              <button
-                type="button"
-                onClick={async () => {
-                  const response = await postAuthorizedRequest("user/revertAction", {
-                    userId: row.original?.userId,
-                  });
-                  if (response.error) {
-                    toast.error(response.error);
-                  } else {
-                    updateData(row.original?.id, null);
-                  }
-                }}
-              >
-                <ArrowUturnLeftIcon className="h-4 w-4 " />
-              </button>
-              <p className="text-success">Approved</p>
-            </div>
-          );
-        }
-        if (isApproved === false) {
-          return (
-            <div className=" flex gap-2  items-center">
-              <button
-                type="button"
-                onClick={async () => {
-                  const response = await postAuthorizedRequest("user/revertAction", {
-                    userId: row.original?.userId,
-                  });
-                  if (response.error) {
-                    toast.error(response.error);
-                  } else {
-                    updateData(row.original?.id, null);
-                  }
-                }}
-              >
-                <ArrowUturnLeftIcon className="h-4 w-4 " />
-              </button>
-              <p className="text-destructive">Rejected</p>
-            </div>
-          );
-        }
+        const isApproved = row.getValue("isApproved") as boolean | null;
+        const name = row.getValue("name") as string;
+        const userId = row.original?.userId;
+        const profileId = row.original?.id;
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
-              <button type="button">
-                <EllipsisVerticalIcon className="h-5 w-5" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-1" align="end">
-              <CustomDialog
-                className="w-[400px]"
-                headerTitle="Approve profile"
-                headerDescription="Please note that this action will add the user to the DW platform."
-                triggerElement={
-                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                    Approve
-                  </div>
-                }
-              >
-                <ApproveForm
-                  updateData={updateData}
-                  updateid={row.original.id}
-                  name={row.getValue("name")}
-                  url=""
-                  userId={row.original.userId}
-                />
-              </CustomDialog>
-
-              <CustomDialog
-                className="w-[400px]"
-                headerTitle="Reject profile ?"
-                headerDescription="Please note that this action is temporary and reversible in nature."
-                triggerElement={
-                  <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                    Reject
-                  </div>
-                }
-              >
-                <RejectForm
-                  updateData={updateData}
-                  updateid={row.original.id}
-                  name={row.getValue("name")}
-                  url=""
-                  userId={row.original.userId}
-                />
-              </CustomDialog>
-              <CustomDialog
-                className="w-[538px]"
-                headerTitle="View remarks"
-                headerDescription="Please note that this action is permanent and irreversible in nature."
-                triggerElement={
-                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                    View remarks
-                  </div>
-                }
-              >
-                <ViewRemarks
-                  updateData={updateData}
-                  updateid={row.original.id}
-                  name={row.getValue("name")}
-                  url=""
-                  userId={row.original.userId}
-                />
-              </CustomDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <RequestsAction
+            updateData={updateData}
+            isApproved={isApproved}
+            name={name}
+            userId={userId}
+            profileId={profileId}
+          />
         );
       },
     },

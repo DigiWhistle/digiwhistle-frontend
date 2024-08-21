@@ -38,21 +38,20 @@ const InfluencerTable = () => {
   const platform =
     (searchParams.get("platform") as InfluencerPlatforms) ?? InfluencerPlatforms.INSTAGRAM;
 
+  const name = searchParams.get("name");
+  const rejected =
+    searchParams.get("rejected") === "true"
+      ? true
+      : searchParams.get("rejected") === "false"
+        ? false
+        : undefined;
+  const approved =
+    searchParams.get("approved") === "true"
+      ? true
+      : searchParams.get("approved") === "false"
+        ? false
+        : undefined;
   useEffect(() => {
-    const name = searchParams.get("name");
-    const rejected =
-      searchParams.get("rejected") === "true"
-        ? true
-        : searchParams.get("rejected") === "false"
-          ? false
-          : undefined;
-    const approved =
-      searchParams.get("approved") === "true"
-        ? true
-        : searchParams.get("approved") === "false"
-          ? false
-          : undefined;
-
     dispatch(
       fetchInfluencerRequestsData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
@@ -63,7 +62,7 @@ const InfluencerTable = () => {
         approved,
       }),
     );
-  }, [currentPath, platform]);
+  }, [currentPath, platform, name, rejected, approved]);
 
   const updateData = useCallback((id: string, isApproved: boolean | null) => {
     dispatch(updateInfluencerApproval({ id, isApproved }));

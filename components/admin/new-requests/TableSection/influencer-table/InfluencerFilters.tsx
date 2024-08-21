@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { InfluencerPlatforms } from "@/types/admin/influencer";
+import { INFLUENCER_TABLE_PAGE_LIMIT } from ".";
 
 const InfluencerFilters = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -29,15 +30,27 @@ const InfluencerFilters = () => {
 
   const defaultSearchPlatform = searchParams.get("platform");
   const defaultSearchTerm = searchParams.get("name");
+  const defaultApproved = searchParams.get("approved") === "true";
+  const defaultRejected = searchParams.get("rejected") === "true";
 
-  const [searchPlatform, setSearchPlatform] = useState(defaultSearchPlatform || "");
+  const [approved, setApproved] = useState(defaultApproved);
+  const [rejected, setRejected] = useState(defaultRejected);
+  const [searchPlatform, setSearchPlatform] = useState(
+    defaultSearchPlatform || InfluencerPlatforms.INSTAGRAM,
+  );
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm || "");
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
-      dispatch(fetchInfluencerRequestsData({ page: 1, name: query }));
+      dispatch(
+        fetchInfluencerRequestsData({
+          page: 1,
+          name: query,
+          platform: searchPlatform as InfluencerPlatforms,
+        }),
+      );
     }, 300),
-    [dispatch],
+    [dispatch, searchPlatform],
   );
 
   const pushUrl = (paramName: string, value: string) => {
@@ -61,7 +74,7 @@ const InfluencerFilters = () => {
     value: platform,
   }));
   return (
-    <div className="w-full flex items-center gap-4">
+    <div className="w-full flex flex-col md:flex-row flex-wrap items-center gap-4">
       <div className="flex gap-2 items-center">
         <Select
           value={searchPlatform}
@@ -71,11 +84,11 @@ const InfluencerFilters = () => {
           }}
         >
           <SelectTrigger className="flex gap-1 min-w-32">
-            Platform: <SelectValue placeholder="Choose Platform" />
+            <SelectValue placeholder="Choose Platform" />
           </SelectTrigger>
           <SelectContent>
             {influencerPlatforms.map(platform => (
-              <SelectItem key={platform.label} value={platform.value}>
+              <SelectItem key={platform.value} value={platform.value}>
                 {platform.label}
               </SelectItem>
             ))}
@@ -97,7 +110,33 @@ const InfluencerFilters = () => {
           name="search"
         />
       </div>
-      {/* <div className="w-px h-7 bg-gray-554"></div> */}
+      <div className="w-px h-7 bg-gray-554"></div>
+      <div className="flex gap-2 items-center">
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="approve-only"
+            checked={approved}
+            onCheckedChange={value => {
+              setApproved(value);
+
+              pushUrl("approved", value ? "true" : "false");
+            }}
+          />
+          <Label htmlFor="approve-only">Approved only</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="rejected-only"
+            checked={rejected}
+            onCheckedChange={value => {
+              setRejected(value);
+
+              pushUrl("rejected", value ? "true" : "false");
+            }}
+          />
+          <Label htmlFor="rejected-only">Rejected only</Label>
+        </div>
+      </div>
     </div>
   );
 };

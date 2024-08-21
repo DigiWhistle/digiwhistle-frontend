@@ -7,46 +7,25 @@ import FormTextInput from "@/components/ui/form/form-text-input";
 import { LinkIcon, DevicePhoneMobileIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import { Form } from "@/components/ui/form";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
-import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
+import {
+  instagramURL,
+  mobileNoSchema,
+  termsCheckSchema,
+  twitterURL,
+  youtubeURL,
+} from "@/lib/validationSchema";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import { postAuthorizedRequest } from "@/lib/config/axios";
 import { toast } from "sonner";
-import { getCookie, getCookies } from "cookies-next";
+
 const AddInfluencersSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  instagramURL: z
-    .string()
-    .optional()
-    .refine(
-      value => !value || /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.-]+\/?$/.test(value),
-      {
-        message: "Please provide a valid Instagram URL",
-      },
-    ),
-  youtubeURL: z
-    .string()
-    .optional()
-    .refine(
-      value =>
-        !value ||
-        /^(https?:\/\/)?(www\.)?youtube\.com\/(channel\/|c\/|user\/|@)[\w-]{1,}/.test(value),
-      {
-        message: "Please provide a valid YouTube channel or user URL",
-      },
-    ),
-  twitterURL: z
-    .string()
-    .optional()
-    .refine(
-      value =>
-        !value || /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+\/?$/.test(value),
-      {
-        message: "Please provide a valid X (Twitter) URL",
-      },
-    ),
+  instagramURL: instagramURL,
+  twitterURL: twitterURL,
+  youtubeURL: youtubeURL,
   mobileNo: mobileNoSchema,
 });
 
@@ -56,15 +35,13 @@ const AddInfluencers = () => {
   });
 
   const handleAddInfluencers = async (data: z.infer<typeof AddInfluencersSchema>) => {
-    console.log("called");
     const response = await postAuthorizedRequest("influencer", {
       firstName: data.firstName,
       lastName: data.lastName,
       mobileNo: data.mobileNo,
-      twitterURL: data.twitterURL,
-      linkedInURL: "string",
-      instagramURL: data.instagramURL,
-      youtubeURL: data.youtubeURL,
+      twitterURL: data.twitterURL || undefined,
+      instagramURL: data.instagramURL || undefined,
+      youtubeURL: data.youtubeURL || undefined,
       email: data.email,
     });
     if (response.error) {

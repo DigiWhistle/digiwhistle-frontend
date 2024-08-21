@@ -28,7 +28,6 @@ const InviteInfluencer = () => {
     resolver: zodResolver(MessageSchema),
   });
   const handleEmailAdd = (data: z.infer<typeof AddEmailSchema>) => {
-    toast.info("Insid ethis");
     setEmails([...allEmails, data.email]);
     emailForm.reset();
   };

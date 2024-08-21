@@ -140,6 +140,7 @@ export const createColumns = (
               <Button
                 size={"sm"}
                 className="w-min place-self-center px-4 focus:ring-offset-0"
+                disabled={row.original.viewed}
                 onClick={async () => {
                   const response = await postAuthorizedRequest("contactUs/view", {
                     id: row.original.id,
@@ -151,7 +152,7 @@ export const createColumns = (
                   }
                 }}
               >
-                Mark as read
+                {row.original.viewed ? "Read already" : " Mark as read"}
               </Button>
             </CustomDialog>
             <CustomDialog

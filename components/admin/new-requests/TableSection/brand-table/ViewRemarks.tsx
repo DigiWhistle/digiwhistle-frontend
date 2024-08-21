@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,11 +13,12 @@ import {
   deleteAuthorizedRequest,
 } from "@/lib/config/axios";
 import { toast } from "sonner";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { PaperAirplaneIcon, UserIcon } from "@heroicons/react/24/outline";
 import EditableRemark from "./EditableRemark";
 import { useSelector } from "react-redux";
 import { User } from "@/store/UserSlice";
 import { FormDescription } from "@/components/ui/form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const RemarksFormSchema = z.object({
   remarks: z
     .string()
@@ -98,14 +98,11 @@ const ViewRemarks = ({
       </div>
 
       <div className="flex items-start justify-start gap-3 w-full border-y-2 pt-5 pb-5">
-        <Avatar className="w-9 h-8 bg-slate-100 rounded-full mt-1 ">
-          {url ? (
-            <AvatarImage src="https://github.com/shadcn.png" />
-          ) : (
-            <div className="flex w-full h-full text-body-sm-medium items-center justify-center">
-              BV
-            </div>
-          )}
+        <Avatar>
+          <AvatarImage src={url} />
+          <AvatarFallback>
+            <UserIcon className="w-5 h-5" />
+          </AvatarFallback>
         </Avatar>
         <Form {...form}>
           <form
