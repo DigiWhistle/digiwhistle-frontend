@@ -34,8 +34,14 @@ const RejectForm = ({
     const response = await postAuthorizedRequest("user/reject", {
       userId: userId,
     });
+    const remarkResponse = await postAuthorizedRequest("remarks", {
+      message: data.remarks,
+      userId: userId,
+    });
     if (response.error) {
       toast.error(response.error);
+    } else if (remarkResponse.error) {
+      toast.error(remarkResponse.error);
     } else {
       toast.success(response.message);
       updateData(updateid, false);
