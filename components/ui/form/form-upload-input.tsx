@@ -1,3 +1,4 @@
+"use client";
 import {
   FormControl,
   FormDescription,
@@ -10,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
-
+import { useState } from "react";
 interface IFormTextInputProps {
   formName: string;
   label: string;
@@ -25,6 +26,7 @@ interface IFormTextInputProps {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   maxLength?: number;
+  setFile: any;
 }
 const FormUploadInput = ({
   formName,
@@ -40,8 +42,12 @@ const FormUploadInput = ({
   leftIcon,
   rightIcon,
   maxLength,
+  setFile,
 }: IFormTextInputProps) => {
   const { control } = useFormContext();
+  const handleFileChange = (event: any) => {
+    setFile(event.target.files[0]); // Set the selected file
+  };
   return (
     <FormField
       control={control}
@@ -65,6 +71,7 @@ const FormUploadInput = ({
                     type={"file"}
                     placeholder={placeholder}
                     {...field}
+                    onChangeCapture={handleFileChange}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     maxLength={maxLength ? maxLength : undefined}
