@@ -39,6 +39,23 @@ const RequestsAction = ({
     fetchRemarks();
   }, []);
 
+  const LatestRemark = () => {
+    return (
+      <Popover>
+        <PopoverTrigger>
+          <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-fit text-tc-primary-white bg-black-201 text-sm p-3"
+          sideOffset={4}
+          alignOffset={-50}
+          align="start"
+        >
+          {allRemarks?.[0]?.message}
+        </PopoverContent>
+      </Popover>
+    );
+  };
   if (isApproved) {
     return (
       <div className=" flex gap-2  items-center">
@@ -58,19 +75,7 @@ const RequestsAction = ({
           <ArrowUturnLeftIcon className="h-4 w-4 " />
         </button>
         <p className="text-success">Approved</p>
-        <Popover>
-          <PopoverTrigger>
-            <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-fit text-tc-primary-white bg-black-201 text-sm p-3"
-            sideOffset={4}
-            alignOffset={-50}
-            align="start"
-          >
-            {allRemarks?.[0]?.message}
-          </PopoverContent>
-        </Popover>
+        <LatestRemark />
       </div>
     );
   }
@@ -93,6 +98,7 @@ const RequestsAction = ({
           <ArrowUturnLeftIcon className="h-4 w-4 " />
         </button>
         <p className="text-destructive">Rejected</p>
+        <LatestRemark />
       </div>
     );
   }
@@ -145,7 +151,7 @@ const RequestsAction = ({
         <CustomDialog
           className="w-[538px]"
           headerTitle="View remarks"
-          headerDescription="Please note that this action is permanent and irreversible in nature."
+          headerDescription=""
           triggerElement={
             <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
               View remarks

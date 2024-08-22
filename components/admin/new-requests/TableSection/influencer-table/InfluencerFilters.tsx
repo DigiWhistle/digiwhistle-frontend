@@ -83,7 +83,7 @@ const InfluencerFilters = () => {
             setSearchPlatform(value);
           }}
         >
-          <SelectTrigger className="flex gap-1 min-w-32">
+          <SelectTrigger className="flex gap-1 min-w-32 px-4">
             <SelectValue placeholder="Choose Platform" />
           </SelectTrigger>
           <SelectContent>

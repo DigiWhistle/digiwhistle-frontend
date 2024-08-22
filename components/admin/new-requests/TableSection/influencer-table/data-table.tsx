@@ -22,9 +22,14 @@ interface DataTableProps<TData, TValue> {
     currentPage: number;
     data: TData[];
   };
+  isMainTable?: boolean;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  isMainTable,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: data.data,
     columns,
@@ -62,7 +67,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  className={cn("my-10", row.getValue("isApproved") !== null ? "bg-gray-552" : "")}
+                  className={cn(
+                    "my-10",
+                    !isMainTable && row.getValue("isApproved") !== null ? "bg-gray-552" : "",
+                    isMainTable && row.getValue("exclusive") ? "bg-gray-552" : "",
+                  )}
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell
@@ -75,6 +84,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                               row.getValue("isApproved") === false
                             ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-destructive"
                             : "",
+                        isMainTable &&
+                          cell === row.getVisibleCells().at(0) &&
+                          row.getValue("exclusive")
+                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-link"
+                          : "",
                       )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -13,13 +13,18 @@ import {
 import {
   ArrowTopRightOnSquareIcon,
   ArrowUturnLeftIcon,
+  ChevronUpDownIcon,
   EllipsisVerticalIcon,
   InformationCircleIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import {
+  getAuthorizedRequest,
+  patchAuthorizedRequest,
+  postAuthorizedRequest,
+} from "@/lib/config/axios";
 import { toast } from "sonner";
 import { Influencer, InfluencerPlatforms, InstagramProfileStats } from "@/types/admin/influencer";
 import ApproveForm from "../brand-table/ApproveForm";
@@ -29,10 +34,24 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import RequestsAction from "../../RequestsAction";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useEffect, useState } from "react";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
+  handleSortEr: (setSortEr: boolean) => void,
   platform: InfluencerPlatforms,
+  isMainTable: boolean = false,
+  patchDataById: (id: string, data: Partial<Influencer>) => void,
 ): ColumnDef<Influencer>[] => {
   const columns = [
     {
@@ -82,47 +101,6 @@ export const createColumns = (
         );
       },
     },
-
-    {
-      accessorKey: "requestDate",
-      header: "Request Date and time",
-      cell: ({ row }: { row: Row<Influencer> }) => {
-        return (
-          <div className="flex flex-wrap items-center gap-1 justify-center">
-            <p>{new Date(row.getValue("requestDate")).toLocaleDateString("en-US")} </p>
-            <p className="text-sm text-tc-body-grey">
-              @
-              {new Date(row.getValue("requestDate")).toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      id: "isApproved",
-      accessorKey: "user.isApproved",
-      header: "Actions",
-      cell: ({ row }: { row: Row<Influencer> }) => {
-        const isApproved = row.getValue("isApproved") as boolean | null;
-        const name = row.getValue("name") as string;
-        const userId = row.original?.userId;
-        const profileId = row.original?.id;
-
-        return (
-          <RequestsAction
-            updateData={updateData}
-            isApproved={isApproved}
-            name={name}
-            userId={userId}
-            profileId={profileId}
-          />
-        );
-      },
-    },
   ];
 
   if (platform === InfluencerPlatforms.INSTAGRAM) {
@@ -133,7 +111,14 @@ export const createColumns = (
       },
       {
         accessorKey: "engagementRate",
-        header: "Engagement Rate (%)",
+        header: () => (
+          <div className="flex gap-1 items-center">
+            Engagement Rate (%){" "}
+            <button onClick={() => handleSortEr(true)}>
+              <ChevronUpDownIcon className="w-6 h-6" />
+            </button>
+          </div>
+        ),
         cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
           const label = row.original.engagementRate?.label;
           return (
@@ -214,6 +199,243 @@ export const createColumns = (
     ];
     // @ts-ignore
     columns.splice(1, 0, ...addColumns);
+  }
+
+  if (isMainTable) {
+    const addColumns = [
+      {
+        accessorKey: "exclusive",
+        header: "Exclusive",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          const exclusive = row.getValue("exclusive") as boolean;
+          return (
+            <div>
+              <Switch
+                id="exclusive"
+                checked={exclusive}
+                onCheckedChange={async value => {
+                  const response = await patchAuthorizedRequest(
+                    `influencer/profile/${row.original.profileId}`,
+                    { exclusive: value },
+                  );
+                  if (response.error) {
+                    toast.error(response.error);
+                    return;
+                  }
+                  patchDataById(row.original?.profileId, { exclusive: value });
+                }}
+              />
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "hideFrom",
+        header: "Hide Profile From",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          const hideFrom = row.getValue("hideFrom") as string;
+          const hidePlatforms = [
+            { value: "brand", label: "Brand" },
+            { value: "agency", label: "Agency" },
+            { value: null, label: "None" },
+          ];
+          return (
+            <Select
+              value={hideFrom}
+              onValueChange={value => patchDataById(row.original?.profileId, { hideFrom: value })}
+            >
+              <SelectTrigger className="flex gap-1 min-w-32 px-4">
+                <SelectValue placeholder="Choose Platform" />
+              </SelectTrigger>
+              <SelectContent>
+                {hidePlatforms.map(platform => (
+                  <SelectItem key={platform.value} value={platform.value as string}>
+                    {platform.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          );
+        },
+      },
+      {
+        accessorKey: "isPaused",
+        header: "Actions",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          const isPaused = row.getValue("isPaused") as boolean;
+          const profileId = row.original?.profileId;
+          const userId = row.original?.userId;
+          const name = row.getValue("name") as string;
+
+          console.log(name);
+          const LatestRemark = () => {
+            const [allRemarks, setRemarks] = useState<any>([]);
+            useEffect(() => {
+              const fetchRemarks = async () => {
+                const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+                setRemarks(Remarks.data);
+              };
+              fetchRemarks();
+            }, []);
+            return (
+              <Popover>
+                <PopoverTrigger>
+                  <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-fit text-tc-primary-white bg-black-201 text-sm p-3"
+                  sideOffset={4}
+                  alignOffset={-50}
+                  align="start"
+                >
+                  {allRemarks?.[0]?.message}
+                </PopoverContent>
+              </Popover>
+            );
+          };
+          if (isPaused) {
+            return (
+              <div className=" flex gap-2  items-center">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const response = await postAuthorizedRequest("user/revertAction", {
+                      userId: userId,
+                    });
+                    if (response.error) {
+                      toast.error(response.error);
+                    } else {
+                      patchDataById(profileId, { isPaused: false });
+                    }
+                  }}
+                >
+                  <ArrowUturnLeftIcon className="h-4 w-4 " />
+                </button>
+                <p className="text-success">Approved</p>
+                <LatestRemark />
+              </div>
+            );
+          }
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
+                <button type="button">
+                  <EllipsisVerticalIcon className="h-5 w-5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="p-1" align="end">
+                <CustomDialog
+                  className="w-[400px]"
+                  headerTitle="Edit profile"
+                  headerDescription="Please note that this action will add the user to the DW platform."
+                  triggerElement={
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Edit Profile
+                    </div>
+                  }
+                >
+                  <div></div>
+                  {/* <ApproveForm
+                    updateData={updateData}
+                    updateid={profileId}
+                    name={name}
+                    url=""
+                    userId={userId}
+                  /> */}
+                </CustomDialog>
+                <CustomDialog
+                  className="w-[400px]"
+                  headerTitle="Delete profile ?"
+                  headerDescription="Please note that this action is temporary and reversible in nature."
+                  triggerElement={
+                    <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                      Delete
+                    </div>
+                  }
+                >
+                  <div></div>
+
+                  {/* <RejectForm
+                    updateData={updateData}
+                    updateid={profileId}
+                    name={name}
+                    url=""
+                    userId={userId}
+                  /> */}
+                </CustomDialog>
+                <CustomDialog
+                  className="w-[538px]"
+                  headerTitle="View remarks"
+                  headerDescription=""
+                  triggerElement={
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      View remarks
+                    </div>
+                  }
+                >
+                  <ViewRemarks
+                    updateData={updateData}
+                    updateid={profileId}
+                    name={name}
+                    url=""
+                    userId={userId}
+                  />
+                </CustomDialog>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ];
+
+    // @ts-ignore
+    columns.push(...addColumns);
+  } else {
+    const addColumns = [
+      {
+        accessorKey: "requestDate",
+        header: "Request Date and time",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          return (
+            <div className="flex flex-wrap items-center gap-1 justify-center">
+              <p>{new Date(row.getValue("requestDate")).toLocaleDateString("en-US")} </p>
+              <p className="text-sm text-tc-body-grey">
+                @
+                {new Date(row.getValue("requestDate")).toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })}
+              </p>
+            </div>
+          );
+        },
+      },
+      {
+        id: "isApproved",
+        accessorKey: "isApproved",
+        header: "Actions",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          const isApproved = row.getValue("isApproved") as boolean | null;
+          const name = row.getValue("name") as string;
+          const userId = row.original?.userId;
+          const profileId = row.original?.profileId;
+
+          return (
+            <RequestsAction
+              updateData={updateData}
+              isApproved={isApproved}
+              name={name}
+              userId={userId}
+              profileId={profileId}
+            />
+          );
+        },
+      },
+    ];
+
+    // @ts-ignore
+    columns.push(...addColumns);
   }
   return columns;
 };

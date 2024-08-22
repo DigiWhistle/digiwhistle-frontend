@@ -59,15 +59,15 @@ export enum InfluencerFollowers {
 }
 
 export type Influencer = {
-  id: string;
+  profileId: string;
   userId: string;
   email: string;
   mobileNo: string;
   name: string;
-  profileId: string;
   profileUrl: string;
   requestDate: string;
   exclusive: boolean;
+  hideFrom: string;
   isApproved: boolean | null;
   isPaused: boolean;
   isVerified: boolean;

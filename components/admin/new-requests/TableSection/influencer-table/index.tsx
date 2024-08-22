@@ -10,7 +10,7 @@ import {
 } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   AgencyRequestsTableData,
   AgencyRequestsTableLoading,
@@ -22,13 +22,15 @@ import {
   fetchInfluencerRequestsData,
   InfluencerRequestsTableData,
   InfluencerRequestsTableLoading,
+  patchInfluencerDataById,
   updateInfluencerApproval,
 } from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
-import { InfluencerPlatforms } from "@/types/admin/influencer";
+import { Influencer, InfluencerPlatforms } from "@/types/admin/influencer";
 
 export const INFLUENCER_TABLE_PAGE_LIMIT = 5;
 
-const InfluencerTable = () => {
+const InfluencerTable = ({ isMainTable }: { isMainTable?: boolean }) => {
+  const router = useRouter();
   const currentPath = usePathname();
   const searchParams = useSearchParams();
   const dispatch: AppDispatch = useAppDispatch();
@@ -45,12 +47,16 @@ const InfluencerTable = () => {
       : searchParams.get("rejected") === "false"
         ? false
         : undefined;
-  const approved =
+  let approved =
     searchParams.get("approved") === "true"
       ? true
       : searchParams.get("approved") === "false"
         ? false
         : undefined;
+  const sortEr = searchParams.get("sortEr") === "true";
+
+  approved = isMainTable;
+
   useEffect(() => {
     dispatch(
       fetchInfluencerRequestsData({
@@ -60,15 +66,31 @@ const InfluencerTable = () => {
         name,
         rejected,
         approved,
+        sortEr,
       }),
     );
-  }, [currentPath, platform, name, rejected, approved]);
+  }, [dispatch, currentPath, platform, name, rejected, approved, sortEr]);
 
   const updateData = useCallback((id: string, isApproved: boolean | null) => {
     dispatch(updateInfluencerApproval({ id, isApproved }));
   }, []);
 
-  const columns = useMemo(() => createColumns(updateData, platform), [updateData, platform]);
+  const patchDataById = useCallback((id: string, data: Partial<Influencer>) => {
+    dispatch(patchInfluencerDataById({ id, data }));
+  }, []);
+
+  const handleSortEr = (setSortEr: boolean) => {
+    const newPath = currentPath.replace(/\/\d+$/, "/1");
+    const url = new URL(window.location.href);
+    url.pathname = newPath;
+    url.searchParams.set("sortEr", setSortEr ? "true" : "false");
+    router.push(url.toString());
+  };
+
+  const columns = useMemo(
+    () => createColumns(updateData, handleSortEr, platform, isMainTable, patchDataById),
+    [updateData, platform],
+  );
   return (
     <div className="py-6">
       {loading ? (
@@ -76,7 +98,7 @@ const InfluencerTable = () => {
           <span className="loading loading-spinner loading-sm "></span>
         </div>
       ) : (
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} isMainTable />
       )}
     </div>
   );
