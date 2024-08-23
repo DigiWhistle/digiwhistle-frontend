@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -14,11 +13,13 @@ import {
   PencilSquareIcon,
   XCircleIcon,
   TrashIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import { Pointer } from "lucide-react";
 import { FormDescription } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { deleteAuthorizedRequest, putAuthorizedRequest } from "@/lib/config/axios";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const timeSince = (date: any) => {
   const now: any = new Date();
   const updatedAt: any = new Date(date);
@@ -114,14 +115,11 @@ const EditableRemark = ({
     <div className="flex flex-col space-y-1">
       <div className="flex items-end">
         <div className="flex w-full gap-3 items-center">
-          <Avatar className="w-8 h-8 bg-slate-100 rounded-full ">
-            {item.profilePic ? (
-              <AvatarImage src="https://github.com/shadcn.png" />
-            ) : (
-              <div className="flex w-full text-body-sm-medium h-full items-center justify-center">
-                BV
-              </div>
-            )}
+          <Avatar>
+            <AvatarImage src={item.profileUrl} />
+            <AvatarFallback>
+              <UserIcon className="w-5 h-5" />
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <div className="text-body-md-medium">{item.name}</div>

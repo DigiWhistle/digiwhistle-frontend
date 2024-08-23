@@ -50,7 +50,7 @@ export const fetchInfluencerRequestsData = createAsyncThunk(
     refresh?: boolean;
     sortEr?: boolean;
   }) => {
-    let url = `influencer/request?page=${page}&limit=${limit}&platform=${platform}`;
+    let url = `influencer?page=${page}&limit=${limit}&platform=${platform}`;
 
     if (name) {
       url += `&name=${name}`;
@@ -101,9 +101,19 @@ export const influencerRequestsTableSlice = createSlice({
       action: PayloadAction<{ id: string; isApproved: boolean | null }>,
     ) => {
       const { id, isApproved } = action.payload;
-      const influencer = state.data.data.find(influencer => influencer.id === id);
+      const influencer = state.data.data.find(influencer => influencer.profileId === id);
       if (influencer) {
         influencer.isApproved = isApproved;
+      }
+    },
+    patchInfluencerDataById: (
+      state,
+      action: PayloadAction<{ id: string; data: Partial<Influencer> }>,
+    ) => {
+      const { id, data } = action.payload;
+      const influencer = state.data.data.find(influencer => influencer.profileId === id);
+      if (influencer) {
+        Object.assign(influencer, data);
       }
     },
   },
@@ -128,7 +138,8 @@ export const influencerRequestsTableSlice = createSlice({
       });
   },
 });
-export const { updateInfluencerApproval } = influencerRequestsTableSlice.actions;
+export const { updateInfluencerApproval, patchInfluencerDataById } =
+  influencerRequestsTableSlice.actions;
 
 export const influencerRequestsTableReducer = influencerRequestsTableSlice.reducer;
 

@@ -24,6 +24,7 @@ import ApproveForm from "./ApproveForm";
 import RejectForm from "./RejectForm";
 import ViewRemarks from "./ViewRemarks";
 import { Brand } from "@/types/admin/new-requests";
+import RequestsAction from "../../RequestsAction";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -108,117 +109,19 @@ export const createColumns = (
     accessorKey: "user.isApproved",
     header: "Actions",
     cell: ({ row }) => {
-      const isApproved = row.getValue("isApproved");
-      if (isApproved) {
-        return (
-          <div className=" flex gap-2  items-center">
-            <button
-              type="button"
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/revertAction", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, null);
-                }
-              }}
-            >
-              <ArrowUturnLeftIcon className="h-4 w-4 " />
-            </button>
-            <p className="text-success">Approved</p>
-          </div>
-        );
-      }
-      if (isApproved === false) {
-        return (
-          <div className=" flex gap-2  items-center">
-            <button
-              type="button"
-              onClick={async () => {
-                const response = await postAuthorizedRequest("user/revertAction", {
-                  userId: row.original.user.id,
-                });
-                if (response.error) {
-                  toast.error(response.error);
-                } else {
-                  updateData(row.original.id, null);
-                }
-              }}
-            >
-              <ArrowUturnLeftIcon className="h-4 w-4 " />
-            </button>
-            <p className="text-destructive">Rejected</p>
-          </div>
-        );
-      }
+      const isApproved = row.getValue("isApproved") as boolean | null;
+      const name = row.getValue("name") as string;
+      const userId = row.original?.user?.id;
+      const profileId = row.original?.id;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
-            <button type="button">
-              <EllipsisVerticalIcon className="h-5 w-5" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="p-1" align="end">
-            <CustomDialog
-              className="w-[400px]"
-              headerTitle="Approve profile"
-              headerDescription="Please note that this action will add the user to the DW platform."
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  Approve
-                </div>
-              }
-            >
-              <ApproveForm
-                updateData={updateData}
-                updateid={row.original.id}
-                name={row.getValue("name")}
-                url=""
-                userId={row.original.user.id}
-              />
-            </CustomDialog>
-
-            <CustomDialog
-              className="w-[400px]"
-              headerTitle="Reject profile ?"
-              headerDescription="Please note that this action is temporary and reversible in nature."
-              triggerElement={
-                <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                  Reject
-                </div>
-              }
-            >
-              <RejectForm
-                updateData={updateData}
-                updateid={row.original.id}
-                name={row.getValue("name")}
-                url=""
-                userId={row.original.user.id}
-              />
-            </CustomDialog>
-            <CustomDialog
-              className="w-[580px]"
-              headerTitle="View remarks"
-              headerDescription="Please note that this action is permanent and irreversible in nature."
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  View remarks
-                </div>
-              }
-            >
-              <ViewRemarks
-                updateData={updateData}
-                updateid={row.original.id}
-                name={row.getValue("name")}
-                url=""
-                userId={row.original.user.id}
-              />
-            </CustomDialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <RequestsAction
+          updateData={updateData}
+          isApproved={isApproved}
+          name={name}
+          userId={userId}
+          profileId={profileId}
+        />
       );
     },
   },

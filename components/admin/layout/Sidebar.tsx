@@ -22,14 +22,14 @@ import SignOut from "@/components/brand-report/popupForms/SignOut";
 const SidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
-    link: "/admin/influencers",
+    link: "/admin/influencers/1",
     linkText: "Influencers",
     keyword: "influencers",
   },
 
   {
     icon: <CursorArrowRaysIcon className="text-tc-ic-black-default" />,
-    link: "/admin/new-requests/brand/1",
+    link: "/admin/new-requests/influencer/1",
     linkText: "New requests",
     keyword: "new-requests",
   },
