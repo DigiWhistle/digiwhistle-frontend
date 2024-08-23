@@ -41,9 +41,9 @@ const SidebarLinks = [
   },
   {
     icon: <IdentificationIcon className="text-tc-ic-black-default" />,
-    link: "/admin/queries/1",
+    link: "/admin/profile-control/1",
     linkText: "Profile control",
-    keyword: "profile_influencer",
+    keyword: "profile-control",
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,

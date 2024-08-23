@@ -1,5 +1,5 @@
 "use client";
-import { getAuthorizedRequest } from "@/lib/config/axios";
+import { getAuthorizedRequest, patchAuthorizedRequest } from "@/lib/config/axios";
 import React, { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import {
@@ -19,13 +19,15 @@ import { Form } from "@/components/ui/form";
 import { mobileNoSchema } from "@/lib/validationSchema";
 import FormUploadInput from "@/components/ui/form/form-upload-input";
 import { size } from "lodash";
-import { useAppSelector } from "@/lib/config/store";
+import { useAppDispatch, useAppSelector } from "@/lib/config/store";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/config/firebase";
-const MAX_FILE_SIZE = 50000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+import { Button } from "@/components/ui/button";
+import { setUserProfile } from "@/store/UserSlice";
+import { AppDispatch } from "@/lib/config/store";
+import { getCookie } from "cookies-next";
 const adminProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -44,105 +46,234 @@ const employeeProfileSchema = z.object({
 });
 
 const ProfileInformation = () => {
+  const user = useAppSelector(User);
+  const router = useRouter();
   const [upload, setUpload] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
   const userRole = useAppSelector(UserRole);
-  const user = useAppSelector(User);
+  const dispatch = useAppDispatch();
   const [editable, setEditor] = useState(false);
-  const router = useRouter();
-
   const adminForm = useForm<z.infer<typeof adminProfileSchema>>({
     resolver: zodResolver(adminProfileSchema),
+    defaultValues: {
+      firstName: user?.profile?.firstName,
+      lastName: user?.profile?.lastName,
+      email: user?.email,
+      mobileNo: user?.profile?.mobileNo,
+    },
   });
   const employeeForm = useForm<z.infer<typeof employeeProfileSchema>>({
     resolver: zodResolver(employeeProfileSchema),
+    defaultValues: {
+      firstName: user?.profile?.firstName,
+      lastName: user?.profile?.lastName,
+      email: user?.email,
+      mobileNo: user?.profile?.mobileNo,
+      Designation: user?.profile?.firstName,
+    },
   });
   const uploadForm = useForm<z.infer<typeof uploadImageSchema>>({
     resolver: zodResolver(uploadImageSchema),
   });
-  const handleFormSubmit = async () => {
-    if (!file) return; // Return if no file is selected
-    const storageRef = ref(storage, `images/${file.name}`); // Create a reference to the file in Firebase Storage
-
-    try {
-      await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
-      const url = await getDownloadURL(storageRef); // Get the download URL of the uploaded file
-      console.log("File Uploaded Successfully");
-      console.log("this is the url", url);
-    } catch (error) {
-      console.error("Error uploading the file", error);
-    } finally {
-      toast.success("uploaded successfully");
-    }
-  };
-
   if (!user) {
-    toast.error("User does not exist");
     router.push("/login");
     return null;
   }
+  const handleAdminProfileUpdate = async (data: z.infer<typeof adminProfileSchema>) => {
+    const senddata = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      mobileNo: data.mobileNo,
+      profilePic: user.profile?.profilePic,
+    };
+    const response = await patchAuthorizedRequest(
+      `${userRole}/profile/${user?.profile?.id}`,
+      senddata,
+    );
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+      dispatch(
+        setUserProfile({
+          id: user.profile?.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          mobileNo: data.mobileNo,
+          profilePic: user.profile?.profilePic,
+          designation: user.profile?.designation,
+          user: user.profile?.user,
+        }),
+      );
+    }
+    setEditor(!editable);
+  };
+  const handleEmployeeProfileUpdate = async (data: z.infer<typeof employeeProfileSchema>) => {
+    const senddata = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      mobileNo: user.profile?.mobileNo,
+      profilePic: user.profile?.profilePic,
+      designation: user.profile?.designation,
+    };
+    const response = await patchAuthorizedRequest(
+      `${userRole}/profile/${user?.profile?.id}`,
+      senddata,
+    );
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+      dispatch(
+        setUserProfile({
+          id: user.profile?.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          mobileNo: user.profile?.mobileNo,
+          profilePic: user.profile?.profilePic,
+          designation: user.profile?.designation,
+          user: user.profile?.user,
+        }),
+      );
+    }
+    setEditor(!editable);
+  };
+  const handleFormSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!file) return; // Return if no file is selected
+    const storageRef = ref(storage, `images/${file.name}`); // Create a reference to the file in Firebase Storage
+
+    await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
+    const url = await getDownloadURL(storageRef); // Get the download URL of the uploaded file
+    console.log(url, user.profile?.id, url);
+    console.log("this is url:", url);
+    if (url) {
+      let data;
+      if (userRole === "admin") {
+        data = {
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          mobileNo: user.profile?.mobileNo,
+          profilePic: url,
+        };
+      } else {
+        data = {
+          firstName: user.profile?.firstName,
+          lastName: user.profile?.lastName,
+          mobileNo: user.profile?.mobileNo,
+          profilePic: url,
+          designation: user.profile?.designation,
+        };
+      }
+      // console.log("this is url:",url)
+      console.log("this is data:", data);
+      const response = await patchAuthorizedRequest(
+        `${userRole}/profile/${user?.profile?.id}`,
+        data,
+      );
+      if (response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success(response.message);
+        dispatch(
+          setUserProfile({
+            id: user.profile?.id,
+            firstName: user.profile?.firstName,
+            lastName: user.profile?.lastName,
+            mobileNo: user.profile?.mobileNo,
+            profilePic: url,
+            designation: user.profile?.designation,
+            user: user.profile?.user,
+          }),
+        );
+      }
+      uploadForm.reset();
+      setUpload(!upload);
+    }
+  };
+
   return (
     <div className=" flex flex-col gap-8">
       <div className="w-full text-display-xxs font-heading">Personal Information</div>
       <div className="flex gap-10">
-        <Avatar className=" relative w-40 h-40 bg-slate-100 rounded-full ">
-          {!user.profile?.profilePic ? (
-            <AvatarImage
-              className="rounded-full border-4 w-full h-full shado"
-              src="https://github.com/shadcn.png"
-            />
-          ) : (
-            <div className="flex w-full h-full items-center justify-center">BV</div>
-          )}
-
-          <div
-            onClick={() => {
-              setUpload(!upload);
-            }}
-            className="cursor-pointer flex pl-2 pb-2 pt-1.5 pr-1.5 items-center justify-center border-2 bg-white rounded-full shadow-lg absolute right-2 bottom-0"
-          >
-            {upload ? (
-              <XMarkIcon className="text-[#0F172A] w-5 h-5" />
+        <div className="flex flex-col gap-8 items-center">
+          <Avatar className=" relative w-40 h-40 bg-slate-100 rounded-full ">
+            {user.profile?.profilePic ? (
+              <AvatarImage
+                className="rounded-full border-4 w-full h-full shado object-cover"
+                src={user.profile?.profilePic}
+              />
             ) : (
-              <PencilSquareIcon className="text-[#0F172A] w-5 h-5" />
+              <div className="flex w-full h-full items-center justify-center">BV</div>
             )}
-          </div>
-        </Avatar>
+
+            <div
+              onClick={() => {
+                setUpload(!upload);
+              }}
+              className="cursor-pointer flex pl-2 pb-2 pt-1.5 pr-1.5 items-center justify-center border-2 bg-white rounded-full shadow-lg absolute right-2 bottom-0"
+            >
+              {upload ? (
+                <XMarkIcon className="text-[#0F172A] w-5 h-5" />
+              ) : (
+                <PencilSquareIcon className="text-[#0F172A] w-5 h-5" />
+              )}
+            </div>
+          </Avatar>
+          {upload ? (
+            <div className="flex flex-col gap-3">
+              <Form {...uploadForm}>
+                <form action="" onSubmit={uploadForm.handleSubmit(handleFormSubmit)}>
+                  <FormUploadInput
+                    className="w-40"
+                    setFile={setFile}
+                    inputProps={{
+                      onKeyDown: e => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          uploadForm.handleSubmit(handleFormSubmit);
+                        }
+                      },
+                    }}
+                    formName="image"
+                    label=""
+                    placeholder=""
+                    leftIcon={<ArrowUpOnSquareIcon className="text-[#0F172A] w-5 h-5" />}
+                  />
+                </form>
+              </Form>
+              <Button className="w-full h-9" onClick={handleFormSubmit}>
+                Upload
+              </Button>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
         {userRole === "admin" ? (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <Form {...adminForm}>
-              <form action="">
+              <form action="" onSubmit={adminForm.handleSubmit(handleAdminProfileUpdate)}>
                 <div className="flex flex-col w-[660px] gap-4 ">
                   <div className="flex gap-5  w-full">
                     <FormTextInput
                       formName="firstName"
                       label="First Name"
-                      defaultValue={user.profile?.firstName}
-                      //   disabled={!editable}
                       placeholder="Enter first name"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
-                      defaultValue={user.profile?.lastName}
-                      //   disabled={!editable}
                       label="Last Name"
                       placeholder="Enter last name"
                       required
                     />
                   </div>
                   <div className="flex gap-5  w-full">
-                    <FormPhoneInput
-                      defaultValue={user.profile?.mobileNo}
-                      //   disabled={!editable}
-                      mobileFormName="mobileNo"
-                      required
-                    />
+                    <FormPhoneInput mobileFormName="mobileNo" required />
                     <FormTextInput
                       formName="email"
                       label="Email"
-                      defaultValue={user.email}
-                      //   disabled={!editable}
                       placeholder="Enter email"
                       required
                       leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
@@ -151,25 +282,15 @@ const ProfileInformation = () => {
                 </div>
               </form>
             </Form>
-            {upload ? (
-              <Form {...uploadForm}>
-                <form action="">
-                  <FormUploadInput
-                    setFile={setFile}
-                    formName="image"
-                    label=""
-                    placeholder=""
-                    leftIcon={<ArrowUpOnSquareIcon className="text-[#0F172A] w-5 h-5" />}
-                  />
-                </form>
-                <ArrowUpOnSquareIcon
-                  onClick={handleFormSubmit}
-                  className="text-[#0F172A] cursor-pointer  w-5 h-5"
-                />
-              </Form>
-            ) : (
-              <></>
-            )}
+            <Button className={editable ? "hidden" : ""} onClick={() => setEditor(!editable)}>
+              Edit Details
+            </Button>
+            <Button
+              className={editable ? "" : "hidden"}
+              onClick={adminForm.handleSubmit(handleAdminProfileUpdate)}
+            >
+              Edit Details
+            </Button>
           </div>
         ) : (
           <div>
@@ -198,7 +319,7 @@ const ProfileInformation = () => {
                     formName="email"
                     label="Email"
                     defaultValue={user.email}
-                    disabled={!editable}
+                    disabled
                     placeholder="Enter email"
                     required
                     leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
@@ -207,14 +328,14 @@ const ProfileInformation = () => {
                   <div className="flex gap-5  w-full">
                     <FormPhoneInput
                       defaultValue={user.profile?.mobileNo}
-                      disabled={!editable}
+                      disabled
                       mobileFormName="mobileNo"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
-                      defaultValue={user.profile?.lastName}
-                      disabled={!editable}
+                      defaultValue={user.profile?.designation}
+                      disabled
                       label="Last Name"
                       placeholder="Enter last name"
                       required

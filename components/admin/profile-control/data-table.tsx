@@ -59,17 +59,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  className={cn("my-10", row.getValue("isApproved") ? "bg-gray-552" : "")}
-                >
+                <TableRow key={row.id} className={cn("my-10")}>
                   {row.getVisibleCells().map(cell => (
                     <TableCell
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
-                        cell === row.getVisibleCells().at(0) && (row.original as any).viewed
-                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-blue-581"
+                        cell === row.getVisibleCells().at(0) && (row.original as any).ispaused
+                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-yellow-101"
                           : "",
                       )}
                     >

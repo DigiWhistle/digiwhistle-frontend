@@ -66,7 +66,7 @@ const FormTextInput = ({
                     placeholder={placeholder}
                     {...field}
                     disabled={disabled}
-                    value={defaultValue || field.value || ""}
+                    value={field.value || defaultValue || ""}
                     {...inputProps}
                     className={cn(
                       " border-none placeholder:text-muted-foreground bg-white ",

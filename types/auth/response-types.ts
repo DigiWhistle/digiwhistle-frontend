@@ -18,6 +18,7 @@ export interface IResetPasswordResponse {
 }
 
 export interface IInfluencerResponse {
+  id?: string;
   firstName: string;
   lastName: string;
   mobileNo: string;
@@ -27,15 +28,19 @@ export interface IInfluencerResponse {
   linkedInURL: string;
   profilePic?: string;
   user: string;
+  designation?: string;
 }
 export interface IAdminResponse {
-  firstName: string;
-  lastName: string;
-  mobileNo: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  mobileNo?: string;
   profilePic?: string;
-  user: string;
+  user?: string;
+  designation?: string;
 }
 export interface IBrandResponse {
+  id?: string;
   name: string;
   firstName: string;
   lastName: string;
@@ -43,4 +48,5 @@ export interface IBrandResponse {
   websiteURL: string;
   profilePic?: string;
   user: string;
+  designation?: string;
 }
