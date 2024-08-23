@@ -4,7 +4,7 @@ import React from "react";
 
 export const DataCard = ({ label, value, subValue, iconName }: TDataCard) => {
   return (
-    <div className="min-w-64 flex gap-8 items-center justify-between bg-white border px-4 py-5 rounded-lg drop-shadow-y-elevation-md">
+    <div className="min-w-64 flex gap-8 items-center justify-between bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
       <div className="flex flex-col items-start">
         <h5 className="text-heading-s opacity-70">{label} </h5>
         <div className="flex items-center gap-2  ">

@@ -13,7 +13,7 @@ const buttonVariants = cva(
         default:
           "bg-primary text-tc-primary-default hover:opacity-90  focus:ring-offset-focus-border-color focus:ring-opacity-50 focus:outline-none focus:ring-0 focus:ring-offset-2 disabled:bg-bb-primary-black-disabled disabled:text-black-201",
         secondary:
-          "border border-bc-primary-white text-tc-primary-white hover:bg-gray-559 hover:text-tc-primary-white focus:border-focus-border-color disabled:opacity-50",
+          "border border-bc-black-disabled  hover:opacity-80  focus:border-black-201 disabled:opacity-50",
         tertiary:
           "text-tc-primary-white hover:bg-gray-559 focus:border focus:border-focus-border-color focus:text-yellow-101 disabled:opacity-50",
         outline: "bg-secondary text-secondary-foreground hover:bg-secondary/80",

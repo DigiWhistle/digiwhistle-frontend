@@ -273,8 +273,7 @@ const InfluencerFilters = () => {
         <FiltersDropdown pushUrl={pushUrl} removeParam={removeParam} />
       </div>
       <Button
-        variant={"outline"}
-        className="flex rounded-full items-center justify-center   bg-white border-[1px] border- text-tc-primary-default font-sans text-body-lg-medium"
+        variant={"secondary"}
         onClick={() => pushUrl("refresh", true.toString())}
         loading={searchParams.get("refresh") === "true" && loading}
         disabled={searchParams.get("refresh") === "true" && loading}
