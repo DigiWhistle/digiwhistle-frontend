@@ -86,28 +86,33 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
         onSubmit={form.handleSubmit(handleEditInfluencer)}
       >
         <div className="flex flex-col w-full gap-4 ">
-          <FormPhoneInput label="New Mobile Number" mobileFormName="mobileNo" required />
+          <FormPhoneInput
+            label="New Mobile Number"
+            mobileFormName="mobileNo"
+            required
+            formDescription={`Old mobile number: ${defaultValues?.mobileNo ?? ""}`}
+          />
           <div className="w-full space-y-4">
             <FormTextInput
               formName="instagramURL"
               label="New Instagram Profile Link"
               placeholder="https://www.instagram.com/username/"
               leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old profile link: ${defaultValues?.instagramURL ?? ""}`}
+              formDescription={`Old link: ${defaultValues?.instagramURL ?? ""}`}
             />
             <FormTextInput
               formName="youtubeURL"
               label="New Youtube Profile Link"
               placeholder="https://www.youtube.com/username/"
               leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old profile link: ${defaultValues?.youtubeURL ?? ""}`}
+              formDescription={`Old link: ${defaultValues?.youtubeURL ?? ""}`}
             />
             <FormTextInput
               formName="twitterURL"
               label="New X Profile Link"
               placeholder="https://www.x.com/username/"
               leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old profile link: ${defaultValues?.twitterURL ?? ""}`}
+              formDescription={`Old link: ${defaultValues?.twitterURL ?? ""}`}
             />
           </div>
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">

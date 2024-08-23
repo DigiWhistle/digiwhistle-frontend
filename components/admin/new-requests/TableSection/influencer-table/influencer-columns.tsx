@@ -55,6 +55,7 @@ import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import PauseForm from "./PauseForm";
 import EditInfluencer from "@/components/admin/layout/EditInfluencer";
+import { profile } from "console";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -81,7 +82,8 @@ export const createColumns = (
               <div>
                 <p>{row.getValue("name")}</p>
                 <p className="text-sm text-tc-body-grey">
-                  @{row.original.profileUrl.split("/").pop()}
+                  {!row.original.profileUrl.includes("youtube") && "@"}
+                  {row.original.profileUrl.split("/").pop()}
                 </p>
               </div>
             </div>
@@ -348,7 +350,7 @@ export const createColumns = (
                 <CustomDialog
                   className="w-[700px]"
                   headerTitle="Edit profile"
-                  headerDescription={`of influencer: ${name} (${row.original.profileUrl}) `}
+                  headerDescription={`of influencer: ${name} (${String(row.original.profileUrl).replace(/(^\w+:|^)\/\//, "")}) `}
                   triggerElement={
                     <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
                       Edit Profile
