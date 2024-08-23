@@ -27,6 +27,7 @@ interface IFormTextInputProps {
   rightIcon?: React.ReactNode;
   maxLength?: number;
   setFile: any;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 const FormUploadInput = ({
   formName,
@@ -43,6 +44,7 @@ const FormUploadInput = ({
   rightIcon,
   maxLength,
   setFile,
+  inputProps,
 }: IFormTextInputProps) => {
   const { control } = useFormContext();
   const handleFileChange = (event: any) => {
@@ -72,6 +74,7 @@ const FormUploadInput = ({
                     placeholder={placeholder}
                     {...field}
                     onChangeCapture={handleFileChange}
+                    {...inputProps}
                     disabled={disabled}
                     value={defaultValue || field.value || ""}
                     maxLength={maxLength ? maxLength : undefined}

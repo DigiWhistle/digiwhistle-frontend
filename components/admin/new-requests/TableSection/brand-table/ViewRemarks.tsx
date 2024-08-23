@@ -35,8 +35,8 @@ const ViewRemarks = ({
   userId: string;
   name: string;
   url?: string;
-  updateData: any;
-  updateid: string;
+  updateData?: any;
+  updateid?: string;
 }) => {
   const userInfo = useSelector(User);
 

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { User, UserRole } from "@/store/UserSlice";
-
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 const logosvg = "/assets/navbar/logo.svg";
 const bars = "/assets/navbar/bars.svg";
 interface AdminNavbarinterface {
@@ -31,8 +31,17 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
 
           <div className=" flex  justify-between items-center space-x-6">
             <div className="flex items-center space-x-2">
-              <div className="flex w-11 h-11 bg-black border-2 border-white rounded-[110px] justify-center items-center" />
-              {userInfo?.profile?.profilePic}
+              <Avatar className=" flex border-2  border-white w-11 h-11 bg-slate-100 rounded-full ">
+                {userInfo?.profile?.profilePic ? (
+                  <AvatarImage
+                    className="rounded-full w-full h-full shado object-cover"
+                    src={userInfo?.profile?.profilePic}
+                  />
+                ) : (
+                  <div className="flex w-full h-full items-center justify-center">BV</div>
+                )}
+              </Avatar>
+
               <div className="flex-col space-y-1">
                 <div className="text-body-lg-medium text-white">
                   {userInfo?.profile && "firstName" in userInfo.profile
