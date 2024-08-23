@@ -5,6 +5,7 @@ import { PlusCircleIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import AddInfluencers from "@/components/admin/layout/AddInfluencers";
 import InviteInfluencer from "@/components/admin/layout/InviteInfluencer";
+import InfluencerFilters from "@/components/admin/new-requests/TableSection/influencer-table/InfluencerFilters";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full">
@@ -46,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </CustomDialog>
         </div>
       </div>
-      <div>Filters</div>
+      <InfluencerFilters />
       {children}
     </div>
   );

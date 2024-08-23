@@ -19,7 +19,7 @@ import React from "react";
 
 interface IFormTextInputProps {
   mobileFormName: string;
-  codeFormName?: string;
+  label?: string;
   required?: boolean;
   disabled?: boolean;
   formDescription?: string;
@@ -35,7 +35,7 @@ CustomInputComponent.displayName = "CustomInputComponent";
 
 const FormPhoneInput = ({
   mobileFormName,
-  codeFormName,
+  label,
   required = false,
   disabled = false,
   formDescription,
@@ -48,7 +48,7 @@ const FormPhoneInput = ({
   return (
     <div className="flex flex-col w-full gap-2 ">
       <FormLabel className="text-sm font-medium text-black ">
-        {"Mobile Number"}
+        {label ?? "Mobile Number"}
         {required && <span className="text-destructive">*</span>}
       </FormLabel>{" "}
       <div className="flex gap-3">

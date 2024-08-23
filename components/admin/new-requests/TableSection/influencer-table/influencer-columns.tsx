@@ -21,12 +21,18 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
+  deleteAuthorizedRequest,
   getAuthorizedRequest,
   patchAuthorizedRequest,
   postAuthorizedRequest,
 } from "@/lib/config/axios";
 import { toast } from "sonner";
-import { Influencer, InfluencerPlatforms, InstagramProfileStats } from "@/types/admin/influencer";
+import {
+  HideFrom,
+  Influencer,
+  InfluencerPlatforms,
+  InstagramProfileStats,
+} from "@/types/admin/influencer";
 import ApproveForm from "../brand-table/ApproveForm";
 import RejectForm from "../brand-table/RejectForm";
 import ViewRemarks from "../brand-table/ViewRemarks";
@@ -45,6 +51,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
+import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
+import PauseForm from "./PauseForm";
+import EditInfluencer from "@/components/admin/layout/EditInfluencer";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -52,6 +62,7 @@ export const createColumns = (
   platform: InfluencerPlatforms,
   isMainTable: boolean = false,
   patchDataById: (id: string, data: Partial<Influencer>) => void,
+  deleteInfluencer: (id: string) => void,
 ): ColumnDef<Influencer>[] => {
   const columns = [
     {
@@ -234,15 +245,26 @@ export const createColumns = (
         header: "Hide Profile From",
         cell: ({ row }: { row: Row<Influencer> }) => {
           const hideFrom = row.getValue("hideFrom") as string;
+
           const hidePlatforms = [
-            { value: "brand", label: "Brand" },
+            { value: "Brand", label: "Brand" },
             { value: "agency", label: "Agency" },
             { value: null, label: "None" },
           ];
           return (
             <Select
               value={hideFrom}
-              onValueChange={value => patchDataById(row.original?.profileId, { hideFrom: value })}
+              onValueChange={async value => {
+                const response = await patchAuthorizedRequest(
+                  `influencer/profile/${row.original.profileId}`,
+                  { hideFrom: value },
+                );
+                if (response.error) {
+                  toast.error(response.error);
+                  return;
+                }
+                patchDataById(row.original?.profileId, { hideFrom: value as HideFrom });
+              }}
             >
               <SelectTrigger className="flex gap-1 min-w-32 px-4">
                 <SelectValue placeholder="Choose Platform" />
@@ -267,7 +289,6 @@ export const createColumns = (
           const userId = row.original?.userId;
           const name = row.getValue("name") as string;
 
-          console.log(name);
           const LatestRemark = () => {
             const [allRemarks, setRemarks] = useState<any>([]);
             useEffect(() => {
@@ -311,7 +332,7 @@ export const createColumns = (
                 >
                   <ArrowUturnLeftIcon className="h-4 w-4 " />
                 </button>
-                <p className="text-success">Approved</p>
+                <p className="text-yellow-101">Paused</p>
                 <LatestRemark />
               </div>
             );
@@ -325,43 +346,62 @@ export const createColumns = (
               </DropdownMenuTrigger>
               <DropdownMenuContent className="p-1" align="end">
                 <CustomDialog
-                  className="w-[400px]"
+                  className="w-[700px]"
                   headerTitle="Edit profile"
-                  headerDescription="Please note that this action will add the user to the DW platform."
+                  headerDescription={`of influencer: ${name} (${row.original.profileUrl}) `}
                   triggerElement={
                     <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
                       Edit Profile
                     </div>
                   }
                 >
-                  <div></div>
-                  {/* <ApproveForm
-                    updateData={updateData}
-                    updateid={profileId}
-                    name={name}
-                    url=""
-                    userId={userId}
-                  /> */}
+                  <EditInfluencer influencer={row.original} />
                 </CustomDialog>
                 <CustomDialog
                   className="w-[400px]"
-                  headerTitle="Delete profile ?"
+                  headerTitle="Pause profile"
                   headerDescription="Please note that this action is temporary and reversible in nature."
                   triggerElement={
-                    <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                      Delete
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Pause Profile
                     </div>
                   }
                 >
-                  <div></div>
-
-                  {/* <RejectForm
-                    updateData={updateData}
+                  <PauseForm
+                    patchDataById={patchDataById}
                     updateid={profileId}
                     name={name}
                     url=""
                     userId={userId}
-                  /> */}
+                  />
+                </CustomDialog>
+                <CustomDialog
+                  className="w-[400px]"
+                  headerTitle="Delete query"
+                  headerDescription="Please note that this action is permanent and irreversible in nature."
+                  triggerElement={
+                    <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                      Delete Profile
+                    </div>
+                  }
+                >
+                  <div className="flex w-full gap-3 pt-6 border-t-2">
+                    <CancelButton />
+                    <ActionButton
+                      className="bg-destructive text-white hover:bg-destructive/90"
+                      onClick={async () => {
+                        const response = await deleteAuthorizedRequest(`user?userId=${profileId}`);
+                        if (response.error) {
+                          toast.error(response.error);
+                        } else {
+                          deleteInfluencer(profileId);
+                          toast.success("User deleted successfully");
+                        }
+                      }}
+                    >
+                      Delete Profile
+                    </ActionButton>
+                  </div>
                 </CustomDialog>
                 <CustomDialog
                   className="w-[538px]"

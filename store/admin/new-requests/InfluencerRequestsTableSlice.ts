@@ -116,6 +116,12 @@ export const influencerRequestsTableSlice = createSlice({
         Object.assign(influencer, data);
       }
     },
+    deleteInfluencerById: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.data.data = state.data.data.filter(influencer => influencer.profileId !== id);
+
+      state.data.totalCount = state.data.totalCount - 1;
+    },
   },
   extraReducers: builder => {
     builder
@@ -138,7 +144,7 @@ export const influencerRequestsTableSlice = createSlice({
       });
   },
 });
-export const { updateInfluencerApproval, patchInfluencerDataById } =
+export const { updateInfluencerApproval, patchInfluencerDataById, deleteInfluencerById } =
   influencerRequestsTableSlice.actions;
 
 export const influencerRequestsTableReducer = influencerRequestsTableSlice.reducer;
