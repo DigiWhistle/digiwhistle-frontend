@@ -80,6 +80,7 @@ const AddMemberForm = ({ className }: { className?: string }) => {
           "https://firebasestorage.googleapis.com/v0/b/dev-digiwhistle.appspot.com/o/images%2F3da39-no-user-image-icon-27.webp?alt=media&token=bf1a1b72-591b-4b0a-abf2-8b2afcbbd43d",
       };
     }
+    console.log(sendInfo);
     const response = await postAuthorizedRequest("admin/add", sendInfo);
     if (response.error) {
       toast.error(response.error);
