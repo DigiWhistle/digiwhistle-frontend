@@ -249,7 +249,7 @@ export const createColumns = (
           const hideFrom = row.getValue("hideFrom") as string;
 
           const hidePlatforms = [
-            { value: "Brand", label: "Brand" },
+            { value: "brand", label: "Brand" },
             { value: "agency", label: "Agency" },
             { value: null, label: "None" },
           ];

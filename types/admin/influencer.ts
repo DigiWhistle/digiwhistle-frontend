@@ -59,8 +59,8 @@ export enum InfluencerFollowers {
 }
 
 export enum HideFrom {
-  BRAND = "Brand",
-  Agency = "Agency",
+  BRAND = "brand",
+  Agency = "agency",
 }
 
 export type Influencer = {
