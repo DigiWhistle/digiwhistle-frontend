@@ -58,6 +58,7 @@ import EditAddMemberForm from "./EditAddMemberForm";
 export const createColumns = (
   deleteProfileByID: (id: string) => void,
   setIsPaused: (userId: string, data: { isPaused: boolean }) => void,
+  role?: string,
 ): ColumnDef<ProfileControl>[] => [
   {
     accessorKey: "firstName",
@@ -95,6 +96,7 @@ export const createColumns = (
       }
       return (
         <Select
+          disabled={!(role === "admin")}
           value={designation}
           onValueChange={async value => {
             const response = await patchAuthorizedRequest(

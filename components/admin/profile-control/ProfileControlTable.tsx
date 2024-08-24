@@ -15,9 +15,11 @@ import {
   deleteProfileByID,
   updateIsPaused,
 } from "@/store/admin/profile-control/ProfileControlSlice";
+import { User } from "@/store/UserSlice";
 const ProfileControlTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
+  const user = useAppSelector(User);
 
   const dispatch: AppDispatch = useDispatch();
   const data = useAppSelector(ProfileControlTableData);
@@ -43,7 +45,7 @@ const ProfileControlTable = () => {
     [dispatch],
   );
 
-  const columns = useMemo(() => createColumns(deleteProfile, setIsPaused), []);
+  const columns = useMemo(() => createColumns(deleteProfile, setIsPaused, user?.role), []);
   return (
     <div className="py-5">
       {loading ? (

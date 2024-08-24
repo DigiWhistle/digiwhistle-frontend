@@ -279,7 +279,7 @@ const ProfileInformation = () => {
                       label="Email"
                       placeholder="Enter email"
                       required
-                      disabled={!editable}
+                      disabled
                       leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                     />
                   </div>

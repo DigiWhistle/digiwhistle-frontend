@@ -24,6 +24,7 @@ export const fetchProfileControlTableData = createAsyncThunk(
     if (name) {
       url += `&name=${name}`;
     }
+    console.log(url);
     const response = await getAuthorizedRequest<IProfileControlTable>(url);
     if (response.error) {
       throw new Error(response.error);
