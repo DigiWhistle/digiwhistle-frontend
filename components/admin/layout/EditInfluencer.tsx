@@ -83,7 +83,7 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
       <form
         action=""
         className="flex flex-col gap-6 mt-4 items-center w-full"
-        onSubmit={form.handleSubmit(handleEditInfluencer)}
+        // onSubmit={form.handleSubmit(handleEditInfluencer)}
       >
         <div className="flex flex-col w-full gap-4 ">
           <FormPhoneInput
@@ -118,7 +118,7 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">
             <CancelButton />
             <ActionButton onClick={form.handleSubmit(handleEditInfluencer)}>
-              Add Influencer
+              Confirm all edits
             </ActionButton>
           </div>
         </div>

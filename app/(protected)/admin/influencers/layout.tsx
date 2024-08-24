@@ -18,10 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             headerTitle={"Invite influencers"}
             headerDescription="Please enter below details."
             triggerElement={
-              <Button
-                variant={"outline"}
-                className="flex rounded-3xl items-center justify-center   bg-white a border-[1px] border-bc-primary-black text-tc-primary-default font-sans text-body-lg-medium"
-              >
+              <Button variant={"secondary"}>
                 {" "}
                 <EnvelopeIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
                 Invite influencer

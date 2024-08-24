@@ -306,7 +306,7 @@ export const createColumns = (
                   <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
                 </PopoverTrigger>
                 <PopoverContent
-                  className="w-fit text-tc-primary-white bg-black-201 text-sm p-3"
+                  className="max-w-64 w-fit text-tc-primary-white bg-black-201 text-sm p-3"
                   sideOffset={4}
                   alignOffset={-50}
                   align="start"
@@ -334,7 +334,7 @@ export const createColumns = (
                 >
                   <ArrowUturnLeftIcon className="h-4 w-4 " />
                 </button>
-                <p className="text-yellow-101">Paused</p>
+                <p className="text-warning">Paused</p>
                 <LatestRemark />
               </div>
             );

@@ -61,7 +61,7 @@ const ProfileControlFilters = () => {
           <MagnifyingGlassIcon className="w-5 h-5" />
         </div>
         <Input
-          placeholder={"Type brand name here"}
+          placeholder={"Type employee name here"}
           className={cn(
             "min-w-40 lg:w-80 ps-10 border-none placeholder:text-muted-foreground bg-white ",
           )}
