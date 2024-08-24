@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { DataTablePagination } from "../lib/pagination";
-
+import { ProfileControl } from "@/types/admin/ProfileControl";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: {
@@ -65,7 +65,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
-                        cell === row.getVisibleCells().at(0) && (row.original as any).ispaused
+                        cell === row.getVisibleCells().at(0) &&
+                          (row.original as any).role === "admin"
                           ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-yellow-101"
                           : "",
                       )}

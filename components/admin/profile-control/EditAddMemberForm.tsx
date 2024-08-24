@@ -11,7 +11,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
-import { postRequest } from "@/lib/config/axios";
+import { patchAuthorizedRequest, postRequest } from "@/lib/config/axios";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import {
@@ -32,13 +32,9 @@ import { useAppDispatch } from "@/lib/config/store";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 import FormSelectInput from "@/components/ui/form/form-select-input";
-enum Role {
-  Admin = "admin",
-  Employee = "employee",
-}
+import { ProfileControl } from "@/types/admin/ProfileControl";
 import { postAuthorizedRequest } from "@/lib/config/axios";
-const memberAddSchema = z.object({
-  role: z.nativeEnum(Role),
+const EditmemberAddSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
   email: z.string().email("Invalid email address"),
@@ -46,61 +42,54 @@ const memberAddSchema = z.object({
   designation: z.string().optional(),
 });
 const selectItems = ["Talent Manager", "Account Manager", "PR Manager", "Brand Manager"];
-const AddMemberForm = ({ className }: { className?: string }) => {
-  const form = useForm<z.infer<typeof memberAddSchema>>({
-    resolver: zodResolver(memberAddSchema),
+const EditAddMemberForm = ({
+  className,
+  EditData,
+}: {
+  className?: string;
+  EditData: ProfileControl;
+}) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof EditmemberAddSchema>>({
+    resolver: zodResolver(EditmemberAddSchema),
+    defaultValues: {
+      firstName: EditData.firstName,
+      lastName: EditData.lastName,
+      mobileNo: EditData.mobileNo ? EditData.mobileNo : undefined,
+      email: EditData.email,
+      designation: EditData.designation,
+    },
   });
-  const handleForm = async (data: z.infer<typeof memberAddSchema>, e: any) => {
+  const handleForm = async (data: z.infer<typeof EditmemberAddSchema>, e: any) => {
     e.preventDefault();
-    console.log(data);
+
     let sendInfo;
-    if (data.role === "admin") {
-      sendInfo = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        mobileNo: data.mobileNo,
-        email: data.email,
-        role: data.role,
-        designation: "",
-        profilePic:
-          "https://firebasestorage.googleapis.com/v0/b/dev-digiwhistle.appspot.com/o/images%2F3da39-no-user-image-icon-27.webp?alt=media&token=bf1a1b72-591b-4b0a-abf2-8b2afcbbd43d",
-      };
-    } else {
-      sendInfo = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        mobileNo: data.mobileNo,
-        email: data.email,
-        role: data.role,
-        designation: data.designation,
-        profilePic:
-          "https://firebasestorage.googleapis.com/v0/b/dev-digiwhistle.appspot.com/o/images%2F3da39-no-user-image-icon-27.webp?alt=media&token=bf1a1b72-591b-4b0a-abf2-8b2afcbbd43d",
-      };
-    }
-    const response = await postAuthorizedRequest("admin/add", sendInfo);
+
+    sendInfo = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      mobileNo: data.mobileNo,
+      designation: data.designation,
+      profilePic: "string",
+    };
+    const response = await patchAuthorizedRequest(
+      `employee/profile/${EditData.profileId}`,
+      sendInfo,
+    );
     if (response.error) {
       toast.error(response.error);
     } else {
       toast.success(response.message);
+      window.location.reload();
     }
-    window.location.reload();
-    form.reset();
   };
-  console.log("role", form.getValues("role"));
   return (
     <div>
       <Form {...form}>
         <form action={""}>
           <div className="flex flex-col w-full gap-4 ">
-            <FormRadioGroup
-              formName="role"
-              label="Select your role"
-              radioOptions={[
-                { label: "Admin", value: "admin" },
-                { label: "Employee", value: "employee" },
-              ]}
-              triggerOnChange
-            />
             <div className="flex gap-3  w-full">
               <FormTextInput
                 formName="firstName"
@@ -118,20 +107,18 @@ const AddMemberForm = ({ className }: { className?: string }) => {
                 label="Email"
                 placeholder="Enter email"
                 required
+                disabled
                 leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
               />
             </div>
-            {form.getValues("role") === "employee" ? (
-              <FormSelectInput
-                selectItems={selectItems}
-                formName="designation"
-                placeholder="Select Designation"
-                label="Employee’s designation"
-                required
-              />
-            ) : (
-              <></>
-            )}
+
+            <FormSelectInput
+              selectItems={selectItems}
+              formName="designation"
+              placeholder="Select Designation"
+              label="Employee’s designation"
+              required
+            />
           </div>
         </form>
       </Form>
@@ -147,4 +134,4 @@ const AddMemberForm = ({ className }: { className?: string }) => {
   );
 };
 
-export default AddMemberForm;
+export default EditAddMemberForm;

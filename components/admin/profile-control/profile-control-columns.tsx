@@ -1,7 +1,16 @@
 "use client";
 
 import type { ColumnDef, TableMeta } from "@tanstack/react-table";
-
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +24,15 @@ import {
   ArrowUturnLeftIcon,
   EllipsisVerticalIcon,
   UserIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { deleteAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import {
+  deleteAuthorizedRequest,
+  getAuthorizedRequest,
+  patchAuthorizedRequest,
+  postAuthorizedRequest,
+} from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -34,7 +49,16 @@ import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import ViewRemarks from "../new-requests/TableSection/brand-table/ViewRemarks";
-export const createColumns = (): ColumnDef<ProfileControl>[] => [
+import { useRouter } from "next/navigation";
+import { deleteProfileByID } from "@/store/admin/profile-control/ProfileControlSlice";
+import { useAppDispatch } from "@/lib/config/store";
+import PauseForm from "../new-requests/TableSection/influencer-table/PauseForm";
+import { useEffect, useState } from "react";
+import EditAddMemberForm from "./EditAddMemberForm";
+export const createColumns = (
+  deleteProfileByID: (id: string) => void,
+  setIsPaused: (userId: string, data: { isPaused: boolean }) => void,
+): ColumnDef<ProfileControl>[] => [
   {
     accessorKey: "firstName",
     header: () => <div className="">Member name</div>,
@@ -46,8 +70,8 @@ export const createColumns = (): ColumnDef<ProfileControl>[] => [
           </div>
 
           <div>
-            {row.getValue("firstName")}
-            <p className="text-xs text-tc-body-grey">{` ${row.original.lastName}`}</p>
+            {row.getValue("firstName")} {` ${row.original.lastName}`}
+            <p className="text-xs text-tc-body-grey">{` ${row.original.role}`}</p>
           </div>
         </div>
       );
@@ -56,6 +80,50 @@ export const createColumns = (): ColumnDef<ProfileControl>[] => [
   {
     accessorKey: "designation",
     header: "Designation",
+    cell: ({ row }) => {
+      const designation = row.getValue("designation") as string;
+
+      const selectItems = [
+        { value: "Talent Manager", label: "Talent Manager" },
+        { value: "Account Manager", label: "Account Manager" },
+        { value: "PR Manager", label: "PR Manager" },
+        { value: "Brand Manager", label: "Brand Manager" },
+      ];
+
+      if (row.getValue("designation") === "admin") {
+        return "admin";
+      }
+      return (
+        <Select
+          value={designation}
+          onValueChange={async value => {
+            const response = await patchAuthorizedRequest(
+              `employee/profile/${row.original.profileId}`,
+              { designation: value },
+            );
+            if (response.error) {
+              toast.error(response.error);
+              return;
+            } else {
+              toast.success("Changed Designation Successfully");
+              window.location.reload();
+            }
+            // patchDataById(row.original?.profileId, { hideFrom: value as HideFrom });
+          }}
+        >
+          <SelectTrigger className="flex gap-1 w-52 px-4 bg-sb-gray-554">
+            <SelectValue placeholder="Choose Platform" />
+          </SelectTrigger>
+          <SelectContent>
+            {selectItems.map(item => (
+              <SelectItem key={item.value} value={item.value as string}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    },
   },
   {
     accessorKey: "email",
@@ -85,102 +153,160 @@ export const createColumns = (): ColumnDef<ProfileControl>[] => [
   //     );
   //   },
   // },
+
   {
-    accessorKey: "email",
+    accessorKey: "isPaused",
     header: "Actions",
     cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
-            <button type="button">
-              <EllipsisVerticalIcon className="h-5 w-5" />
+      const isPaused = row.getValue("isPaused") as boolean;
+      const userId = row.original?.userId;
+      const name = row.original.firstName as string;
+      const LatestRemark = () => {
+        const [allRemarks, setRemarks] = useState<any>([]);
+        useEffect(() => {
+          const fetchRemarks = async () => {
+            const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+            setRemarks(Remarks.data);
+          };
+          fetchRemarks();
+        }, []);
+        return (
+          <Popover>
+            <PopoverTrigger>
+              <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
+            </PopoverTrigger>
+            <PopoverContent
+              className="max-w-64 w-fit text-tc-primary-white bg-black-201 text-sm p-3"
+              sideOffset={4}
+              alignOffset={-50}
+              align="start"
+            >
+              {allRemarks?.[0]?.message}
+            </PopoverContent>
+          </Popover>
+        );
+      };
+      if (isPaused) {
+        return (
+          <div className=" flex w-full gap-2 pl-4 items-center">
+            <button
+              type="button"
+              onClick={async () => {
+                const response = await postAuthorizedRequest("user/revertAction", {
+                  userId: userId,
+                });
+                if (response.error) {
+                  toast.error(response.error);
+                } else {
+                  toast.success("Reverted Successfully");
+                  setIsPaused(userId, { isPaused: false });
+                }
+              }}
+            >
+              <ArrowUturnLeftIcon className="h-4 w-4 " />
             </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <CustomDialog
-              className="w-[600px]"
-              headerTitle="View Query"
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  View query
-                </div>
-              }
-            >
-              <div className=" overflow-hidden relative mt-3">
-                <p className="text-sm mb-2">User&apos;s Query Message</p>
-                <div className="h-36 rounded-lg text-sm text-tc-body-grey border bg-gray-554 px-3 py-2 overflow-auto">
-                  <p className="overflow-auto">{"hello"}</p>
-                </div>
-              </div>
-              <hr className="my-3 text-tc-body-grey" />
-              <Button
-                size={"sm"}
-                className="w-min place-self-center px-4 focus:ring-offset-0"
-                onClick={async () => {
-                  const response = await postAuthorizedRequest("contactUs/view", {
-                    id: row.original.id,
-                  });
-                  if (response.error) {
-                    toast.error(response.error);
-                  } else {
-                    // updateData(row.original.id, true);
-                  }
-                }}
-              >
-                Mark as read
-              </Button>
-            </CustomDialog>
-            <CustomDialog
-              className="w-[400px]"
-              headerTitle="Delete query"
-              headerDescription="Please note that this action is permanent and irreversible in nature."
-              triggerElement={
-                <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                  Delete User
-                </div>
-              }
-            >
-              <div className="flex w-full gap-3 pt-6 border-t-2">
-                <CancelButton />
-                <ActionButton
-                  className="bg-red-600 text-white"
-                  onClick={async () => {
-                    console.log(row.original.id, "  ", row.original.userId);
-                    const response = await deleteAuthorizedRequest(
-                      `user/?userId=${row.original.id}`,
-                    );
-                    if (response.error) {
-                      toast.error(response.error);
-                    } else {
-                      // deleteQuery(row.original.id);
-                      toast.success("Query deleted successfully");
+            <p className="text-warning">Paused</p>
+            <LatestRemark />
+          </div>
+        );
+      }
+      return (
+        <>
+          {row.original.role != "admin" ? (
+            <div className="flex w-full items-center pl-3 ">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
+                  <button type="button">
+                    <EllipsisVerticalIcon className="h-5 w-5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <CustomDialog
+                    className="w-[700px]"
+                    headerTitle="Edit profile"
+                    triggerElement={
+                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                        Edit Profile
+                      </div>
                     }
-                  }}
-                >
-                  Delete
-                </ActionButton>
-              </div>
-            </CustomDialog>
-            <CustomDialog
-              className="w-[580px]"
-              headerTitle="View remarks"
-              headerDescription="Please note that this action is permanent and irreversible in nature."
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  View remarks
-                </div>
-              }
-            >
-              <ViewRemarks
-                // updateData={updateData}
-                updateid={row.original.id}
-                name={row.getValue("firstName")}
-                url=""
-                userId={row.original.userId}
-              />
-            </CustomDialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                  >
+                    <EditAddMemberForm EditData={row.original} />
+                  </CustomDialog>
+
+                  <CustomDialog
+                    className="w-[400px]"
+                    headerTitle="Pause profile"
+                    headerDescription="Please note that this action is temporary and reversible in nature."
+                    triggerElement={
+                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                        Pause Profile
+                      </div>
+                    }
+                  >
+                    <PauseForm
+                      patchDataById={setIsPaused}
+                      updateid={userId}
+                      name={name}
+                      url=""
+                      userId={userId}
+                    />
+                  </CustomDialog>
+                  <CustomDialog
+                    className="w-[400px]"
+                    headerTitle="Delete query"
+                    headerDescription="Please note that this action is permanent and irreversible in nature."
+                    triggerElement={
+                      <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                        Delete User
+                      </div>
+                    }
+                  >
+                    <div className="flex w-full gap-3 pt-6 border-t-2">
+                      <CancelButton />
+                      <ActionButton
+                        className="bg-red-600 text-white"
+                        onClick={async () => {
+                          const response = await deleteAuthorizedRequest(
+                            `user/?userId=${row.original.userId}`,
+                          );
+                          if (response.error) {
+                            toast.error(response.error);
+                          } else {
+                            toast.success("User deleted successfully");
+
+                            deleteProfileByID(row.original.userId);
+                          }
+                        }}
+                      >
+                        Delete
+                      </ActionButton>
+                    </div>
+                  </CustomDialog>
+                  <CustomDialog
+                    className="w-[580px]"
+                    headerTitle="View remarks"
+                    headerDescription="Please note that this action is permanent and irreversible in nature."
+                    triggerElement={
+                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                        View remarks
+                      </div>
+                    }
+                  >
+                    <ViewRemarks
+                      // updateData={updateData}
+                      updateid={row.original.id}
+                      name={row.getValue("firstName")}
+                      url=""
+                      userId={row.original.userId}
+                    />
+                  </CustomDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : (
+            <div className="flex w-full items-center pl-5">--/--</div>
+          )}
+        </>
       );
     },
   },

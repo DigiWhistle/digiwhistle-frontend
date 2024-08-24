@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { setUserProfile } from "@/store/UserSlice";
 import { AppDispatch } from "@/lib/config/store";
 import { getCookie } from "cookies-next";
+import { cn } from "@/lib/utils";
 const adminProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -69,7 +70,7 @@ const ProfileInformation = () => {
       lastName: user?.profile?.lastName,
       email: user?.email,
       mobileNo: user?.profile?.mobileNo,
-      Designation: user?.profile?.firstName,
+      Designation: user?.profile?.designation,
     },
   });
   const uploadForm = useForm<z.infer<typeof uploadImageSchema>>({
@@ -260,22 +261,25 @@ const ProfileInformation = () => {
                       formName="firstName"
                       label="First Name"
                       placeholder="Enter first name"
+                      disabled={!editable}
                       required
                     />
                     <FormTextInput
                       formName="lastName"
                       label="Last Name"
                       placeholder="Enter last name"
+                      disabled={!editable}
                       required
                     />
                   </div>
                   <div className="flex gap-5  w-full">
-                    <FormPhoneInput mobileFormName="mobileNo" required />
+                    <FormPhoneInput mobileFormName="mobileNo" required disabled={!editable} />
                     <FormTextInput
                       formName="email"
                       label="Email"
                       placeholder="Enter email"
                       required
+                      disabled={!editable}
                       leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                     />
                   </div>
@@ -289,11 +293,17 @@ const ProfileInformation = () => {
               className={editable ? "" : "hidden"}
               onClick={adminForm.handleSubmit(handleAdminProfileUpdate)}
             >
-              Edit Details
+              Submit
+            </Button>
+            <Button
+              className={cn("bg-white border-slate-800 border-2", editable ? "" : "hidden")}
+              onClick={() => setEditor(!editable)}
+            >
+              Cancel
             </Button>
           </div>
         ) : (
-          <div>
+          <div className="flex flex-col gap-4">
             <Form {...employeeForm}>
               <form>
                 <div className="flex flex-col w-[660px] gap-4 ">
@@ -302,14 +312,14 @@ const ProfileInformation = () => {
                       formName="firstName"
                       label="First Name"
                       defaultValue={user.profile?.firstName}
-                      //   disabled={!editable}
+                      disabled={!editable}
                       placeholder="Enter first name"
                       required
                     />
                     <FormTextInput
                       formName="lastName"
                       defaultValue={user.profile?.lastName}
-                      //   disabled={!editable}
+                      disabled={!editable}
                       label="Last Name"
                       placeholder="Enter last name"
                       required
@@ -333,17 +343,32 @@ const ProfileInformation = () => {
                       required
                     />
                     <FormTextInput
-                      formName="lastName"
+                      formName="Designation"
                       defaultValue={user.profile?.designation}
                       disabled
-                      label="Last Name"
-                      placeholder="Enter last name"
+                      label="Designation"
+                      placeholder="Enter Designation"
                       required
                     />
                   </div>
                 </div>
               </form>
             </Form>
+            <Button className={editable ? "hidden" : ""} onClick={() => setEditor(!editable)}>
+              Edit Details
+            </Button>
+            <Button
+              className={editable ? "" : "hidden"}
+              onClick={employeeForm.handleSubmit(handleEmployeeProfileUpdate)}
+            >
+              Submit
+            </Button>
+            <Button
+              className={cn("bg-white border-slate-800 border-2", editable ? "" : "hidden")}
+              onClick={() => setEditor(!editable)}
+            >
+              Cancel
+            </Button>
           </div>
         )}
       </div>
