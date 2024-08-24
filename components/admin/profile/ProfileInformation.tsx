@@ -295,6 +295,12 @@ const ProfileInformation = () => {
             >
               Submit
             </Button>
+            <Button
+              className={cn("bg-white border-slate-800 border-2", editable ? "" : "hidden")}
+              onClick={() => setEditor(!editable)}
+            >
+              Cancel
+            </Button>
           </div>
         ) : (
           <div className="flex flex-col gap-4">

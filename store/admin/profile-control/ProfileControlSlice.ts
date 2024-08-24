@@ -36,6 +36,13 @@ export const ProfileControlTableSlice = createSlice({
   name: "ProfileControlTable",
   initialState,
   reducers: {
+    updateIsPaused: (state, action: PayloadAction<{ userId: string; isPaused: boolean }>) => {
+      const { userId, isPaused } = action.payload;
+      const employee = state.data.data.find(influencer => influencer.userId === userId);
+      if (employee) {
+        employee.isPaused = isPaused;
+      }
+    },
     setPausedQuery: (state, action: PayloadAction<{ id: string; ispaused: boolean }>) => {
       const { id, ispaused } = action.payload;
       const query = state.data.data.find(query => query.id === id);
@@ -43,9 +50,9 @@ export const ProfileControlTableSlice = createSlice({
         query.isPaused = ispaused;
       }
     },
-    deleteQueryByID: (state, action: PayloadAction<string>) => {
+    deleteProfileByID: (state, action: PayloadAction<string>) => {
       const id = action.payload;
-      state.data.data = state.data.data.filter(query => query.id !== id);
+      state.data.data = state.data.data.filter(query => query.userId !== id);
     },
   },
   extraReducers: builder => {
@@ -69,7 +76,8 @@ export const ProfileControlTableSlice = createSlice({
       });
   },
 });
-export const { setPausedQuery, deleteQueryByID } = ProfileControlTableSlice.actions;
+export const { setPausedQuery, deleteProfileByID, updateIsPaused } =
+  ProfileControlTableSlice.actions;
 
 export const ProfileControlTableReducer = ProfileControlTableSlice.reducer;
 

@@ -11,6 +11,10 @@ import {
 } from "@/store/admin/profile-control/ProfileControlSlice";
 import { PROFILE_CONTROL_TABLE_PAGE_LIMIT } from "@/types/admin/ProfileControl";
 import { createColumns } from "./profile-control-columns";
+import {
+  deleteProfileByID,
+  updateIsPaused,
+} from "@/store/admin/profile-control/ProfileControlSlice";
 const ProfileControlTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
@@ -26,7 +30,20 @@ const ProfileControlTable = () => {
       }),
     );
   }, []);
-  const columns = useMemo(() => createColumns(), []);
+  const deleteProfile = useCallback(
+    (userId: string) => {
+      dispatch(deleteProfileByID(userId));
+    },
+    [dispatch],
+  );
+  const setIsPaused = useCallback(
+    (userId: string, data: { isPaused: boolean }) => {
+      dispatch(updateIsPaused({ userId: userId, isPaused: data.isPaused }));
+    },
+    [dispatch],
+  );
+
+  const columns = useMemo(() => createColumns(deleteProfile, setIsPaused), []);
   return (
     <div className="py-5">
       {loading ? (
