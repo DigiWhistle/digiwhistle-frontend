@@ -168,7 +168,7 @@ export const createColumns = (
               <div className="flex w-full gap-3 pt-6 border-t-2">
                 <CancelButton />
                 <ActionButton
-                  className="bg-red-600 text-white"
+                  className="bg-destructive text-white hover:bg-destructive/90"
                   onClick={async () => {
                     const response = await deleteAuthorizedRequest(`contactUs/${row.original.id}`);
                     if (response.error) {

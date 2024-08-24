@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import BrandFilters from "./brand-table/BrandFilters";
 import AgencyFilters from "./agency-table/AgencyFilters";
-import InfluencerFilters from "./influencer-table/InfluencerFilters";
+import InfluencerFilters from "./influencer-table/InfluencerRequestsFilters";
 
 const TableSection = () => {
   const router = useRouter();

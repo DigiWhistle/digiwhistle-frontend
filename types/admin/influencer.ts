@@ -40,15 +40,15 @@ export const enum InfluencerPlatforms {
 }
 
 export const enum InfluencerNiche {
+  ALL = "all",
   FINANCE = "finance",
   NON_FINANCE = "non-finance",
-  ALL = "all",
 }
 
 export const enum InfluencerType {
+  ALL = "all",
   EXCLUSIVE = "exclusive",
   NON_EXCLUSIVE = "non-exclusive",
-  ALL = "all",
 }
 
 export enum InfluencerFollowers {
@@ -56,6 +56,11 @@ export enum InfluencerFollowers {
   FROM250KTO500K = "250Kto500K",
   FROM500KTO750K = "500Kto750K",
   MORETHAN750K = "moreThan750K",
+}
+
+export enum HideFrom {
+  BRAND = "Brand",
+  Agency = "Agency",
 }
 
 export type Influencer = {
@@ -67,7 +72,7 @@ export type Influencer = {
   profileUrl: string;
   requestDate: string;
   exclusive: boolean;
-  hideFrom: string;
+  hideFrom: HideFrom | null;
   isApproved: boolean | null;
   isPaused: boolean;
   isVerified: boolean;

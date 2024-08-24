@@ -4,33 +4,53 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { AppDispatch } from "@/lib/config/store";
 import { cn } from "@/lib/utils";
+import { fetchBrandRequestsData } from "@/store/admin/new-requests/BrandRequestsTableSlice";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { AGENCY_TABLE_PAGE_LIMIT } from "@/types/admin/new-requests";
-import { fetchAgencyRequestsData } from "@/store/admin/new-requests/AgencyRequestsTableSlice";
+import { fetchInfluencerRequestsData } from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { InfluencerPlatforms } from "@/types/admin/influencer";
+import { INFLUENCER_TABLE_PAGE_LIMIT } from ".";
 
-const AgencyFilters = () => {
+const InfluencerFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
   const currentPath = usePathname();
 
   const searchParams = useSearchParams();
+
+  const defaultSearchPlatform = searchParams.get("platform");
+  const defaultSearchTerm = searchParams.get("name");
   const defaultApproved = searchParams.get("approved") === "true";
   const defaultRejected = searchParams.get("rejected") === "true";
-  const defaultSearchTerm = searchParams.get("name");
 
   const [approved, setApproved] = useState(defaultApproved);
   const [rejected, setRejected] = useState(defaultRejected);
+  const [searchPlatform, setSearchPlatform] = useState(
+    defaultSearchPlatform || InfluencerPlatforms.INSTAGRAM,
+  );
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm || "");
 
   const debouncedFetchData = useCallback(
     debounce((query: string) => {
-      dispatch(fetchAgencyRequestsData({ page: 1, limit: AGENCY_TABLE_PAGE_LIMIT, name: query }));
+      dispatch(
+        fetchInfluencerRequestsData({
+          page: 1,
+          name: query,
+          platform: searchPlatform as InfluencerPlatforms,
+        }),
+      );
     }, 300),
-    [dispatch, AGENCY_TABLE_PAGE_LIMIT],
+    [dispatch, searchPlatform],
   );
 
   const pushUrl = (paramName: string, value: string) => {
@@ -47,14 +67,41 @@ const AgencyFilters = () => {
     setSearchTerm(query);
     debouncedFetchData(query);
   };
+
+  // @ts-ignore
+  const influencerPlatforms = Object.values(InfluencerPlatforms).map(platform => ({
+    label: platform.charAt(0).toUpperCase() + platform.slice(1),
+    value: platform,
+  }));
   return (
-    <div className="w-full flex items-center gap-4">
+    <div className="w-full flex flex-col md:flex-row flex-wrap items-center gap-4">
+      <div className="flex gap-2 items-center">
+        <Select
+          value={searchPlatform}
+          onValueChange={value => {
+            pushUrl("platform", value);
+            setSearchPlatform(value);
+          }}
+        >
+          <SelectTrigger className="flex gap-1 min-w-32 px-4">
+            <SelectValue placeholder="Choose Platform" />
+          </SelectTrigger>
+          <SelectContent>
+            {influencerPlatforms.map(platform => (
+              <SelectItem key={platform.value} value={platform.value}>
+                {platform.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="relative flex items-center  border border-gray-300 rounded-full">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <MagnifyingGlassIcon className="w-5 h-5" />
         </div>
         <Input
-          placeholder={"Type agency name here"}
+          placeholder={"Type influencer name here"}
           className={cn(
             "min-w-40 lg:w-80 ps-10 border-none placeholder:text-muted-foreground bg-white ",
           )}
@@ -71,14 +118,7 @@ const AgencyFilters = () => {
             checked={approved}
             onCheckedChange={value => {
               setApproved(value);
-              dispatch(
-                fetchAgencyRequestsData({
-                  page: 1,
-                  limit: AGENCY_TABLE_PAGE_LIMIT,
-                  approved: value,
-                  rejected: rejected,
-                }),
-              );
+
               pushUrl("approved", value ? "true" : "false");
             }}
           />
@@ -90,14 +130,7 @@ const AgencyFilters = () => {
             checked={rejected}
             onCheckedChange={value => {
               setRejected(value);
-              dispatch(
-                fetchAgencyRequestsData({
-                  page: 1,
-                  limit: AGENCY_TABLE_PAGE_LIMIT,
-                  approved: approved,
-                  rejected: value,
-                }),
-              );
+
               pushUrl("rejected", value ? "true" : "false");
             }}
           />
@@ -108,4 +141,4 @@ const AgencyFilters = () => {
   );
 };
 
-export default AgencyFilters;
+export default InfluencerFilters;

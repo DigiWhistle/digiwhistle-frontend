@@ -1,3 +1,5 @@
+import { ChartPieIcon } from "@heroicons/react/24/solid";
+
 export interface Brand {
   id: string;
   name: string;
@@ -20,3 +22,10 @@ export interface Agency extends Brand {}
 
 export const BRAND_TABLE_PAGE_LIMIT = 5;
 export const AGENCY_TABLE_PAGE_LIMIT = 5;
+
+export type TDataCard = {
+  label: string;
+  value: string | number;
+  subValue?: string;
+  iconName: string | typeof ChartPieIcon;
+};

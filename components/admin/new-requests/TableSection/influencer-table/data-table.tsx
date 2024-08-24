@@ -70,7 +70,11 @@ export function DataTable<TData, TValue>({
                   className={cn(
                     "my-10",
                     !isMainTable && row.getValue("isApproved") !== null ? "bg-gray-552" : "",
-                    isMainTable && row.getValue("exclusive") ? "bg-gray-552" : "",
+                    isMainTable &&
+                      row.getAllCells().some(cell => cell.column.id === "exclusive") &&
+                      row.getValue("exclusive")
+                      ? "bg-gray-552"
+                      : "",
                   )}
                 >
                   {row.getVisibleCells().map(cell => (
@@ -86,6 +90,7 @@ export function DataTable<TData, TValue>({
                             : "",
                         isMainTable &&
                           cell === row.getVisibleCells().at(0) &&
+                          row.getAllCells().some(cell => cell.column.id === "exclusive") &&
                           row.getValue("exclusive")
                           ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-link"
                           : "",
