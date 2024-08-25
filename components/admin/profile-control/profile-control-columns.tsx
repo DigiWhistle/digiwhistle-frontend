@@ -27,12 +27,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import {
-  deleteAuthorizedRequest,
-  getAuthorizedRequest,
-  patchAuthorizedRequest,
-  postAuthorizedRequest,
-} from "@/lib/config/axios";
+import { DELETE, GET, PATCH, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -99,10 +94,9 @@ export const createColumns = (
           disabled={!(role === "admin")}
           value={designation}
           onValueChange={async value => {
-            const response = await patchAuthorizedRequest(
-              `employee/profile/${row.original.profileId}`,
-              { designation: value },
-            );
+            const response = await PATCH(`employee/profile/${row.original.profileId}`, {
+              designation: value,
+            });
             if (response.error) {
               toast.error(response.error);
               return;
@@ -167,7 +161,7 @@ export const createColumns = (
         const [allRemarks, setRemarks] = useState<any>([]);
         useEffect(() => {
           const fetchRemarks = async () => {
-            const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+            const Remarks = await GET(`remarks?userId=${userId}`);
             setRemarks(Remarks.data);
           };
           fetchRemarks();
@@ -194,7 +188,7 @@ export const createColumns = (
             <button
               type="button"
               onClick={async () => {
-                const response = await postAuthorizedRequest("user/revertAction", {
+                const response = await POST("user/revertAction", {
                   userId: userId,
                 });
                 if (response.error) {
@@ -268,9 +262,7 @@ export const createColumns = (
                       <ActionButton
                         className="bg-red-600 text-white"
                         onClick={async () => {
-                          const response = await deleteAuthorizedRequest(
-                            `user/?userId=${row.original.userId}`,
-                          );
+                          const response = await DELETE(`user/?userId=${row.original.userId}`);
                           if (response.error) {
                             toast.error(response.error);
                           } else {

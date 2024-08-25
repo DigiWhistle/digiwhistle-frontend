@@ -18,7 +18,7 @@ import {
 import { Pointer } from "lucide-react";
 import { FormDescription } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { deleteAuthorizedRequest, putAuthorizedRequest } from "@/lib/config/axios";
+import { DELETE, PUT } from "@/lib/config/axios";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const timeSince = (date: any) => {
   const now: any = new Date();
@@ -76,7 +76,7 @@ const EditableRemark = ({
   ) => {
     e.preventDefault();
     console.log("called n");
-    const response = await putAuthorizedRequest(`remarks/${item.id}`, {
+    const response = await PUT(`remarks/${item.id}`, {
       message: data.editremarks,
     });
     if (response.error) {
@@ -92,7 +92,7 @@ const EditableRemark = ({
   const handleDeleteIndividualForm = async (e: any) => {
     e.preventDefault();
 
-    const response = await deleteAuthorizedRequest(`remarks/${item.id}`);
+    const response = await DELETE(`remarks/${item.id}`);
     setActive(false);
     SetEditorMode(true);
     SetFetcher(fetchOrNot + 1);

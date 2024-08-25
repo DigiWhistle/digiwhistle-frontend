@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { FormDescription } from "@/components/ui/form";
 import { UserIcon } from "@heroicons/react/24/outline";
@@ -33,10 +33,10 @@ const PauseForm = ({
     resolver: zodResolver(PauseFormSchema),
   });
   const handleForm = async (data: z.infer<typeof PauseFormSchema>) => {
-    const response = await postAuthorizedRequest("user/pause", {
+    const response = await POST("user/pause", {
       userId: userId,
     });
-    const remarkResponse = await postAuthorizedRequest("remarks", {
+    const remarkResponse = await POST("remarks", {
       message: data.remarks,
       userId: userId,
     });

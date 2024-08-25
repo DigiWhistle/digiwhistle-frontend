@@ -1,5 +1,5 @@
 "use client";
-import { getAuthorizedRequest, patchAuthorizedRequest } from "@/lib/config/axios";
+import { GET, PATCH } from "@/lib/config/axios";
 import React, { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import {
@@ -87,10 +87,7 @@ const ProfileInformation = () => {
       mobileNo: data.mobileNo,
       profilePic: user.profile?.profilePic,
     };
-    const response = await patchAuthorizedRequest(
-      `${userRole}/profile/${user?.profile?.id}`,
-      senddata,
-    );
+    const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
     if (response.error) {
       toast.error(response.error);
     } else {
@@ -117,10 +114,7 @@ const ProfileInformation = () => {
       profilePic: user.profile?.profilePic,
       designation: user.profile?.designation,
     };
-    const response = await patchAuthorizedRequest(
-      `${userRole}/profile/${user?.profile?.id}`,
-      senddata,
-    );
+    const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
     if (response.error) {
       toast.error(response.error);
     } else {
@@ -168,10 +162,7 @@ const ProfileInformation = () => {
       }
       // console.log("this is url:",url)
       console.log("this is data:", data);
-      const response = await patchAuthorizedRequest(
-        `${userRole}/profile/${user?.profile?.id}`,
-        data,
-      );
+      const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, data);
       if (response.error) {
         toast.error(response.error);
       } else {

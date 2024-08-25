@@ -122,7 +122,7 @@ export async function deleteRequest<T>(
 }
 
 // Authorized request functions
-export async function getAuthorizedRequest<T>(
+export async function GET<T>(
   URL: string,
   setLoading?: (loading: boolean) => void,
 ): Promise<ApiResponse<T>> {
@@ -141,7 +141,7 @@ export async function getAuthorizedRequest<T>(
   );
 }
 
-export async function postAuthorizedRequest<T>(
+export async function POST<T>(
   URL: string,
   payload: any,
   setLoading?: (loading: boolean) => void,
@@ -161,7 +161,7 @@ export async function postAuthorizedRequest<T>(
   );
 }
 
-export async function putAuthorizedRequest<T>(
+export async function PUT<T>(
   URL: string,
   payload: any,
   setLoading?: (loading: boolean) => void,
@@ -181,7 +181,7 @@ export async function putAuthorizedRequest<T>(
   );
 }
 
-export async function patchAuthorizedRequest<T>(
+export async function PATCH<T>(
   URL: string,
   payload: any,
   setLoading?: (loading: boolean) => void,
@@ -201,7 +201,7 @@ export async function patchAuthorizedRequest<T>(
   );
 }
 
-export async function deleteAuthorizedRequest<T>(
+export async function DELETE<T>(
   URL: string,
   setLoading?: (loading: boolean) => void,
 ): Promise<ApiResponse<T>> {

@@ -18,7 +18,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import ApproveForm from "./ApproveForm";
 import RejectForm from "./RejectForm";

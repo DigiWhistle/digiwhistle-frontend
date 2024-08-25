@@ -1,4 +1,4 @@
-import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import { ProfileControl } from "@/types/admin/ProfileControl";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -25,7 +25,7 @@ export const fetchProfileControlTableData = createAsyncThunk(
       url += `&name=${name}`;
     }
     console.log(url);
-    const response = await getAuthorizedRequest<IProfileControlTable>(url);
+    const response = await GET<IProfileControlTable>(url);
     if (response.error) {
       throw new Error(response.error);
     }

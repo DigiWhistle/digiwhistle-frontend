@@ -20,12 +20,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  deleteAuthorizedRequest,
-  getAuthorizedRequest,
-  patchAuthorizedRequest,
-  postAuthorizedRequest,
-} from "@/lib/config/axios";
+import { DELETE, GET, PATCH, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   HideFrom,
@@ -227,10 +222,9 @@ export const createColumns = (
                 id="exclusive"
                 checked={exclusive}
                 onCheckedChange={async value => {
-                  const response = await patchAuthorizedRequest(
-                    `influencer/profile/${row.original.profileId}`,
-                    { exclusive: value },
-                  );
+                  const response = await PATCH(`influencer/profile/${row.original.profileId}`, {
+                    exclusive: value,
+                  });
                   if (response.error) {
                     toast.error(response.error);
                     return;
@@ -257,10 +251,9 @@ export const createColumns = (
             <Select
               value={hideFrom}
               onValueChange={async value => {
-                const response = await patchAuthorizedRequest(
-                  `influencer/profile/${row.original.profileId}`,
-                  { hideFrom: value },
-                );
+                const response = await PATCH(`influencer/profile/${row.original.profileId}`, {
+                  hideFrom: value,
+                });
                 if (response.error) {
                   toast.error(response.error);
                   return;
@@ -295,7 +288,7 @@ export const createColumns = (
             const [allRemarks, setRemarks] = useState<any>([]);
             useEffect(() => {
               const fetchRemarks = async () => {
-                const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+                const Remarks = await GET(`remarks?userId=${userId}`);
                 setRemarks(Remarks.data);
               };
               fetchRemarks();
@@ -322,7 +315,7 @@ export const createColumns = (
                 <button
                   type="button"
                   onClick={async () => {
-                    const response = await postAuthorizedRequest("user/revertAction", {
+                    const response = await POST("user/revertAction", {
                       userId: userId,
                     });
                     if (response.error) {
@@ -392,7 +385,7 @@ export const createColumns = (
                     <ActionButton
                       className="bg-destructive text-white hover:bg-destructive/90"
                       onClick={async () => {
-                        const response = await deleteAuthorizedRequest(`user?userId=${profileId}`);
+                        const response = await DELETE(`user?userId=${profileId}`);
                         if (response.error) {
                           toast.error(response.error);
                         } else {

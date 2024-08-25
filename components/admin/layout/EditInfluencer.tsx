@@ -16,11 +16,7 @@ import {
 } from "@/lib/validationSchema";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
-import {
-  getAuthorizedRequest,
-  patchAuthorizedRequest,
-  postAuthorizedRequest,
-} from "@/lib/config/axios";
+import { GET, PATCH, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { Influencer } from "@/types/admin/influencer";
 
@@ -43,7 +39,7 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
 
   useEffect(() => {
     const fetchDefaultValues = async () => {
-      const response = await getAuthorizedRequest(`influencer/profile/${influencer.profileId}`);
+      const response = await GET(`influencer/profile/${influencer.profileId}`);
       if (response.error) {
         toast.error(response.error);
         setDefaultValues({
@@ -65,7 +61,7 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
   }, []);
 
   const handleEditInfluencer = async (data: z.infer<typeof EditInfluencerSchema>) => {
-    const response = await patchAuthorizedRequest(`influencer/profile/${influencer.profileId}`, {
+    const response = await PATCH(`influencer/profile/${influencer.profileId}`, {
       mobileNo: data.mobileNo,
       twitterURL: data.twitterURL || undefined,
       instagramURL: data.instagramURL || undefined,

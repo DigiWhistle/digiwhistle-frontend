@@ -16,7 +16,7 @@ import {
 } from "@/lib/validationSchema";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 
 const AddInfluencersSchema = z.object({
@@ -35,7 +35,7 @@ const AddInfluencers = () => {
   });
 
   const handleAddInfluencers = async (data: z.infer<typeof AddInfluencersSchema>) => {
-    const response = await postAuthorizedRequest("influencer", {
+    const response = await POST("influencer", {
       firstName: data.firstName,
       lastName: data.lastName,
       mobileNo: data.mobileNo,

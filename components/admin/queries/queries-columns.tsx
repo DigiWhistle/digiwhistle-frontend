@@ -17,7 +17,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { deleteAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { DELETE, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -142,7 +142,7 @@ export const createColumns = (
                 className="w-min place-self-center px-4 focus:ring-offset-0"
                 disabled={row.original.viewed}
                 onClick={async () => {
-                  const response = await postAuthorizedRequest("contactUs/view", {
+                  const response = await POST("contactUs/view", {
                     id: row.original.id,
                   });
                   if (response.error) {
@@ -170,7 +170,7 @@ export const createColumns = (
                 <ActionButton
                   className="bg-destructive text-white hover:bg-destructive/90"
                   onClick={async () => {
-                    const response = await deleteAuthorizedRequest(`contactUs/${row.original.id}`);
+                    const response = await DELETE(`contactUs/${row.original.id}`);
                     if (response.error) {
                       toast.error(response.error);
                     } else {

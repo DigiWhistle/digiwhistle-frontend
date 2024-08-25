@@ -1,6 +1,6 @@
 "use client";
 import { DataCard } from "@/components/ui/DataCard";
-import { getAuthorizedRequest } from "@/lib/config/axios";
+import { GET } from "@/lib/config/axios";
 import { TDataCard } from "@/types/admin/new-requests";
 import { ExclamationCircleIcon, FaceSmileIcon, FaceFrownIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ const DataCards = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getAuthorizedRequest<TDataCard[]>("admin/stats");
+      const response = await GET<TDataCard[]>("admin/stats");
       if (response.data) {
         const iconMap: { [key: string]: typeof ExclamationCircleIcon } = {
           ExclamationCircleIcon,

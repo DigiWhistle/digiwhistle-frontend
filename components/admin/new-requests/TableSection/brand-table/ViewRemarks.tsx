@@ -7,11 +7,7 @@ import { Form } from "@/components/ui/form";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import {
-  getAuthorizedRequest,
-  postAuthorizedRequest,
-  deleteAuthorizedRequest,
-} from "@/lib/config/axios";
+import { GET, POST, DELETE } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { PaperAirplaneIcon, UserIcon } from "@heroicons/react/24/outline";
 import EditableRemark from "./EditableRemark";
@@ -45,7 +41,7 @@ const ViewRemarks = ({
   const [allRemarks, setRemarks] = useState<any>([]);
   useEffect(() => {
     const fetchRemarks = async () => {
-      const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+      const Remarks = await GET(`remarks?userId=${userId}`);
       console.log(Remarks.data);
       setRemarks(Remarks.data);
     };
@@ -57,7 +53,7 @@ const ViewRemarks = ({
   });
   const handleForm = async (data: z.infer<typeof RemarksFormSchema>, e: any) => {
     e.preventDefault();
-    const response = await postAuthorizedRequest("remarks", {
+    const response = await POST("remarks", {
       message: data.remarks,
       userId: userId,
     });
@@ -72,7 +68,7 @@ const ViewRemarks = ({
   const handleClearRemarks = async (e: any) => {
     e.preventDefault();
     console.log("called");
-    const response = await deleteAuthorizedRequest(`remarks?userId=${userId}`);
+    const response = await DELETE(`remarks?userId=${userId}`);
     SetFetcher(fetchOrNot + 1);
     if (response.error) {
       toast.error(response.error);

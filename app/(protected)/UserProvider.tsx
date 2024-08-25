@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { getAuthorizedRequest } from "@/lib/config/axios";
+import { GET } from "@/lib/config/axios";
 import { IUser, setUser, User } from "@/store/UserSlice";
 import { getCookie, setCookie } from "cookies-next";
 import { useSelector } from "react-redux";
@@ -17,7 +17,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const fetchUserProfile = async () => {
       if (!user) {
         if (getCookie("token")) {
-          const response = await getAuthorizedRequest<IUser>(`user`);
+          const response = await GET<IUser>(`user`);
           if (response.data) {
             dispatch(setUser(response.data));
             setCookie("role", response.data.role);

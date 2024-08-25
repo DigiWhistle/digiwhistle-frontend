@@ -1,4 +1,4 @@
-import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import { Query } from "@/types/admin/queries";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -45,7 +45,7 @@ export const fetchQueriesTableData = createAsyncThunk(
     if (influencer !== undefined) {
       url += `&influencer=${influencer}`;
     }
-    const response = await getAuthorizedRequest<IQueryTable>(url);
+    const response = await GET<IQueryTable>(url);
     if (response.error) {
       throw new Error(response.error);
     }

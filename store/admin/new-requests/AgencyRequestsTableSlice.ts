@@ -1,4 +1,4 @@
-import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import { Agency } from "@/types/admin/new-requests";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -46,7 +46,7 @@ export const fetchAgencyRequestsData = createAsyncThunk(
     if (approved !== undefined) {
       url += `&approved=${approved}`;
     }
-    const response = await getAuthorizedRequest<IAgencyTable>(url);
+    const response = await GET<IAgencyTable>(url);
     if (response.error) {
       throw new Error(response.error);
     }

@@ -9,7 +9,7 @@ import FormTextInput from "@/components/ui/form/form-text-input";
 import { Form } from "@/components/ui/form";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { Pointer } from "lucide-react";
 import FormTextareaInput from "@/components/ui/form/form-textarea-input";
@@ -36,7 +36,7 @@ const InviteInfluencer = () => {
       toast.error("Enter Atleast 1 Email");
       return;
     }
-    const response = await postAuthorizedRequest("influencer/invite", {
+    const response = await POST("influencer/invite", {
       message: data.message,
       subject: data.subject,
       emails: allEmails,

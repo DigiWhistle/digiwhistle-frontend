@@ -13,7 +13,7 @@ import {
   EllipsisVerticalIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { GET, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -33,7 +33,7 @@ const RequestsAction = ({
   const [allRemarks, setRemarks] = useState<any>([]);
   useEffect(() => {
     const fetchRemarks = async () => {
-      const Remarks = await getAuthorizedRequest(`remarks?userId=${userId}`);
+      const Remarks = await GET(`remarks?userId=${userId}`);
       setRemarks(Remarks.data);
     };
     fetchRemarks();
@@ -62,7 +62,7 @@ const RequestsAction = ({
         <button
           type="button"
           onClick={async () => {
-            const response = await postAuthorizedRequest("user/revertAction", {
+            const response = await POST("user/revertAction", {
               userId: userId,
             });
             if (response.error) {
@@ -85,7 +85,7 @@ const RequestsAction = ({
         <button
           type="button"
           onClick={async () => {
-            const response = await postAuthorizedRequest("user/revertAction", {
+            const response = await POST("user/revertAction", {
               userId: userId,
             });
             if (response.error) {

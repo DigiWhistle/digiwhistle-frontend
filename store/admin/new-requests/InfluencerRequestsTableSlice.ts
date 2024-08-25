@@ -1,4 +1,4 @@
-import { getAuthorizedRequest, postAuthorizedRequest } from "@/lib/config/axios";
+import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import {
   Influencer,
@@ -84,7 +84,7 @@ export const fetchInfluencerRequestsData = createAsyncThunk(
       url += `&sortEr=${sortEr}`;
     }
 
-    const response = await getAuthorizedRequest<IInfluencerTable>(url);
+    const response = await GET<IInfluencerTable>(url);
     if (response.error) {
       throw new Error(response.error);
     }

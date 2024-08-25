@@ -11,7 +11,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FormPasswordInput from "@/components/ui/form/form-password-input";
 import FormRadioGroup from "@/components/ui/form/form-radio-group";
 import { Button } from "@/components/ui/button";
-import { patchAuthorizedRequest, postRequest } from "@/lib/config/axios";
+import { PATCH, postRequest } from "@/lib/config/axios";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import {
@@ -33,7 +33,7 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import { mobileNoSchema, termsCheckSchema } from "@/lib/validationSchema";
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import { ProfileControl } from "@/types/admin/ProfileControl";
-import { postAuthorizedRequest } from "@/lib/config/axios";
+import { POST } from "@/lib/config/axios";
 const EditmemberAddSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
@@ -74,10 +74,7 @@ const EditAddMemberForm = ({
       designation: data.designation,
       profilePic: "string",
     };
-    const response = await patchAuthorizedRequest(
-      `employee/profile/${EditData.profileId}`,
-      sendInfo,
-    );
+    const response = await PATCH(`employee/profile/${EditData.profileId}`, sendInfo);
     if (response.error) {
       toast.error(response.error);
     } else {
