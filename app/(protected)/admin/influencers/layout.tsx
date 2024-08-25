@@ -7,6 +7,7 @@ import AddInfluencers from "@/components/admin/layout/AddInfluencers";
 import InviteInfluencer from "@/components/admin/layout/InviteInfluencer";
 import InfluencerFilters from "@/components/admin/new-requests/TableSection/influencer-table/InfluencerFilters";
 import Title from "./title";
+import DataCards from "@/components/admin/new-requests/TableSection/influencer-table/DataCards";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
@@ -42,6 +43,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </CustomDialog>
         </div>
       </div>
+      <DataCards />
       <div>
         <InfluencerFilters />
         {children}

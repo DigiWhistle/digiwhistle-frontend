@@ -14,11 +14,12 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import { clearUser } from "@/store/UserSlice";
+import { clearUser, User, UserRole } from "@/store/UserSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import SignOut from "@/components/brand-report/popupForms/SignOut";
+import { useAppSelector } from "@/lib/config/store";
 const SidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
@@ -63,6 +64,12 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const role = useAppSelector(UserRole);
+
+  const filteredSidebarLinks =
+    role !== "admin"
+      ? SidebarLinks.filter(link => link.keyword !== "profile-control")
+      : SidebarLinks;
 
   const handleLogout = () => {
     deleteCookie("role");
@@ -87,7 +94,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
     >
       <div className="flex  flex-col w-full h-full  justify-between ">
         <div className="flex-col  w-full ">
-          {SidebarLinks.map(item => (
+          {filteredSidebarLinks.map(item => (
             <Link
               key={item.linkText}
               href={item.link}

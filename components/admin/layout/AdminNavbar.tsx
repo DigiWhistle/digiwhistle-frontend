@@ -38,7 +38,7 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
                     src={userInfo?.profile?.profilePic}
                   />
                 ) : (
-                  <div className="flex w-full h-full items-center justify-center">BV</div>
+                  <UserIcon className="text-[#FFF] w-7 h-7" />
                 )}
               </Avatar>
 
@@ -52,7 +52,7 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
               </div>
             </div>
             <Link
-              href={"/admin/profile/1"}
+              href={"/admin/profile"}
               className="flex w-11 h-11 bg-sb-gray-555 rounded-[110px] justify-center items-center"
             >
               <UserIcon className="text-[#FFF] w-7 h-7" />
