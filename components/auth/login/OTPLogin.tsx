@@ -119,6 +119,7 @@ const OTPLogin = () => {
             router.push(USER_DEFAULT_ROUTE);
           }
         }
+        toast.success("Log In Successfully");
         dispatch(setUser(user_data));
         dispatch(setUserProfile(response.data.user.profile));
       } else {
