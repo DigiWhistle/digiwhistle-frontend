@@ -82,11 +82,11 @@ const AddMemberForm = ({ className }: { className?: string }) => {
       toast.error(response.error);
     } else {
       toast.success(response.message);
+      window.location.reload();
     }
-    window.location.reload();
     form.reset();
   };
-  console.log("role", form.getValues("role"));
+  // console.log("role", form.getValues("role"));
   return (
     <div>
       <Form {...form}>

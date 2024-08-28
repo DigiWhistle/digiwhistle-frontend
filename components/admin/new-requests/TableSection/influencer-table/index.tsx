@@ -36,7 +36,6 @@ import {
 import { debounce } from "lodash";
 
 export const INFLUENCER_TABLE_PAGE_LIMIT = 5;
-
 const InfluencerTable = ({ isMainTable }: { isMainTable?: boolean }) => {
   const router = useRouter();
   const currentPath = usePathname();
