@@ -91,7 +91,7 @@ export const createColumns = (
       }
       return (
         <Select
-          disabled={!(role === "admin")}
+          disabled={role === "employee"}
           value={designation}
           onValueChange={async value => {
             const response = await PATCH(`employee/profile/${row.original.profileId}`, {

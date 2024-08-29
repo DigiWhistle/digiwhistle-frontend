@@ -15,6 +15,10 @@ import { useDispatch } from "react-redux";
 import { setUser, setUserProfile } from "@/store/UserSlice";
 import { mobileNoSchema } from "@/lib/validationSchema";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
+import { ADMIN_DEFAULT_ROUTE, USER_DEFAULT_ROUTE } from "@/lib/constants";
+
 const OtpSchema = z.object({
   otp: z.string(),
   mobileNo: mobileNoSchema,
@@ -27,7 +31,7 @@ const OTPLogin = () => {
   const [resendTimer, setResendTimer] = useState(0);
   const [enableResend, setEnableResend] = useState(true);
   const dispatch = useDispatch();
-
+  const router = useRouter();
   useEffect(() => {
     if (!enableResend && resendTimer > 0) {
       setTimeout(() => {
@@ -88,6 +92,34 @@ const OTPLogin = () => {
           isVerified: response.data.user.isVerified,
           isPaused: response.data.user.isPaused,
         };
+
+        if (!user_data.isOnBoarded) {
+          if (user_data.role === "admin" || user_data.role === "employee") {
+            router.push("/sign-up/admin");
+          } else if (
+            user_data.role === "influencer" ||
+            user_data.role === "brand" ||
+            user_data.role === "agency"
+          ) {
+            router.push("/onboarding");
+          }
+        } else if (!user_data.isVerified) {
+          toast.info("Please wait for admin approval");
+        } else {
+          setCookie("token", response.data.token);
+          setCookie("role", user_data.role);
+
+          if (user_data.role === "admin" || user_data.role === "employee") {
+            router.push(ADMIN_DEFAULT_ROUTE);
+          } else if (
+            user_data.role === "influencer" ||
+            user_data.role === "brand" ||
+            user_data.role === "agency"
+          ) {
+            router.push(USER_DEFAULT_ROUTE);
+          }
+        }
+        toast.success("Log In Successfully");
         dispatch(setUser(user_data));
         dispatch(setUserProfile(response.data.user.profile));
       } else {
