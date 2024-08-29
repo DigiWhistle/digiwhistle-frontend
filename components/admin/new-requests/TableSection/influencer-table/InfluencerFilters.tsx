@@ -157,7 +157,7 @@ const FilterTag = ({
 }) => {
   return (
     <div className="flex gap-1 items-center border rounded-full px-4 py-1.5">
-      {value}{" "}
+      {camelToNormal(value)}{" "}
       <XMarkIcon
         className="w-3 h-3 text-tc-ic-black-default cursor-pointer"
         onClick={() => onClickHandler(paramName)}

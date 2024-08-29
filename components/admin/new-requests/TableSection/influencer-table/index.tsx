@@ -49,8 +49,6 @@ const InfluencerTable = ({ isMainTable }: { isMainTable?: boolean }) => {
   const platform =
     (searchParams.get("platform") as InfluencerPlatforms) ?? InfluencerPlatforms.INSTAGRAM;
 
-  let approved = isMainTable;
-
   const name = searchParams.get("name");
   const rejected =
     searchParams.get("rejected") === "true"
@@ -58,8 +56,9 @@ const InfluencerTable = ({ isMainTable }: { isMainTable?: boolean }) => {
       : searchParams.get("rejected") === "false"
         ? false
         : undefined;
-  approved =
-    searchParams.get("approved") === "true"
+  const approved = isMainTable
+    ? true
+    : searchParams.get("approved") === "true"
       ? true
       : searchParams.get("approved") === "false"
         ? false

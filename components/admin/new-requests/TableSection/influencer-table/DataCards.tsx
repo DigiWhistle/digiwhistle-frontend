@@ -1,6 +1,8 @@
 "use client";
 import { DataCard } from "@/components/ui/DataCard";
 import { GET } from "@/lib/config/axios";
+import { useAppDispatch, useAppSelector } from "@/lib/config/store";
+import { InfluencerRequestsTableData } from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
 import { TDataCard } from "@/types/admin/new-requests";
 import {
   ExclamationCircleIcon,
@@ -13,6 +15,7 @@ import React, { useEffect, useState } from "react";
 
 const DataCards = () => {
   const [data, setData] = useState<TDataCard[]>([]);
+  const tableData = useAppSelector(InfluencerRequestsTableData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +34,7 @@ const DataCards = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [tableData?.data]);
 
   return (
     <div className="flex gap-5 items-center">

@@ -29,8 +29,8 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
             </button>
           </div>
 
-          <div className=" flex  justify-between items-center space-x-6">
-            <div className="flex items-center space-x-2">
+          <Link href={"/admin/profile"}>
+            <div className="flex items-center space-x-3 mr-3">
               <Avatar className=" flex border-2  border-white w-11 h-11 bg-slate-100 rounded-full ">
                 {userInfo?.profile?.profilePic ? (
                   <AvatarImage
@@ -45,19 +45,17 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
               <div className="flex-col space-y-1">
                 <div className="text-body-lg-medium text-white">
                   {userInfo?.profile && "firstName" in userInfo.profile
-                    ? userInfo.profile.firstName
+                    ? `${userInfo.profile.firstName} ${userInfo.profile.lastName}`
                     : ""}
                 </div>
-                <div className="text-body-sm-light text-white">{userInfo?.role}</div>
+                <div className="text-body-sm-light text-white">
+                  {userInfo?.profile?.designation ?? userInfo?.role}
+                </div>
               </div>
             </div>
-            <Link
-              href={"/admin/profile"}
-              className="flex w-11 h-11 bg-sb-gray-555 rounded-[110px] justify-center items-center"
-            >
-              <UserIcon className="text-[#FFF] w-7 h-7" />
-            </Link>
-          </div>
+
+            {/* <UserIcon className="text-[#FFF] w-7 h-7" /> */}
+          </Link>
         </div>
       </nav>
     </>
