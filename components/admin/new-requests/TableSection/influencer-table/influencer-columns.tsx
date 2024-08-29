@@ -120,7 +120,7 @@ export const createColumns = (
       {
         accessorKey: "engagementRate",
         header: () => (
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-1 ">
             Engagement Rate (%){" "}
             <button onClick={() => handleSortEr(true)}>
               <ChevronUpDownIcon className="w-6 h-6" />
@@ -130,8 +130,11 @@ export const createColumns = (
         cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
           const label = row.original.engagementRate?.label;
           return (
-            <div className="flex items-center justify-center gap-3">
-              {row.original.engagementRate?.value}%
+            <div className="flex gap-3">
+              {!Number.isInteger(row.original.engagementRate?.value)
+                ? row.original.engagementRate?.value.toFixed(2)
+                : row.original.engagementRate?.value}
+              %
               <div
                 className={cn(
                   label === "High"
@@ -163,6 +166,13 @@ export const createColumns = (
       {
         accessorKey: "percentageFakeFollowers",
         header: "Fake Followers (%)",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          return `${
+            !Number.isInteger(row.original.percentageFakeFollowers)
+              ? row.original?.percentageFakeFollowers?.toFixed(2)
+              : row.original?.percentageFakeFollowers
+          } %`;
+        },
       },
     ];
 
