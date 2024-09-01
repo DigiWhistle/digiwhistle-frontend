@@ -203,7 +203,10 @@ const ProfileInformation = () => {
               onClick={() => {
                 setUpload(!upload);
               }}
-              className="cursor-pointer flex pl-2 pb-2 pt-1.5 pr-1.5 items-center justify-center border-2 bg-white rounded-full shadow-lg absolute right-2 bottom-0"
+              className={cn(
+                "cursor-pointer flex px-2 py-2  items-center justify-center border-2 bg-white rounded-full shadow-lg absolute right-2 bottom-0",
+                !upload ? "pt-1.5 pr-1.5" : "px-1.5 py-1.5",
+              )}
             >
               {upload ? (
                 <XMarkIcon className="text-[#0F172A] w-5 h-5" />
