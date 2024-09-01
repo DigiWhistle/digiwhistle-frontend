@@ -37,7 +37,7 @@ const RequestsAction = ({
       setRemarks(Remarks.data);
     };
     fetchRemarks();
-  }, []);
+  }, [isApproved, userId]);
 
   const LatestRemark = () => {
     return (
@@ -158,13 +158,7 @@ const RequestsAction = ({
             </div>
           }
         >
-          <ViewRemarks
-            updateData={updateData}
-            updateid={profileId}
-            name={name}
-            url=""
-            userId={userId}
-          />
+          <ViewRemarks userId={userId} />
         </CustomDialog>
       </DropdownMenuContent>
     </DropdownMenu>

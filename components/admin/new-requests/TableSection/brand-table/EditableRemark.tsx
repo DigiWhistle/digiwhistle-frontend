@@ -116,7 +116,7 @@ const EditableRemark = ({
       <div className="flex items-end">
         <div className="flex w-full gap-3 items-center">
           <Avatar>
-            <AvatarImage src={item.profileUrl} />
+            <AvatarImage src={item.profilePic} />
             <AvatarFallback>
               <UserIcon className="w-5 h-5" />
             </AvatarFallback>

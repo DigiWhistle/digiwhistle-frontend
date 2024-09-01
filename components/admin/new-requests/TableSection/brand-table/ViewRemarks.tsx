@@ -21,24 +21,14 @@ const RemarksFormSchema = z.object({
     .max(400, "characters should be less than 400")
     .refine(n => n.length > 0, "Please Enter Something"),
 });
-const ViewRemarks = ({
-  userId,
-  name,
-  url,
-  updateData,
-  updateid,
-}: {
-  userId: string;
-  name: string;
-  url?: string;
-  updateData?: any;
-  updateid?: string;
-}) => {
+const ViewRemarks = ({ userId }: { userId: string }) => {
   const userInfo = useSelector(User);
 
   const [mainEditor, SetEditorMode] = useState<boolean>(true);
   const [fetchOrNot, SetFetcher] = useState<number>(0);
   const [allRemarks, setRemarks] = useState<any>([]);
+  const user = useSelector(User);
+
   useEffect(() => {
     const fetchRemarks = async () => {
       const Remarks = await GET(`remarks?userId=${userId}`);
@@ -95,7 +85,7 @@ const ViewRemarks = ({
 
       <div className="flex items-start justify-start gap-3 w-full border-y-2 pt-5 pb-5">
         <Avatar>
-          <AvatarImage src={url} />
+          <AvatarImage src={user?.profile?.profilePic ?? ""} />
           <AvatarFallback>
             <UserIcon className="w-5 h-5" />
           </AvatarFallback>
