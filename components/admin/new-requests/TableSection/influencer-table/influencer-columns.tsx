@@ -418,13 +418,7 @@ export const createColumns = (
                     </div>
                   }
                 >
-                  <ViewRemarks
-                    updateData={updateData}
-                    updateid={profileId}
-                    name={name}
-                    url=""
-                    userId={userId}
-                  />
+                  <ViewRemarks userId={userId} />
                 </CustomDialog>
               </DropdownMenuContent>
             </DropdownMenu>

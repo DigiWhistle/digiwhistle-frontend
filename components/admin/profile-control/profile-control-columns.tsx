@@ -286,13 +286,7 @@ export const createColumns = (
                       </div>
                     }
                   >
-                    <ViewRemarks
-                      // updateData={updateData}
-                      updateid={row.original.id}
-                      name={row.getValue("firstName")}
-                      url=""
-                      userId={row.original.userId}
-                    />
+                    <ViewRemarks userId={row.original.userId} />
                   </CustomDialog>
                 </DropdownMenuContent>
               </DropdownMenu>
