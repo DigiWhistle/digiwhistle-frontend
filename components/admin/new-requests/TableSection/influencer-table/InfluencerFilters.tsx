@@ -165,6 +165,13 @@ const FilterTag = ({
     </div>
   );
 };
+
+// @ts-ignore
+export const influencerPlatforms = Object.values(InfluencerPlatforms).map(platform => ({
+  label: platform.charAt(0).toUpperCase() + platform.slice(1),
+  value: platform,
+}));
+
 const InfluencerFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
@@ -226,11 +233,6 @@ const InfluencerFilters = () => {
     debouncedFetchData(query);
   };
 
-  // @ts-ignore
-  const influencerPlatforms = Object.values(InfluencerPlatforms).map(platform => ({
-    label: platform.charAt(0).toUpperCase() + platform.slice(1),
-    value: platform,
-  }));
   return (
     <div className="w-full flex items-center justify-between gap-4">
       <div className=" flex  items-center gap-4">

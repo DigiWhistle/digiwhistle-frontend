@@ -6,10 +6,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { ClassValue } from "clsx";
-import { Control, FieldValues, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import {
   Select,
   SelectTrigger,
@@ -17,8 +15,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import Link from "next/link";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 interface IFormSelectInputProps {
   formName: string;
   label: string;
@@ -47,6 +43,7 @@ const FormSelectInput = ({
   selectItems,
 }: IFormSelectInputProps) => {
   const { control } = useFormContext();
+
   const formattedSelectItems = selectItems.map(item => {
     if (typeof item === "string") {
       return {
