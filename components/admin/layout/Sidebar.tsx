@@ -10,6 +10,7 @@ import {
   QuestionMarkCircleIcon,
   IdentificationIcon,
   MagnifyingGlassIcon,
+  MegaphoneIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,6 +34,12 @@ const SidebarLinks = [
     link: "/admin/new-requests/influencer/1",
     linkText: "New requests",
     keyword: "new-requests",
+  },
+  {
+    icon: <MegaphoneIcon className="text-tc-ic-black-default" />,
+    link: "/admin/campaigns/1",
+    linkText: "All campaigns",
+    keyword: "campaigns",
   },
   {
     icon: <QuestionMarkCircleIcon className="text-tc-ic-black-default" />,

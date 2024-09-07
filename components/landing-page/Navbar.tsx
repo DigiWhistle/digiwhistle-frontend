@@ -71,11 +71,7 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden md:flex justify-between items-center space-x-3">
-            <Button
-              variant={"secondary"}
-              onClick={() => handleScroll("#contact-us")}
-              className="text-white"
-            >
+            <Button variant={"secondary-dark"} onClick={() => handleScroll("#contact-us")}>
               Contact Us
             </Button>
             <Link href={"/login"}>

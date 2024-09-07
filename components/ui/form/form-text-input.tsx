@@ -69,7 +69,7 @@ const FormTextInput = ({
                     value={field.value || defaultValue || ""}
                     {...inputProps}
                     className={cn(
-                      " border-none placeholder:text-muted-foreground bg-white ",
+                      " border-none placeholder:text-muted-foreground bg-white",
                       leftIcon ? "ps-10" : null,
                       rightIcon ? "pe-10" : null,
                       inputCN,

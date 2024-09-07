@@ -472,13 +472,13 @@ const config = {
           black: "rgb(var(--black-201))",
           yellow: "rgb(var(--yellow-101))",
           gray: {
-            553: "rgb(var(--gray-553))",
-            554: "rgb(var(--gray-554))",
-            555: "rgb(var(--gray-555))",
-            556: "rgb(var(--gray-556))",
-            557: "rgb(var(--gray-557))",
-            558: "rgb(var(--gray-558))",
-            559: "rgb(var(--gray-559))",
+            "553": "rgb(var(--gray-553))",
+            "554": "rgb(var(--gray-554))",
+            "555": "rgb(var(--gray-555))",
+            "556": "rgb(var(--gray-556))",
+            "557": "rgb(var(--gray-557))",
+            "558": "rgb(var(--gray-558))",
+            "559": "rgb(var(--gray-559))",
           },
           "blue-580": "rgb(var(--blue-580))",
         },
@@ -511,7 +511,6 @@ const config = {
           "8": "rgb(var(--black-201)/0.08)",
           "0": "rgb(var(--black-201)/0)",
         },
-
         "alert-state": "rgb(var(--alert)/0.6)",
         "focus-blue-shadow": "rgb(var(--blue-580)/0.20)",
         "focus-yellow-shadow": "rgb(var(--yellow-101)/0.20)",
@@ -573,12 +572,20 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
         moveHorizontal: {
           "0%": {
@@ -615,11 +622,11 @@ const config = {
         },
       },
       scrollbar: {
-        width: '4px', // or any width you need
+        width: "4px",
       },
     },
   },
-  plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar'),],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
 } satisfies Config;
 
 export default config;

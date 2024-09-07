@@ -27,10 +27,10 @@ interface IFormSelectInputProps {
   disabled?: boolean;
   defaultValue?: string;
   className?: string;
-  inputCN?: string;
+  triggerCN?: string;
   rightIcon?: React.ReactNode;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  selectItems: string[];
+  selectItems: Array<{ label: string | React.JSX.Element; value: string } | string>;
 }
 
 const FormSelectInput = ({
@@ -41,12 +41,21 @@ const FormSelectInput = ({
   disabled = false,
   defaultValue,
   className,
-  inputCN,
+  triggerCN,
   rightIcon,
   inputProps,
   selectItems,
 }: IFormSelectInputProps) => {
   const { control } = useFormContext();
+  const formattedSelectItems = selectItems.map(item => {
+    if (typeof item === "string") {
+      return {
+        label: item.charAt(0).toUpperCase() + item.slice(1),
+        value: item,
+      };
+    }
+    return item;
+  });
   return (
     <FormField
       control={control}
@@ -61,17 +70,18 @@ const FormSelectInput = ({
             {...field}
             disabled={disabled}
             onValueChange={field.onChange}
-            defaultValue={field.value}
+            value={field.value}
+            defaultValue={defaultValue}
           >
             <FormControl>
-              <SelectTrigger className=" rounded-full  ">
-                <SelectValue className="flex w-full" placeholder={placeholder} />
+              <SelectTrigger className={cn("flex gap-1 rounded-full ", triggerCN)}>
+                <SelectValue className="flex w-full gap-2" placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {selectItems.map(item => (
-                <SelectItem key={item} className="hover:text-black" value={item}>
-                  {item}
+              {formattedSelectItems.map(item => (
+                <SelectItem key={item.value} className="hover:text-black" value={item.value}>
+                  {item.label}
                 </SelectItem>
               ))}
             </SelectContent>

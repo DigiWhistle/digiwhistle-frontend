@@ -7,12 +7,12 @@ import AddInfluencers from "@/components/admin/layout/AddInfluencers";
 import InviteInfluencer from "@/components/admin/layout/InviteInfluencer";
 import { GET } from "@/lib/config/axios";
 import DataCards from "@/components/admin/new-requests/DataCards";
-import Title from "../influencers/title";
+import AdminTitle from "../../../../components/admin/layout/title";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
       <div className="flex justify-between items-start">
-        <Title />
+        <AdminTitle description="Here’s your Admin dashboard!" />
         <div className="flex space-x-3">
           <CustomDialog
             className="w-[700px]"
