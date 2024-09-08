@@ -37,7 +37,7 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
 
             <AccordionContent className="flex flex-col-reverse gap-5">
               {form.getValues("participants").length > 0 &&
-                form.getValues("participants").map((participant, index) => {
+                form.watch("participants").map((participant, index) => {
                   if (participant.type === "agency") {
                     return <AgencyForm key={index} index={index} />;
                   } else {

@@ -154,7 +154,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
             ))}
         </div>
       </div>
-      <div className="flex gap-2 justify-end bg-bb-primary-default-gray p-4 rounded-t-2xl">
+      <div className="flex gap-2 justify-end bg-bb-primary-default-gray p-4 rounded-b-2xl">
         <Button
           className="flex items-center gap-2 bg-alert text-white-301"
           disabled={selectedItems.length === 0}

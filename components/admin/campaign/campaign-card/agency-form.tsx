@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import DeliverableForm from "./deliverable-form";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
+import { getNewDeliverable } from "./utils";
 
 export const PaymentStatusOptions = [
   {
@@ -30,20 +31,6 @@ export const PaymentStatusOptions = [
     ),
   },
 ];
-
-const getNewDeliverable = () => {
-  const newDeliverable = {
-    id: uuidv4(),
-    title: "",
-    platform: "" as "",
-    campaignStatus: "Not Live" as "Live" | "Not Live",
-    deliverableLink: "",
-    er: 0,
-    cpv: 0,
-  };
-
-  return newDeliverable;
-};
 
 const AgencyForm = ({ index }: { index: number }) => {
   const [selectedItems, setSelectedItems] = useState<
@@ -229,7 +216,7 @@ const AgencyForm = ({ index }: { index: number }) => {
             ))}
         </div>
       </div>
-      <div className="flex gap-2 justify-end bg-bb-primary-default-gray p-4 rounded-t-2xl">
+      <div className="flex gap-2 justify-end bg-bb-primary-default-gray p-4 rounded-b-2xl">
         <Button
           className="flex items-center gap-2 bg-alert text-white-301"
           disabled={selectedItems.length === 0}

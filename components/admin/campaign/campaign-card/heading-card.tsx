@@ -1,14 +1,28 @@
 import { AccordionTrigger } from "@/components/ui/accordion";
 import React from "react";
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { CampaignSchema } from "../schema";
 import { z } from "zod";
 import { TCampaignForm } from ".";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createNewParticipant } from "./utils";
 
 const HeadingCard = () => {
   const form = useFormContext<TCampaignForm>();
+
+  const { remove, append } = useFieldArray({
+    control: form.control,
+    name: `participants`,
+  });
+
   return (
     <div>
       <div className="w-full flex gap-4 items-center justify-between text-tc-body-grey font-medium">
@@ -36,17 +50,49 @@ const HeadingCard = () => {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="w-[1px] h-6 bg-bc-grey"></div>
-          <p>Comm. Brand: {form.getValues("commercial")}</p>
-          <div className="w-[1px] h-6 bg-bc-grey"></div>
-          <p>{form.getValues("invoice")}</p>
-          <div className="w-[1px] h-6 bg-bc-grey"></div>
-          <p>
-            {form.getValues("incentiveWinner")}
-            {/* {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`} */}
-          </p>
+          {form.getValues("commercial") && (
+            <>
+              <div className="w-[1px] h-6 bg-bc-grey"></div>
+              <p>Comm. Brand: {form.getValues("commercial")}</p>
+            </>
+          )}
+          {form.getValues("invoice") && (
+            <>
+              <div className="w-[1px] h-6 bg-bc-grey"></div>
+              <p>{form.getValues("invoice")}</p>
+            </>
+          )}
+          {form.getValues("incentiveWinner") && (
+            <>
+              <div className="w-[1px] h-6 bg-bc-grey"></div>
+              <p>
+                {form.getValues("incentiveWinner")}
+                {/* {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`} */}
+              </p>
+            </>
+          )}
         </div>
-        <AccordionTrigger svgCN="w-6 h-6 text-[#0F172A]"></AccordionTrigger>
+        <div className="flex gap-4 items-center">
+          <Select
+            value=""
+            onValueChange={(value: "influencer" | "agency") => {
+              append(createNewParticipant(value));
+            }}
+          >
+            <SelectTrigger
+              className="flex gap-2 items-center bg-yellow-101 text-black-201 w-fit"
+              iconClassName="w-6 h-6"
+            >
+              <SelectValue placeholder="Add" />
+              <div className="h-10 w-px bg-white-301 ml-6"></div>
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectItem value="influencer">Add influencer</SelectItem>
+              <SelectItem value="agency">Add agency</SelectItem>
+            </SelectContent>
+          </Select>
+          <AccordionTrigger svgCN="w-6 h-6 text-[#0F172A]"></AccordionTrigger>
+        </div>
       </div>
     </div>
   );
