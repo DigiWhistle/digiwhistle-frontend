@@ -1,7 +1,8 @@
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
+
 export const campaigns = [
   {
-    id: uuid(),
+    id: uuidv4(),
     name: "Summer Campaign 2024",
     code: "SC2024",
     invoice: "NJKDC78432",
@@ -13,7 +14,7 @@ export const campaigns = [
     status: "active",
     participants: [
       {
-        id: uuid(),
+        id: uuidv4(),
         type: "influencer",
         name: "John Doe",
         exclusive: true,
@@ -26,7 +27,7 @@ export const campaigns = [
         invoice: null,
         deliverables: [
           {
-            id: uuid(),
+            id: uuidv4(),
             title: "Instagram Post",
             platform: "instagram",
             campaignStatus: "Live",
@@ -35,7 +36,7 @@ export const campaigns = [
             cpv: 3.4,
           },
           {
-            id: uuid(),
+            id: uuidv4(),
 
             title: "YouTube Video",
             platform: "youtube",
@@ -47,7 +48,7 @@ export const campaigns = [
         ],
       },
       {
-        id: uuid(),
+        id: uuidv4(),
         type: "agency",
         name: "AgencyX",
         commercialBrand: 20000,
@@ -59,11 +60,11 @@ export const campaigns = [
         invoice: "INV-1234",
         influencer: [
           {
-            id: uuid(),
+            id: uuidv4(),
             name: "Jane Smith",
             deliverables: [
               {
-                id: uuid(),
+                id: uuidv4(),
                 title: "Twitter Post",
                 platform: "x",
                 campaignStatus: "Live",
@@ -72,7 +73,7 @@ export const campaigns = [
                 cpv: 2.8,
               },
               {
-                id: uuid(),
+                id: uuidv4(),
                 title: "TikTok Video",
                 platform: "youtube",
                 campaignStatus: "Not Live",

@@ -65,3 +65,12 @@ export const CampaignSchema = z.object({
 });
 
 export const CampaignsSchema = z.array(CampaignSchema);
+
+export type Deliverable = z.infer<typeof DeliverableSchema>;
+export type Influencer = z.infer<typeof InfluencerSchema>;
+export type ParticipantBase = z.infer<typeof ParticipantBaseSchema>;
+export type InfluencerParticipant = z.infer<typeof InfluencerParticipantSchema>;
+export type AgencyParticipant = z.infer<typeof AgencyParticipantSchema>;
+export type Participant = z.infer<typeof ParticipantSchema>;
+export type Campaign = z.infer<typeof CampaignSchema>;
+export type Campaigns = z.infer<typeof CampaignsSchema>;

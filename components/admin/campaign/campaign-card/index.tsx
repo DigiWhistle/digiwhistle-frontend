@@ -19,6 +19,8 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
     defaultValues: data,
   });
 
+  console.log(form.getValues());
+
   const handleAddCampaign = async (data: TCampaignForm) => {};
   return (
     <Form {...form}>

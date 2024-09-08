@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { InformationCircleIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Checkbox } from "@/components/ui/checkbox";
 import DeliverableForm from "./deliverable-form";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 
 export const PaymentStatusOptions = [
@@ -33,7 +33,7 @@ export const PaymentStatusOptions = [
 
 const getNewDeliverable = () => {
   const newDeliverable = {
-    id: uuid(),
+    id: uuidv4(),
     title: "",
     platform: "" as "",
     campaignStatus: "Not Live" as "Live" | "Not Live",
@@ -242,7 +242,7 @@ const AgencyForm = ({ index }: { index: number }) => {
         </Button>
         <Button
           type="button"
-          onClick={() => append({ id: uuid(), name: "", deliverables: [getNewDeliverable()] })}
+          onClick={() => append({ id: uuidv4(), name: "", deliverables: [getNewDeliverable()] })}
         >
           Add Influencer
         </Button>

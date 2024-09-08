@@ -7,6 +7,7 @@ import { queriesTableReducer } from "@/store/admin/queries/QueriesTableSlice";
 import { agencyRequestsTableReducer } from "@/store/admin/new-requests/AgencyRequestsTableSlice";
 import { influencerRequestsTableReducer } from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
 import { ProfileControlTableReducer } from "@/store/admin/profile-control/ProfileControlSlice";
+import { campaignsTableReducer } from "@/store/admin/campaigns/CampaignTableSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     queriesTable: queriesTableReducer,
     profileTable: ProfileControlTableReducer,
     influencerRequestsTable: influencerRequestsTableReducer,
+    campaignsTable: campaignsTableReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

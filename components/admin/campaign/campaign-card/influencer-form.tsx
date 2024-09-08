@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import DeliverableForm from "./deliverable-form";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { PaymentStatusOptions } from "./agency-form";
 import { Switch } from "@/components/ui/switch";
@@ -15,7 +15,7 @@ import { FormControl, FormField, FormItem } from "@/components/ui/form";
 
 const getNewDeliverable = () => {
   const newDeliverable = {
-    id: uuid(),
+    id: uuidv4(),
     title: "",
     platform: "" as "",
     campaignStatus: "Not Live" as "Live" | "Not Live",
@@ -43,9 +43,13 @@ const InfluencerForm = ({ index }: { index: number }) => {
 
   const removeItems = () => {
     selectedItems.forEach(item => {
-      console.log("Before remove:", form.getValues(`participants.${index}.influencer`));
-      remove(item.id as number);
-      console.log("After remove:", form.getValues(`participants.${index}.influencer`));
+      const participant = form.getValues(`participants.${index}`);
+      if ("deliverables" in participant) {
+        participant.deliverables = participant.deliverables.filter(
+          (deliverable: { id: number | string }) => deliverable.id !== item.id,
+        );
+        form.setValue(`participants.${index}`, participant);
+      }
     });
     setSelectedItems([]);
   };
