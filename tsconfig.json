@@ -30,9 +30,5 @@
     ".next/types/**/*.ts",
     "node_modules/@tanstack/react-table/dist/index.d.ts"
   ],
-  // "exclude": ["node_modules"]
-  // "exclude": [
-  //   "node_modules"
-  // ]
   "exclude": ["node_modules"]
 }
