@@ -83,7 +83,10 @@ const AgencyForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
   return (
-    <div className="border rounded-2xl  flex flex-col gap-3 ">
+    <div
+      data-aos="fade-down"
+      className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000"
+    >
       <div className="flex gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}

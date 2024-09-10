@@ -24,7 +24,7 @@ export const createNewParticipant = (
       ...baseData,
       type: "influencer",
       exclusive: false,
-      deliverables: [],
+      deliverables: [getNewDeliverable()],
       ...additionalData,
     } as InfluencerParticipant;
   } else if (type === "agency") {
