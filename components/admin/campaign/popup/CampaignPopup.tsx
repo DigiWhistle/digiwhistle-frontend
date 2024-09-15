@@ -19,7 +19,7 @@ import { SearchSelectCopy } from "@/components/ui/form/SearchSelectcopy";
 import { useState } from "react";
 const Options = [
   "English",
-  "English",
+  "Punjabi",
   "Chinese",
   "English",
   "English",

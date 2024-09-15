@@ -87,7 +87,7 @@ const AgencyForm = ({ index }: { index: number }) => {
       data-aos="fade-down"
       className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000"
     >
-      <div className="flex gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
+      <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
           label="Agency Name"
@@ -101,24 +101,28 @@ const AgencyForm = ({ index }: { index: number }) => {
             label="Comm-brand"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.commercialCreator`}
             label="Comm-creator"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.toBeGiven`}
             label="To be given"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.margin`}
             label="Margin"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">

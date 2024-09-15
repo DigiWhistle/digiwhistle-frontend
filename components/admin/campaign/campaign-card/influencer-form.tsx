@@ -57,7 +57,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
   const accessorString = `participants.${index}`;
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 ">
-      <div className="flex items-end gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
+      <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
           label="Influencer Name"
@@ -65,14 +65,14 @@ const InfluencerForm = ({ index }: { index: number }) => {
           className="max-w-72"
           inputCN="h-8"
         />
-        <div className="w-px h-8 bg-gray-300 mb-1"></div>
+        <div className="w-px h-8 bg-gray-300 mt-6"></div>
         <FormField
           control={form.control}
           name={`participants.${index}.exclusive`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center space-x-2 mb-2 mr-3">
+                <div className="flex items-center space-x-2 mt-7 mr-3">
                   <Switch id="exclusive" checked={field.value} onCheckedChange={field.onChange} />
                   <Label htmlFor="exclusive">Exclusive</Label>
                 </div>
@@ -86,24 +86,28 @@ const InfluencerForm = ({ index }: { index: number }) => {
             label="Comm-brand"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.commercialCreator`}
             label="Comm-creator"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.toBeGiven`}
             label="To be given"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.margin`}
             label="Margin"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">

@@ -10,6 +10,9 @@ import { CampaignSchema } from "../schema";
 import HeadingCard from "./heading-card";
 import AgencyForm from "./agency-form";
 import InfluencerForm from "./influencer-form";
+import { Button } from "@/components/ui/button";
+import { PUT } from "@/lib/config/axios";
+import { toast } from "sonner";
 
 export type TCampaignForm = z.infer<typeof CampaignSchema>;
 
@@ -19,14 +22,25 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
     defaultValues: data,
   });
 
-  console.log(form.getValues());
+  const handleAddCampaign = async (data: TCampaignForm) => {
+    console.log(data);
+    const response = await PUT("campaign", data);
 
-  const handleAddCampaign = async (data: TCampaignForm) => {};
+    if (response.error) {
+      toast.error(response.error);
+    }
+
+    if (response.message) {
+      toast.success(response.message);
+    }
+  };
   return (
     <Form {...form}>
       <form
         className="flex flex-col gap-6 mt-4 items-center w-full"
-        onSubmit={form.handleSubmit(handleAddCampaign)}
+        onSubmit={form.handleSubmit(handleAddCampaign, errors => {
+          console.error("Form submission errors:", errors);
+        })}
       >
         <Accordion defaultValue="item-1" type="single" collapsible className="w-full">
           <AccordionItem
@@ -36,6 +50,10 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
             <HeadingCard />
 
             <AccordionContent className="flex flex-col-reverse gap-5">
+              <Button type="submit" className="self-end">
+                Save Changes
+              </Button>
+
               {form.getValues("participants").length > 0 &&
                 form.watch("participants").map((participant, index) => {
                   if (participant.type === "agency") {

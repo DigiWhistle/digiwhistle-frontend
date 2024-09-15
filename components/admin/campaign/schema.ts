@@ -1,37 +1,42 @@
 import { InfluencerPlatforms } from "@/types/admin/influencer";
 import { z } from "zod";
 
-const DeliverableSchema = z.object({
-  id: z.string().uuid(),
-  title: z.string(),
-  platform: z.enum([
-    InfluencerPlatforms.INSTAGRAM,
-    InfluencerPlatforms.YOUTUBE,
-    InfluencerPlatforms.X,
-    "",
-  ]),
-  campaignStatus: z.enum(["Live", "Not Live"]),
-  deliverableLink: z.string().url(),
-  er: z.number(),
-  cpv: z.number(),
-});
+const DeliverableSchema = z
+  .object({
+    id: z.string().uuid(),
+    title: z.string({ message: "required" }),
+    platform: z.enum([
+      InfluencerPlatforms.INSTAGRAM,
+      InfluencerPlatforms.YOUTUBE,
+      InfluencerPlatforms.X,
+      "",
+    ]),
+    campaignStatus: z.enum(["Live", "Not Live"]),
+    deliverableLink: z.string().url().nullable().optional(),
+    er: z.number({ message: "required" }),
+    cpv: z.number({ message: "required" }),
+  })
+  .refine(data => data.campaignStatus !== "Live" || data.deliverableLink !== null, {
+    message: "required",
+    path: ["deliverableLink"],
+  });
 
 const InfluencerSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
+  name: z.string({ message: "required" }),
   deliverables: z.array(DeliverableSchema),
 });
 
 const ParticipantBaseSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
-  commercialBrand: z.number(),
-  commercialCreator: z.number(),
-  toBeGiven: z.number(),
-  margin: z.number(),
+  name: z.string({ message: "required" }),
+  commercialBrand: z.number({ message: "required" }),
+  commercialCreator: z.number({ message: "required" }),
+  toBeGiven: z.number({ message: "required" }),
+  margin: z.number({ message: "required" }),
   paymentStatus: z.enum(["Pending", "All Paid"]),
   invoiceStatus: z.enum(["Not Generated", "Generated"]),
-  invoice: z.string(),
+  invoice: z.string().nullable(),
 });
 
 const InfluencerParticipantSchema = ParticipantBaseSchema.extend({
@@ -52,15 +57,15 @@ const ParticipantSchema = z.discriminatedUnion("type", [
 
 export const CampaignSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
+  name: z.string({ message: "required" }),
   code: z.string(),
   brandName: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.string(),
+  endDate: z.string(),
   commercial: z.number(),
   incentiveWinner: z.string(),
-  invoice: z.string(),
-  status: z.enum(["active", "inactive"]),
+  invoice: z.string().nullable().optional(),
+  // status: z.enum(["active", "inactive"]).nullable().optional(),
   participants: z.array(ParticipantSchema),
 });
 
