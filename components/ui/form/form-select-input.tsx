@@ -59,7 +59,7 @@ const FormSelectInput = ({
       name={formName}
       render={({ field }) => (
         <FormItem className={cn("w-full  flex flex-col ", className)}>
-          <FormLabel>
+          <FormLabel className="text-sm font-medium text-black ">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
 

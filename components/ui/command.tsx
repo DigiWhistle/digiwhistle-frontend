@@ -15,7 +15,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover   text-popover-foreground",
       className,
     )}
     {...props}
@@ -41,8 +41,7 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+  <div className="flex items-center w-full   px-3" cmdk-input-wrapper="">
     <CommandPrimitive.Input
       ref={ref}
       onKeyDown={e => {
@@ -51,7 +50,7 @@ const CommandInput = React.forwardRef<
         }
       }}
       className={cn(
-        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-11 w-full bg-transparent py-4 text-sm outline-none placeholder:text-tc-body-grey disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
@@ -67,7 +66,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    className={cn("max-h-[200px] overflow-y-auto overflow-x-hidden", className)}
     {...props}
   />
 ));
