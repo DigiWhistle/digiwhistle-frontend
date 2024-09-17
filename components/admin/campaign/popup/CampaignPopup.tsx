@@ -20,7 +20,8 @@ import { SearchSelect } from "@/components/ui/form/SearchSelect";
 import { SearchSelectCopy } from "@/components/ui/form/SearchSelectcopy";
 import { useState } from "react";
 import FormTextareaInput from "@/components/ui/form/form-textarea-input";
-
+import { GET } from "@/lib/config/axios";
+import { useEffect } from "react";
 const Options = ["English", "Chinese", "Hindi", "Punjabi", "Thai", "Gujarati", "Marathi"];
 export const PaymentStatusOptions = [
   {
@@ -40,6 +41,7 @@ export const PaymentStatusOptions = [
     ),
   },
 ];
+
 const CampaignSchema = z.object({
   campaignName: z.string(),
   campaignCode: z.string(),
@@ -60,11 +62,19 @@ const CampaignSchema = z.object({
   additionalDetails: z.string(),
   campaignEmail: z.string().optional() || null,
 });
-const CampaignPopup = () => {
+const CampaignPopup = ({ mode }: { mode: "Create campaign" | "Edit campaign" }) => {
   const [allEmails, setEmails] = useState<any>([]);
   const form = useForm<z.infer<typeof CampaignSchema>>({
     resolver: zodResolver(CampaignSchema),
   });
+  useEffect(() => {
+    if (mode === "Edit campaign") {
+      const updateFunction = async () => {
+        const response: any = await GET(``);
+        setEmails(response.email);
+      };
+    }
+  }, []);
   const setterfunction = (formname: any, Option: any) => {
     if (formname === "campaignEmail") {
       const emailExists = allEmails.some((email: any) => email.email === Option.email);

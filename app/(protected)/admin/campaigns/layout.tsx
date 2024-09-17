@@ -22,7 +22,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
             }
           >
             {/* <AddInfluencers /> */}
-            <CampaignPopup />
+            <CampaignPopup mode="Create campaign" />
           </CustomDialog>
         </div>
       </div>

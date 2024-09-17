@@ -131,7 +131,7 @@ export function SearchSelect({
                   className={cn("flex h-10 w-full", leftIcon ? "ps-8" : null)}
                 />
               </div>
-              <CommandList className="absolute mt-11 bg-white w-full max-h-32">
+              <CommandList className="absolute mt-11 bg-white w-full max-h-32 z-50">
                 {open &&
                   Options.map((Option: any, index: number) => (
                     <CommandItem
