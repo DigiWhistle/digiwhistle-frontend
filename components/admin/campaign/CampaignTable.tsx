@@ -64,11 +64,21 @@ const CampaignTable = () => {
     prevName.current = name;
   }, [dispatch, currentPath, name, type, payment, startTime, endTime, debouncedFetch]);
 
+  const CampaignTable =
+    data.data.length > 0 ? (
+      data.data.map(campaign => <CampaignCard data={campaign as any} key={campaign.code} />)
+    ) : (
+      <div className="w-full h-44 flex justify-center items-center">No campaigns found</div>
+    );
   return (
     <div>
-      {data.data.map(campaign => (
-        <CampaignCard data={campaign as any} key={campaign.code} />
-      ))}
+      {loading ? (
+        <div className="flex w-full items-center h-48 justify-center">
+          <span className="loading loading-spinner loading-sm "></span>
+        </div>
+      ) : (
+        CampaignTable
+      )}
     </div>
   );
 };
