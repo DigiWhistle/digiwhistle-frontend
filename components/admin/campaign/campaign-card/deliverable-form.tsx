@@ -52,7 +52,7 @@ const DeliverableForm = ({
 
   if (!deliverable) return null;
   return (
-    <div key={index} className="flex items-center gap-3">
+    <div key={index} className="flex items-start gap-3">
       <div className="flex items-center gap-4">
         <Checkbox
           id={deliverable.id}
@@ -88,7 +88,7 @@ const DeliverableForm = ({
         triggerCN="h-[34px]"
       />
       <FormSelectInput
-        formName={`${accessorString}.campaignStatus`}
+        formName={`${accessorString}.status`}
         label="Campaign Status"
         className="max-w-32"
         placeholder="Select status"
@@ -109,6 +109,7 @@ const DeliverableForm = ({
         placeholder="value"
         inputCN="h-8"
         className=" max-w-24"
+        type="number"
       />
       <FormTextInput
         formName={`${accessorString}.cpv`}
@@ -116,6 +117,7 @@ const DeliverableForm = ({
         placeholder="value"
         inputCN="h-8"
         className=" max-w-24"
+        type="number"
       />
     </div>
   );

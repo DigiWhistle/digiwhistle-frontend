@@ -12,6 +12,7 @@ import {
 } from "@/store/admin/campaigns/CampaignTableSlice";
 import { InfluencerType } from "@/types/admin/influencer";
 import { debounce } from "lodash";
+import { formatDateWithZeroTime } from "@/lib/utils";
 
 export const CAMPAIGN_TABLE_PAGE_LIMIT = 3;
 
@@ -28,6 +29,14 @@ const CampaignTable = () => {
   const type = searchParams.get("type") as InfluencerType;
   const payment = searchParams.get("payment");
 
+  const startTime = searchParams.get("startTime ")
+    ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
+    : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
+
+  const endTime = searchParams.get("endTime")
+    ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
+    : formatDateWithZeroTime(new Date());
+
   const debouncedFetch = useCallback(
     debounce(params => {
       dispatch(fetchCampaignsData(params));
@@ -39,6 +48,8 @@ const CampaignTable = () => {
     const params = {
       page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
       limit: CAMPAIGN_TABLE_PAGE_LIMIT,
+      startTime,
+      endTime,
       name,
       type,
       payment,
@@ -51,13 +62,23 @@ const CampaignTable = () => {
     }
 
     prevName.current = name;
-  }, [dispatch, currentPath, name, type, payment]);
+  }, [dispatch, currentPath, name, type, payment, startTime, endTime, debouncedFetch]);
 
+  const CampaignTable =
+    data.data.length > 0 ? (
+      data.data.map(campaign => <CampaignCard data={campaign as any} key={campaign.code} />)
+    ) : (
+      <div className="w-full h-44 flex justify-center items-center">No campaigns found</div>
+    );
   return (
     <div>
-      {data.data.map(campaign => (
-        <CampaignCard data={campaign as any} key={campaign.code} />
-      ))}
+      {loading ? (
+        <div className="flex w-full items-center h-48 justify-center">
+          <span className="loading loading-spinner loading-sm "></span>
+        </div>
+      ) : (
+        CampaignTable
+      )}
     </div>
   );
 };

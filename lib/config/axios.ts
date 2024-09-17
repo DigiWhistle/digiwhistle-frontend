@@ -203,6 +203,7 @@ export async function PATCH<T>(
 
 export async function DELETE<T>(
   URL: string,
+  data?: any,
   setLoading?: (loading: boolean) => void,
 ): Promise<ApiResponse<T>> {
   const token = getAuthToken();
@@ -214,6 +215,7 @@ export async function DELETE<T>(
   }
   return handleRequest<T>(
     axiosClient.delete<T>(`/${URL}`, {
+      data,
       headers: { Authorization: `Bearer ${token}` },
     }),
     setLoading,

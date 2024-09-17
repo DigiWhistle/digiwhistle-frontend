@@ -73,7 +73,7 @@ const HeadingCard = () => {
           )}
         </div>
         <div className="flex gap-4 items-center">
-          <Select
+          {/* <Select
             value=""
             onValueChange={(value: "influencer" | "agency") => {
               append(createNewParticipant(value));
@@ -90,7 +90,7 @@ const HeadingCard = () => {
               <SelectItem value="influencer">Add influencer</SelectItem>
               <SelectItem value="agency">Add agency</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
           <AccordionTrigger svgCN="w-6 h-6 text-[#0F172A]"></AccordionTrigger>
         </div>
       </div>

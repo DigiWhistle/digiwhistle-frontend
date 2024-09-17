@@ -7,8 +7,8 @@ export const campaigns = [
     code: "SC2024",
     invoice: "NJKDC78432",
     brandName: "BrandX",
-    startDate: new Date("2024-06-01"),
-    endDate: new Date("2024-09-01"),
+    startTime: new Date("2024-06-01"),
+    endTime: new Date("2024-09-01"),
     commercial: 50000,
     incentiveWinner: "Aman Maurya (+5%)", // handled on backend
     status: "active",

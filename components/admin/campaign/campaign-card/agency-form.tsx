@@ -12,6 +12,8 @@ import DeliverableForm from "./deliverable-form";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { getNewDeliverable } from "./utils";
+import { DELETE } from "@/lib/config/axios";
+import { toast } from "sonner";
 
 export const PaymentStatusOptions = [
   {
@@ -54,7 +56,7 @@ const AgencyForm = ({ index }: { index: number }) => {
     ]);
   };
 
-  const removeDeliverable = (influencerIndex: number, deliverableIndex: string) => {
+  const removeDeliverable = async (influencerIndex: number, deliverableId: string) => {
     const deliverables = form.getValues(
       `participants.${index}.influencer.${influencerIndex}.deliverables`,
     );
@@ -62,20 +64,37 @@ const AgencyForm = ({ index }: { index: number }) => {
     // if (deliverables.length === 1) {
     //   return;
     // }
+
+    const response = await DELETE(`campaign-deliverables/${deliverableId}`);
+
+    if (response.error) {
+      toast.error(`Error deleting deliverable: ${response.error}`);
+      return;
+    }
+
     form.setValue(
       `participants.${index}.influencer.${influencerIndex}.deliverables`,
-      deliverables.filter(_ => _.id !== deliverableIndex),
+      deliverables.filter(_ => _.id !== deliverableId),
     );
   };
 
   const removeItems = () => {
-    selectedItems.forEach(item => {
+    selectedItems.forEach(async item => {
       if (item.type === "deliverable") {
         removeDeliverable(item.influencerIndex as number, item.id as string);
       } else if (item.type === "influencer") {
-        console.log("Before remove:", form.getValues(`participants.${index}.influencer`));
+        if (form) {
+          const deliverableIds = form
+            // @ts-ignore
+            .watch(`participants.${index}.influencer.${item.id}.deliverables`)
+            // @ts-ignore
+            .map(_ => _.id);
+
+          const response = await DELETE(`campaign-deliverables`, {
+            Ids: deliverableIds,
+          });
+        }
         remove(item.id as number);
-        console.log("After remove:", form.getValues(`participants.${index}.influencer`));
       }
     });
     setSelectedItems([]);
@@ -83,8 +102,11 @@ const AgencyForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
   return (
-    <div className="border rounded-2xl  flex flex-col gap-3 ">
-      <div className="flex gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
+    <div
+      data-aos="fade-down"
+      className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000"
+    >
+      <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
           label="Agency Name"
@@ -98,24 +120,28 @@ const AgencyForm = ({ index }: { index: number }) => {
             label="Comm-brand"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.commercialCreator`}
             label="Comm-creator"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.toBeGiven`}
             label="To be given"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.margin`}
             label="Margin"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">

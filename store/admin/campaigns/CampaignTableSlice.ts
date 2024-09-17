@@ -29,17 +29,25 @@ export const fetchCampaignsData = createAsyncThunk(
   async ({
     page,
     limit,
+    startTime,
+    endTime,
     name,
     payment,
     type,
   }: {
     page: number;
     limit?: number;
+    startTime?: string | null;
+    endTime?: string | null;
     name?: string | null;
     payment?: string | null;
     type?: InfluencerType;
   }) => {
     let url = `campaign?page=${page}&limit=${limit}`;
+
+    if (startTime && endTime) {
+      url += `&startTime=${startTime}&endTime=${endTime}`;
+    }
 
     if (name) {
       url += `&name=${name}`;

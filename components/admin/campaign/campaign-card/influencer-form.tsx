@@ -12,20 +12,9 @@ import { Button } from "@/components/ui/button";
 import { PaymentStatusOptions } from "./agency-form";
 import { Switch } from "@/components/ui/switch";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
-
-const getNewDeliverable = () => {
-  const newDeliverable = {
-    id: uuidv4(),
-    title: "",
-    platform: "" as "",
-    campaignStatus: "Not Live" as "Live" | "Not Live",
-    deliverableLink: "",
-    er: 0,
-    cpv: 0,
-  };
-
-  return newDeliverable;
-};
+import { DELETE } from "@/lib/config/axios";
+import { toast } from "sonner";
+import { getNewDeliverable } from "./utils";
 
 const InfluencerForm = ({ index }: { index: number }) => {
   const [selectedItems, setSelectedItems] = useState<
@@ -42,13 +31,19 @@ const InfluencerForm = ({ index }: { index: number }) => {
   });
 
   const removeItems = () => {
-    selectedItems.forEach(item => {
-      const participant = form.getValues(`participants.${index}`);
-      if ("deliverables" in participant) {
-        participant.deliverables = participant.deliverables.filter(
-          (deliverable: { id: number | string }) => deliverable.id !== item.id,
-        );
-        form.setValue(`participants.${index}`, participant);
+    selectedItems.forEach(async item => {
+      const response = await DELETE(`campaign-deliverables/${item.id}`);
+
+      if (response.error) {
+        toast.error(`Error deleting deliverable: ${response.error}`);
+      } else {
+        const participant = form.getValues(`participants.${index}`);
+        if ("deliverables" in participant) {
+          participant.deliverables = participant.deliverables.filter(
+            (deliverable: { id: number | string }) => deliverable.id !== item.id,
+          );
+          form.setValue(`participants.${index}`, participant);
+        }
       }
     });
     setSelectedItems([]);
@@ -57,7 +52,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
   const accessorString = `participants.${index}`;
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 ">
-      <div className="flex items-end gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
+      <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
           label="Influencer Name"
@@ -65,14 +60,14 @@ const InfluencerForm = ({ index }: { index: number }) => {
           className="max-w-72"
           inputCN="h-8"
         />
-        <div className="w-px h-8 bg-gray-300 mb-1"></div>
+        <div className="w-px h-8 bg-gray-300 mt-6"></div>
         <FormField
           control={form.control}
           name={`participants.${index}.exclusive`}
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center space-x-2 mb-2 mr-3">
+                <div className="flex items-center space-x-2 mt-7 mr-3">
                   <Switch id="exclusive" checked={field.value} onCheckedChange={field.onChange} />
                   <Label htmlFor="exclusive">Exclusive</Label>
                 </div>
@@ -86,24 +81,28 @@ const InfluencerForm = ({ index }: { index: number }) => {
             label="Comm-brand"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.commercialCreator`}
             label="Comm-creator"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.toBeGiven`}
             label="To be given"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
           <FormTextInput
             formName={`${accessorString}.margin`}
             label="Margin"
             placeholder=""
             inputCN="h-8"
+            type="number"
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">

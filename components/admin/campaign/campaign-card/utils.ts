@@ -24,7 +24,7 @@ export const createNewParticipant = (
       ...baseData,
       type: "influencer",
       exclusive: false,
-      deliverables: [],
+      deliverables: [getNewDeliverable()],
       ...additionalData,
     } as InfluencerParticipant;
   } else if (type === "agency") {
@@ -44,7 +44,7 @@ export const getNewDeliverable = () => {
     id: uuidv4(),
     title: "",
     platform: "" as "",
-    campaignStatus: "Not Live" as "Live" | "Not Live",
+    status: "Not Live" as "Live" | "Not Live",
     deliverableLink: "",
     er: 0,
     cpv: 0,
