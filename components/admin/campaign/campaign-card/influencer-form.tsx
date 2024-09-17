@@ -12,20 +12,9 @@ import { Button } from "@/components/ui/button";
 import { PaymentStatusOptions } from "./agency-form";
 import { Switch } from "@/components/ui/switch";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
-
-const getNewDeliverable = () => {
-  const newDeliverable = {
-    id: uuidv4(),
-    title: "",
-    platform: "" as "",
-    campaignStatus: "Not Live" as "Live" | "Not Live",
-    deliverableLink: "",
-    er: 0,
-    cpv: 0,
-  };
-
-  return newDeliverable;
-};
+import { DELETE } from "@/lib/config/axios";
+import { toast } from "sonner";
+import { getNewDeliverable } from "./utils";
 
 const InfluencerForm = ({ index }: { index: number }) => {
   const [selectedItems, setSelectedItems] = useState<
@@ -42,13 +31,19 @@ const InfluencerForm = ({ index }: { index: number }) => {
   });
 
   const removeItems = () => {
-    selectedItems.forEach(item => {
-      const participant = form.getValues(`participants.${index}`);
-      if ("deliverables" in participant) {
-        participant.deliverables = participant.deliverables.filter(
-          (deliverable: { id: number | string }) => deliverable.id !== item.id,
-        );
-        form.setValue(`participants.${index}`, participant);
+    selectedItems.forEach(async item => {
+      const response = await DELETE(`campaign-deliverables/${item.id}`);
+
+      if (response.error) {
+        toast.error(`Error deleting deliverable: ${response.error}`);
+      } else {
+        const participant = form.getValues(`participants.${index}`);
+        if ("deliverables" in participant) {
+          participant.deliverables = participant.deliverables.filter(
+            (deliverable: { id: number | string }) => deliverable.id !== item.id,
+          );
+          form.setValue(`participants.${index}`, participant);
+        }
       }
     });
     setSelectedItems([]);

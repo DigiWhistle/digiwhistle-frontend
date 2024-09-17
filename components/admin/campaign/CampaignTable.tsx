@@ -12,14 +12,9 @@ import {
 } from "@/store/admin/campaigns/CampaignTableSlice";
 import { InfluencerType } from "@/types/admin/influencer";
 import { debounce } from "lodash";
+import { formatDateWithZeroTime } from "@/lib/utils";
 
 export const CAMPAIGN_TABLE_PAGE_LIMIT = 3;
-const formatDateWithZeroTime = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}T00:00:00.000Z`;
-};
 
 const CampaignTable = () => {
   const router = useRouter();
@@ -48,8 +43,6 @@ const CampaignTable = () => {
     }, 300),
     [dispatch],
   );
-
-  console.log("startTime", startTime, "endTime", endTime);
 
   useEffect(() => {
     const params = {

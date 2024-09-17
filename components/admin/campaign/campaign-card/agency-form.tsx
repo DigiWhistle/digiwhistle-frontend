@@ -12,6 +12,8 @@ import DeliverableForm from "./deliverable-form";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { getNewDeliverable } from "./utils";
+import { DELETE } from "@/lib/config/axios";
+import { toast } from "sonner";
 
 export const PaymentStatusOptions = [
   {
@@ -54,7 +56,7 @@ const AgencyForm = ({ index }: { index: number }) => {
     ]);
   };
 
-  const removeDeliverable = (influencerIndex: number, deliverableIndex: string) => {
+  const removeDeliverable = async (influencerIndex: number, deliverableId: string) => {
     const deliverables = form.getValues(
       `participants.${index}.influencer.${influencerIndex}.deliverables`,
     );
@@ -62,20 +64,37 @@ const AgencyForm = ({ index }: { index: number }) => {
     // if (deliverables.length === 1) {
     //   return;
     // }
+
+    const response = await DELETE(`campaign-deliverables/${deliverableId}`);
+
+    if (response.error) {
+      toast.error(`Error deleting deliverable: ${response.error}`);
+      return;
+    }
+
     form.setValue(
       `participants.${index}.influencer.${influencerIndex}.deliverables`,
-      deliverables.filter(_ => _.id !== deliverableIndex),
+      deliverables.filter(_ => _.id !== deliverableId),
     );
   };
 
   const removeItems = () => {
-    selectedItems.forEach(item => {
+    selectedItems.forEach(async item => {
       if (item.type === "deliverable") {
         removeDeliverable(item.influencerIndex as number, item.id as string);
       } else if (item.type === "influencer") {
-        console.log("Before remove:", form.getValues(`participants.${index}.influencer`));
+        if (form) {
+          const deliverableIds = form
+            // @ts-ignore
+            .watch(`participants.${index}.influencer.${item.id}.deliverables`)
+            // @ts-ignore
+            .map(_ => _.id);
+
+          const response = await DELETE(`campaign-deliverables`, {
+            Ids: deliverableIds,
+          });
+        }
         remove(item.id as number);
-        console.log("After remove:", form.getValues(`participants.${index}.influencer`));
       }
     });
     setSelectedItems([]);

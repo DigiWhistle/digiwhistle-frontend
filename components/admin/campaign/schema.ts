@@ -11,12 +11,12 @@ const DeliverableSchema = z
       InfluencerPlatforms.X,
       "",
     ]),
-    campaignStatus: z.enum(["Live", "Not Live"]),
+    status: z.enum(["Live", "Not Live"]),
     deliverableLink: z.string().url().nullable().optional(),
     er: z.number({ message: "required" }),
     cpv: z.number({ message: "required" }),
   })
-  .refine(data => data.campaignStatus !== "Live" || data.deliverableLink !== null, {
+  .refine(data => data.status !== "Live" || data.deliverableLink !== null, {
     message: "required",
     path: ["deliverableLink"],
   });

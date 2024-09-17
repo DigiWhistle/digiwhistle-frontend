@@ -44,7 +44,7 @@ export const getNewDeliverable = () => {
     id: uuidv4(),
     title: "",
     platform: "" as "",
-    campaignStatus: "Not Live" as "Live" | "Not Live",
+    status: "Not Live" as "Live" | "Not Live",
     deliverableLink: "",
     er: 0,
     cpv: 0,

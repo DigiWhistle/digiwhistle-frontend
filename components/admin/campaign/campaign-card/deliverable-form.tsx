@@ -88,7 +88,7 @@ const DeliverableForm = ({
         triggerCN="h-[34px]"
       />
       <FormSelectInput
-        formName={`${accessorString}.campaignStatus`}
+        formName={`${accessorString}.status`}
         label="Campaign Status"
         className="max-w-32"
         placeholder="Select status"

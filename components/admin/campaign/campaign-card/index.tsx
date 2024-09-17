@@ -50,7 +50,7 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
             <HeadingCard />
 
             <AccordionContent className="flex flex-col-reverse gap-5">
-              <Button type="submit" className="self-end">
+              <Button type="submit" className="self-end" disabled={!form.formState.isDirty}>
                 Save Changes
               </Button>
 
