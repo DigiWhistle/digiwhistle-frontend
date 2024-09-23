@@ -17,13 +17,13 @@ import { toast } from "sonner";
 export type TCampaignForm = z.infer<typeof CampaignSchema>;
 
 const CampaignCard = ({ data }: { data: TCampaignForm }) => {
+  console.log("campaigndata", data);
   const form = useForm<TCampaignForm>({
     resolver: zodResolver(CampaignSchema),
     defaultValues: data,
   });
 
   const handleAddCampaign = async (data: TCampaignForm) => {
-    console.log(data);
     const response = await PUT("campaign", data);
 
     if (response.error) {

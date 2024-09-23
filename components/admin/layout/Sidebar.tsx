@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import SignOut from "@/components/brand-report/popupForms/SignOut";
 import { useAppSelector } from "@/lib/config/store";
-const SidebarLinks = [
+const AdminSidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
     link: "/admin/influencers/1",
@@ -60,11 +60,20 @@ const SidebarLinks = [
     keyword: "explore",
   },
 ];
-const HelpCenterLink = {
-  icon: <InformationCircleIcon className="text-tc-ic-black-default" />,
-  link: "/admin/help-center",
-  linkText: "Help center",
-};
+const UserSidebarLinks = [
+  {
+    icon: <MegaphoneIcon className="text-tc-ic-black-default" />,
+    link: "/user/campaigns/1",
+    linkText: "My campaigns",
+    keyword: "campaigns",
+  },
+  {
+    icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
+    link: "/user/queries/1",
+    linkText: "Explore influencers",
+    keyword: "explore",
+  },
+];
 
 const Sidebar = ({ className, drawerView }: { className?: string; drawerView: boolean }) => {
   const [signoutcookie, signoutcookieSetter] = useState(false);
@@ -73,11 +82,12 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
   const pathname = usePathname();
   const role = useAppSelector(UserRole);
 
-  const filteredSidebarLinks =
-    role !== "admin"
-      ? SidebarLinks.filter(link => link.keyword !== "profile-control")
-      : SidebarLinks;
-
+  const filteredSidebarLinks = () => {
+    if (role === "admin") {
+      return AdminSidebarLinks;
+    }
+    return UserSidebarLinks;
+  };
   const handleLogout = () => {
     deleteCookie("role");
     deleteCookie("token");
@@ -101,7 +111,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
     >
       <div className="flex  flex-col w-full h-full  justify-between ">
         <div className="flex-col  w-full ">
-          {filteredSidebarLinks.map(item => (
+          {filteredSidebarLinks().map(item => (
             <Link
               key={item.linkText}
               href={item.link}

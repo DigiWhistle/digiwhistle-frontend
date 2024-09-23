@@ -75,7 +75,7 @@ const EditableRemark = ({
     e: any,
   ) => {
     e.preventDefault();
-    console.log("called n");
+
     const response = await PUT(`remarks/${item.id}`, {
       message: data.editremarks,
     });

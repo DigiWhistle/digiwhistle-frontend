@@ -20,7 +20,7 @@ const MessageSchema = z.object({
 });
 const InviteInfluencer = () => {
   const [allEmails, setEmails] = useState<any>([]);
-  console.log(allEmails);
+
   const emailForm = useForm<z.infer<typeof AddEmailSchema>>({
     resolver: zodResolver(AddEmailSchema),
   });
