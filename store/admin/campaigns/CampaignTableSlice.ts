@@ -62,6 +62,7 @@ export const fetchCampaignsData = createAsyncThunk(
     }
 
     const response = await GET<ICampaignTable>(url);
+
     if (response.error) {
       throw new Error(response.error);
     }

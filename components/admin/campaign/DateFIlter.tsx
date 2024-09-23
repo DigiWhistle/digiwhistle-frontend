@@ -29,8 +29,6 @@ export function DateFilter({ className }: React.HTMLAttributes<HTMLDivElement>) 
 
   const onChange = useCallback(
     (range: DateRange | undefined) => {
-      console.log("range", range);
-
       setDate(range);
 
       const newPath = currentPath.replace(/\/\d+$/, "/1");
@@ -49,8 +47,6 @@ export function DateFilter({ className }: React.HTMLAttributes<HTMLDivElement>) 
     },
     [currentPath, router],
   );
-
-  console.log("date", date);
 
   return (
     <div className={cn("grid gap-2", className)}>

@@ -13,14 +13,16 @@ import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/soli
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import { DateRangePicker } from "@/components/ui/form/Date-Range-Picker";
-import { POST } from "@/lib/config/axios";
+import { PATCH, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import { SearchSelect } from "@/components/ui/form/SearchSelect";
 import { SearchSelectCopy } from "@/components/ui/form/SearchSelectcopy";
 import { useState } from "react";
 import FormTextareaInput from "@/components/ui/form/form-textarea-input";
-
+import { GET } from "@/lib/config/axios";
+import { useEffect } from "react";
+import { getCookie } from "cookies-next";
 const Options = ["English", "Chinese", "Hindi", "Punjabi", "Thai", "Gujarati", "Marathi"];
 export const PaymentStatusOptions = [
   {
@@ -40,6 +42,7 @@ export const PaymentStatusOptions = [
     ),
   },
 ];
+
 const CampaignSchema = z.object({
   campaignName: z.string(),
   campaignCode: z.string(),
@@ -60,11 +63,52 @@ const CampaignSchema = z.object({
   additionalDetails: z.string(),
   campaignEmail: z.string().optional() || null,
 });
-const CampaignPopup = () => {
+const CampaignPopup = ({
+  mode,
+  edit_id,
+}: {
+  mode: "Create campaign" | "Edit campaign";
+  edit_id?: string;
+}) => {
   const [allEmails, setEmails] = useState<any>([]);
+  const [EditData, SetEditData] = useState<any>(null);
+  useEffect(() => {
+    if (mode === "Edit campaign") {
+      const updateFunction = async () => {
+        const response: any = await GET(`campaign/dad749c8-fb7d-44af-bdc2-7cf5fdacff2c`);
+        console.log("incoming data", response);
+        setEmails(response.data.participants);
+        SetEditData(response.data);
+      };
+      updateFunction();
+    }
+  }, []);
+  let formvalues;
+  if (mode === "Edit campaign") {
+    formvalues = {
+      campaignName: "Chirag ka nara",
+      campaignCode: "Nibba02",
+      brand: "cheems",
+      campaignDuration: {
+        from: new Date("2024-09-17T19:46:28.396Z"),
+        to: new Date("2024-09-17T19:46:28.396Z"),
+      },
+      commBrand: 120000,
+      invoiceNo: "pese dede",
+      campaignManager: "Cheems",
+      incentiveWinner: "Cheemrag",
+      paymentStatus: "Pending",
+      additionalDetails: "yo bro keep it up",
+      campaignEmail: undefined,
+    };
+  } else {
+    formvalues = {};
+  }
   const form = useForm<z.infer<typeof CampaignSchema>>({
     resolver: zodResolver(CampaignSchema),
+    defaultValues: formvalues,
   });
+
   const setterfunction = (formname: any, Option: any) => {
     if (formname === "campaignEmail") {
       const emailExists = allEmails.some((email: any) => email.email === Option.email);
@@ -77,10 +121,8 @@ const CampaignPopup = () => {
     } else {
       form.setValue(formname, Option.name);
     }
-    console.log("setter", form.getValues("brand"));
-    console.log("setter", form.getValues("campaignEmail"));
   };
-
+  console.log(getCookie("token"));
   const handleForm = async (data: z.infer<typeof CampaignSchema>, e: any) => {
     console.log("data", data);
     const sendInfo = {
@@ -92,14 +134,17 @@ const CampaignPopup = () => {
       endDate: data.campaignDuration.to,
       commercial: data.commBrand,
       invoiceNo: data.invoiceNo,
-      status: data.paymentStatus,
       details: data.additionalDetails,
       manager: data.campaignManager,
       incentiveWinner: data.incentiveWinner,
       participants: allEmails,
     };
-
-    const response = await POST("campaign", sendInfo);
+    let response;
+    if (mode === "Create campaign") {
+      response = await POST("campaign", sendInfo);
+    } else {
+      response = await PATCH(`campaign/dad749c8-fb7d-44af-bdc2-7cf5fdacff2c`, sendInfo);
+    }
     if (response.error) {
       toast.error(response.error);
     } else {

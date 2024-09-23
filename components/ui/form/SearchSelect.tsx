@@ -71,8 +71,8 @@ export function SearchSelect({
 }: IFormSearchSelectProps) {
   const { control } = useFormContext();
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [initialValue, setInitialValue] = useState("");
+  const [inputValue, setInputValue] = useState<any>(null);
+  const [initialValue, setInitialValue] = useState<any>(null);
   const [Options, setOptions] = useState<any>([]);
   const debouncedFetchData = debounce(async (value: string) => {
     let response;
@@ -105,6 +105,13 @@ export function SearchSelect({
     setOpen(false);
     setInputValue(initialValue);
   };
+  const getValue = (value?: string) => {
+    if (inputValue === null && initialValue === null && value) {
+      setInputValue(value);
+      setInitialValue(value);
+    }
+    return inputValue;
+  };
   return (
     <FormField
       control={control}
@@ -126,12 +133,13 @@ export function SearchSelect({
                 )}
                 <CommandInput
                   placeholder={searchPlaceholder}
-                  value={inputValue}
+                  value={getValue(field.value)}
+                  defaultValue={field.value}
                   onValueChange={handleValueChange}
                   className={cn("flex h-10 w-full", leftIcon ? "ps-8" : null)}
                 />
               </div>
-              <CommandList className="absolute mt-11 bg-white w-full max-h-32">
+              <CommandList className="absolute mt-11 bg-white w-full max-h-32 z-50">
                 {open &&
                   Options.map((Option: any, index: number) => (
                     <CommandItem
