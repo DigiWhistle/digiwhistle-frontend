@@ -3,34 +3,19 @@ import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { CampaignSchema } from "../schema";
-import { z } from "zod";
-import { TCampaignForm } from ".";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { createNewParticipant } from "./utils";
+import { BrandCampaign, CampaignSchema } from "../schema";
+import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import { useAppSelector } from "@/lib/config/store";
+import { UserRole } from "@/store/UserSlice";
 
-const HeadingCard = () => {
-  const form = useFormContext<TCampaignForm>();
-
-  const { remove, append } = useFieldArray({
-    control: form.control,
-    name: `participants`,
-  });
-
+const HeadingCard = ({ data }: { data: BrandCampaign }) => {
+  const role = useAppSelector(UserRole);
   return (
     <div>
       <div className="w-full flex gap-4 items-center justify-between text-tc-body-grey font-medium">
         <div className="flex items-center gap-4">
           <div className="flex gap-1 items-center">
-            <h5 className="text-heading-m-semibold text-tc-primary-default">
-              {form.getValues("name")}
-            </h5>
+            <h5 className="text-heading-m-semibold text-tc-primary-default">{data.name}</h5>
             <Popover>
               <PopoverTrigger>
                 <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
@@ -41,32 +26,39 @@ const HeadingCard = () => {
                 alignOffset={-50}
                 align="start"
               >
-                <p>Brand: {form.getValues("brandName")}</p>
-                <p>Campaign Code: {form.getValues("code")}</p>
+                <p>Brand: {data.brandName}</p>
+                <p>Campaign Code: {data.code}</p>
                 <p>
-                  Duration: {form.getValues("startDate").toString()} -{" "}
-                  {form.getValues("endDate").toString()}
+                  Duration: {data.startDate.toString()} - {data.endDate.toString()}
                 </p>
               </PopoverContent>
             </Popover>
           </div>
-          {form.getValues("capital") && (
+          {data.capital && (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
-              <p>Comm. Brand: {form.getValues("capital")}</p>
+              <p>Capital: {data.capital}</p>
             </>
           )}
-          {form.getValues("invoice") && (
+          {data.status && (
             <>
-              <div className="w-[1px] h-6 bg-bc-grey"></div>
-              <p>{form.getValues("invoice")}</p>
+              <div className="w-px h-6 bg-bc-grey"></div>
+              <p className="flex gap-1 items-center">
+                Payment:{" "}
+                {data.status === "Pending" ? (
+                  <ExclamationCircleIcon className="w-[18px] h-[18px] text-warning" />
+                ) : (
+                  <CheckCircleIcon className="w-[18px] h-[18px] text-success" />
+                )}{" "}
+                {data.status}
+              </p>
             </>
           )}
-          {form.getValues("incentiveWinner") && (
+          {data.poc && (
             <>
-              <div className="w-[1px] h-6 bg-bc-grey"></div>
+              <div className="w-0.5 h-6 bg-bc-grey"></div>
               <p>
-                {form.getValues("incentiveWinner")}
+                {data.poc}
                 {/* {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`} */}
               </p>
             </>

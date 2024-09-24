@@ -204,7 +204,6 @@ const AgencyForm = ({ index }: { index: number }) => {
                     placeholder="Enter name"
                     inputCN="h-8"
                     className="max-w-72"
-                    defaultValue={influencer.name}
                   />
                   <button
                     type="button"

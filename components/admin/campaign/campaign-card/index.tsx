@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 
-import { CampaignSchema } from "../schema";
+import { Campaign, CampaignSchema } from "../schema";
 import HeadingCard from "./heading-card";
 import AgencyForm from "./agency-form";
 import InfluencerForm from "./influencer-form";
@@ -14,10 +14,9 @@ import { Button } from "@/components/ui/button";
 import { PUT } from "@/lib/config/axios";
 import { toast } from "sonner";
 
-export type TCampaignForm = z.infer<typeof CampaignSchema>;
+export type TCampaignForm = Campaign;
 
 const CampaignCard = ({ data }: { data: TCampaignForm }) => {
-  console.log("campaigndata", data);
   const form = useForm<TCampaignForm>({
     resolver: zodResolver(CampaignSchema),
     defaultValues: data,
