@@ -23,17 +23,13 @@ const chartConfig = {
   },
   safari: {
     label: "Safari",
-    color: "hsl(var(--chart-2))",
+    color: "#0A70F5",
   },
 } satisfies ChartConfig;
 
 export function CircularChart() {
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
           <RadialBarChart
@@ -47,7 +43,7 @@ export function CircularChart() {
               gridType="circle"
               radialLines={false}
               stroke="none"
-              className="first:fill-muted last:fill-background"
+              className="first:fill-[#CEE4FF] last:fill-background"
               polarRadius={[86, 74]}
             />
             <RadialBar dataKey="visitors" background cornerRadius={10} />
@@ -64,17 +60,17 @@ export function CircularChart() {
                       >
                         <tspan
                           x={viewBox.cx}
-                          y={viewBox.cy}
+                          y={125}
                           className="fill-foreground text-4xl font-bold"
                         >
-                          {chartData[0].visitors.toLocaleString()}
+                          {chartData[0].visitors.toLocaleString()}%
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
+                          y={90}
+                          className="fill-muted-foreground text-body-lg-medium"
                         >
-                          Visitors
+                          Fake followers
                         </tspan>
                       </text>
                     );
@@ -85,14 +81,6 @@ export function CircularChart() {
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }
