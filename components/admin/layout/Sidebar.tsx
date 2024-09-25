@@ -55,7 +55,7 @@ const AdminSidebarLinks = [
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
-    link: "/admin/queries/1",
+    link: "/admin/explore/1",
     linkText: "Explore influencers",
     keyword: "explore",
   },
@@ -69,7 +69,7 @@ const UserSidebarLinks = [
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
-    link: "/user/queries/1",
+    link: "/user/explore-influencers/1",
     linkText: "Explore influencers",
     keyword: "explore",
   },

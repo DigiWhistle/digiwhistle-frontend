@@ -17,7 +17,6 @@ import { PATCH, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import { SearchSelect } from "@/components/ui/form/SearchSelect";
-import { SearchSelectCopy } from "@/components/ui/form/SearchSelectcopy";
 import { useState } from "react";
 import FormTextareaInput from "@/components/ui/form/form-textarea-input";
 import { GET } from "@/lib/config/axios";
@@ -71,6 +70,9 @@ const CampaignPopup = ({
   edit_id?: string;
 }) => {
   const [allEmails, setEmails] = useState<any>([]);
+  const [getbrand, brandSetter] = useState<any>({});
+  const [getmanager, managerSetter] = useState<any>({});
+  const [getWinner, winnerSetter] = useState<any>({});
   const [EditData, SetEditData] = useState<any>(null);
   useEffect(() => {
     if (mode === "Edit campaign") {
@@ -122,23 +124,25 @@ const CampaignPopup = ({
       form.setValue(formname, Option.name);
     }
   };
-  console.log(getCookie("token"));
+
+  console.log(form.getValues("brand"));
   const handleForm = async (data: z.infer<typeof CampaignSchema>, e: any) => {
     console.log("data", data);
     const sendInfo = {
       name: data.campaignName,
       code: data.campaignCode,
-      brand: data.brand,
+      brand: getbrand.id,
       brandName: data.brand,
       startDate: data.campaignDuration.from,
       endDate: data.campaignDuration.to,
       commercial: data.commBrand,
       invoiceNo: data.invoiceNo,
       details: data.additionalDetails,
-      manager: data.campaignManager,
-      incentiveWinner: data.incentiveWinner,
+      manager: getmanager.id,
+      incentiveWinner: getWinner.id,
       participants: allEmails,
     };
+    console.log("sendInfo", sendInfo);
     let response;
     if (mode === "Create campaign") {
       response = await POST("campaign", sendInfo);
@@ -151,7 +155,7 @@ const CampaignPopup = ({
       toast.success(response.message);
     }
     setEmails([]);
-    form.reset();
+    // form.reset();
   };
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));
@@ -170,6 +174,7 @@ const CampaignPopup = ({
                 searchPlaceholder="Search Brand"
                 placeholder="Select Brand"
                 label="Brand"
+                selectedValueSetter={brandSetter}
                 setterfunction={setterfunction}
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
               />
@@ -199,6 +204,7 @@ const CampaignPopup = ({
                 endpoint={"search-employees"}
                 formName="campaignManager"
                 searchPlaceholder="Search Manager"
+                selectedValueSetter={managerSetter}
                 placeholder="Select Manager"
                 label="Campaign manager"
                 setterfunction={setterfunction}
@@ -208,6 +214,7 @@ const CampaignPopup = ({
                 endpoint={"search-employees"}
                 formName="incentiveWinner"
                 searchPlaceholder="Search Manager"
+                selectedValueSetter={winnerSetter}
                 placeholder="Select Manager"
                 label="Incentive winner"
                 setterfunction={setterfunction}

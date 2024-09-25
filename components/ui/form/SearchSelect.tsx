@@ -48,6 +48,7 @@ interface IFormSearchSelectProps {
   setterfunction: any;
   popoverclassname?: string;
   endpoint?: string;
+  selectedValueSetter?: any;
 }
 
 export function SearchSelect({
@@ -68,24 +69,25 @@ export function SearchSelect({
   setterfunction,
   endpoint,
   popoverclassname,
+  selectedValueSetter,
 }: IFormSearchSelectProps) {
   const { control } = useFormContext();
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState<any>(null);
-  const [initialValue, setInitialValue] = useState<any>(null);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [initialValue, setInitialValue] = useState<string>("");
   const [Options, setOptions] = useState<any>([]);
   const debouncedFetchData = debounce(async (value: string) => {
-    let response;
+    let response: any;
     if (type === "EmailSelector") {
       response = await GET(`campaign/search-by-email?email=${value}`);
     } else {
       response = await GET(`campaign/${endpoint}?name=${value}`);
     }
-    setOptions(response.data);
 
+    setOptions(response.data);
     setOpen(!!value);
-  }, 300);
-  const mark = "email";
+  }, 1000);
+  console.log(initialValue, inputValue);
   const handleValueChange = (value: string) => {
     setInputValue(value);
     debouncedFetchData(value);
@@ -106,12 +108,15 @@ export function SearchSelect({
     setInputValue(initialValue);
   };
   const getValue = (value?: string) => {
-    if (inputValue === null && initialValue === null && value) {
+    if (inputValue.length === 0 && initialValue.length === 0 && value) {
       setInputValue(value);
       setInitialValue(value);
     }
     return inputValue;
   };
+  if (label === "Brand") {
+    console.log(open, Options);
+  }
   return (
     <FormField
       control={control}
@@ -152,20 +157,16 @@ export function SearchSelect({
                         if (type === "EmailSelector") {
                           setInputValue("");
                           setInitialValue("");
+                          setOpen(false);
                         } else {
                           setInputValue(type === "EmailSelector" ? Option.email : Option.name);
                           setInitialValue(type === "EmailSelector" ? Option.email : Option.name);
+                          setOpen(false);
+                          selectedValueSetter(Option);
                         }
-                        setOpen(false);
                       }}
                     >
                       {type === "EmailSelector" ? Option.email : Option.name}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4 text-black",
-                          Option === field.value ? "opacity-100" : "opacity-0",
-                        )}
-                      />
                     </CommandItem>
                   ))}
               </CommandList>
