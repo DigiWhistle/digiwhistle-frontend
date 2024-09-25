@@ -110,6 +110,7 @@ const AgencyForm = ({ index }: { index: number }) => {
           placeholder="Enter name"
           className="max-w-72"
           inputCN="h-8"
+          disabled
         />
         <div className="flex gap-1">
           <FormTextInput
