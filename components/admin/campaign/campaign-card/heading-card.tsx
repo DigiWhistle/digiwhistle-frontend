@@ -50,10 +50,10 @@ const HeadingCard = () => {
               </PopoverContent>
             </Popover>
           </div>
-          {form.getValues("capital") && (
+          {form.getValues("commercial") && (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
-              <p>Comm. Brand: {form.getValues("capital")}</p>
+              <p>Comm. Brand: {form.getValues("commercial")}</p>
             </>
           )}
           {form.getValues("invoice") && (
