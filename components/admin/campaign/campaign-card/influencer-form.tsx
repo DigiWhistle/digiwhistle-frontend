@@ -59,6 +59,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
           placeholder="Enter name"
           className="max-w-72"
           inputCN="h-8"
+          disabled
         />
         <div className="w-px h-8 bg-gray-300 mt-6"></div>
         <FormField
