@@ -1,4 +1,4 @@
-import { Campaign } from "@/components/admin/campaign/schema";
+import { BrandCampaign, Campaign } from "@/components/admin/campaign/schema";
 import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
 import {
@@ -15,11 +15,11 @@ export interface ICampaignTable {
   currentPage: number;
   totalCount: number;
   totalPages: number;
-  data: Campaign[];
+  data: Campaign[] | BrandCampaign[];
 }
 
 const initialState = {
-  data: { currentPage: 1, totalCount: 10, totalPages: 0, data: [] as Campaign[] },
+  data: { currentPage: 1, totalCount: 10, totalPages: 0, data: [] as Campaign[] | BrandCampaign[] },
   loading: false,
   error: null as string | null,
 };

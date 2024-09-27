@@ -69,7 +69,22 @@ export const CampaignSchema = z.object({
   participants: z.array(ParticipantSchema),
 });
 
+export const BrandCampaignSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string({ message: "required" }),
+  code: z.string(),
+  brandName: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
+  capital: z.number(),
+  poc: z.string(),
+  invoice: z.string().nullable().optional(),
+  status: z.enum(["Live", "Pending"]).nullable().optional(),
+  participants: z.array(ParticipantSchema),
+});
+
 export const CampaignsSchema = z.array(CampaignSchema);
+export const BrandCampaignsSchema = z.array(BrandCampaignSchema);
 
 export type Deliverable = z.infer<typeof DeliverableSchema>;
 export type Influencer = z.infer<typeof InfluencerSchema>;
@@ -79,3 +94,5 @@ export type AgencyParticipant = z.infer<typeof AgencyParticipantSchema>;
 export type Participant = z.infer<typeof ParticipantSchema>;
 export type Campaign = z.infer<typeof CampaignSchema>;
 export type Campaigns = z.infer<typeof CampaignsSchema>;
+export type BrandCampaign = z.infer<typeof BrandCampaignSchema>;
+export type BrandCampaigns = z.infer<typeof BrandCampaignSchema>;

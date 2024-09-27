@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useEffect } from "react";
 import CampaignCard from "./campaign-card";
-import { campaigns } from "./constants";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/lib/config/store";
@@ -13,6 +12,10 @@ import {
 import { InfluencerType } from "@/types/admin/influencer";
 import { debounce } from "lodash";
 import { formatDateWithZeroTime } from "@/lib/utils";
+import { UserRole } from "@/store/UserSlice";
+import { BrandCampaign, Campaign } from "./schema";
+import BrandCampaignCard from "./brand-campaign-card";
+import { DataTablePagination } from "../lib/pagination";
 
 export const CAMPAIGN_TABLE_PAGE_LIMIT = 3;
 
@@ -22,6 +25,7 @@ const CampaignTable = () => {
   const searchParams = useSearchParams();
   const dispatch: AppDispatch = useAppDispatch();
   const data = useAppSelector(campaignsTableData);
+  const role = useAppSelector(UserRole);
   const loading = useAppSelector(campaignsTableLoading);
   const prevName = useRef<string | null>("");
 
@@ -66,7 +70,13 @@ const CampaignTable = () => {
 
   const CampaignTable =
     data.data.length > 0 ? (
-      data.data.map(campaign => <CampaignCard data={campaign as any} key={campaign.code} />)
+      data.data.map(campaign => {
+        if (role === "admin") {
+          return <CampaignCard data={campaign as Campaign} key={campaign.code} />;
+        } else {
+          return <BrandCampaignCard data={campaign as BrandCampaign} key={campaign.code} />;
+        }
+      })
     ) : (
       <div className="w-full h-44 flex justify-center items-center">No campaigns found</div>
     );
@@ -77,7 +87,10 @@ const CampaignTable = () => {
           <span className="loading loading-spinner loading-sm "></span>
         </div>
       ) : (
-        CampaignTable
+        <div className="space-y-5 mt-5">
+          {CampaignTable}
+          <DataTablePagination data={data} />
+        </div>
       )}
     </div>
   );

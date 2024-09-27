@@ -102,10 +102,7 @@ const AgencyForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
   return (
-    <div
-      data-aos="fade-down"
-      className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000"
-    >
+    <div className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000">
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
@@ -113,6 +110,7 @@ const AgencyForm = ({ index }: { index: number }) => {
           placeholder="Enter name"
           className="max-w-72"
           inputCN="h-8"
+          disabled
         />
         <div className="flex gap-1">
           <FormTextInput
@@ -207,7 +205,6 @@ const AgencyForm = ({ index }: { index: number }) => {
                     placeholder="Enter name"
                     inputCN="h-8"
                     className="max-w-72"
-                    defaultValue={influencer.name}
                   />
                   <button
                     type="button"

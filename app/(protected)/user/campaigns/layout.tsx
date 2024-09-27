@@ -14,20 +14,6 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <AdminTitle title="Manage Campaigns 😇" description="All campaigns in full detail." />
         <div className="flex space-x-3">
           <DateFilter />
-          <CustomDialog
-            className="w-[840px]"
-            headerTitle="Create campaign"
-            headerDescription="Please enter below details."
-            triggerElement={
-              <Button>
-                <PlusCircleIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
-                Create campaign
-              </Button>
-            }
-          >
-            {/* <AddInfluencers /> */}
-            <CampaignPopup mode="Edit campaign" />
-          </CustomDialog>
         </div>
       </div>
       <CampaignDataCards />

@@ -51,7 +51,7 @@ const Hero = () => {
         src={"/assets/hero-section/like.png"}
         width={200}
         height={200}
-        className="absolute top-40 lg:top-32 right-1 mix-blend-screen  w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
+        className="absolute top-40 lg:top-32 right-1 mix-blend-screen w-14 h-14 md:w-28 md:h-28 lg:w-44 lg:h-44"
         alt="like"
       />
       <Image

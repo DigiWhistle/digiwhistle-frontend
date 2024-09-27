@@ -8,6 +8,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { User, UserRole } from "@/store/UserSlice";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useAppSelector } from "@/lib/config/store";
 const logosvg = "/assets/navbar/logo.svg";
 const bars = "/assets/navbar/bars.svg";
 interface AdminNavbarinterface {
@@ -16,7 +17,10 @@ interface AdminNavbarinterface {
 }
 const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
   const userInfo = useSelector(User);
+  const userRole = useAppSelector(UserRole);
 
+  const profileUrl =
+    userRole === "admin" || userRole === "employee" ? "/admin/profile" : "/user/profile";
   return (
     <>
       <nav className="flex bg-transparent justify-center w-full sticky top-0 z-50 ">
@@ -30,7 +34,7 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
             </button>
           </div>
 
-          <Link href={"/admin/profile"}>
+          <Link href={profileUrl}>
             <div className="flex items-center space-x-3 mr-3">
               <Avatar className=" flex border-2  border-white w-11 h-11 bg-slate-100 rounded-full ">
                 {userInfo?.profile?.profilePic ? (
