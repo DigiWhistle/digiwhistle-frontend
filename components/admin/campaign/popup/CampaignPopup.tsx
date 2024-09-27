@@ -74,6 +74,7 @@ const CampaignPopup = ({
   const [getmanager, managerSetter] = useState<any>({});
   const [getWinner, winnerSetter] = useState<any>({});
   const [EditData, SetEditData] = useState<any>(null);
+  let formvalues;
   useEffect(() => {
     if (mode === "Edit campaign") {
       const updateFunction = async () => {
@@ -85,22 +86,21 @@ const CampaignPopup = ({
       updateFunction();
     }
   }, []);
-  let formvalues;
   if (mode === "Edit campaign") {
     formvalues = {
-      campaignName: "Chirag ka nara",
-      campaignCode: "Nibba02",
-      brand: "cheems",
+      campaignName: EditData?.name,
+      campaignCode: EditData?.code,
+      brand: EditData?.brandName,
       campaignDuration: {
-        from: new Date("2024-09-17T19:46:28.396Z"),
-        to: new Date("2024-09-17T19:46:28.396Z"),
+        from: new Date(EditData?.startDate),
+        to: new Date(EditData?.endDate),
       },
-      commBrand: 120000,
-      invoiceNo: "pese dede",
-      campaignManager: "Cheems",
-      incentiveWinner: "Cheemrag",
-      paymentStatus: "Pending",
-      additionalDetails: "yo bro keep it up",
+      commBrand: EditData?.commercial,
+      invoiceNo: EditData?.invoiceNo,
+      campaignManager: "chirag",
+      incentiveWinner: "chirag",
+      paymentStatus: EditData?.paymentStatus,
+      additionalDetails: EditData?.details,
       campaignEmail: undefined,
     };
   } else {
@@ -125,9 +125,7 @@ const CampaignPopup = ({
     }
   };
 
-  console.log(form.getValues("brand"));
   const handleForm = async (data: z.infer<typeof CampaignSchema>, e: any) => {
-    console.log("data", data);
     const sendInfo = {
       name: data.campaignName,
       code: data.campaignCode,

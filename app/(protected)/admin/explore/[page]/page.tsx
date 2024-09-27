@@ -5,35 +5,63 @@ import { LinkIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import { debounce } from "lodash";
 import { GET } from "@/lib/config/axios";
-import DataCards from "@/components/admin/new-requests/DataCards";
+import { DataCard } from "@/components/ui/DataCard";
+import { TDataCard } from "@/types/admin/new-requests";
 import ExploreInfluencer from "@/components/admin/explore-influencers-card/ExploreInfluencer";
+import {
+  UsersIcon,
+  EyeIcon,
+  VideoCameraIcon,
+  InboxArrowDownIcon,
+  ChatBubbleBottomCenterTextIcon,
+  ChartPieIcon,
+  ChartBarIcon,
+} from "@heroicons/react/24/solid";
+import { toast } from "sonner";
 const Page = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [relatedInfluencers, setInfluencers] = useState({
-    cards: ["string"],
-    name: "Anmol Sharma",
-    desc: "Finance & Stock Market📈 On a mission to make 10,000 families Crorepatis by 2035 via @finlight.in💰",
-    profilePic: "string",
-    profileUrl: "https://www.youtube.com/@CarbonFinGami",
-    metric: {
-      key: "Digiwhistle creator",
-      value: 0,
-    },
-  });
+  const [relatedInfluencers, setInfluencers] = useState<any>(null);
+  const [data, setData] = useState<TDataCard[]>([]);
   const debouncedFetchData = debounce(async (value: string) => {
-    const response = await GET(`influencer/explore-influencer?url=${value}`);
-    const data = {
-      cards: ["string"],
-      name: "string",
-      desc: "string",
-      profilePic: "string",
-      profileUrl: "string",
-      metric: {
-        key: "string",
-        value: 0,
+    const dd: any = await GET(`influencer/explore-influencer?url=${value}`);
+    console.log(dd);
+    const response = {
+      data: {
+        cards: [
+          { label: "Subscribers", value: "55300", subValue: "", iconName: "FaceFrownIcon" },
+          { label: "Average Views", value: "22313245", subValue: "", iconName: "EyeIcon" },
+          { label: "Videos", value: "594", subValue: "", iconName: "VideoCameraIcon" },
+          { label: "Videsos", value: "594", subValue: "", iconName: "FaceFrownIcon" },
+        ],
+        desc: "Hey guys Anmol and team here, you might know me from Instagram, I go by \"financebyanmoll\" with over 307K loving followers. \n\nI'm an NIT-J graduate but my love for finance has got me here, we've been spreading our love for finance with education for the last 3 years and my team and I are here on Youtube to do the same. \n\nSo what is this channel about?\n\nFinance, stock market and geopolitics.\n\nThe three pillars of my channel and this is precisely what my team and I bring you, without any jargon. \n\nKnow how these pillars link with money and what happens in the background.\n\nFinance is for everyone and we make sure you're part of it too and help you reach 'towards your wealth' :)",
+        name: "Anmol Sharma",
+        profilePic:
+          "https://yt3.googleusercontent.com/dk8K143OTsrmGN527jtqJZOlkKeE-lHQcNt1CgO6TzOmspRXtNabLG46OLgP_eaHGv5sUdUE",
+        profileUrl: "https://www.youtube.com/@finlightanmol",
       },
+      error: null,
     };
-    setInfluencers(data);
+    console.log("explore", response);
+    if (!response.error) {
+      const iconMap: { [key: string]: typeof UsersIcon } = {
+        UsersIcon,
+        EyeIcon,
+        VideoCameraIcon,
+        ChatBubbleBottomCenterTextIcon,
+        InboxArrowDownIcon,
+        ChartPieIcon,
+        ChartBarIcon,
+      };
+      console.log("iconmap", iconMap);
+      const dataWithIcons = response.data.cards.map((item: any) => ({
+        ...item,
+        iconName: iconMap[item.iconName as string] ?? UsersIcon,
+      }));
+      setData(dataWithIcons as TDataCard[]);
+      setInfluencers(response.data);
+    } else {
+      toast.error(response.error);
+    }
   }, 300);
   const mark = "email";
   const handleValueChange = (e: any) => {
@@ -56,10 +84,20 @@ const Page = () => {
           name="search"
         />
       </div>
-      <div className="flex flex-col w-full gap-5">
-        <DataCards />
-        <ExploreInfluencer relatedInfluencers={relatedInfluencers} />
-      </div>
+      {relatedInfluencers ? (
+        <>
+          <div className="flex flex-col w-full gap-5">
+            <div className="flex gap-5 items-center">
+              {data.map((d: TDataCard, i: any) => (
+                <DataCard key={i} {...d} />
+              ))}
+            </div>
+            <ExploreInfluencer relatedInfluencers={relatedInfluencers} />
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
