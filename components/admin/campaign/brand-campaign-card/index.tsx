@@ -17,7 +17,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
-export type TCampaignForm = BrandCampaign;
+export type TCampaignForm = BrandCampaign | Campaign;
 
 const DeliverableItem = ({ title, children }: { title: string; children: React.ReactNode }) => {
   return (

@@ -3,12 +3,12 @@ import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { BrandCampaign, CampaignSchema } from "../schema";
+import { BrandCampaign, Campaign, CampaignSchema } from "../schema";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 
-const HeadingCard = ({ data }: { data: BrandCampaign }) => {
+const HeadingCard = ({ data }: { data: BrandCampaign | Campaign }) => {
   const role = useAppSelector(UserRole);
   return (
     <div>
@@ -34,10 +34,17 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
               </PopoverContent>
             </Popover>
           </div>
-          {data.capital && (
+          {role === "brand" ? (
+            data.capital && (
+              <>
+                <div className="w-[1px] h-6 bg-bc-grey"></div>
+                <p>Capital: {data.capital}</p>
+              </>
+            )
+          ) : (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
-              <p>Capital: {data.capital}</p>
+              <p>New Amount: {data.commercial}</p>
             </>
           )}
           {data.status && (
