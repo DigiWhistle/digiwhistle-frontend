@@ -1,21 +1,18 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
-export function CircularChart() {
-  const label = "Fake Followers";
-  const value = 32;
+export function CircularChart({ metric, percent }: { metric: any; percent: boolean }) {
+  const label = metric.key;
+  const value = metric.value;
+  let displayvalue;
+  if (percent) {
+    displayvalue = `${metric.value}%`;
+  } else {
+    displayvalue = `${metric.value}`;
+  }
 
   const chartData = [{ browser: "chrome", visitors: value, fill: "#0A70F5" }];
 
@@ -34,7 +31,7 @@ export function CircularChart() {
         <RadialBarChart
           data={chartData}
           startAngle={0}
-          endAngle={120}
+          endAngle={percent ? value * 3.6 : 200}
           innerRadius={80}
           outerRadius={110}
         >
@@ -58,7 +55,7 @@ export function CircularChart() {
                       dominantBaseline="middle"
                     >
                       <tspan x={viewBox.cx} y={110} className="fill-foreground text-4xl font-bold">
-                        {chartData[0].visitors.toLocaleString()}
+                        {displayvalue}
                       </tspan>
                       <tspan
                         x={viewBox.cx}

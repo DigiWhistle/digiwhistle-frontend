@@ -3,7 +3,14 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { CircularChart } from "@/components/ui/Charts/CircularChart";
-const ExploreInfluencer = ({ relatedInfluencers }: { relatedInfluencers: any }) => {
+import Image from "next/image";
+const ExploreInfluencer = ({
+  relatedInfluencers,
+  urlType,
+}: {
+  relatedInfluencers: any;
+  urlType: "youtube" | "instagram" | "X" | undefined;
+}) => {
   return (
     <div className="flex gap-6">
       <div className="w-[820px] flex gap-8 items-start justify-start bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
@@ -32,7 +39,23 @@ const ExploreInfluencer = ({ relatedInfluencers }: { relatedInfluencers: any }) 
             </div>
           </div>
           <hr />
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
+            {urlType === "X" ? (
+              <Image src="/assets/explore/X.webp" alt="X" width={36} height={36} />
+            ) : (
+              <></>
+            )}
+            {urlType === "youtube" ? (
+              <Image src="/assets/explore/youtube.webp" alt="X" width={46} height={36} />
+            ) : (
+              <></>
+            )}
+            {urlType === "instagram" ? (
+              <Image src="/assets/explore/instagram.webp" alt="X" width={38} height={38} />
+            ) : (
+              <></>
+            )}
+
             <p className="font-sans text-tc-body-grey text-body-lg-medium">
               {!relatedInfluencers.profileUrl.includes("youtube") && "@"}
               {relatedInfluencers.profileUrl.split("/").pop()}
@@ -45,9 +68,13 @@ const ExploreInfluencer = ({ relatedInfluencers }: { relatedInfluencers: any }) 
           </div>
         </div>
       </div>
-      <div className="min-w-64 flex gap-8  justify-center bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
-        <CircularChart />
-      </div>
+      {urlType !== "youtube" ? (
+        <div className="min-w-64 flex gap-8  justify-center bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
+          <CircularChart percent={urlType === "instagram"} metric={relatedInfluencers.metric} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
