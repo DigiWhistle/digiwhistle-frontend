@@ -12,7 +12,7 @@ const HeadingCard = ({ data }: { data: BrandCampaign | Campaign }) => {
   const role = useAppSelector(UserRole);
   return (
     <div>
-      <div className="w-full flex gap-4 items-center justify-between text-tc-body-grey font-medium">
+      <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
         <div className="flex items-center gap-4">
           <div className="flex gap-1 items-center">
             <h5 className="text-heading-m-semibold text-tc-primary-default">{data.name}</h5>

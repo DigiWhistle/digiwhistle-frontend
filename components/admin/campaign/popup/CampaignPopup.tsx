@@ -73,43 +73,53 @@ const CampaignPopup = ({
   const [getbrand, brandSetter] = useState<any>({});
   const [getmanager, managerSetter] = useState<any>({});
   const [getWinner, winnerSetter] = useState<any>({});
-  const [EditData, SetEditData] = useState<any>(null);
+  // const [EditData, SetEditData] = useState<any>(null);
+  const form = useForm<z.infer<typeof CampaignSchema>>({
+    resolver: zodResolver(CampaignSchema),
+    defaultValues: {
+      campaignName: "",
+      campaignCode: "",
+      brand: "",
+      campaignDuration: { from: new Date(), to: new Date() },
+      commBrand: 0,
+      invoiceNo: "",
+      campaignManager: "",
+      incentiveWinner: "",
+      paymentStatus: "",
+      additionalDetails: "",
+      campaignEmail: undefined,
+    },
+  });
   useEffect(() => {
     if (mode === "Edit campaign") {
       const updateFunction = async () => {
-        const response: any = await GET(`campaign/dad749c8-fb7d-44af-bdc2-7cf5fdacff2c`);
+        const response: any = await GET(`campaign/${edit_id}`);
         console.log("incoming data", response);
+        brandSetter(response.data.brand);
+        managerSetter(response.data.manager);
+        winnerSetter(response.data.incentiveWinner);
+        form.reset({
+          campaignName: response.data.name,
+          campaignCode: response.data.code,
+          brand: response.data.brandName,
+          campaignDuration: {
+            from: new Date(response.data.startDate),
+            to: new Date(response.data.endDate),
+          },
+          commBrand: response.data.commercial,
+          invoiceNo: response.data.invoiceNo,
+          campaignManager: response.data.manager.name || "",
+          incentiveWinner: response.data.incentiveWinner.name || "",
+          paymentStatus: response.data.paymentStatus,
+          additionalDetails: response.data.details,
+          campaignEmail: "",
+        });
         setEmails(response.data.participants);
-        SetEditData(response.data);
+        // SetEditData(response.data);
       };
       updateFunction();
     }
   }, []);
-  let formvalues;
-  if (mode === "Edit campaign") {
-    formvalues = {
-      campaignName: "Chirag ka nara",
-      campaignCode: "Nibba02",
-      brand: "cheems",
-      campaignDuration: {
-        from: new Date("2024-09-17T19:46:28.396Z"),
-        to: new Date("2024-09-17T19:46:28.396Z"),
-      },
-      commBrand: 120000,
-      invoiceNo: "pese dede",
-      campaignManager: "Cheems",
-      incentiveWinner: "Cheemrag",
-      paymentStatus: "Pending",
-      additionalDetails: "yo bro keep it up",
-      campaignEmail: undefined,
-    };
-  } else {
-    formvalues = {};
-  }
-  const form = useForm<z.infer<typeof CampaignSchema>>({
-    resolver: zodResolver(CampaignSchema),
-    defaultValues: formvalues,
-  });
 
   const setterfunction = (formname: any, Option: any) => {
     if (formname === "campaignEmail") {
@@ -125,13 +135,11 @@ const CampaignPopup = ({
     }
   };
 
-  console.log(form.getValues("brand"));
   const handleForm = async (data: z.infer<typeof CampaignSchema>, e: any) => {
-    console.log("data", data);
     const sendInfo = {
       name: data.campaignName,
       code: data.campaignCode,
-      brand: getbrand.id,
+      brand: getbrand.id || "donnt",
       brandName: data.brand,
       startDate: data.campaignDuration.from,
       endDate: data.campaignDuration.to,
@@ -142,12 +150,13 @@ const CampaignPopup = ({
       incentiveWinner: getWinner.id,
       participants: allEmails,
     };
-    console.log("sendInfo", sendInfo);
-    let response;
+    console.log("sendinfo", sendInfo);
+    let response: any;
+    response = {};
     if (mode === "Create campaign") {
       response = await POST("campaign", sendInfo);
     } else {
-      response = await PATCH(`campaign/dad749c8-fb7d-44af-bdc2-7cf5fdacff2c`, sendInfo);
+      response = await PATCH(`campaign/${edit_id}`, sendInfo);
     }
     if (response.error) {
       toast.error(response.error);
@@ -155,7 +164,8 @@ const CampaignPopup = ({
       toast.success(response.message);
     }
     setEmails([]);
-    // form.reset();
+    form.reset({});
+    window.location.reload();
   };
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));
