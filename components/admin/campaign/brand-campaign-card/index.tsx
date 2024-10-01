@@ -28,11 +28,11 @@ const DeliverableItem = ({ title, children }: { title: string; children: React.R
   );
 };
 
-const BrandCampaignCard = ({ data }: { data: TCampaignForm }) => {
+const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number }) => {
   return (
-    <Accordion defaultValue="item-1" type="single" collapsible className="w-full">
+    <Accordion defaultValue="" type="single" collapsible className="w-full">
       <AccordionItem
-        value="item-1"
+        value={index.toString()}
         className="w-full border border-bc-grey rounded-2xl p-3 px-4 space-y-4"
       >
         <HeadingCard data={data} />
