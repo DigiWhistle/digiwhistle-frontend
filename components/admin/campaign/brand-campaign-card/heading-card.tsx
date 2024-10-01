@@ -8,7 +8,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/soli
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 
-const HeadingCard = ({ data }: { data: BrandCampaign | Campaign }) => {
+const HeadingCard = ({ data }: { data: BrandCampaign }) => {
   const role = useAppSelector(UserRole);
   return (
     <div>
@@ -44,6 +44,7 @@ const HeadingCard = ({ data }: { data: BrandCampaign | Campaign }) => {
           ) : (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
+              {/* @ts-ignore */}
               <p>New Amount: {data.commercial}</p>
             </>
           )}
