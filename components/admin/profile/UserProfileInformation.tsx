@@ -278,7 +278,7 @@ const ProfileInformation = () => {
                         label="POC Mobile Number"
                         mobileFormName="mobileNo"
                         required
-                        disabled={!editable}
+                        disabled
                       />
                     </div>
                   </div>
