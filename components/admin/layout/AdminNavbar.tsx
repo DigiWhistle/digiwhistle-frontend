@@ -35,8 +35,8 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
           </div>
 
           <Link href={profileUrl}>
-            <div className="flex items-center space-x-3 mr-3">
-              <Avatar className=" flex border-2  border-white w-11 h-11 bg-slate-100 rounded-full ">
+            <div className="flex items-center  space-x-3 mr-3">
+              <Avatar className=" flex border-2 items-center justify-center border-white w-11 h-11 bg-slate-100 rounded-full ">
                 {userInfo?.profile?.profilePic ? (
                   <AvatarImage
                     className="rounded-full w-full h-full shado object-cover"

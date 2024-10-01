@@ -69,7 +69,7 @@ const UserSidebarLinks = [
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
-    link: "/user/explore-influencers/1",
+    link: "/user/explore/1",
     linkText: "Explore influencers",
     keyword: "explore",
   },

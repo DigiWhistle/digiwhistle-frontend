@@ -27,7 +27,7 @@ export const userSlice = createSlice({
       action: PayloadAction<IInfluencerResponse | IAdminResponse | IBrandResponse>,
     ) => {
       if (state.user) {
-        state.user.profile = action.payload;
+        state.user.profile = { ...state.user.profile, ...action.payload };
       }
     },
     clearUser: state => {
