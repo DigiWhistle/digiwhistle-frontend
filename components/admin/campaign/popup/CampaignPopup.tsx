@@ -73,6 +73,7 @@ const CampaignPopup = ({
   const [getbrand, brandSetter] = useState<any>({});
   const [getmanager, managerSetter] = useState<any>({});
   const [getWinner, winnerSetter] = useState<any>({});
+  const [isLoading, setLoading] = useState<boolean>(false);
   // const [EditData, SetEditData] = useState<any>(null);
   const form = useForm<z.infer<typeof CampaignSchema>>({
     resolver: zodResolver(CampaignSchema),
@@ -93,8 +94,13 @@ const CampaignPopup = ({
   useEffect(() => {
     if (mode === "Edit campaign") {
       const updateFunction = async () => {
+        setLoading(true);
         const response: any = await GET(`campaign/${edit_id}`);
-        console.log("incoming data", response);
+        if (response.error) {
+          toast.error(response.error);
+          setLoading(false);
+          return;
+        }
         brandSetter(response.data.brand);
         managerSetter(response.data.manager);
         winnerSetter(response.data.incentiveWinner);
@@ -115,6 +121,8 @@ const CampaignPopup = ({
           campaignEmail: "",
         });
         setEmails(response.data.participants);
+        setLoading(false);
+
         // SetEditData(response.data);
       };
       updateFunction();
@@ -170,6 +178,15 @@ const CampaignPopup = ({
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
+        <span className="loading loading-spinner loading-xl "></span>
+        <div>Fetching Campaign Details</div>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col max-h-[570px] overflow-y-auto pb-3">
       <Form {...form}>

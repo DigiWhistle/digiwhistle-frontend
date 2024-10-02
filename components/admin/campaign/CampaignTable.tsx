@@ -70,11 +70,13 @@ const CampaignTable = () => {
 
   const CampaignTable =
     data.data.length > 0 ? (
-      data.data.map(campaign => {
+      data.data.map((campaign, index) => {
         if (role === "admin") {
-          return <CampaignCard data={campaign as Campaign} key={campaign.code} />;
+          return <CampaignCard data={campaign as Campaign} key={campaign.code} index={index} />;
         } else {
-          return <BrandCampaignCard data={campaign as BrandCampaign} key={campaign.code} />;
+          return (
+            <BrandCampaignCard data={campaign as BrandCampaign} key={campaign.code} index={index} />
+          );
         }
       })
     ) : (

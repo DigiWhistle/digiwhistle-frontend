@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 export type TCampaignForm = Campaign;
 
-const CampaignCard = ({ data }: { data: TCampaignForm }) => {
+const CampaignCard = ({ data, index }: { data: TCampaignForm; index: number }) => {
   const form = useForm<TCampaignForm>({
     resolver: zodResolver(CampaignSchema),
     defaultValues: data,
@@ -41,9 +41,9 @@ const CampaignCard = ({ data }: { data: TCampaignForm }) => {
           console.error("Form submission errors:", errors);
         })}
       >
-        <Accordion defaultValue="item-1" type="single" collapsible className="w-full">
+        <Accordion defaultValue={""} type="single" collapsible className="w-full">
           <AccordionItem
-            value="item-1"
+            value={index.toString()}
             className="w-full border border-bc-grey rounded-2xl p-3 px-4 space-y-4"
           >
             <HeadingCard />
