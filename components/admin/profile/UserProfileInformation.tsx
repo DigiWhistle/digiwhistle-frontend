@@ -30,7 +30,7 @@ import { AppDispatch } from "@/lib/config/store";
 import { getCookie } from "cookies-next";
 import { cn } from "@/lib/utils";
 import { IBrandResponse } from "@/types/auth/response-types";
-const brandProfileSchema = z.object({
+const brandAndAgencyProfileSchema = z.object({
   name: z.string().min(1, "First name is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -42,7 +42,7 @@ const uploadImageSchema = z.object({
   image: z.string(),
 });
 
-const ProfileInformation = () => {
+const UserProfileInformation = () => {
   const [user, setUser] = useState<any>(null);
   const userStore = useAppSelector(User);
   const router = useRouter();
@@ -51,8 +51,8 @@ const ProfileInformation = () => {
   const userRole = useAppSelector(UserRole);
   const dispatch = useAppDispatch();
   const [editable, setEditor] = useState(false);
-  const brandForm = useForm<z.infer<typeof brandProfileSchema>>({
-    resolver: zodResolver(brandProfileSchema),
+  const brandForm = useForm<z.infer<typeof brandAndAgencyProfileSchema>>({
+    resolver: zodResolver(brandAndAgencyProfileSchema),
     defaultValues: {},
   });
   useEffect(() => {
@@ -88,7 +88,7 @@ const ProfileInformation = () => {
     resolver: zodResolver(uploadImageSchema),
   });
 
-  const handleBrandProfileUpdate = async (data: z.infer<typeof brandProfileSchema>) => {
+  const handleBrandProfileUpdate = async (data: z.infer<typeof brandAndAgencyProfileSchema>) => {
     const senddata = {
       name: data.name,
       pocFirstName: data.firstName,
@@ -128,7 +128,7 @@ const ProfileInformation = () => {
     // console.log("this is url:", url);
     if (url) {
       let data;
-      if (userRole === "brand") {
+      if (userRole === "brand" || userRole === "agency") {
         data = {
           name: user.profile.name,
           pocFirstName: user.profile.firstName,
@@ -228,7 +228,7 @@ const ProfileInformation = () => {
               <></>
             )}
           </div>
-          {userRole === "brand" ? (
+          {userRole === "brand" || userRole === "agency" ? (
             <div className="flex flex-col gap-4">
               <Form {...brandForm}>
                 <form action="" onSubmit={brandForm.handleSubmit(handleBrandProfileUpdate)}>
@@ -311,4 +311,4 @@ const ProfileInformation = () => {
   );
 };
 
-export default ProfileInformation;
+export default UserProfileInformation;

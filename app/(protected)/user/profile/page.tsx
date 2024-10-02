@@ -1,7 +1,7 @@
 import React from "react";
-import ProfileInformation from "@/components/admin/profile/UserProfileInformation";
+import UserProfileInformation from "@/components/admin/profile/UserProfileInformation";
 const page = () => {
-  return <ProfileInformation />;
+  return <UserProfileInformation />;
 };
 
 export default page;

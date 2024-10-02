@@ -12,7 +12,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // TODO: add user context
   const dispatch = useDispatch();
   const user = useSelector(User);
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!user) {
