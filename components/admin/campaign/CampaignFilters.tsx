@@ -19,7 +19,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { InfluencerType } from "@/types/admin/influencer";
+import { InfluencerPlatforms, InfluencerType } from "@/types/admin/influencer";
+import { UserRole } from "@/store/UserSlice";
+import { influencerPlatforms } from "../new-requests/TableSection/influencer-table/InfluencerFilters";
 
 // @ts-ignore
 const InfluencerTypes = Object.values(InfluencerType).map(platform => ({
@@ -33,6 +35,12 @@ const PaymentOption = [
   { label: "Pending", value: "Pending" },
 ];
 
+const CampaignStatusOptions = [
+  { label: "All", value: "all" },
+  { label: "Live", value: "Live" },
+  { label: "Not Live", value: "Not Live" },
+];
+
 export function FiltersDropdown({
   pushUrl,
   removeParam,
@@ -41,11 +49,16 @@ export function FiltersDropdown({
   removeParam: (paramName: string) => void;
 }) {
   const searchParams = useSearchParams();
+  const role = useAppSelector(UserRole);
 
   const defaultPayment = searchParams.get("payment");
   const defaultType = searchParams.get("type");
+  const defaultCampaignStatus = searchParams.get("status");
+  const defaultPlatform = searchParams.get("platform");
 
-  const countFilters = [defaultPayment, defaultType].filter(item => item !== null).length;
+  const countFilters = [defaultPayment, defaultType, defaultCampaignStatus, defaultPlatform].filter(
+    item => item !== null,
+  ).length;
 
   return (
     <div className="flex gap-3 items-center">
@@ -68,18 +81,58 @@ export function FiltersDropdown({
             ))}
           </RadioGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuLabel className="font-medium pl-0 mb-3">Influencer Type</DropdownMenuLabel>
-          <RadioGroup
-            defaultValue={defaultType as string}
-            onValueChange={value => pushUrl("type", value)}
-          >
-            {InfluencerTypes.map(item => (
-              <div className="flex items-center space-x-2" key={item.value}>
-                <RadioGroupItem value={item.value} id={item.value} />
-                <Label htmlFor={item.value}>{item.label}</Label>
-              </div>
-            ))}
-          </RadioGroup>
+          {role === "admin" ? (
+            <>
+              <DropdownMenuLabel className="font-medium pl-0 mb-3">
+                Influencer Type
+              </DropdownMenuLabel>
+              <RadioGroup
+                defaultValue={defaultType as string}
+                onValueChange={value => pushUrl("type", value)}
+              >
+                {InfluencerTypes.map(item => (
+                  <div className="flex items-center space-x-2" key={item.value}>
+                    <RadioGroupItem value={item.value} id={item.value} />
+                    <Label htmlFor={item.value}>{item.label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </>
+          ) : (
+            <>
+              <DropdownMenuLabel className="font-medium pl-0 mb-3">
+                Campaign Status
+              </DropdownMenuLabel>
+              <RadioGroup
+                defaultValue={defaultCampaignStatus as string}
+                onValueChange={value => pushUrl("status", value)}
+              >
+                {CampaignStatusOptions.map(item => (
+                  <div className="flex items-center space-x-2" key={item.value}>
+                    <RadioGroupItem value={item.value} id={item.value} />
+                    <Label htmlFor={item.value}>{item.label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </>
+          )}
+          {role !== "admin" && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel className="font-medium pl-0 mb-3">Platform</DropdownMenuLabel>
+              <RadioGroup
+                defaultValue={defaultPlatform as string}
+                onValueChange={(value: string) => pushUrl("platform", value)}
+              >
+                {influencerPlatforms.map(item => (
+                  <div className="flex items-center space-x-2" key={item.value}>
+                    <RadioGroupItem value={item.value} id={item.value} />
+                    <Label htmlFor={item.value}>{item.label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       {countFilters > 0 && <div className="w-px h-7 bg-gray-554"></div>}
@@ -88,6 +141,12 @@ export function FiltersDropdown({
       )}
       {defaultType && (
         <FilterTag value={defaultType} paramName="type" onClickHandler={removeParam} />
+      )}
+      {defaultCampaignStatus && (
+        <FilterTag value={defaultCampaignStatus} paramName="status" onClickHandler={removeParam} />
+      )}
+      {defaultPlatform && (
+        <FilterTag value={defaultPlatform} paramName="platform" onClickHandler={removeParam} />
       )}
     </div>
   );

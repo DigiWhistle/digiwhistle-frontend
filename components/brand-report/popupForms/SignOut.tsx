@@ -13,10 +13,10 @@ const SignOut = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const handleLogout = () => {
+    router.push("/login");
     deleteCookie("role");
     deleteCookie("token");
     dispatch(clearUser());
-    router.push("/login");
     if (checkState) {
       setCookie("Signout", true, { maxAge: 60 * 60 * 24 * 10000 });
     }

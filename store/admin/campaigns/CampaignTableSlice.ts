@@ -34,6 +34,8 @@ export const fetchCampaignsData = createAsyncThunk(
     name,
     payment,
     type,
+    status,
+    platform,
   }: {
     page: number;
     limit?: number;
@@ -42,6 +44,8 @@ export const fetchCampaignsData = createAsyncThunk(
     name?: string | null;
     payment?: string | null;
     type?: InfluencerType;
+    status?: string | null;
+    platform?: string | null;
   }) => {
     let url = `campaign?page=${page}&limit=${limit}`;
 
@@ -59,6 +63,14 @@ export const fetchCampaignsData = createAsyncThunk(
 
     if (type) {
       url += `&type=${type}`;
+    }
+
+    if (status) {
+      url += `&campaignStatus=${status}`;
+    }
+
+    if (platform) {
+      url += `&platform=${platform}`;
     }
 
     const response = await GET<ICampaignTable>(url);

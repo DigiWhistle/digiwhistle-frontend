@@ -34,7 +34,7 @@ const ExploreInfluencer = ({
                 Digiwhistle creator
               </div>
             </div>
-            <div className="font-sans text-tc-body-grey text-body-lg-light">
+            <div className="font-sans text-tc-body-grey text-body-lg-light h-36 overflow-hidden text-wrap truncate">
               {relatedInfluencers.desc}
             </div>
           </div>
