@@ -35,8 +35,8 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
           </div>
 
           <Link href={profileUrl}>
-            <div className="flex items-center  space-x-3 mr-3">
-              <Avatar className=" flex border-2 items-center justify-center border-white w-11 h-11 bg-slate-100 rounded-full ">
+            <div className="flex items-center space-x-3 mr-3">
+              <Avatar className=" flex border-2 justify-center items-center border-white w-11 h-11 bg-slate-100 rounded-full ">
                 {userInfo?.profile?.profilePic ? (
                   <AvatarImage
                     className="rounded-full w-full h-full shado object-cover"
@@ -49,9 +49,8 @@ const AdminNavbar = ({ drawerView, setDrawerView }: AdminNavbarinterface) => {
 
               <div className="flex-col space-y-1">
                 <div className="text-body-lg-medium text-white">
-                  {userInfo?.profile && "firstName" in userInfo.profile
-                    ? `${userInfo.profile.firstName} ${userInfo.profile.lastName}`
-                    : ""}
+                  {userInfo?.profile?.firstName ?? userInfo?.profile?.pocFirstName}{" "}
+                  {userInfo?.profile?.lastName ?? userInfo?.profile?.pocLastName}
                 </div>
                 <div className="text-body-sm-light text-white">
                   {userInfo?.profile?.designation ?? userInfo?.role}
