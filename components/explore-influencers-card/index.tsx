@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { CircularChart } from "@/components/ui/Charts/CircularChart";
 import Image from "next/image";
-const ExploreInfluencer = ({
+const ExploreInfluencerCard = ({
   relatedInfluencers,
   urlType,
 }: {
@@ -79,4 +79,4 @@ const ExploreInfluencer = ({
   );
 };
 
-export default ExploreInfluencer;
+export default ExploreInfluencerCard;
