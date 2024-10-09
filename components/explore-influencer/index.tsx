@@ -74,7 +74,6 @@ const ExploreInfluencer = () => {
       setInfluencers(response.data);
     } else {
       setInfluencers(null);
-      toast.error(response.error);
     }
 
     setLoading(false);

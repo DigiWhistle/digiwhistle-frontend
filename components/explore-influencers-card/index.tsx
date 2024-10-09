@@ -14,7 +14,7 @@ const ExploreInfluencerCard = ({
   return (
     <div className="flex gap-6">
       <div className="w-[820px] flex gap-8 items-start justify-start bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
-        <Avatar className="flex relative min-w-40 max-w-[280px]  h-full bg-slate-100 rounded-xl ">
+        <Avatar className="flex relative min-w-40 max-w-[280px] overflow-hidden h-full bg-slate-100 rounded-xl ">
           {relatedInfluencers.profilePic ? (
             <AvatarImage
               className="flex min-w-40  object-cover  items-center justify-center"
