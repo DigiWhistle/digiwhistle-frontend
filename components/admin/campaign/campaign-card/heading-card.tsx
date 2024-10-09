@@ -70,7 +70,7 @@ const HeadingCard = () => {
           {form.getValues("commercial") && (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
-              <p>Comm. Brand: {form.getValues("commercial")}</p>
+              <p>Comm. Brand: ₹ {form.getValues("commercial")}</p>
             </>
           )}
           {form.getValues("invoice") && (

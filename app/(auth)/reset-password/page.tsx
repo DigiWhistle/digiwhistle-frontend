@@ -35,7 +35,7 @@ const ResetPassword = () => {
       toast.error("Invalid Link");
       return;
     } else {
-      const response = await postRequest("auth/reset-password", {
+      const response = await postRequest("auth/reset/password", {
         oobCode: paramsRole,
         password: data.password,
       });

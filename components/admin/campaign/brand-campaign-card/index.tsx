@@ -16,13 +16,21 @@ import { PlayIcon, UserCircleIcon, MinusCircleIcon } from "@heroicons/react/24/s
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-
+import { cn } from "@/lib/utils";
 export type TCampaignForm = BrandCampaign;
 
-const DeliverableItem = ({ title, children }: { title: string; children: React.ReactNode }) => {
+const DeliverableItem = ({
+  title,
+  children,
+  classname,
+}: {
+  title: string;
+  children: React.ReactNode;
+  classname?: string;
+}) => {
   return (
-    <div className="space-y-1">
-      <p className="text-tc-primary-default font-medium shrink-0">{title}</p>
+    <div className={cn("flex flex-col space-y-1 ", classname)}>
+      <p className="text-tc-primary-default font-medium shrink-0 ">{title}</p>
       <div className="flex gap-1 items-center text-[#7D7D7F] ml-0.5">{children}</div>
     </div>
   );
@@ -41,10 +49,10 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
           {data.participants.length > 0 &&
             data.participants.map((participant, index) => (
               <div
-                className="border border-gray-555 p-4 flex justify-between bg-gray-553 rounded-md"
+                className="border border-gray-555 p-4 flex min-w-[800px] bg-gray-553 rounded-md"
                 key={index}
               >
-                <div className="space-y-1  justify-self-start">
+                <div className="space-y-1 min-w-[200px]  justify-self-start">
                   <p className="text-tc-primary-default font-medium">Influencer Name</p>
                   <div className="flex gap-1 items-center">
                     <UserCircleIcon className="w-5 h-5 text-gray-558" />
@@ -55,9 +63,9 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
                   {"deliverables" in participant &&
                     participant.deliverables.map((item, index) => (
                       <>
-                        <div key={index} className="flex gap-16 justify-between mr-8">
-                          <div className="flex gap-16 items-start ">
-                            <div className="space-y-1">
+                        <div key={index} className="flex gap-2 justify-between  mr-8">
+                          <div className="flex gap-10 items-start ">
+                            <div className="space-y-1 min-w-[122px]">
                               <div className="flex gap-1 items-center">
                                 <p className="text-tc-primary-default font-medium">Deliverable</p>
                                 <Popover>
@@ -78,7 +86,9 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
                                 {item.title}
                               </div>
                             </div>
-                            <DeliverableItem title="Platform">{item.platform}</DeliverableItem>
+                            <DeliverableItem classname="min-w-[100px]" title="Platform">
+                              {item.platform}
+                            </DeliverableItem>
                             <DeliverableItem title="Campaign Status">
                               <>
                                 {item.status === "Live" ? (
@@ -89,16 +99,20 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
                                 {item.status}
                               </>
                             </DeliverableItem>
-                            <DeliverableItem title="Deliverable Link">
+                            <DeliverableItem classname="min-w-[280px] " title="Deliverable Link">
                               <>
                                 <ArrowTopRightOnSquareIcon className="w-4 h-4 text-link" />
                                 {item.deliverableLink ? item.deliverableLink : "-"}
                               </>
                             </DeliverableItem>
                           </div>
-                          <div className="flex gap-16 items-start">
-                            <DeliverableItem title="ER %">{item.er}</DeliverableItem>
-                            <DeliverableItem title="CPV">{item.cpv}</DeliverableItem>
+                          <div className="flex gap-10 items-start">
+                            <DeliverableItem classname="min-w-14" title="ER %">
+                              {item.er}
+                            </DeliverableItem>
+                            <DeliverableItem classname="min-w-14" title="CPV">
+                              {item.cpv}
+                            </DeliverableItem>
                           </div>
                         </div>
                         {index < participant.deliverables.length - 1 && (

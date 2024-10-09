@@ -59,7 +59,7 @@ const FormSelectInput = ({
       name={formName}
       render={({ field }) => (
         <FormItem className={cn("w-full  flex flex-col ", className)}>
-          <FormLabel className="text-sm font-medium text-black ">
+          <FormLabel className="text-sm font-medium -mb-1 text-black ">
             {label} {required && <span className="text-destructive">*</span>}
           </FormLabel>
 
@@ -71,7 +71,7 @@ const FormSelectInput = ({
             defaultValue={defaultValue}
           >
             <FormControl>
-              <SelectTrigger className={cn("flex gap-1 rounded-full ", triggerCN)}>
+              <SelectTrigger className={cn("flex gap-1 -mt-2 rounded-full ", triggerCN)}>
                 <SelectValue className="flex w-full gap-2" placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

@@ -97,7 +97,7 @@ const DeliverableForm = ({
       />
       <FormTextInput
         formName={`${accessorString}.deliverableLink`}
-        label="Deliverable Link"
+        label="Deliverable link"
         placeholder="Paste link here"
         inputCN="h-8"
         className="flex-grow"
@@ -105,7 +105,7 @@ const DeliverableForm = ({
       />
       <FormTextInput
         formName={`${accessorString}.er`}
-        label="ER %"
+        label="ER%"
         placeholder="value"
         inputCN="h-8"
         className=" max-w-24"
@@ -113,7 +113,7 @@ const DeliverableForm = ({
       />
       <FormTextInput
         formName={`${accessorString}.cpv`}
-        label="CPV %"
+        label="CPV"
         placeholder="value"
         inputCN="h-8"
         className=" max-w-24"

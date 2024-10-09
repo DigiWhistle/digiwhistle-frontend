@@ -325,7 +325,7 @@ export const createColumns = (
                 <button
                   type="button"
                   onClick={async () => {
-                    const response = await POST("user/revertAction", {
+                    const response = await POST("user/revert", {
                       userId: userId,
                     });
                     if (response.error) {

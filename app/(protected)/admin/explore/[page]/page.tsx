@@ -24,7 +24,7 @@ const Page = () => {
   const [data, setData] = useState<TDataCard[]>([]);
   const [urlType, setUrlTYpe] = useState<"youtube" | "instagram" | "X" | undefined>("instagram");
   const debouncedFetchData = debounce(async (value: string) => {
-    const response: any = await GET(`influencer/explore-influencer?url=${value}`);
+    const response: any = await GET(`influencer/explore?url=${value}`);
     const hellp: any = await GET(`user`);
     console.log("userrole", hellp);
     console.log(response);

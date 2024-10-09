@@ -196,7 +196,7 @@ const CampaignPopup = ({
               <FormTextInput formName="campaignName" placeholder="" label="Campaign name" />
               <FormTextInput formName="campaignCode" placeholder="" label="Campaign code" />
               <SearchSelect
-                endpoint={"search-brands"}
+                endpoint={"brand/search"}
                 formName="brand"
                 searchPlaceholder="Search Brand"
                 placeholder="Select Brand"
@@ -228,7 +228,7 @@ const CampaignPopup = ({
             </div>
             <div className="flex gap-5">
               <SearchSelect
-                endpoint={"search-employees"}
+                endpoint={"employee/search"}
                 formName="campaignManager"
                 searchPlaceholder="Search Manager"
                 selectedValueSetter={managerSetter}
@@ -238,7 +238,7 @@ const CampaignPopup = ({
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
               />
               <SearchSelect
-                endpoint={"search-employees"}
+                endpoint={"employee/search"}
                 formName="incentiveWinner"
                 searchPlaceholder="Search Manager"
                 selectedValueSetter={winnerSetter}

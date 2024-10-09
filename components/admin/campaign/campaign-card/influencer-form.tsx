@@ -32,7 +32,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
 
   const removeItems = () => {
     selectedItems.forEach(async item => {
-      const response = await DELETE(`campaign-deliverables/${item.id}`);
+      const response = await DELETE(`deliverables/${item.id}`);
 
       if (response.error) {
         toast.error(`Error deleting deliverable: ${response.error}`);
@@ -57,7 +57,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
           formName={`${accessorString}.name`}
           label="Influencer Name"
           placeholder="Enter name"
-          className="max-w-72"
+          className="max-w-44"
           inputCN="h-8"
           disabled
         />
@@ -112,10 +112,10 @@ const InfluencerForm = ({ index }: { index: number }) => {
             label="Payment Status"
             placeholder="Payment Status"
             selectItems={PaymentStatusOptions}
-            triggerCN="h-9"
-            className="mt-1/2"
+            triggerCN="h-[34px]"
+            className=""
           />
-          <div className=" flex flex-col gap-4 flex-shrink-0 self-start">
+          <div className=" flex flex-col gap-4 mt-[3px] flex-shrink-0 self-start">
             <Label>Invoice status</Label>
             {form.getValues(`participants.${index}.invoiceStatus`) === "Generated" ? (
               <p className="text-success flex gap-1 items-center">

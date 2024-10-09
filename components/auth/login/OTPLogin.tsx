@@ -56,7 +56,7 @@ const OTPLogin = () => {
       mobileNo: form.getValues("mobileNo"),
     };
     try {
-      const response = await postRequest("auth/generate-mobile-otp", user_info);
+      const response = await postRequest("auth/otp", user_info);
 
       if (response.error) {
         toast.error(response.error);
@@ -82,7 +82,7 @@ const OTPLogin = () => {
       otp: form.getValues("otp"),
     };
     try {
-      const response: any = await postRequest("auth/verify-mobile-otp", user_info);
+      const response: any = await postRequest("auth/otp/verify", user_info);
       if (response.data) {
         const user_data = {
           id: response.data.user.id,

@@ -62,7 +62,7 @@ const RequestsAction = ({
         <button
           type="button"
           onClick={async () => {
-            const response = await POST("user/revertAction", {
+            const response = await POST("user/revert", {
               userId: userId,
             });
             if (response.error) {
@@ -85,7 +85,7 @@ const RequestsAction = ({
         <button
           type="button"
           onClick={async () => {
-            const response = await POST("user/revertAction", {
+            const response = await POST("user/revert", {
               userId: userId,
             });
             if (response.error) {

@@ -168,7 +168,7 @@ const LoginForm = ({ className }: { className?: string }) => {
                       }
                       if (form.getValues("email")) {
                         form.clearErrors("email");
-                        const response = await postRequest("auth/reset-password-email", {
+                        const response = await postRequest("auth/reset/password/request", {
                           email: form.getValues("email"),
                         });
                         if (response.error) {

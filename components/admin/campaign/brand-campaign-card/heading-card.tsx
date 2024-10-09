@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { BrandCampaign, Campaign, CampaignSchema } from "../schema";
-import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 
@@ -38,14 +38,14 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
             data.capital && (
               <>
                 <div className="w-[1px] h-6 bg-bc-grey"></div>
-                <p>Capital: {data.capital}</p>
+                <p>Capital: ₹ {data.capital}</p>
               </>
             )
           ) : (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
               {/* @ts-ignore */}
-              <p>New Amount: {data.commercial}</p>
+              <p>Revenue: ₹ {data.commercial}</p>
             </>
           )}
           {data.status && (
@@ -64,7 +64,8 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           )}
           {data.poc && (
             <>
-              <div className="w-0.5 h-6 bg-bc-grey"></div>
+              <div className="flex w-0.5  h-6 bg-bc-grey"></div>
+              <UserIcon className="h-5 -mr-2" />
               <p>
                 {data.poc}
                 {/* {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`} */}

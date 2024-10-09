@@ -44,7 +44,7 @@ const CampaignCard = ({ data, index }: { data: TCampaignForm; index: number }) =
         <Accordion defaultValue={""} type="single" collapsible className="w-full">
           <AccordionItem
             value={index.toString()}
-            className="w-full border border-bc-grey rounded-2xl p-3 px-4 space-y-4"
+            className="w-full  border border-bc-grey rounded-2xl p-3 px-4 space-y-4"
           >
             <HeadingCard />
 

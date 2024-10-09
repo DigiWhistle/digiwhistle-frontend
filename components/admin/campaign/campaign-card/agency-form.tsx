@@ -65,7 +65,7 @@ const AgencyForm = ({ index }: { index: number }) => {
     //   return;
     // }
 
-    const response = await DELETE(`campaign-deliverables/${deliverableId}`);
+    const response = await DELETE(`deliverables/${deliverableId}`);
 
     if (response.error) {
       toast.error(`Error deleting deliverable: ${response.error}`);
@@ -90,7 +90,7 @@ const AgencyForm = ({ index }: { index: number }) => {
             // @ts-ignore
             .map(_ => _.id);
 
-          const response = await DELETE(`campaign-deliverables`, {
+          const response = await DELETE(`deliverables`, {
             Ids: deliverableIds,
           });
         }
@@ -108,7 +108,7 @@ const AgencyForm = ({ index }: { index: number }) => {
           formName={`${accessorString}.name`}
           label="Agency Name"
           placeholder="Enter name"
-          className="max-w-72"
+          className="max-w-[320px]"
           inputCN="h-8"
           disabled
         />
@@ -148,10 +148,10 @@ const AgencyForm = ({ index }: { index: number }) => {
             label="Payment Status"
             placeholder="Payment Status"
             selectItems={PaymentStatusOptions}
-            triggerCN="h-9"
-            className="mt-1/2"
+            triggerCN="h-[34px]"
+            className="mt-1/2 "
           />
-          <div className=" flex flex-col gap-4 flex-shrink-0 self-start">
+          <div className=" flex flex-col gap-4 mt-[3px] flex-shrink-0 self-start">
             <Label>Invoice status</Label>
             {form.getValues(`participants.${index}.invoiceStatus`) === "Generated" ? (
               <p className="text-success flex gap-1 items-center">
