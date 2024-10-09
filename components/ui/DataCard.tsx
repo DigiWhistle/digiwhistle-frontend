@@ -7,9 +7,9 @@ export const DataCard = ({ label, value, subValue, iconName }: TDataCard) => {
     <div className="min-w-64 flex gap-8 items-center justify-between bg-white  px-4 py-5 rounded-2xl drop-shadow-y-elevation-md">
       <div className="flex flex-col items-start">
         <h5 className="text-heading-s opacity-70">{label} </h5>
-        <div className="flex items-center gap-2  ">
-          <h4 className="text-heading-xl-medium ">{value}</h4>
-          <h2>{subValue}</h2>
+        <div className="flex items-center gap-2  mt-2">
+          <p className="text-heading-xl-medium font-semibold">{value}</p>
+          <p>{subValue}</p>
         </div>
       </div>
       <div className="p-3 rounded-2xl bg-blue-582 h-min">

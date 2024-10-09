@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { CircularChart } from "@/components/ui/Charts/CircularChart";
 import Image from "next/image";
-const ExploreInfluencer = ({
+const ExploreInfluencerCard = ({
   relatedInfluencers,
   urlType,
 }: {
@@ -34,7 +34,7 @@ const ExploreInfluencer = ({
                 Digiwhistle creator
               </div>
             </div>
-            <div className="font-sans text-tc-body-grey text-body-lg-light">
+            <div className="font-sans text-tc-body-grey text-body-lg-light h-36 overflow-hidden text-wrap truncate">
               {relatedInfluencers.desc}
             </div>
           </div>
@@ -79,4 +79,4 @@ const ExploreInfluencer = ({
   );
 };
 
-export default ExploreInfluencer;
+export default ExploreInfluencerCard;

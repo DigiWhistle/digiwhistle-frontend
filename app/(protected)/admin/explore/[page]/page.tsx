@@ -7,7 +7,8 @@ import { debounce } from "lodash";
 import { GET } from "@/lib/config/axios";
 import { DataCard } from "@/components/ui/DataCard";
 import { TDataCard } from "@/types/admin/new-requests";
-import ExploreInfluencer from "@/components/admin/explore-influencers-card/ExploreInfluencer";
+import ExploreInfluencerCard from "@/components/explore-influencers-card";
+// import ExploreInfluencer from "@/components/admin/explore-influencers-card/ExploreInfluencer";
 import {
   UsersIcon,
   EyeIcon,
@@ -107,7 +108,7 @@ const Page = () => {
                 <DataCard key={i} {...d} />
               ))}
             </div>
-            <ExploreInfluencer urlType={urlType} relatedInfluencers={relatedInfluencers} />
+            <ExploreInfluencerCard urlType={urlType} relatedInfluencers={relatedInfluencers} />
           </div>
         </>
       ) : (

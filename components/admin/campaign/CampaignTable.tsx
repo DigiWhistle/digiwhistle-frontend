@@ -32,6 +32,8 @@ const CampaignTable = () => {
   const name = searchParams.get("name");
   const type = searchParams.get("type") as InfluencerType;
   const payment = searchParams.get("payment");
+  const status = searchParams.get("status");
+  const platform = searchParams.get("platform");
 
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
@@ -57,6 +59,8 @@ const CampaignTable = () => {
       name,
       type,
       payment,
+      status,
+      platform,
     };
 
     if (name !== prevName.current) {
@@ -66,7 +70,18 @@ const CampaignTable = () => {
     }
 
     prevName.current = name;
-  }, [dispatch, currentPath, name, type, payment, startTime, endTime, debouncedFetch]);
+  }, [
+    dispatch,
+    currentPath,
+    name,
+    type,
+    payment,
+    status,
+    platform,
+    startTime,
+    endTime,
+    debouncedFetch,
+  ]);
 
   const CampaignTable =
     data.data.length > 0 ? (

@@ -7,7 +7,6 @@ import { debounce } from "lodash";
 import { GET } from "@/lib/config/axios";
 import { DataCard } from "@/components/ui/DataCard";
 import { TDataCard } from "@/types/admin/new-requests";
-import ExploreInfluencerCard from "@/components/explore-influencers-card";
 import {
   UsersIcon,
   EyeIcon,
@@ -18,16 +17,16 @@ import {
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
-const Page = () => {
+import ExploreInfluencerCard from "../explore-influencers-card";
+const ExploreInfluencer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [relatedInfluencers, setInfluencers] = useState<any>(null);
   const [data, setData] = useState<TDataCard[]>([]);
   const [urlType, setUrlTYpe] = useState<"youtube" | "instagram" | "X" | undefined>("instagram");
+  const [loading, setLoading] = useState(false);
   const debouncedFetchData = debounce(async (value: string) => {
-    const response: any = await GET(`influencer/explore?url=${value}`);
-    const hellp: any = await GET(`user`);
-    console.log("userrole", hellp);
-    console.log(response);
+    setLoading(true);
+    const response: any = await GET(`influencer/explore-influencer?url=${value}`);
     // const response = {
     //   data: {
     //     cards: [
@@ -74,10 +73,13 @@ const Page = () => {
       setData(dataWithIcons as TDataCard[]);
       setInfluencers(response.data);
     } else {
+      setInfluencers(null);
       toast.error(response.error);
     }
+
+    setLoading(false);
   }, 1000);
-  const mark = "email";
+
   const handleValueChange = (e: any) => {
     setSearchTerm(e.target.value);
 
@@ -90,7 +92,7 @@ const Page = () => {
           <LinkIcon className="w-5 h-5" />
         </div>
         <Input
-          placeholder={"Type employee name here"}
+          placeholder={"Search using profile link here"}
           className={cn(
             "min-w-40 w-full ps-10 border-none placeholder:text-muted-foreground bg-white ",
           )}
@@ -99,7 +101,11 @@ const Page = () => {
           name="search"
         />
       </div>
-      {relatedInfluencers ? (
+      {loading ? (
+        <div className="w-full flex justify-center h-36">
+          <div className="loading loading-spinner loading-md text-yellow-101 "></div>
+        </div>
+      ) : relatedInfluencers ? (
         <>
           <div className="flex flex-col w-full gap-5">
             <div className="flex gap-5 items-center">
@@ -111,10 +117,10 @@ const Page = () => {
           </div>
         </>
       ) : (
-        <></>
+        <div>No Influencers Found</div>
       )}
     </div>
   );
 };
 
-export default Page;
+export default ExploreInfluencer;
