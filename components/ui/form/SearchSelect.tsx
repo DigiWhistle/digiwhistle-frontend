@@ -79,7 +79,7 @@ export function SearchSelect({
   const debouncedFetchData = debounce(async (value: string) => {
     let response: any;
     if (type === "EmailSelector") {
-      response = await GET(`campaign/user/search?type=InfluencerAndAgencyByEmail&email=${value}`);
+      response = await GET(`user/search?type=InfluencerAndAgencyByEmail&email=${value}`);
     } else {
       response = await GET(`${endpoint}?name=${value}`);
     }

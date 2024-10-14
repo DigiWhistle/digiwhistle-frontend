@@ -32,7 +32,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
 
   const removeItems = () => {
     selectedItems.forEach(async item => {
-      const response = await DELETE(`deliverables/${item.id}`);
+      const response = await DELETE(`campaign/deliverables/${item.id}`);
 
       if (response.error) {
         toast.error(`Error deleting deliverable: ${response.error}`);
