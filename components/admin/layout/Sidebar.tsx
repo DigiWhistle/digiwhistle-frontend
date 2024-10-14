@@ -11,6 +11,8 @@ import {
   IdentificationIcon,
   MagnifyingGlassIcon,
   MegaphoneIcon,
+  DocumentChartBarIcon,
+  BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,6 +24,57 @@ import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import SignOut from "@/components/brand-report/popupForms/SignOut";
 import { useAppSelector } from "@/lib/config/store";
 const AdminSidebarLinks = [
+  {
+    icon: <UserIcon className=" text-tc-ic-black-default" />,
+    link: "/admin/influencers/1",
+    linkText: "Influencers",
+    keyword: "influencers",
+  },
+
+  {
+    icon: <CursorArrowRaysIcon className="text-tc-ic-black-default" />,
+    link: "/admin/new-requests/influencer/1",
+    linkText: "New requests",
+    keyword: "new-requests",
+  },
+  {
+    icon: <MegaphoneIcon className="text-tc-ic-black-default" />,
+    link: "/admin/campaigns/1",
+    linkText: "All campaigns",
+    keyword: "campaigns",
+  },
+  {
+    icon: <QuestionMarkCircleIcon className="text-tc-ic-black-default" />,
+    link: "/admin/queries/1",
+    linkText: "Queries",
+    keyword: "queries",
+  },
+  {
+    icon: <IdentificationIcon className="text-tc-ic-black-default" />,
+    link: "/admin/profile-control/1",
+    linkText: "Profile control",
+    keyword: "profile-control",
+  },
+  {
+    icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
+    link: "/admin/explore/1",
+    linkText: "Explore influencers",
+    keyword: "explore",
+  },
+  {
+    icon: <DocumentChartBarIcon className="text-tc-ic-black-default" />,
+    link: "/admin/invoices/1",
+    linkText: "All Invoices",
+    keyword: "invoices",
+  },
+  {
+    icon: <BanknotesIcon className="text-tc-ic-black-default" />,
+    link: "/admin/payroll/1",
+    linkText: "Payroll",
+    keyword: "payroll",
+  },
+];
+const EmployeeSidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
     link: "/admin/influencers/1",
@@ -85,6 +138,8 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
   const filteredSidebarLinks = () => {
     if (role === "admin") {
       return AdminSidebarLinks;
+    } else if (role === "employee") {
+      return EmployeeSidebarLinks;
     }
     return UserSidebarLinks;
   };
