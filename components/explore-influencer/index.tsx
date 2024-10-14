@@ -26,7 +26,7 @@ const ExploreInfluencer = () => {
   const [loading, setLoading] = useState(false);
   const debouncedFetchData = debounce(async (value: string) => {
     setLoading(true);
-    const response: any = await GET(`influencer/explore-influencer?url=${value}`);
+    const response: any = await GET(`influencer/explore?url=${value}`);
     // const response = {
     //   data: {
     //     cards: [
