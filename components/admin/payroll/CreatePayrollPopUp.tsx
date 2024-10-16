@@ -41,9 +41,9 @@ const PayrollSchema = z.object({
   hra: z.number(),
   others: z.number(),
   ctc: z.number(),
-  bankName: z.string(),
-  accountNumber: z.number(),
-  ifscCode: z.string(),
+  // bankName: z.string(),
+  // accountNumber: z.number(),
+  // ifscCode: z.string(),
 });
 const CreatePayrollPopUp = ({
   mode,
@@ -53,7 +53,7 @@ const CreatePayrollPopUp = ({
   edit_id?: string;
 }) => {
   const [Email, setEmail] = useState<any>();
-  const [getBankName, setBankName] = useState<string>();
+  // const [getBankName, setBankName] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
   // const [EditData, SetEditData] = useState<any>(null);
   const form = useForm<z.infer<typeof PayrollSchema>>({
@@ -168,7 +168,7 @@ const CreatePayrollPopUp = ({
                 label="CTC/ month"
               />
             </div>
-            <hr className="mt-6 mb-5 " />
+            {/* <hr className="mt-6 mb-5 " />
             <div className="flex gap-5">
               <SearchSelect
                 endpoint={"employee/search"}
@@ -182,7 +182,7 @@ const CreatePayrollPopUp = ({
 
               <FormTextInput formName="accountNumber" placeholder="" label="Account Number" />
               <FormTextInput formName="ifscCode" placeholder="" label="IFSC Code" />
-            </div>
+            </div> */}
           </div>
         </form>
       </Form>
