@@ -39,7 +39,7 @@ interface IFormSearchSelectProps {
   disabled?: boolean;
   formDescription?: string;
   defaultValue?: string;
-  type?: "EmailSelector";
+  type?: "EmailSelector" | "email";
   className?: string;
   inputCN?: string;
   leftIcon?: React.ReactNode;
@@ -79,7 +79,10 @@ export function SearchSelect({
   const debouncedFetchData = debounce(async (value: string) => {
     let response: any;
     if (type === "EmailSelector") {
-      response = await GET(`user/search?type=InfluencerAndAgencyByEmail&email=${value}`);
+      response = await GET(`user/search?queryType=InfluencerAndAgencyByEmail&email=${value}`);
+    } else if (type === "email") {
+      response = await GET(`user/search?queryType=InfluencerAndAgencyByEmail&email=${value}`);
+      console.log("email", response);
     } else {
       response = await GET(`${endpoint}?name=${value}`);
     }
@@ -148,7 +151,9 @@ export function SearchSelect({
                 {open &&
                   Options.map((Option: any, index: number) => (
                     <CommandItem
-                      value={type === "EmailSelector" ? Option.email : Option.name}
+                      value={
+                        type === "EmailSelector" || type === "email" ? Option.email : Option.name
+                      }
                       key={index}
                       className="cursor-pointer"
                       onSelect={() => {
@@ -159,14 +164,14 @@ export function SearchSelect({
                           setInitialValue("");
                           setOpen(false);
                         } else {
-                          setInputValue(type === "EmailSelector" ? Option.email : Option.name);
-                          setInitialValue(type === "EmailSelector" ? Option.email : Option.name);
+                          setInputValue(type === "email" ? Option.email : Option.name);
+                          setInitialValue(type === "email" ? Option.email : Option.name);
                           setOpen(false);
                           selectedValueSetter(Option);
                         }
                       }}
                     >
-                      {type === "EmailSelector" ? Option.email : Option.name}
+                      {type === "EmailSelector" || type === "email" ? Option.email : Option.name}
                     </CommandItem>
                   ))}
               </CommandList>

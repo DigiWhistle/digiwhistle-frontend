@@ -11,7 +11,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
       <div className="flex justify-between items-start">
-        <AdminTitle title="Manage Campaigns 😇" description="All campaigns in full detail." />
+        <AdminTitle title="Invoice Management 😇" description="All invoices in full detail." />
         <div className="flex space-x-3">
           <DateFilter />
           <CustomDialog

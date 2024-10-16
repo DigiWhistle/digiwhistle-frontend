@@ -65,7 +65,7 @@ const AgencyForm = ({ index }: { index: number }) => {
     //   return;
     // }
 
-    const response = await DELETE(`deliverables/${deliverableId}`);
+    const response = await DELETE(`campaign/deliverables/${deliverableId}`);
 
     if (response.error) {
       toast.error(`Error deleting deliverable: ${response.error}`);
@@ -90,7 +90,7 @@ const AgencyForm = ({ index }: { index: number }) => {
             // @ts-ignore
             .map(_ => _.id);
 
-          const response = await DELETE(`deliverables`, {
+          const response = await DELETE(`campaign/deliverables`, {
             Ids: deliverableIds,
           });
         }
