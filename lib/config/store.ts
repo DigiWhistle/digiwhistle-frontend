@@ -8,6 +8,7 @@ import { agencyRequestsTableReducer } from "@/store/admin/new-requests/AgencyReq
 import { influencerRequestsTableReducer } from "@/store/admin/new-requests/InfluencerRequestsTableSlice";
 import { ProfileControlTableReducer } from "@/store/admin/profile-control/ProfileControlSlice";
 import { campaignsTableReducer } from "@/store/admin/campaigns/CampaignTableSlice";
+import { payrollTableReducer } from "@/store/admin/payroll/PayrollTableSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -17,6 +18,7 @@ export const store = configureStore({
     profileTable: ProfileControlTableReducer,
     influencerRequestsTable: influencerRequestsTableReducer,
     campaignsTable: campaignsTableReducer,
+    payrollTable: payrollTableReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });
