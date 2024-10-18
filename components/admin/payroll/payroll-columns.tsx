@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColumnDef, TableMeta } from "@tanstack/react-table";
+import type { ColumnDef, Row, TableMeta } from "@tanstack/react-table";
 
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
   ArrowTopRightOnSquareIcon,
   ArrowUturnLeftIcon,
   EllipsisVerticalIcon,
+  InformationCircleIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -28,66 +29,143 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Query } from "@/types/admin/queries";
-import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
-import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
-import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
+import { Payroll } from "@/types/admin/payroll";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+const CurrencyValueDisplay = ({ value }: { value: number }) => {
+  const formatToIndianCurrencyWithSpace = (amount: number): string => {
+    const formattedAmount = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+
+    // Add a space between the currency symbol and the value
+    return formattedAmount;
+  };
+
+  const formattedBasicWithSpace = formatToIndianCurrencyWithSpace(value);
+  return <div className="">{formattedBasicWithSpace}</div>;
+};
 export const createColumns = (
   updateData: (id: string, value: boolean) => void,
-  deleteQuery: (id: string) => void,
-): ColumnDef<Query>[] => [
+  deletePayroll: (id: string) => void,
+): ColumnDef<Payroll>[] => [
+  {
+    id: "Actions",
+    cell: params => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
+          <button type="button">
+            <EllipsisVerticalIcon className="h-5 w-5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="p-1" align="end">
+          {/* Add DropdownMenuItems here */}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+  },
   {
     accessorKey: "name",
-    header: () => <div className="">User Name</div>,
-    cell: ({ row }) => {
+    header: "Name",
+    cell: ({ row }: { row: Row<Payroll> }) => {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-3 h-8">
           <div>
-            <UserIcon className="h-4 w-4" />
+            <p>{row.getValue("name")}</p>
+            <p className="text-sm text-tc-body-grey">{row.original.email}</p>
           </div>
-          {row.original.personType === "Influencer" ? (
-            <div>
-              {row.getValue("name")}
-              <p className="text-xs text-tc-body-grey">
-                {` ${row.original.followersCount} followers`}
-              </p>
-            </div>
-          ) : (
-            <div>{row.getValue("name")}</div>
-          )}
+          <div className="flex items-center gap-1.5">
+            <Popover>
+              <PopoverTrigger>
+                <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-fit text-tc-primary-white bg-black-201 text-sm p-3 space-y-2"
+                sideOffset={4}
+                alignOffset={-50}
+                align="start"
+              >
+                <p>Bank name: {row.original.bankName}</p>
+                <p>Account No: {row.original.bankAccountNumber}</p>
+                <p>IFSC Code: {row.original.bankIfscCode}</p>
+                <p>PAN: {row.original.panNo}</p>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       );
     },
   },
   {
-    accessorKey: "personType",
-    header: "User Type",
+    accessorKey: "employmentType",
+    header: "Employment",
   },
   {
-    accessorKey: "profileLink",
-    header: "Link",
+    accessorKey: "basic",
+    header: "Basic",
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-2">
-          <Link
-            href={`//${String(row.getValue("profileLink")).replace(/(^\w+:|^)\/\//, "")}`}
-            target="_blank"
-          >
-            <ArrowTopRightOnSquareIcon className="h-4 w-4 text-link" />
-          </Link>
-          {row.getValue("profileLink")}
-        </div>
-      );
+      return <CurrencyValueDisplay value={Number(row.getValue("basic"))} />;
     },
   },
   {
-    accessorKey: "email",
-    header: "Email ID",
+    accessorKey: "hra",
+    header: "HRA",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("hra"))} />;
+    },
   },
   {
-    accessorKey: "mobileNo",
-    header: "Mobile Number",
+    accessorKey: "others",
+    header: "Others",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("others"))} />;
+    },
+  },
+  {
+    accessorKey: "ctc",
+    header: "CTC / month",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("ctc"))} />;
+    },
+  },
+  {
+    accessorKey: "salaryMonth",
+    header: "Salary Month",
+  },
+  {
+    accessorKey: "workingDays",
+    header: "Working days",
+  },
+  {
+    accessorKey: "grossPay",
+    header: "Gross Pay",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("grossPay"))} />;
+    },
+  },
+  {
+    accessorKey: "tds",
+    header: "TDS Section",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("tds"))} />;
+    },
+  },
+  {
+    accessorKey: "incentive",
+    header: "Incentive",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("incentive"))} />;
+    },
+  },
+  {
+    accessorKey: "finalPay",
+    header: "Final Pay",
+    cell: ({ row }) => {
+      return <CurrencyValueDisplay value={Number(row.getValue("finalPay"))} />;
+    },
   },
 
   // {
@@ -109,83 +187,4 @@ export const createColumns = (
   //     );
   //   },
   // },
-  {
-    accessorKey: "email",
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="ps-5 flex items-center cursor-pointer ">
-            <button type="button">
-              <EllipsisVerticalIcon className="h-5 w-5" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <CustomDialog
-              className="w-[600px]"
-              headerTitle="View Query"
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  View query
-                </div>
-              }
-            >
-              <div className=" overflow-hidden relative mt-3">
-                <p className="text-sm mb-2">User&apos;s Query Message</p>
-                <div className="h-36 rounded-lg text-sm text-tc-body-grey border bg-gray-554 px-3 py-2 overflow-auto">
-                  <p className="overflow-auto">{row.original.message}</p>
-                </div>
-              </div>
-              <hr className="my-3 text-tc-body-grey" />
-              <Button
-                size={"sm"}
-                className="w-min place-self-center px-4 focus:ring-offset-0"
-                disabled={row.original.viewed}
-                onClick={async () => {
-                  const response = await POST("contactUs/view", {
-                    id: row.original.id,
-                  });
-                  if (response.error) {
-                    toast.error(response.error);
-                  } else {
-                    updateData(row.original.id, true);
-                  }
-                }}
-              >
-                {row.original.viewed ? "Read already" : " Mark as read"}
-              </Button>
-            </CustomDialog>
-            <CustomDialog
-              className="w-[400px]"
-              headerTitle="Delete query"
-              headerDescription="Please note that this action is permanent and irreversible in nature."
-              triggerElement={
-                <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                  Delete query
-                </div>
-              }
-            >
-              <div className="flex w-full gap-3 pt-6 border-t-2">
-                <CancelButton />
-                <ActionButton
-                  className="bg-destructive text-white hover:bg-destructive/90"
-                  onClick={async () => {
-                    const response = await DELETE(`contactUs/${row.original.id}`);
-                    if (response.error) {
-                      toast.error(response.error);
-                    } else {
-                      deleteQuery(row.original.id);
-                      toast.success("Query deleted successfully");
-                    }
-                  }}
-                >
-                  Delete
-                </ActionButton>
-              </div>
-            </CustomDialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];

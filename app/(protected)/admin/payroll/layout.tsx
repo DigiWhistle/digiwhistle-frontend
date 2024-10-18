@@ -7,6 +7,7 @@ import CreatePayrollPopUp from "@/components/admin/payroll/CreatePayrollPopUp";
 import { DateFilter } from "@/components/admin/campaign/DateFIlter";
 import CampaignFilters from "@/components/admin/campaign/CampaignFilters";
 import CampaignDataCards from "@/components/admin/campaign/CampaignDataCards";
+import PayrollFilters from "@/components/admin/payroll/PayrollFilters";
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
@@ -32,7 +33,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <div>
-        <CampaignFilters />
+        <PayrollFilters />
         {children}
       </div>
     </div>

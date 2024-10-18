@@ -11,7 +11,7 @@ import {
   PayrollTableData,
   PayrollTableLoading,
 } from "@/store/admin/payroll/PayrollTableSlice";
-import { PAYROLL_TABLE_PAGE_LIMIT } from "@/types/admin/payroll";
+import { PaymentStatus, PaymentTerms, PAYROLL_TABLE_PAGE_LIMIT } from "@/types/admin/payroll";
 import { formatDateWithZeroTime } from "@/lib/utils";
 
 const PayrollTable = () => {
@@ -24,37 +24,27 @@ const PayrollTable = () => {
 
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
-    : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
+    : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 2)));
 
   const endTime = searchParams.get("endTime")
     ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
     : formatDateWithZeroTime(new Date());
 
-  useEffect(() => {
-    const name = searchParams.get("name");
-    const brands =
-      searchParams.get("brands") === "true"
-        ? true
-        : searchParams.get("brands") === "false"
-          ? false
-          : undefined;
-    const influencer =
-      searchParams.get("influencer") === "true"
-        ? true
-        : searchParams.get("influencer") === "false"
-          ? false
-          : undefined;
+  const search = searchParams.get("search");
+  const type = (searchParams.get("type") as PaymentStatus) || PaymentStatus.PENDING;
 
+  useEffect(() => {
     dispatch(
       fetchPayrollTableData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
         limit: PAYROLL_TABLE_PAGE_LIMIT,
-        name,
+        search,
         startTime,
         endTime,
+        type,
       }),
     );
-  }, []);
+  }, [currentPath, dispatch, endTime, search, startTime, type]);
 
   const updateData = useCallback(
     (id: string, viewed: boolean) => {
@@ -78,7 +68,7 @@ const PayrollTable = () => {
           <span className="loading loading-spinner loading-sm "></span>
         </div>
       ) : (
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} type={type} />
       )}
     </div>
   );

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { DataTablePagination } from "../lib/pagination";
+import { PaymentStatus, PaymentTerms } from "@/types/admin/payroll";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -22,9 +23,11 @@ interface DataTableProps<TData, TValue> {
     currentPage: number;
     data: TData[];
   };
+  type: PaymentStatus;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps<TData, TValue>) {
+  console.log("DATATATTA", data);
   const table = useReactTable({
     data: data.data,
     columns,
@@ -59,22 +62,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  className={cn(
-                    "my-10",
-                    (row.original as any).viewed === false ? "bg-gray-552" : "",
-                  )}
-                >
+                <TableRow key={row.id} className={cn("my-10")}>
                   {row.getVisibleCells().map(cell => (
                     <TableCell
                       key={cell.id}
                       className={cn(
                         cell === row.getVisibleCells().at(-1) ? "after:content-none" : "",
-                        cell === row.getVisibleCells().at(0) &&
-                          (row.original as any).viewed === false
-                          ? "before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-4/5 before:border-2 before:rounded-r-lg before:border-blue-581"
-                          : "",
                       )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -92,7 +85,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination data={data} />
+      {type === PaymentStatus.ALL_PAID && <DataTablePagination data={data} />}
     </div>
   );
 }

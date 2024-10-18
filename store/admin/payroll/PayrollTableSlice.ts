@@ -1,6 +1,6 @@
 import { GET, POST } from "@/lib/config/axios";
 import { RootState } from "@/lib/config/store";
-import { Payroll } from "@/types/admin/payroll";
+import { PaymentStatus, PaymentTerms, Payroll } from "@/types/admin/payroll";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -22,24 +22,30 @@ export const fetchPayrollTableData = createAsyncThunk(
   async ({
     page,
     limit,
-    name,
     startTime,
     endTime,
+    type,
+    search,
   }: {
     page: number;
     limit: number;
-    name?: string | null;
+    search?: string | null;
     startTime?: string | null;
     endTime?: string | null;
+    type: PaymentStatus;
   }) => {
     let url = `payroll?page=${page}&limit=${limit}`;
 
-    if (name) {
-      url += `&name=${name}`;
+    if (startTime && endTime) {
+      url += `&startDate=${startTime}&endDate=${endTime}`;
     }
 
-    if (startTime && endTime) {
-      url += `&startDate=${startTime}&endDate=${endTime}&type="pending"`;
+    if (type) {
+      url += `&type=${type}`;
+    }
+
+    if (search) {
+      url += `&searchQuery=${search}`;
     }
 
     const response = await GET<IPayrollTable>(url);
