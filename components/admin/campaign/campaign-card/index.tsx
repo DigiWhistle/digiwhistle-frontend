@@ -49,10 +49,6 @@ const CampaignCard = ({ data, index }: { data: TCampaignForm; index: number }) =
             <HeadingCard />
 
             <AccordionContent className="flex flex-col-reverse gap-5">
-              <Button type="submit" className="self-end" disabled={!form.formState.isDirty}>
-                Save Changes
-              </Button>
-
               {form.getValues("participants").length > 0 &&
                 form.watch("participants").map((participant, index) => {
                   if (participant.type === "agency") {

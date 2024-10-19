@@ -45,7 +45,7 @@ export const getNewDeliverable = () => {
     title: "",
     platform: "" as "",
     status: "Not Live" as "Live" | "Not Live",
-    deliverableLink: "",
+    deliverableLink: null,
     er: 0,
     cpv: 0,
   };

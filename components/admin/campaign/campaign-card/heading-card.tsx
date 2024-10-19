@@ -31,6 +31,7 @@ import { DELETE } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next";
+import { Button } from "@/components/ui/button";
 
 const HeadingCard = () => {
   const form = useFormContext<TCampaignForm>();
@@ -90,6 +91,9 @@ const HeadingCard = () => {
           )}
         </div>
         <div className="flex justify-end items-center gap-5">
+          <Button type="submit" disabled={!form.formState.isDirty}>
+            Save Changes
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
               <button type="button">
@@ -158,6 +162,7 @@ const HeadingCard = () => {
               <SelectItem value="agency">Add agency</SelectItem>
             </SelectContent>
           </Select> */}
+
             <AccordionTrigger svgCN="w-6 h-6 text-[#0F172A]"></AccordionTrigger>
           </div>
         </div>

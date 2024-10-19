@@ -16,6 +16,7 @@ import { UserRole } from "@/store/UserSlice";
 import { BrandCampaign, Campaign } from "./schema";
 import BrandCampaignCard from "./brand-campaign-card";
 import { DataTablePagination } from "../lib/pagination";
+import InfluencerCampaignCard from "./influencer-campaign-card";
 
 export const CAMPAIGN_TABLE_PAGE_LIMIT = 3;
 
@@ -88,6 +89,14 @@ const CampaignTable = () => {
       data.data.map((campaign, index) => {
         if (role === "admin") {
           return <CampaignCard data={campaign as Campaign} key={campaign.code} index={index} />;
+        } else if (role === "influencer") {
+          return (
+            <InfluencerCampaignCard
+              data={campaign as BrandCampaign}
+              key={campaign.code}
+              index={index}
+            />
+          );
         } else {
           return (
             <BrandCampaignCard data={campaign as BrandCampaign} key={campaign.code} index={index} />

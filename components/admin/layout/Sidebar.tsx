@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import { clearUser, User, UserRole } from "@/store/UserSlice";
+import { clearUser, User, UserDesignation, UserRole } from "@/store/UserSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
@@ -115,6 +115,12 @@ const EmployeeSidebarLinks = [
 ];
 const UserSidebarLinks = [
   {
+    icon: <DocumentChartBarIcon className="text-tc-ic-black-default" />,
+    link: "/user/invoices/1",
+    linkText: "All Invoices",
+    keyword: "invoices",
+  },
+  {
     icon: <MegaphoneIcon className="text-tc-ic-black-default" />,
     link: "/user/campaigns/1",
     linkText: "My campaigns",
@@ -134,11 +140,30 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
   const dispatch = useDispatch();
   const pathname = usePathname();
   const role = useAppSelector(UserRole);
+  const designation = useAppSelector(UserDesignation);
 
   const filteredSidebarLinks = () => {
     if (role === "admin") {
       return AdminSidebarLinks;
     } else if (role === "employee") {
+      if (designation === "account") {
+        const sidebarLinks = [
+          ...EmployeeSidebarLinks,
+          {
+            icon: <DocumentChartBarIcon className="text-tc-ic-black-default" />,
+            link: "/admin/invoices/1",
+            linkText: "All Invoices",
+            keyword: "invoices",
+          },
+          {
+            icon: <BanknotesIcon className="text-tc-ic-black-default" />,
+            link: "/admin/payroll/1",
+            linkText: "Payroll",
+            keyword: "payroll",
+          },
+        ];
+        return sidebarLinks;
+      }
       return EmployeeSidebarLinks;
     }
     return UserSidebarLinks;

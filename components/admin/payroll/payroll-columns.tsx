@@ -148,7 +148,7 @@ export const createColumns = (
   },
   {
     accessorKey: "tds",
-    header: "TDS Section",
+    header: "TDS Amount",
     cell: ({ row }) => {
       return <CurrencyValueDisplay value={Number(row.getValue("tds"))} />;
     },
