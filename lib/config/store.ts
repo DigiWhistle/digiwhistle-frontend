@@ -10,6 +10,7 @@ import { ProfileControlTableReducer } from "@/store/admin/profile-control/Profil
 import { campaignsTableReducer } from "@/store/admin/campaigns/CampaignTableSlice";
 import { payrollTableReducer } from "@/store/admin/payroll/PayrollTableSlice";
 import { purchaseInvoiceTableReducer } from "@/store/admin/invoice/PurchaseInvoiceTableSlice";
+import { saleInvoiceTableReducer } from "@/store/admin/invoice/SaleInvoiceTableSlice";
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     campaignsTable: campaignsTableReducer,
     payrollTable: payrollTableReducer,
     PurchaseInvoiceTable: purchaseInvoiceTableReducer,
+    SaleInvoiceTable: saleInvoiceTableReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
 });

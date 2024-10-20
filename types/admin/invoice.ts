@@ -24,3 +24,23 @@ export type IPurchaseInvoice = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export interface ISaleInvoice {
+  id: string;
+  // campaign: ICampaign;
+  gstTin: string;
+  invoiceNo: string;
+  invoiceDate: Date;
+  amount: number;
+  sgst: number;
+  cgst: number;
+  igst: number;
+  total: number;
+  tds: number;
+  received: number;
+  balanceAmount: number;
+  month: string;
+  // paymentStatus: Enum.InvoiceStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

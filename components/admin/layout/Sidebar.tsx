@@ -63,7 +63,7 @@ const AdminSidebarLinks = [
   },
   {
     icon: <DocumentChartBarIcon className="text-tc-ic-black-default" />,
-    link: "/admin/invoices/1",
+    link: "/admin/invoices/sale/1",
     linkText: "All Invoices",
     keyword: "invoices",
   },
@@ -151,7 +151,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
           ...EmployeeSidebarLinks,
           {
             icon: <DocumentChartBarIcon className="text-tc-ic-black-default" />,
-            link: "/admin/invoices/1",
+            link: "/admin/invoices/sale/1",
             linkText: "All Invoices",
             keyword: "invoices",
           },
@@ -165,6 +165,9 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
         return sidebarLinks;
       }
       return EmployeeSidebarLinks;
+    } else if (role === "brand") {
+      const updatedUserSidebarLinks = UserSidebarLinks.filter(link => link.keyword !== "invoices");
+      return updatedUserSidebarLinks;
     }
     return UserSidebarLinks;
   };

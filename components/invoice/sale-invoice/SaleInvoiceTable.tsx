@@ -6,21 +6,22 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { PURCHASE_INVOICE_TABLE_PAGE_LIMIT } from "@/types/admin/invoice";
 import { formatDateWithZeroTime } from "@/lib/utils";
 import {
-  deletePurchaseInvoiceByID,
-  fetchPurchaseInvoiceTableData,
-  PurchaseInvoiceTableData,
-  PurchaseInvoiceTableLoading,
-} from "@/store/admin/invoice/PurchaseInvoiceTableSlice";
+  deleteSaleInvoiceByID,
+  SaleInvoiceTableData,
+  SaleInvoiceTableLoading,
+} from "@/store/admin/invoice/SaleInvoiceTableSlice";
 import { DataTablePagination } from "@/components/admin/lib/pagination";
 import PurchaseInvoiceCard from "./purchase-invoice-card";
+import { fetchSaleInvoiceTableData } from "@/store/admin/invoice/SaleInvoiceTableSlice";
+import SaleInvoiceCard from "./sale-invoice-card";
 
-const PurchaseInvoiceTable = () => {
+const SaleInvoiceTable = () => {
   const currentPath = usePathname();
   const searchParams = useSearchParams();
 
   const dispatch: AppDispatch = useDispatch();
-  const data = useAppSelector(PurchaseInvoiceTableData);
-  const loading = useAppSelector(PurchaseInvoiceTableLoading);
+  const data = useAppSelector(SaleInvoiceTableData);
+  const loading = useAppSelector(SaleInvoiceTableLoading);
 
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
@@ -31,43 +32,33 @@ const PurchaseInvoiceTable = () => {
     : formatDateWithZeroTime(new Date());
 
   const invoiceNo = searchParams.get("invoiceNo");
+  const invoiceType = currentPath.split("/")[currentPath.split("/").length - 2] as
+    | "sale"
+    | "proforma";
 
   useEffect(() => {
     dispatch(
-      fetchPurchaseInvoiceTableData({
+      fetchSaleInvoiceTableData({
         page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
         limit: PURCHASE_INVOICE_TABLE_PAGE_LIMIT,
         invoiceNo,
         startTime,
         endTime,
+        invoiceType,
       }),
     );
-  }, [currentPath, dispatch, endTime, invoiceNo, startTime]);
-
-  const updateData = useCallback(
-    (id: string, viewed: boolean) => {
-      // dispatch(setViewQuery({ id, viewed }));
-    },
-    [dispatch],
-  );
-
-  const deletePurchaseInvoice = useCallback(
-    (id: string) => {
-      dispatch(deletePurchaseInvoiceByID(id));
-    },
-    [dispatch],
-  );
+  }, [currentPath, dispatch, endTime, invoiceNo, startTime, invoiceType]);
 
   const InvoiceTable =
     data.data.length > 0 ? (
       data.data.map((campaign, index) => (
-        <PurchaseInvoiceCard key={index} data={campaign} index={index} />
+        <SaleInvoiceCard key={index} data={campaign} index={index} />
       ))
     ) : (
       <div className="w-full h-44 flex justify-center items-center">No invoices found</div>
     );
   return (
-    <div className="pb-5">
+    <div className="py-5">
       {loading ? (
         <div className="flex w-full items-center h-48 justify-center">
           <span className="loading loading-spinner loading-sm "></span>
@@ -82,4 +73,4 @@ const PurchaseInvoiceTable = () => {
   );
 };
 
-export default PurchaseInvoiceTable;
+export default SaleInvoiceTable;

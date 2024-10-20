@@ -15,7 +15,9 @@ const HeadingCard = ({ data }: { data: any }) => {
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
         <div className="flex items-center gap-4">
           <div className="flex gap-1 items-center">
-            <h5 className="text-heading-m-semibold text-tc-primary-default">{data.invoiceNo}</h5>
+            <h5 className="text-heading-m-semibold text-tc-primary-default">
+              {data.invoiceNumber}
+            </h5>
             <Popover>
               <PopoverTrigger>
                 <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
@@ -26,21 +28,16 @@ const HeadingCard = ({ data }: { data: any }) => {
                 alignOffset={-50}
                 align="start"
               >
-                <p>Invoice date: {data.invoiceDate}</p>
+                <p>Campaign Code: {data.code}</p>
+                <p>Duration: {data.campaignDuration}</p>
               </PopoverContent>
             </Popover>
           </div>
-          {data.totalAmount && (
+          {data.total && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
 
-              <CurrencyValueDisplay value={data.amount} />
-            </>
-          )}
-          {data.invoiceDate && (
-            <>
-              <div className="flex w-0.5  h-6 bg-bc-grey"></div>
-              <p>{data.invoiceDate} (Invoice Date)</p>
+              <CurrencyValueDisplay value={data.total} />
             </>
           )}
 
@@ -64,29 +61,16 @@ const HeadingCard = ({ data }: { data: any }) => {
               </Popover>
             </div>
           )}
-          {data.participantName && (
-            <div className="flex gap-1 items-center">
-              <div className="flex w-0.5  h-6 bg-bc-grey mr-2"></div>
-              <div className="">{data.participantName} (Brand)</div>
-              <Popover>
-                <PopoverTrigger>
-                  <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-fit text-tc-primary-white bg-black-201 text-sm p-3 space-y-4"
-                  sideOffset={4}
-                  alignOffset={-50}
-                  align="start"
-                >
-                  <p>Pan card: {data.panNo}</p>
-                </PopoverContent>
-              </Popover>
-            </div>
-          )}
-          {data.code && (
+          {data.gstTin && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
-              <p> {data.code} (Campaign Code)</p>
+              <p>{data.gstTin} (GSTIN)</p>
+            </>
+          )}
+          {data.issueDate && (
+            <>
+              <div className="flex w-0.5  h-6 bg-bc-grey"></div>
+              <p>{data.issueDate} (Invoice Number)</p>
             </>
           )}
 
@@ -102,7 +86,7 @@ const HeadingCard = ({ data }: { data: any }) => {
           )} */}
         </div>
         <div className="flex gap-4 items-center">
-          {/* TODO: TADVI WORK HERE --> Implement for purchase invoice for influencer, agency, admin & account */}
+          {/* TODO: TADVI WORK HERE --> Implement for sale & proforma invoice for admin only*/}
           {/* <Select
             value=""
             onValueChange={(value: "influencer" | "agency") => {

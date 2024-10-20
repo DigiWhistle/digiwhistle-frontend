@@ -15,6 +15,10 @@ const CurrencyValueDisplay = ({ value }: { value: number | string }) => {
   };
 
   const formattedBasicWithSpace = formatToIndianCurrencyWithSpace(value);
+
+  if (isNaN(value)) {
+    return <div className="">-</div>;
+  }
   return <div className="">{formattedBasicWithSpace}</div>;
 };
 
