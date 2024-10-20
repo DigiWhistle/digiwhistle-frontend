@@ -52,7 +52,7 @@ const SaleInvoiceTable = () => {
   const InvoiceTable =
     data.data.length > 0 ? (
       data.data.map((campaign, index) => (
-        <SaleInvoiceCard key={index} data={campaign} index={index} />
+        <SaleInvoiceCard key={index} data={campaign} index={index} invoiceType={invoiceType} />
       ))
     ) : (
       <div className="w-full h-44 flex justify-center items-center">No invoices found</div>

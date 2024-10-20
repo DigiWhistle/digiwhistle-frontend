@@ -2,11 +2,16 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 import CurrencyValueDisplay from "@/components/ui/currency-value-display";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
@@ -103,6 +108,16 @@ const HeadingCard = ({ data }: { data: any }) => {
         </div>
         <div className="flex gap-4 items-center">
           {/* TODO: TADVI WORK HERE --> Implement for purchase invoice for influencer, agency, admin & account */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
+              <button type="button">
+                <EllipsisVerticalIcon className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-1" align="end">
+              {/* TODO: TADVI WORK HERE*/}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {/* <Select
             value=""
             onValueChange={(value: "influencer" | "agency") => {

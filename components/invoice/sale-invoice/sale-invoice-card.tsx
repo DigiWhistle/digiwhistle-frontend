@@ -44,7 +44,15 @@ const DeliverableItem = ({
   );
 };
 
-const SaleInvoiceCard = ({ data, index }: { data: TCampaignForm; index: number }) => {
+const SaleInvoiceCard = ({
+  data,
+  index,
+  invoiceType,
+}: {
+  data: TCampaignForm;
+  index: number;
+  invoiceType: string;
+}) => {
   return (
     <Accordion defaultValue="" type="single" collapsible className="w-full">
       <AccordionItem
@@ -155,16 +163,18 @@ const SaleInvoiceCard = ({ data, index }: { data: TCampaignForm; index: number }
                 <DeliverableItem classname="min-w-[100px]" title="Balance Amount">
                   <CurrencyValueDisplay value={data.balance} />
                 </DeliverableItem>
-                <DeliverableItem title="Payment Status">
-                  <>
-                    {data.status === "All Paid" ? (
-                      <CheckIcon className="w-4 h-4 text-success" />
-                    ) : (
-                      <MinusCircleIcon className="w-4 h-4 text-warning" />
-                    )}
-                    {data.status}
-                  </>
-                </DeliverableItem>
+                {invoiceType === "sale" && (
+                  <DeliverableItem title="Payment Status">
+                    <>
+                      {data.status === "All Paid" ? (
+                        <CheckIcon className="w-4 h-4 text-success" />
+                      ) : (
+                        <MinusCircleIcon className="w-4 h-4 text-warning" />
+                      )}
+                      {data.status}
+                    </>
+                  </DeliverableItem>
+                )}
                 <DeliverableItem title="Month">
                   <>{data.month}</>
                 </DeliverableItem>
