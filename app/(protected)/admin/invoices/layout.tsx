@@ -7,6 +7,10 @@ import CampaignPopup from "@/components/admin/campaign/popup/CampaignPopup";
 import { DateFilter } from "@/components/admin/campaign/DateFIlter";
 import CampaignFilters from "@/components/admin/campaign/CampaignFilters";
 import CampaignDataCards from "@/components/admin/campaign/CampaignDataCards";
+import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
+import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
+import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInvoice";
+import CreateCreditNote from "@/components/admin/invoices/CreateCreditNote";
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
@@ -21,12 +25,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
             triggerElement={
               <Button>
                 <PlusCircleIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
-                Create campaign
+                Share Invoice
               </Button>
             }
           >
             {/* <AddInfluencers /> */}
-            <CampaignPopup mode="Create campaign" />
+            <CreateCreditNote />
           </CustomDialog>
         </div>
       </div>

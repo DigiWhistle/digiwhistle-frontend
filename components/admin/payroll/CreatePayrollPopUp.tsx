@@ -22,6 +22,7 @@ import FormTextareaInput from "@/components/ui/form/form-textarea-input";
 import { GET } from "@/lib/config/axios";
 import { useEffect } from "react";
 import { getCookie } from "cookies-next";
+import { DatePicker } from "@/components/ui/form/Date-Picker";
 const Options = ["English", "Chinese", "Hindi", "Punjabi", "Thai", "Gujarati", "Marathi"];
 export const EmploymentTypeOptions = [
   {
@@ -41,9 +42,7 @@ const PayrollSchema = z.object({
   hra: z.number(),
   others: z.number(),
   ctc: z.number(),
-  // bankName: z.string(),
-  // accountNumber: z.number(),
-  // ifscCode: z.string(),
+  campaignDuration: z.date(),
 });
 const CreatePayrollPopUp = ({
   mode,
@@ -53,9 +52,7 @@ const CreatePayrollPopUp = ({
   edit_id?: string;
 }) => {
   const [Email, setEmail] = useState<any>();
-  // const [getBankName, setBankName] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
-  // const [EditData, SetEditData] = useState<any>(null);
   const form = useForm<z.infer<typeof PayrollSchema>>({
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
@@ -87,7 +84,7 @@ const CreatePayrollPopUp = ({
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
     const sendInfo = {};
-    console.log("sendinfo", sendInfo);
+    console.log("sendinfo", data);
     let response: any;
     response = {};
     if (mode === "Create payroll") {
@@ -167,22 +164,14 @@ const CreatePayrollPopUp = ({
                 placeholder=""
                 label="CTC/ month"
               />
-            </div>
-            {/* <hr className="mt-6 mb-5 " />
-            <div className="flex gap-5">
-              <SearchSelect
-                endpoint={"employee/search"}
-                formName="bankName"
-                searchPlaceholder="Bank Name"
-                selectedValueSetter={setBankName}
-                placeholder="Bank Name"
-                label="Bank Name"
+              <DatePicker
+                label="date"
+                placeholder=""
                 setterfunction={setterfunction}
+                formName="campaignDuration"
               />
-
-              <FormTextInput formName="accountNumber" placeholder="" label="Account Number" />
-              <FormTextInput formName="ifscCode" placeholder="" label="IFSC Code" />
-            </div> */}
+            </div>
+            <hr className="mt-6 mb-2 " />
           </div>
         </form>
       </Form>
