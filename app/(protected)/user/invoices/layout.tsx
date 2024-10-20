@@ -9,6 +9,7 @@ import CampaignFilters from "@/components/admin/campaign/CampaignFilters";
 import AddInfluencers from "@/components/admin/layout/AddInfluencers";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
+import PurchaseInvoiceFilters from "@/components/invoice/purchase-invoice/PurchaseInvoiceFilters";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useAppSelector(UserRole);
   return (
@@ -34,7 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <div>
-        <CampaignFilters />
+        <PurchaseInvoiceFilters />
         {children}
       </div>
     </div>

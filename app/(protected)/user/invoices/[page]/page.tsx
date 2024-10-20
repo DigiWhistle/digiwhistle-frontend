@@ -1,7 +1,8 @@
+import PurchaseInvoiceTable from "@/components/invoice/purchase-invoice/PurchaseInvoiceTable";
 import React from "react";
 
 const page = () => {
-  return <div>page</div>;
+  return <PurchaseInvoiceTable />;
 };
 
 export default page;

@@ -31,23 +31,8 @@ import {
 } from "@/components/ui/dialog";
 import { Payroll } from "@/types/admin/payroll";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import CurrencyValueDisplay from "@/components/ui/currency-value-display";
 
-const CurrencyValueDisplay = ({ value }: { value: number }) => {
-  const formatToIndianCurrencyWithSpace = (amount: number): string => {
-    const formattedAmount = new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount);
-
-    // Add a space between the currency symbol and the value
-    return formattedAmount;
-  };
-
-  const formattedBasicWithSpace = formatToIndianCurrencyWithSpace(value);
-  return <div className="">{formattedBasicWithSpace}</div>;
-};
 export const createColumns = (
   updateData: (id: string, value: boolean) => void,
   deletePayroll: (id: string) => void,
@@ -62,6 +47,8 @@ export const createColumns = (
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-1" align="end">
+          {/* TODO: TADVI WORK HERE */}
+
           {/* Add DropdownMenuItems here */}
         </DropdownMenuContent>
       </DropdownMenu>
