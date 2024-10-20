@@ -23,12 +23,13 @@ import { InfluencerPlatforms, InfluencerType } from "@/types/admin/influencer";
 import { UserRole } from "@/store/UserSlice";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PaymentStatus } from "@/types/admin/payroll";
+import DownloadList from "@/app/(protected)/admin/invoices/DownloadList";
 
 const PurchaseInvoiceFilters = () => {
   const router = useRouter();
   const currentPath = usePathname();
-
   const searchParams = useSearchParams();
+  const role = useAppSelector(UserRole);
 
   const defaultSearchTerm = searchParams.get("name");
 
@@ -80,6 +81,8 @@ const PurchaseInvoiceFilters = () => {
           name="search"
         />
       </div>
+
+      {(role === "agency" || role === "influencer") && <DownloadList />}
 
       {/* <FiltersDropdown pushUrl={pushUrl} removeParam={removeParam} /> */}
     </div>

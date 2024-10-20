@@ -2,7 +2,12 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { EllipsisVerticalIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownTrayIcon,
+  DocumentIcon,
+  EllipsisVerticalIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
 import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
@@ -12,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
@@ -69,10 +75,10 @@ const HeadingCard = ({ data }: { data: any }) => {
               </Popover>
             </div>
           )}
-          {data.participantName && (
+          {(role === "admin" || role === "employee") && data.participantName && (
             <div className="flex gap-1 items-center">
               <div className="flex w-0.5  h-6 bg-bc-grey mr-2"></div>
-              <div className="">{data.participantName} (Brand)</div>
+              <div className="">{data.participantName}</div>
               <Popover>
                 <PopoverTrigger>
                   <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
@@ -107,6 +113,23 @@ const HeadingCard = ({ data }: { data: any }) => {
           )} */}
         </div>
         <div className="flex gap-4 items-center">
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button>
+                  {role === "admin" || role === "employee" ? (
+                    <ArrowDownTrayIcon className="w-5 h-5 text-tc-body-grey" />
+                  ) : (
+                    <DocumentIcon className="w-5 h-5 text-tc-body-grey" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black-201 text-white-301">
+                <p>{role === "admin" || role === "employee" ? "Download" : "View"} Invoice</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           {/* TODO: TADVI WORK HERE --> Implement for purchase invoice for influencer, agency, admin & account */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">

@@ -25,6 +25,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import CurrencyValueDisplay from "@/components/ui/currency-value-display";
+import { useAppSelector } from "@/lib/config/store";
+import { UserRole } from "@/store/UserSlice";
 export type TCampaignForm = BrandCampaign;
 
 const DeliverableItem = ({
@@ -45,6 +47,7 @@ const DeliverableItem = ({
 };
 
 const PurchaseInvoiceCard = ({ data, index }: { data: TCampaignForm; index: number }) => {
+  const role = useAppSelector(UserRole);
   return (
     <Accordion defaultValue="" type="single" collapsible className="w-full">
       <AccordionItem
@@ -54,6 +57,10 @@ const PurchaseInvoiceCard = ({ data, index }: { data: TCampaignForm; index: numb
         <HeadingCard data={data} />
 
         <AccordionContent className="flex flex-col-reverse gap-5">
+          {(role === "admin" || role === "employee") && (
+            <Button className="self-end">Release Payment</Button>
+          )}
+
           {
             <div className="border rounded-2xl  flex flex-col gap-3 " key={index}>
               <div className="flex items-start gap-10 bg-sb-blue-580 p-4 pl-8 rounded-t-2xl">
