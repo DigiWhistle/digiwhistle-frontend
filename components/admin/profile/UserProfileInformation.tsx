@@ -31,17 +31,30 @@ import { getCookie } from "cookies-next";
 import { cn } from "@/lib/utils";
 import { IBrandResponse } from "@/types/auth/response-types";
 const brandAndAgencyProfileSchema = z.object({
-  name: z.string().min(1, "First name is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  websiteURL: z.string().url().min(1, "Website url is required"),
   mobileNo: mobileNoSchema,
+  address: z.string(),
+  city: z.string(),
+  state: z.string(),
+  pincode: z.string(),
 });
 const uploadImageSchema = z.object({
   image: z.string(),
 });
-
+const keyDetailsSchema = z.object({
+  aadharNumber: z.string(),
+  PAN: z.string(),
+  gstin: z.string().optional(),
+  MSMENumber: z.string().optional(),
+});
+const bankDetailsSchema = z.object({
+  bankName: z.string(),
+  accountNumber: z.string(),
+  accountHolderName: z.string().optional(),
+  IFSC: z.string().optional(),
+});
 const UserProfileInformation = () => {
   const [user, setUser] = useState<any>(null);
   const userStore = useAppSelector(User);
@@ -51,8 +64,18 @@ const UserProfileInformation = () => {
   const userRole = useAppSelector(UserRole);
   const dispatch = useAppDispatch();
   const [editable, setEditor] = useState(false);
+  const [keyDetailseditable, setKeyDetailsEditor] = useState(false);
+  const [bsnkDetailseditable, setBankDetailsEditor] = useState(false);
   const brandForm = useForm<z.infer<typeof brandAndAgencyProfileSchema>>({
     resolver: zodResolver(brandAndAgencyProfileSchema),
+    defaultValues: {},
+  });
+  const keyDetailsForm = useForm<z.infer<typeof keyDetailsSchema>>({
+    resolver: zodResolver(keyDetailsSchema),
+    defaultValues: {},
+  });
+  const bankDetailsForm = useForm<z.infer<typeof bankDetailsSchema>>({
+    resolver: zodResolver(bankDetailsSchema),
     defaultValues: {},
   });
   useEffect(() => {
@@ -62,41 +85,105 @@ const UserProfileInformation = () => {
       console.log("userr", userProfile);
       if (userProfile) {
         setUser(userProfile.data);
+        keyDetailsForm.reset({
+          aadharNumber: userProfile.data.profile.aadharNo,
+          PAN: userProfile.data.profile.panNo ? userProfile.data.profile.panNo : undefined,
+          gstin: userProfile.data.profile.gstNo ? userProfile.data.profile.gstNo : undefined,
+          MSMENumber: userProfile.data.profile.msmeNo ? userProfile.data.profile.msmeNo : undefined,
+        });
+
         brandForm.reset({
-          name: userProfile.data.profile.name,
           firstName: userProfile.data.profile.firstName,
           lastName: userProfile.data.profile.lastName,
-          websiteURL: userProfile.data.profile.websiteURL,
           mobileNo: userProfile.data.profile.mobileNo,
           email: userProfile.data.email,
+          address: userProfile.data.profile.address,
+          city: userProfile.data.profile.city,
+          state: userProfile.data.profile.state,
+          pincode: userProfile.data.profile.pincode,
         });
+        if (userRole != "brand") {
+          bankDetailsForm.reset({
+            bankName: userProfile.data.profile.bankName,
+            accountNumber: userProfile.data.profile.bankAccountNumber,
+            accountHolderName: userProfile.data.profile.bankAccountHolderName,
+            IFSC: userProfile.data.profile.bankIfscCode,
+          });
+        }
       }
     };
     userProfileGetter();
   }, []);
-  // const employeeForm = useForm<z.infer<typeof employeeProfileSchema>>({
-  //   resolver: zodResolver(employeeProfileSchema),
-  //   defaultValues: {
-  //     firstName: user?.profile?.firstName,
-  //     lastName: user?.profile?.lastName,
-  //     email: user?.email,
-  //     mobileNo: user?.profile?.mobileNo,
-  //     Designation: user?.profile?.designation,
-  //   },
-  // });
+
   const uploadForm = useForm<z.infer<typeof uploadImageSchema>>({
     resolver: zodResolver(uploadImageSchema),
   });
+  const handleKeyDetailsFormUpdate = async (data: z.infer<typeof keyDetailsSchema>) => {
+    let senddata: any;
+    senddata = {
+      pocFirstName: user.profile.firstName,
+      pocLastName: user.profile.lastName,
+      mobileNo: user.profile.mobileNo,
+      profilePic: user.profile?.profilePic,
+      panNo: data.PAN,
+      aadharNo: data.aadharNumber,
+      city: user.profile.city,
+      state: user.profile.state,
+      pincode: user.profile.pincode,
+      address: user.profile.address,
+      gstNo: data.gstin,
+    };
+    let response: any;
+    if (userRole === "brand") {
+      response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, {
+        ...senddata,
 
+        msmeNo: data.MSMENumber,
+      });
+    } else {
+      response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
+    }
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+    }
+    window.location.reload();
+  };
+  const handleBankDetailsFormUpdate = async (data: z.infer<typeof bankDetailsSchema>) => {
+    let senddata: any;
+    senddata = {
+      bankName: data.bankName,
+      bankAccountNumber: data.accountNumber,
+      bankAccountHolderName: data.accountHolderName,
+      bankIfscCode: data.IFSC,
+    };
+    let response: any;
+
+    response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+    }
+    window.location.reload();
+  };
   const handleBrandProfileUpdate = async (data: z.infer<typeof brandAndAgencyProfileSchema>) => {
-    const senddata = {
-      name: data.name,
+    let senddata: any;
+    senddata = {
       pocFirstName: data.firstName,
       pocLastName: data.lastName,
       mobileNo: data.mobileNo,
       profilePic: user.profile?.profilePic,
-      websiteURL: data.websiteURL,
+      city: data.city,
+      state: data.state,
+      pincode: data.pincode,
+      address: data.address,
+      panNo: user.profile?.panNo,
+      aadharNo: user.profile?.aadharNo,
     };
+
     console.log("senddata", senddata);
     const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
     // let response={error:null,message:"done"};
@@ -106,16 +193,15 @@ const UserProfileInformation = () => {
       toast.success(response.message);
       dispatch(
         setUserProfile({
-          name: data.name,
           firstName: data.firstName,
           lastName: data.lastName,
           mobileNo: data.mobileNo,
           profilePic: user.profile.profilePic,
-          websiteURL: data.websiteURL,
         }),
       );
     }
     setEditor(!editable);
+    window.location.reload();
   };
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
@@ -130,12 +216,16 @@ const UserProfileInformation = () => {
       let data;
       if (userRole === "brand" || userRole === "agency") {
         data = {
-          name: user.profile.name,
           pocFirstName: user.profile.firstName,
           pocLastName: user.profile.lastName,
-          websiteURL: user.profile.websiteURL,
           mobileNo: user.profile.mobileNo,
           profilePic: url,
+          city: user.profile.city,
+          state: user.profile.state,
+          pincode: user.profile.pincode,
+          address: user.profile.address,
+          panNo: user.profile?.panNo,
+          aadharNo: user.profile?.aadharNo,
         };
       } else {
         data = {};
@@ -164,11 +254,13 @@ const UserProfileInformation = () => {
       uploadForm.reset();
       setUpload(!upload);
     }
+    window.location.reload();
   };
 
   return (
     <div className=" flex flex-col gap-8">
       <div className="w-full text-display-xxs font-heading">Personal Information</div>
+      {/* this is the first profile section */}
       {user ? (
         <div className="flex gap-10">
           <div className="flex flex-col gap-8 items-center">
@@ -228,7 +320,7 @@ const UserProfileInformation = () => {
               <></>
             )}
           </div>
-          {userRole === "brand" || userRole === "agency" ? (
+          {userRole === "brand" || userRole === "agency" || userRole === "influencer" ? (
             <div className="flex flex-col gap-4">
               <Form {...brandForm}>
                 <form action="" onSubmit={brandForm.handleSubmit(handleBrandProfileUpdate)}>
@@ -236,30 +328,14 @@ const UserProfileInformation = () => {
                     <div className="flex gap-5  w-full">
                       <FormTextInput
                         formName="firstName"
-                        label="POC First Name"
+                        label="First Name"
                         placeholder="Enter first name"
                         disabled={!editable}
                         required
                       />
                       <FormTextInput
                         formName="lastName"
-                        label="POC Last Name"
-                        placeholder="Enter last name"
-                        disabled={!editable}
-                        required
-                      />
-                    </div>
-                    <div className="flex gap-5  w-full">
-                      <FormTextInput
-                        formName="name"
-                        label="Brand Name"
-                        placeholder="Enter first name"
-                        disabled={!editable}
-                        required
-                      />
-                      <FormTextInput
-                        formName="websiteURL"
-                        label="Brand Website Link"
+                        label="Last Name"
                         placeholder="Enter last name"
                         disabled={!editable}
                         required
@@ -268,17 +344,49 @@ const UserProfileInformation = () => {
                     <div className="flex gap-5  w-full">
                       <FormTextInput
                         formName="email"
-                        label="POC Email Id"
+                        label="Email Id"
                         placeholder="Enter email"
                         required
-                        disabled
+                        disabled={!editable}
                         leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                       />
                       <FormPhoneInput
-                        label="POC Mobile Number"
+                        label="Mobile Number"
                         mobileFormName="mobileNo"
                         required
-                        disabled
+                        disabled={!editable}
+                      />
+                    </div>
+                    <div className="flex gap-5  w-full">
+                      <FormTextInput
+                        formName="address"
+                        label="Your office address"
+                        placeholder=""
+                        disabled={!editable}
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-5  w-full">
+                      <FormTextInput
+                        formName="city"
+                        label="City"
+                        placeholder=""
+                        disabled={!editable}
+                        required
+                      />
+                      <FormTextInput
+                        formName="state"
+                        label="State"
+                        placeholder=""
+                        disabled={!editable}
+                        required
+                      />
+                      <FormTextInput
+                        formName="pincode"
+                        label="PIN"
+                        placeholder=""
+                        disabled={!editable}
+                        required
                       />
                     </div>
                   </div>
@@ -303,6 +411,148 @@ const UserProfileInformation = () => {
           ) : (
             <></>
           )}
+        </div>
+      ) : (
+        <></>
+      )}
+      {/* this is the key details section */}
+      {user && userRole != "admin" ? (
+        <div className="flex flex-col gap-6">
+          <div className="w-full text-display-xxs font-heading ">Key details</div>
+          <Form {...keyDetailsForm}>
+            <form action="" onSubmit={keyDetailsForm.handleSubmit(handleKeyDetailsFormUpdate)}>
+              <div className="flex gap-5  w-full">
+                <FormTextInput
+                  formName="aadharNumber"
+                  label="Aadhar number"
+                  placeholder=""
+                  required
+                  disabled={!keyDetailseditable}
+                />
+                <FormTextInput
+                  formName="PAN"
+                  label="PAN"
+                  placeholder=""
+                  required
+                  disabled={!keyDetailseditable}
+                />
+                {userRole != "employee" ? (
+                  <>
+                    <FormTextInput
+                      formName="gstin"
+                      label="GSTIN"
+                      placeholder=""
+                      required
+                      disabled={!keyDetailseditable}
+                    />
+                    {userRole === "brand" ? (
+                      <FormTextInput
+                        formName="MSMENumber"
+                        label="MSME number"
+                        placeholder=""
+                        required
+                        disabled={!keyDetailseditable}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </form>
+          </Form>
+          <Button
+            className={keyDetailseditable ? "hidden" : ""}
+            onClick={() => setKeyDetailsEditor(!keyDetailseditable)}
+          >
+            Edit Details
+          </Button>
+          <div className="flex flex-col w-full gap-5">
+            <Button
+              className={keyDetailseditable ? "" : "hidden"}
+              onClick={keyDetailsForm.handleSubmit(handleKeyDetailsFormUpdate)}
+            >
+              Submit
+            </Button>
+            <Button
+              className={cn(
+                "bg-white border-slate-800 border-2",
+                keyDetailseditable ? "" : "hidden",
+              )}
+              onClick={() => setKeyDetailsEditor(!keyDetailseditable)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+      {user && userRole != "brand" ? (
+        <div className="flex flex-col gap-6">
+          <div className="w-full text-display-xxs font-heading ">Bank A/C Details</div>
+          <Form {...bankDetailsForm}>
+            <form action="" onSubmit={bankDetailsForm.handleSubmit(handleBankDetailsFormUpdate)}>
+              <div className="flex gap-5  w-full">
+                <FormTextInput
+                  formName="bankName"
+                  label="Bank name"
+                  placeholder=""
+                  required
+                  disabled={!bsnkDetailseditable}
+                />
+                <FormTextInput
+                  formName="accountNumber"
+                  label="Account number"
+                  placeholder=""
+                  required
+                  disabled={!bsnkDetailseditable}
+                />
+              </div>
+              <div className="flex gap-5  w-full">
+                <FormTextInput
+                  formName="accountHolderName"
+                  label="Account holder name"
+                  placeholder=""
+                  required
+                  disabled={!bsnkDetailseditable}
+                />
+
+                <FormTextInput
+                  formName="IFSC"
+                  label="IFSC code"
+                  placeholder=""
+                  required
+                  disabled={!bsnkDetailseditable}
+                />
+              </div>
+            </form>
+          </Form>
+          <Button
+            className={bsnkDetailseditable ? "hidden" : ""}
+            onClick={() => setBankDetailsEditor(!bsnkDetailseditable)}
+          >
+            Edit Details
+          </Button>
+          <div className="flex flex-col w-full gap-5">
+            <Button
+              className={bsnkDetailseditable ? "" : "hidden"}
+              onClick={bankDetailsForm.handleSubmit(handleBankDetailsFormUpdate)}
+            >
+              Submit
+            </Button>
+            <Button
+              className={cn(
+                "bg-white border-slate-800 border-2",
+                bsnkDetailseditable ? "" : "hidden",
+              )}
+              onClick={() => setBankDetailsEditor(!bsnkDetailseditable)}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       ) : (
         <></>

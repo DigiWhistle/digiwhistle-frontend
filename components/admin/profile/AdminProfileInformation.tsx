@@ -54,6 +54,15 @@ const ProfileInformation = () => {
   const userRole = useAppSelector(UserRole);
   const dispatch = useAppDispatch();
   const [editable, setEditor] = useState(false);
+
+  useEffect(() => {
+    const userProfileGetter = async () => {
+      const userProfile: any = await GET("employee/profile");
+
+      console.log("userr", userProfile);
+    };
+    userProfileGetter();
+  }, []);
   const adminForm = useForm<z.infer<typeof adminProfileSchema>>({
     resolver: zodResolver(adminProfileSchema),
     defaultValues: {

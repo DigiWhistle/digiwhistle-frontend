@@ -63,8 +63,8 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
                   {"deliverables" in participant &&
                     participant.deliverables.map((item, index) => (
                       <>
-                        <div key={index} className="flex gap-2 justify-between  mr-8">
-                          <div className="flex gap-10 items-start ">
+                        <div key={index} className="flex gap-5 justify-between  mr-8">
+                          <div className="flex gap-3 items-start ">
                             <div className="space-y-1 min-w-[122px]">
                               <div className="flex gap-1 items-center">
                                 <p className="text-tc-primary-default font-medium">Deliverable</p>
@@ -99,9 +99,19 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
                                 {item.status}
                               </>
                             </DeliverableItem>
-                            <DeliverableItem classname="min-w-[280px] " title="Deliverable Link">
+                            <DeliverableItem
+                              classname="min-w-[280px] break-all"
+                              title="Deliverable Link"
+                            >
                               <>
-                                <ArrowTopRightOnSquareIcon className="w-4 h-4 text-link" />
+                                <ArrowTopRightOnSquareIcon
+                                  className="w-4 h-4 text-link cursor-pointer "
+                                  onClick={() => {
+                                    if (item.deliverableLink) {
+                                      window.open(item.deliverableLink, "_blank");
+                                    }
+                                  }}
+                                />
                                 {item.deliverableLink ? item.deliverableLink : "-"}
                               </>
                             </DeliverableItem>

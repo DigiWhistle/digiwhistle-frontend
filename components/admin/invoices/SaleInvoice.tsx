@@ -73,6 +73,7 @@ const PayrollSchema = z.object({
   recieved: z.number(),
   balanceAmount: z.number(),
   paymentStatus: z.string(),
+  month: z.string(),
 });
 const SaleInvoice = ({
   mode,
@@ -112,12 +113,33 @@ const SaleInvoice = ({
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
-    const sendInfo = {};
-    console.log("sendinfo", data);
-    let response: any;
+    const sendInfo = {
+      campaign: data.campaignName,
+      gstTin: data.gstin,
+      invoiceNo: data.invoiceNo,
+      invoiceDate: data.invoiceDate,
+      amount: data.taxableAmount,
+      sgst: data.sgst,
+      cgst: data.cgst,
+      igst: data.igst,
+      total: data.total,
+      tds: data.tdsAmount,
+      received: data.recieved,
+      balanceAmount: data.balanceAmount,
+      month: data.month,
+      paymentStatus: data.paymentStatus,
+    };
 
+    let response: any;
+    response = await POST(`invoice/sale`, sendInfo);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+    }
     form.reset({});
-    // window.location.reload();
+    window.location.reload();
   };
 
   if (isLoading) {

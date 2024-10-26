@@ -174,6 +174,7 @@ const FilterTag = ({
 const CampaignFilters = () => {
   const router = useRouter();
   const currentPath = usePathname();
+  const role = useAppSelector(UserRole);
 
   const searchParams = useSearchParams();
 
@@ -227,7 +228,7 @@ const CampaignFilters = () => {
           name="search"
         />
       </div>
-      <FiltersDropdown pushUrl={pushUrl} removeParam={removeParam} />
+      {role !== "influencer" && <FiltersDropdown pushUrl={pushUrl} removeParam={removeParam} />}
     </div>
   );
 };

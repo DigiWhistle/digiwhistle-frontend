@@ -26,30 +26,33 @@ import { DatePicker } from "@/components/ui/form/Date-Picker";
 const Options = ["English", "Chinese", "Hindi", "Punjabi", "Thai", "Gujarati", "Marathi"];
 export const EmploymentTypeOptions = [
   {
-    value: "Fulltime",
-    label: <div className="flex items-center gap-2">Fulltime</div>,
+    value: "Full Time",
+    label: <div className="flex items-center gap-2">Full Time</div>,
   },
   {
-    value: "Parttime",
-    label: <div className="flex items-center gap-2">Parttime</div>,
+    value: "Internship",
+    label: <div className="flex items-center gap-2">Internship</div>,
   },
 ];
 
 const PayrollSchema = z.object({
   Email: z.string().optional() || null,
-  paymentStatus: z.string(),
+  employmentType: z.string(),
   basic: z.number(),
   hra: z.number(),
   others: z.number(),
   ctc: z.number(),
-  campaignDuration: z.date(),
+  grossPay: z.number().optional(),
+  tdsAmount: z.number().optional(),
+  incentive: z.number().optional(),
 });
+
 const CreatePayrollPopUp = ({
   mode,
   edit_id,
 }: {
   mode: "Create payroll" | "Edit payroll";
-  edit_id?: string;
+  edit_id?: any;
 }) => {
   const [Email, setEmail] = useState<any>();
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -57,40 +60,76 @@ const CreatePayrollPopUp = ({
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
   });
+  console.log("edit_id", edit_id);
   useEffect(() => {
     if (mode === "Edit payroll") {
       const updateFunction = async () => {
         setLoading(true);
-        const response: any = await GET(`campaign/${edit_id}`);
+        const response: any = await GET(`payroll/${edit_id.id}`);
         if (response.error) {
           toast.error(response.error);
           setLoading(false);
           return;
         }
-
-        form.reset({});
-        setEmail(response.data.participants);
+        console.log(response);
+        form.reset({
+          Email: response.data.employeeProfile.user.email,
+          employmentType: response.data.employmentType,
+          basic: response.data.basic,
+          hra: response.data.hra,
+          others: response.data.others,
+          ctc: response.data.ctc,
+        });
+        setEmail(response.data.employeeProfile);
         setLoading(false);
 
         // SetEditData(response.data);
       };
       updateFunction();
     }
-  }, []);
+  }, [edit_id]);
 
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
-    const sendInfo = {};
-    console.log("sendinfo", data);
+    let sendInfo: any;
+    sendInfo = {
+      employeeProfile: Email.id,
+      basic: data.basic,
+      hra: data.hra,
+      others: data.others,
+      ctc: data.ctc,
+      employmentType: data.employmentType,
+    };
+    console.log("sendinfo", sendInfo);
     let response: any;
     response = {};
     if (mode === "Create payroll") {
+      sendInfo = {
+        employeeProfile: Email.id,
+        basic: data.basic,
+        hra: data.hra,
+        others: data.others,
+        ctc: data.ctc,
+        employmentType: data.employmentType,
+      };
       response = await POST("payroll", sendInfo);
     } else {
-      response = await PATCH(`campaign/${edit_id}`, sendInfo);
+      sendInfo = {
+        basic: data.basic,
+        hra: data.hra,
+        others: data.others,
+        ctc: data.ctc,
+        employmentType: data.employmentType,
+      };
+      response = await PATCH(`payroll/${edit_id.id}`, {
+        ...sendInfo,
+        workingDays: edit_id.workingDays,
+        tds: edit_id.tds,
+        incentive: edit_id.incentive,
+      });
     }
     if (response.error) {
       toast.error(response.error);
@@ -98,7 +137,7 @@ const CreatePayrollPopUp = ({
       toast.success(response.message);
     }
     form.reset({});
-    window.location.reload();
+    // window.location.reload();
   };
 
   if (isLoading) {
@@ -124,9 +163,10 @@ const CreatePayrollPopUp = ({
                 label="Email id"
                 selectedValueSetter={setEmail}
                 setterfunction={setterfunction}
+                disabled={mode === "Edit payroll"}
               />
               <FormSelectInput
-                formName={"paymentStatus"}
+                formName={"employmentType"}
                 label="Employment Type"
                 placeholder="Select Employment Type"
                 selectItems={EmploymentTypeOptions}
@@ -163,12 +203,6 @@ const CreatePayrollPopUp = ({
                 formName="ctc"
                 placeholder=""
                 label="CTC/ month"
-              />
-              <DatePicker
-                label="date"
-                placeholder=""
-                setterfunction={setterfunction}
-                formName="campaignDuration"
               />
             </div>
             <hr className="mt-6 mb-2 " />

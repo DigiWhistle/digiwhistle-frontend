@@ -82,7 +82,7 @@ const BrandFilters = () => {
               pushUrl("approved", value ? "true" : "false");
             }}
           />
-          <Label htmlFor="approve-only">Approved only</Label>
+          <Label htmlFor="approve-only">Approved</Label>
         </div>
         <div className="flex items-center space-x-2">
           <Switch
@@ -101,7 +101,7 @@ const BrandFilters = () => {
               pushUrl("rejected", value ? "true" : "false");
             }}
           />
-          <Label htmlFor="rejected-only">Rejected only</Label>
+          <Label htmlFor="rejected-only">Rejected</Label>
         </div>
       </div>
     </div>

@@ -27,9 +27,9 @@ const PayrollSchema = z.object({
   message: z.string().min(1, "Enter Message"),
   shareEmail: z.string().optional() || null,
 });
-const ShareInvoice = ({ edit_id }: { edit_id?: string }) => {
+const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: string; shareUrl?: string }) => {
   const [allEmails, setEmails] = useState<any>([]);
-
+  const [sendEmails, setSendEmails] = useState<any>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof PayrollSchema>>({
     resolver: zodResolver(PayrollSchema),
@@ -44,6 +44,7 @@ const ShareInvoice = ({ edit_id }: { edit_id?: string }) => {
       // If it doesn't exist, add it to the array
       if (!emailExists) {
         setEmails([...allEmails, Option]);
+        setSendEmails([...sendEmails, Option.email]);
         form.setValue(formname, "");
       }
     } else {
@@ -52,12 +53,24 @@ const ShareInvoice = ({ edit_id }: { edit_id?: string }) => {
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
-    const sendInfo = {};
+    const sendInfo = {
+      invoiceId: edit_id,
+      emails: sendEmails,
+      subject: data.subject,
+      message: data.message,
+    };
     console.log("sendinfo", data, allEmails);
-    let response: any;
-    response = {};
+    console.log("ssss", sendInfo);
+    const response = await POST(`${shareUrl}`, sendInfo);
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+    }
+    setSendEmails([]);
+    setEmails([]);
     form.reset({});
-    // window.location.reload();
+    window.location.reload();
   };
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));
@@ -66,7 +79,7 @@ const ShareInvoice = ({ edit_id }: { edit_id?: string }) => {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
         <span className="loading loading-spinner loading-xl "></span>
-        <div>Fetching Campaign Details</div>
+        <div>Fetching Details</div>
       </div>
     );
   }
@@ -78,11 +91,12 @@ const ShareInvoice = ({ edit_id }: { edit_id?: string }) => {
             <SearchSelect
               popoverclassname="w-[500px]"
               type={"EmailSelector"}
+              searchType="employee"
               // Options={Options}
               formName="shareEmail"
               searchPlaceholder="Type email ID here"
               placeholder="Type email ID here"
-              label="Add influencer/ agency"
+              label=""
               setterfunction={setterfunction}
               leftIcon={<MagnifyingGlassIcon className="text-tc-body-grey w-5 h-5" />}
             />

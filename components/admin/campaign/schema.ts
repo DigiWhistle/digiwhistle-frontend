@@ -4,7 +4,7 @@ import { z } from "zod";
 const DeliverableSchema = z
   .object({
     id: z.string().uuid(),
-    title: z.string({ message: "required" }),
+    title: z.string({ message: "required" }).min(1, { message: "required" }),
     platform: z.enum([
       InfluencerPlatforms.INSTAGRAM,
       InfluencerPlatforms.YOUTUBE,
@@ -13,8 +13,8 @@ const DeliverableSchema = z
     ]),
     status: z.enum(["Live", "Not Live"]),
     deliverableLink: z.string().url().nullable().optional(),
-    er: z.number({ message: "required" }),
-    cpv: z.number({ message: "required" }),
+    er: z.number().int().nonnegative().nullable().optional(),
+    cpv: z.number().int().nonnegative().nullable().optional(),
   })
   .refine(data => data.status !== "Live" || data.deliverableLink !== null, {
     message: "required",

@@ -66,7 +66,11 @@ const FormTextInput = ({
                     placeholder={placeholder}
                     {...field}
                     disabled={disabled}
-                    value={field.value || defaultValue || ""}
+                    value={
+                      type === "number"
+                        ? parseInt(field.value || defaultValue || null, 10)
+                        : field.value || defaultValue || ""
+                    }
                     {...inputProps}
                     className={cn(
                       " border-none placeholder:text-muted-foreground bg-white",

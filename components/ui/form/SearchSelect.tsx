@@ -49,6 +49,7 @@ interface IFormSearchSelectProps {
   popoverclassname?: string;
   endpoint?: string;
   selectedValueSetter?: any;
+  searchType?: string;
 }
 
 export function SearchSelect({
@@ -69,6 +70,7 @@ export function SearchSelect({
   setterfunction,
   endpoint,
   popoverclassname,
+  searchType,
   selectedValueSetter,
 }: IFormSearchSelectProps) {
   const { control } = useFormContext();
@@ -79,10 +81,14 @@ export function SearchSelect({
   const debouncedFetchData = debounce(async (value: string) => {
     let response: any;
     if (type === "EmailSelector") {
-      response = await GET(`user/search?queryType=InfluencerAndAgencyByEmail&email=${value}`);
+      if (searchType && searchType === "employee") {
+        response = await GET(`employee/search?email=${value}`);
+      } else {
+        response = await GET(`user/search?queryType=InfluencerAndAgencyByEmail&email=${value}`);
+      }
     } else if (type === "email") {
-      response = await GET(`user/search?queryType=InfluencerAndAgencyByEmail&email=${value}`);
-      console.log("email", response);
+      response = await GET(`employee/search?email=${value}`);
+      console.log(response);
     } else {
       response = await GET(`${endpoint}?name=${value}`);
     }
@@ -90,7 +96,6 @@ export function SearchSelect({
     setOptions(response.data);
     setOpen(!!value);
   }, 1000);
-  console.log(initialValue, inputValue);
   const handleValueChange = (value: string) => {
     setInputValue(value);
     debouncedFetchData(value);
