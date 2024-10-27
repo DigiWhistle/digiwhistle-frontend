@@ -186,7 +186,7 @@ const BrandsMarquee = () => {
           secondHalf.map((brand, index) => (
             <Image
               key={index}
-              src={brand.profilePic}
+              src={brand.profilePic ?? ""}
               alt={brand.name}
               width={10000}
               height={10000}
