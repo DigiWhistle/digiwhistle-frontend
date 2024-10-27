@@ -4,6 +4,7 @@ import { POST } from "@/lib/config/axios";
 import { formatDateWithZeroTime } from "@/lib/utils";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { usePathname, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const DownloadList = () => {
   const currentPath = usePathname();
@@ -24,7 +25,14 @@ const DownloadList = () => {
   const downloadLink = `invoice/${invoiceType}/download`;
 
   const handleClick = async () => {
-    const response = POST(downloadLink, { startDate: startTime, endDate: endTime });
+    const response: any = await POST(downloadLink, {
+      startDate: startTime,
+      endDate: endTime,
+    });
+    if (response.error) {
+      toast.error("Cannot  download invoice list");
+    }
+    window.open(response.data?.url, "_blank");
   };
 
   if (invoiceType === "proforma") {

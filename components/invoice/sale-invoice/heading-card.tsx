@@ -17,13 +17,19 @@ import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import CreatePayrollPopUp from "@/components/admin/payroll/CreatePayrollPopUp";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
-import { DELETE } from "@/lib/config/axios";
+import { DELETE, GET } from "@/lib/config/axios";
 import { toast } from "sonner";
 import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
 import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
+import { usePathname } from "next/navigation";
 const HeadingCard = ({ data }: { data: any }) => {
   console.log("sale-invoice", data);
   const role = useAppSelector(UserRole);
+  const currentPath = usePathname();
+
+  const invoiceType = currentPath.split("/")[currentPath.split("/").length - 2] as
+    | "sale"
+    | "proforma";
   return (
     <div>
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
@@ -101,87 +107,128 @@ const HeadingCard = ({ data }: { data: any }) => {
         </div>
         <div className="flex gap-4 items-center">
           {/* TODO: TADVI WORK HERE --> Implement for sale & proforma invoice for admin only*/}
-          {role === "admin" ? (
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
-                  <button type="button">
-                    <EllipsisVerticalIcon className="h-5 w-5" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="p-1" align="end">
-                  {/* TODO: TADVI WORK HERE*/}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
+              <button type="button">
+                <EllipsisVerticalIcon className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-1" align="end">
+              {/* TODO: TADVI WORK HERE*/}
 
-                  <CustomDialog
-                    className="w-[840px]"
-                    headerTitle="Edit invoice"
-                    headerDescription="Please enter below details."
-                    triggerElement={
-                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                        Edit invoice
-                      </div>
-                    }
-                  >
-                    <SaleInvoice mode="Edit sale invoice" edit_id={data} />
-                  </CustomDialog>
-                  <CustomDialog
-                    className="w-[700px]"
-                    headerTitle="Share invoice"
-                    headerDescription=""
-                    triggerElement={
-                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                        Share invoice
-                      </div>
-                    }
-                  >
-                    <ShareInvoice edit_id={data.id} shareUrl="invoice/sale/share" />
-                  </CustomDialog>
-                  <CustomDialog
-                    className="w-[970px]"
-                    headerTitle="Create credit note"
-                    headerDescription=""
-                    triggerElement={
-                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                        Create credit note
-                      </div>
-                    }
-                  >
-                    <CreateCreditNote edit_id={data} />
-                  </CustomDialog>
-                  <CustomDialog
-                    className="w-[400px]"
-                    headerTitle="Delete query"
-                    headerDescription="Please note that this action is permanent and irreversible in nature."
-                    triggerElement={
-                      <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                        Delete Invoice
-                      </div>
-                    }
-                  >
-                    <div className="flex w-full gap-3 pt-6 border-t-2">
-                      <CancelButton />
-                      <ActionButton
-                        className="bg-destructive text-white hover:bg-destructive/90"
-                        onClick={async () => {
-                          const response = await DELETE(`invoice/sale/${data.id}`);
-                          if (response.error) {
-                            toast.error(response.error);
-                          } else {
-                            toast.success("Sale invoice deleted successfully");
-                            window.location.reload();
-                          }
-                        }}
-                      >
-                        Delete
-                      </ActionButton>
+              <CustomDialog
+                className="w-[840px]"
+                headerTitle="Edit invoice"
+                headerDescription="Please enter below details."
+                triggerElement={
+                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                    Edit invoice
+                  </div>
+                }
+              >
+                <SaleInvoice mode="Edit sale invoice" edit_id={data} />
+              </CustomDialog>
+
+              <CustomDialog
+                className="w-[700px]"
+                headerTitle="Share invoice"
+                headerDescription=""
+                triggerElement={
+                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                    Share invoice
+                  </div>
+                }
+              >
+                <ShareInvoice edit_id={data.id} shareUrl="invoice/sale/share" />
+              </CustomDialog>
+              <button
+                className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
+                onClick={async () => {
+                  const response = await GET<{ url: string }>(
+                    `invoice/${invoiceType}/download?id=${data.id}`,
+                  );
+                  if (response.error) {
+                    toast.error(response.error);
+                    return;
+                  }
+
+                  const url = response.data?.url;
+                  if (typeof url === "string") {
+                    window.open(url, "_blank");
+                  } else {
+                    toast.error("Invalid URL");
+                  }
+                }}
+              >
+                Download Invoice
+              </button>
+              {invoiceType === "sale" && (
+                <CustomDialog
+                  className="w-[970px]"
+                  headerTitle="Create credit note"
+                  headerDescription=""
+                  triggerElement={
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Create credit note
                     </div>
-                  </CustomDialog>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          ) : (
-            <></>
-          )}
+                  }
+                >
+                  <CreateCreditNote edit_id={data.id} />
+                </CustomDialog>
+              )}
+              {invoiceType === "sale" && (
+                <button
+                  className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
+                  onClick={async () => {
+                    const response = await GET<{ url: string }>(
+                      `invoice/creditnote/download?id=${data.id}`,
+                    );
+                    if (response.error) {
+                      toast.error(response.error);
+                      return;
+                    }
+                    const url = response.data?.url;
+                    if (typeof url === "string") {
+                      window.open(url, "_blank");
+                    } else {
+                      toast.error("Invalid URL");
+                    }
+                  }}
+                >
+                  Download Credit Note
+                </button>
+              )}
+              <CustomDialog
+                className="w-[400px]"
+                headerTitle="Delete query"
+                headerDescription="Please note that this action is permanent and irreversible in nature."
+                triggerElement={
+                  <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                    Delete Invoice
+                  </div>
+                }
+              >
+                <div className="flex w-full gap-3 pt-6 border-t-2">
+                  <CancelButton />
+                  <ActionButton
+                    className="bg-destructive text-white hover:bg-destructive/90"
+                    onClick={async () => {
+                      const response = await DELETE(`invoice/${invoiceType}/${data.id}`);
+                      if (response.error) {
+                        toast.error(response.error);
+                      } else {
+                        toast.success("Sale invoice deleted successfully");
+                        window.location.reload();
+                      }
+                    }}
+                  >
+                    Delete
+                  </ActionButton>
+                </div>
+              </CustomDialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {/* <Select
             value=""
             onValueChange={(value: "influencer" | "agency") => {

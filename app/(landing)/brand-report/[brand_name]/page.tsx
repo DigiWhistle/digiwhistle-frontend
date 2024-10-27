@@ -1,11 +1,15 @@
+// @ts-nocheck
 "use client";
-import React from "react";
+
+import React, { useLayoutEffect, useState } from "react";
 import "./print.css";
 import Image from "next/image";
 import ReportTitle from "@/components/brand-report/ReportTitle";
 import DataCards from "@/components/brand-report/DataCard";
 import DataCard from "@/components/brand-report/DataCard";
 import { ArrowDownIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { getRequest } from "@/lib/config/axios";
+import { cn } from "@/lib/utils";
 
 const InflucenerArray = [
   {
@@ -55,13 +59,45 @@ const InflucenerArray = [
   },
 ];
 
-const page = ({
+const Page = ({
   params: { brand_name },
 }: {
   params: {
     brand_name: string;
   };
 }) => {
+  const [brands, setBrands] = useState(null);
+
+  useLayoutEffect(() => {
+    const fetchBrands = async () => {
+      const response = await getRequest<>(`campaign/report?id=${brand_name}`);
+
+      if (response.data) {
+        setBrands(response.data);
+      }
+      console.log(response.data);
+    };
+
+    fetchBrands();
+  }, []);
+
+  console.log(brands);
+
+  const summaryTitle = {
+    name: "Total Creators",
+    views: "Total Views",
+    likes: "Total Likes",
+    comments: "Total Comments",
+  };
+
+  const summaryData = {
+    name: brands?.table.rows.length,
+    views: brands?.table.rows.reduce((acc, row) => acc.views + row.views),
+    likes: brands?.table.rows.reduce((acc, row) => acc.likes + row.likes),
+    comments: brands?.table.rows.reduce((acc, row) => acc.comments + row.comments),
+  };
+
+  console.log(" summaryData", summaryData);
   return (
     <div className="flex flex-col items-center w-full h-full">
       <nav className="w-full flex justify-between items-center p-4 py-2 md:p-8 md:py-4 border bg-yellow-101 ">
@@ -139,12 +175,18 @@ const page = ({
         >
           <ReportTitle title="Live Creators" />
           <div className="flex flex-wrap gap-6 items-center justify-center mt-12">
-            {InflucenerArray.map((data, index) => (
-              <div className="flex flex-col items-center gap-3" key={index}>
-                <Image src={data.image} width={150} height={150} alt="influencer image" />
-                <p className="font-semibold text-tc-primary-default">{data.name}</p>
-              </div>
-            ))}
+            {brands &&
+              brands?.influencers.map((data, index) => (
+                <div className="flex flex-col items-center gap-3" key={index}>
+                  <Image
+                    src={data.profilePic ?? "/assets/testimonials/card.webp"}
+                    width={150}
+                    height={150}
+                    alt="influencer image"
+                  />
+                  <p className="font-semibold text-tc-primary-default">{data.name}</p>
+                </div>
+              ))}
           </div>
         </div>
 
@@ -157,42 +199,22 @@ const page = ({
           <div className="spacer_print space-y-6">
             <div className="border rounded-2xl overflow-hidden">
               <p className="w-full text-center py-3 bg-yellow-561">Campaign CPV</p>
-              <p className="w-full text-center py-3">0.7</p>
+              <p className="w-full text-center py-3">{brands && brands.averageCpv}</p>
             </div>
             <div className="overflow-x-auto rounded-2xl border border-gray-555">
               <table className=" tables_print min-w-full divide-y divide-gray-555">
                 <thead className=" bg-gray-50">
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Creators
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Reel Views
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Link Clicks
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Shares
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Saves
-                    </th>
+                    {brands &&
+                      brands.table.headers.map((data, index) => (
+                        <th
+                          scope="col"
+                          key={index}
+                          className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                          {data}
+                        </th>
+                      ))}
                     {/* <th
                       scope="col"
                       className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
@@ -202,35 +224,35 @@ const page = ({
                   </tr>
                 </thead>
                 <tbody className=" bg-white divide-y divide-gray-555">
-                  {InflucenerArray.map((data, index) => (
-                    <tr key={index}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{data.name}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{data.reelViews}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{data.linkClicks}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{data.shares}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{data.saves}</div>
-                      </td>
-                      {/* <td className="px-6 py-4 whitespace-nowrap">
+                  {brands &&
+                    brands.table.rows.map((data, index) => (
+                      <tr key={index}>
+                        {brands &&
+                          brands.table.headers.map((header, index) => (
+                            <td className="px-6 py-4 whitespace-nowrap" key={index}>
+                              <div
+                                className={cn(
+                                  "text-sm text-gray-500",
+                                  header === "Name" ? "font-medium" : "",
+                                )}
+                              >
+                                {data[header.toLowerCase()]}
+                              </div>
+                            </td>
+                          ))}
+
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">{data.storyViews}</div>
                       </td> */}
-                    </tr>
-                  ))}
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <div
+        {/* <div
           id="uscpa"
           className="page-break md:w-[650px] p-10 flex flex-col gap-12 rounded-2xl bg-sb-blue-580"
         >
@@ -271,12 +293,6 @@ const page = ({
                     >
                       Saves
                     </th>
-                    {/* <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      Story Views
-                    </th> */}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-555">
@@ -297,27 +313,22 @@ const page = ({
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">{data.saves}</div>
                       </td>
-                      {/* <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{data.storyViews}</div>
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="page-break md:w-[650px] py-10 flex flex-col gap-12 rounded-2xl ">
           <ReportTitle title="Campaign Report" />
           <div className="spacer_print flex gap-2 items-center">
             <div className="w-full flex flex-wrap items-center justify-center gap-4">
-              <DataCard title="Total Creators" value={"5"} />
-              <DataCard title="Total Reach" value={"2,66,668"} />
-              <DataCard title="Link Clicks" value={"2,456"} />
-              <DataCard title="Reach" value={"2,66,668"} />
-              <DataCard title="Registrations" value={"2,66,668"} />
-              <DataCard title="Visitors" value={"5,445"} />
+              {brands &&
+                ["name", "likes", "views", "comments"].map((data, index) => (
+                  <DataCard key={index} title={summaryTitle[data]} value={summaryData[data]} />
+                ))}
             </div>
             <Image
               src={"/assets/brand-report/graph.png"}
@@ -338,4 +349,4 @@ const page = ({
   );
 };
 
-export default page;
+export default Page;

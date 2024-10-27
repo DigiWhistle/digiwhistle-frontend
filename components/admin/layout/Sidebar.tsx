@@ -168,6 +168,9 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
     } else if (role === "brand") {
       const updatedUserSidebarLinks = UserSidebarLinks.filter(link => link.keyword !== "invoices");
       return updatedUserSidebarLinks;
+    } else if (role === "influencer") {
+      const updatedUserSidebarLinks = UserSidebarLinks.filter(link => link.keyword !== "explore");
+      return updatedUserSidebarLinks;
     }
     return UserSidebarLinks;
   };

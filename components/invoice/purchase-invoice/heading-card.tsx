@@ -18,9 +18,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { formatDateWithZeroTime } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
+import { POST } from "@/lib/config/axios";
+import { toast } from "sonner";
 
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
+  const searchParams = useSearchParams();
+
+  const startTime = searchParams.get("startTime ")
+    ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
+    : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
+
+  const endTime = searchParams.get("endTime")
+    ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
+    : formatDateWithZeroTime(new Date());
+
+  const handleClick = async () => {
+    const response: any = await POST("invoice/purchase/download", {
+      startDate: startTime,
+      endDate: endTime,
+    });
+    if (response.error) {
+      toast.error("Cannot  download invoice list");
+    }
+    window.open(response.data?.url, "_blank");
+  };
+
   return (
     <div>
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
@@ -116,7 +141,7 @@ const HeadingCard = ({ data }: { data: any }) => {
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button>
+                <button onClick={handleClick}>
                   {role === "admin" || role === "employee" ? (
                     <ArrowDownTrayIcon className="w-5 h-5 text-tc-body-grey" />
                   ) : (

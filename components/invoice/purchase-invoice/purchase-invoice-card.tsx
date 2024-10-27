@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem } from "@/components/ui/accordion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +11,7 @@ import { Form } from "@/components/ui/form";
 import HeadingCard from "./heading-card";
 // import InfluencerForm from "./influencer-form";
 import { Button } from "@/components/ui/button";
-import { PUT } from "@/lib/config/axios";
+import { POST, PUT } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   PlayIcon,
@@ -27,6 +27,10 @@ import { cn } from "@/lib/utils";
 import CurrencyValueDisplay from "@/components/ui/currency-value-display";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
+import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
+import { uniqueId } from "lodash";
 export type TCampaignForm = BrandCampaign;
 
 const DeliverableItem = ({
@@ -47,6 +51,7 @@ const DeliverableItem = ({
 };
 
 const PurchaseInvoiceCard = ({ data, index }: { data: TCampaignForm; index: number }) => {
+  const [loading, setLoading] = useState(false);
   const role = useAppSelector(UserRole);
   return (
     <Accordion defaultValue="" type="single" collapsible className="w-full">
@@ -58,7 +63,34 @@ const PurchaseInvoiceCard = ({ data, index }: { data: TCampaignForm; index: numb
 
         <AccordionContent className="flex flex-col-reverse gap-5">
           {(role === "admin" || role === "employee") && (
-            <Button className="self-end">Release Payment</Button>
+            <CustomDialog
+              className="w-[400px]"
+              headerTitle="Release Payment"
+              headerDescription="Please note that this action is permanent and irreversible in nature."
+              triggerElement={<Button className="self-end ">Release Payment</Button>}
+            >
+              <div className="flex w-full gap-3 pt-6 border-t-2">
+                <CancelButton />
+                <ActionButton
+                  className=""
+                  onClick={async () => {
+                    const response = await POST(
+                      `invoice/purchase/release?id=${data.id}`,
+                      {},
+                      setLoading,
+                      { "x-idempotency-key": uniqueId() },
+                    );
+                    if (response.error) {
+                      toast.error(response.error);
+                    } else {
+                      toast.success("Sale invoice deleted successfully");
+                    }
+                  }}
+                >
+                  Release Payment
+                </ActionButton>
+              </div>
+            </CustomDialog>
           )}
 
           {

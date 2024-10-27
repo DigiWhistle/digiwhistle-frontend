@@ -145,6 +145,7 @@ export async function POST<T>(
   URL: string,
   payload: any,
   setLoading?: (loading: boolean) => void,
+  headers: any = {},
 ): Promise<ApiResponse<T>> {
   const token = getAuthToken();
   if (!token) {
@@ -155,7 +156,7 @@ export async function POST<T>(
   }
   return handleRequest<T>(
     axiosClient.post<T>(`/${URL}`, payload, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}`, ...headers },
     }),
     setLoading,
   );

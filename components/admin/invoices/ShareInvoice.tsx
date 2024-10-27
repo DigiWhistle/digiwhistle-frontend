@@ -70,7 +70,7 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: string; shareUrl?: stri
     setSendEmails([]);
     setEmails([]);
     form.reset({});
-    window.location.reload();
+    // window.location.reload();
   };
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));

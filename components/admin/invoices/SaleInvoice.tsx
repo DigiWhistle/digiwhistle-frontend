@@ -166,6 +166,10 @@ const SaleInvoice = ({
     } else {
       toast.success(response.message);
     }
+
+    if (mode === "Edit sale invoice") {
+      return;
+    }
     form.reset({});
     window.location.reload();
   };
@@ -174,7 +178,7 @@ const SaleInvoice = ({
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
         <span className="loading loading-spinner loading-xl "></span>
-        <div>Fetching Campaign Details</div>
+        <div>Fetching Invoice Details</div>
       </div>
     );
   }

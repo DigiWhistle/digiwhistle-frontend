@@ -46,6 +46,7 @@ const PayrollSchema = z.object({
   gstin: z.string(),
   creditNoteNumber: z.string().optional(),
   creditNoteDate: z.date(),
+  month: z.string(),
   taxableAmount: z.number(),
   igst: z.number(),
   cgst: z.number(),
@@ -62,24 +63,24 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
   });
-  useEffect(() => {
-    console.log(edit_id);
-    const updateFunction = async () => {
-      setLoading(true);
-      const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
-      if (response.error) {
-        toast.error(response.error);
-        setLoading(false);
-        return;
-      }
+  // useEffect(() => {
+  //   console.log(edit_id);
+  //   const updateFunction = async () => {
+  //     setLoading(true);
+  //     const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
+  //     if (response.error) {
+  //       toast.error(response.error);
+  //       setLoading(false);
+  //       return;
+  //     }
 
-      form.reset({});
-      setLoading(false);
+  //     form.reset({});
+  //     setLoading(false);
 
-      // SetEditData(response.data);
-    };
-    updateFunction();
-  }, []);
+  //     // SetEditData(response.data);
+  //   };
+  //   updateFunction();
+  // }, []);
 
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
@@ -93,35 +94,40 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
       return;
     }
     const sendInfo = {
+      invoice: edit_id,
       campaign: campaignData.data.id,
       gstTin: data.gstin,
       // billNo: data.billNo,
       // billDate: data.billDate,
       // invoiceNo: data.invoiceNo,
-      invoiceDate: new Date().toISOString(),
+      creditNoteDate: data.creditNoteDate,
       amount: data.taxableAmount,
       sgst: data.sgst,
       cgst: data.cgst,
       igst: data.igst,
       total: data.total,
       tds: data.tdsAmount,
+      creditNoteNo: data.creditNoteNumber,
+      advance: data.advance,
+      month: data.month,
       // received: data.recieved,
       // balanceAmount: data.balanceAmount,
       // month: data.month,
     };
 
     let response: any;
-    response = await POST(`invoice/proforma`, sendInfo);
+    response = await POST(`invoice/creditnote`, sendInfo);
 
     if (response.error) {
       toast.error(response.error);
     } else {
       toast.success(response.message);
     }
-    // form.reset({});
+    form.reset({});
     // window.location.reload();
   };
 
+  console.log(form.watch("month"));
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">

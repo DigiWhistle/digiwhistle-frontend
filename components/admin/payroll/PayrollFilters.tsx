@@ -67,7 +67,7 @@ const PayrollFilters = () => {
 
   return (
     <div className="flex justify-between gap-6">
-      <div className="relative h-10 flex items-center  border border-gray-300 rounded-full">
+      <div className="relative flex items-center  border border-gray-300 rounded-full">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <MagnifyingGlassIcon className="w-5 h-5" />
         </div>
