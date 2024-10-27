@@ -147,7 +147,7 @@ const brandImages = [
 
 const BrandsMarquee = () => {
   const [brands, setBrands] = useState([]);
-  const halfIndex = Math.ceil(brands.length / 2);
+  const halfIndex = Math.ceil((brands?.length || 0) / 2);
   const firstHalf = brands.slice(0, halfIndex);
   const secondHalf = brands.slice(halfIndex);
 
@@ -168,7 +168,7 @@ const BrandsMarquee = () => {
   return (
     <div className="my-10 space-y-8 w-full h-full overflow-hidden">
       <Marquee pauseOnHover pauseOnClick gradient>
-        {firstHalf.length > 0 &&
+        {firstHalf?.length > 0 &&
           firstHalf.map((brand, index) => (
             <Image
               key={index}
@@ -182,21 +182,18 @@ const BrandsMarquee = () => {
           ))}
       </Marquee>
       <Marquee pauseOnHover pauseOnClick gradient direction="right">
-        {
-          (secondHalf,
-          length > 0 &&
-            secondHalf.map((brand, index) => (
-              <Image
-                key={index}
-                src={brand.profilePic}
-                alt={brand.name}
-                width={10000}
-                height={10000}
-                className="w-auto h-10 mx-5 place-self-center cursor-pointer transition-all duration-300 ease-in-out object-fill grayscale hover:grayscale-0"
-                onClick={() => window.open(`/brand-report/${brand.id}`)}
-              />
-            )))
-        }
+        {secondHalf?.length > 0 &&
+          secondHalf.map((brand, index) => (
+            <Image
+              key={index}
+              src={brand.profilePic}
+              alt={brand.name}
+              width={10000}
+              height={10000}
+              className="w-auto h-10 mx-5 place-self-center cursor-pointer transition-all duration-300 ease-in-out object-fill grayscale hover:grayscale-0"
+              onClick={() => window.open(`/brand-report/${brand.id}`)}
+            />
+          ))}
       </Marquee>
     </div>
   );

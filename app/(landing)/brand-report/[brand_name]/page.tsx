@@ -91,7 +91,7 @@ const Page = ({
   };
 
   const summaryData = {
-    name: brands?.table.rows.length,
+    name: brands?.table.rows?.length,
     views: brands?.table.rows.reduce((acc, row) => acc.views + row.views),
     likes: brands?.table.rows.reduce((acc, row) => acc.likes + row.likes),
     comments: brands?.table.rows.reduce((acc, row) => acc.comments + row.comments),
