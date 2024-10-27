@@ -55,25 +55,70 @@ const PayrollSchema = z.object({
   advance: z.number(),
   remarks: z.string(),
 });
-const CreateCreditNote = ({ edit_id }: { edit_id?: string }) => {
+const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
   const [getbrand, brandSetter] = useState<any>({});
   const [isLoading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof PayrollSchema>>({
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
   });
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(edit_id);
+    const updateFunction = async () => {
+      setLoading(true);
+      const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
+      if (response.error) {
+        toast.error(response.error);
+        setLoading(false);
+        return;
+      }
+
+      form.reset({});
+      setLoading(false);
+
+      // SetEditData(response.data);
+    };
+    updateFunction();
+  }, []);
 
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
-    const sendInfo = {};
-    console.log("sendinfo", data);
-    let response: any;
+    const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
+    console.log(campaignData);
+    if (campaignData.error) {
+      toast.error("Please enter a valid Campaign Code");
+      return;
+    }
+    const sendInfo = {
+      campaign: campaignData.data.id,
+      gstTin: data.gstin,
+      // billNo: data.billNo,
+      // billDate: data.billDate,
+      // invoiceNo: data.invoiceNo,
+      invoiceDate: new Date().toISOString(),
+      amount: data.taxableAmount,
+      sgst: data.sgst,
+      cgst: data.cgst,
+      igst: data.igst,
+      total: data.total,
+      tds: data.tdsAmount,
+      // received: data.recieved,
+      // balanceAmount: data.balanceAmount,
+      // month: data.month,
+    };
 
-    form.reset({});
+    let response: any;
+    response = await POST(`invoice/proforma`, sendInfo);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success(response.message);
+    }
+    // form.reset({});
     // window.location.reload();
   };
 

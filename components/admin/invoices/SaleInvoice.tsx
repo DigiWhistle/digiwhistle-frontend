@@ -57,7 +57,7 @@ export const MonthOptions = [
   { value: "November", label: "November" },
   { value: "December", label: "December" },
 ];
-const PayrollSchema = z.object({
+const InvoiceSchema = z.object({
   campaignName: z.string(),
   campaignCode: z.string(),
   brand: z.string(),
@@ -80,26 +80,43 @@ const SaleInvoice = ({
   edit_id,
 }: {
   mode: "Create sale invoice" | "Edit sale invoice";
-  edit_id?: string;
+  edit_id?: any;
 }) => {
   const [getbrand, brandSetter] = useState<any>({});
   const [isLoading, setLoading] = useState<boolean>(false);
-  const form = useForm<z.infer<typeof PayrollSchema>>({
-    resolver: zodResolver(PayrollSchema),
+  const form = useForm<z.infer<typeof InvoiceSchema>>({
+    resolver: zodResolver(InvoiceSchema),
     defaultValues: {},
   });
   useEffect(() => {
     if (mode === "Edit sale invoice") {
       const updateFunction = async () => {
         setLoading(true);
-        const response: any = await GET(`campaign/${edit_id}`);
+        const response: any = await GET(`invoice/sale/${edit_id.id}`);
         if (response.error) {
           toast.error(response.error);
           setLoading(false);
           return;
         }
-
-        form.reset({});
+        console.log(response);
+        form.reset({
+          campaignName: response.data.campaign.name,
+          campaignCode: response.data.campaign.code,
+          brand: response.data.campaign.brandName,
+          gstin: response.data.gstTin,
+          invoiceNo: response.data.invoiceNo,
+          invoiceDate: new Date(response.data.invoiceDate),
+          taxableAmount: Number(response.data.amount),
+          igst: Number(response.data.igst),
+          cgst: Number(response.data.cgst),
+          sgst: Number(response.data.sgst),
+          total: Number(response.data.total),
+          tdsAmount: Number(response.data.tds),
+          recieved: Number(response.data.received),
+          balanceAmount: Number(response.data.balanceAmount),
+          paymentStatus: response.data.paymentStatus,
+          month: response.data.month,
+        });
         setLoading(false);
 
         // SetEditData(response.data);
@@ -112,9 +129,16 @@ const SaleInvoice = ({
     form.setValue(formname, Option.name);
   };
 
-  const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
+  const handleForm = async (data: z.infer<typeof InvoiceSchema>, e: any) => {
+    const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
+    console.log(campaignData);
+    if (campaignData.error) {
+      toast.error("Please enter a valid Campaign Code");
+      form.reset({});
+      window.location.reload();
+      return;
+    }
     const sendInfo = {
-      campaign: data.campaignName,
       gstTin: data.gstin,
       invoiceNo: data.invoiceNo,
       invoiceDate: data.invoiceDate,
@@ -131,7 +155,11 @@ const SaleInvoice = ({
     };
 
     let response: any;
-    response = await POST(`invoice/sale`, sendInfo);
+    if (mode === "Edit sale invoice") {
+      response = await PATCH(`invoice/sale/${edit_id.id}`, sendInfo);
+    } else {
+      response = await POST(`invoice/sale`, { ...sendInfo, campaign: campaignData.data.id });
+    }
 
     if (response.error) {
       toast.error(response.error);

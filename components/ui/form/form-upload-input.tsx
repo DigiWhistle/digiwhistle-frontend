@@ -63,7 +63,7 @@ const FormUploadInput = ({
             </FormLabel>
             <div>
               <FormControl className="">
-                <div className="relative flex items-center  border border-gray-300 rounded-full">
+                <div className="relative flex items-center  ">
                   {leftIcon && (
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                       {leftIcon}
@@ -79,7 +79,7 @@ const FormUploadInput = ({
                     value={defaultValue || field.value || ""}
                     maxLength={maxLength ? maxLength : undefined}
                     className={cn(
-                      " border-none h-9 placeholder:text-muted-foreground bg-white items-center ",
+                      " border border-gray-300 rounded-full h-9 placeholder:text-muted-foreground bg-white items-center ",
                       leftIcon ? "ps-10" : null,
                       rightIcon ? "pe-10" : null,
                       inputCN,

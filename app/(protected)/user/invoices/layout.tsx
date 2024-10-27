@@ -10,6 +10,7 @@ import AddInfluencers from "@/components/admin/layout/AddInfluencers";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 import PurchaseInvoiceFilters from "@/components/invoice/purchase-invoice/PurchaseInvoiceFilters";
+import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useAppSelector(UserRole);
   return (
@@ -19,8 +20,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex space-x-3">
           <DateFilter />
           <CustomDialog
-            className="w-[700px]"
-            headerTitle="Create new invoice"
+            className="w-[970px]"
+            headerTitle="Create invoice"
             headerDescription="Please enter below details."
             triggerElement={
               <Button>
@@ -29,7 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Button>
             }
           >
-            <AddInfluencers />
+            <CreateInvoiceModal mode="Create sale invoice" />
           </CustomDialog>
         </div>
       </div>

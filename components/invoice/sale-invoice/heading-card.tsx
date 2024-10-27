@@ -7,6 +7,7 @@ import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/rea
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
 import CurrencyValueDisplay from "@/components/ui/currency-value-display";
+import CreateCreditNote from "@/components/admin/invoices/CreateCreditNote";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,7 @@ import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import { DELETE } from "@/lib/config/axios";
 import { toast } from "sonner";
 import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
+import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
 const HeadingCard = ({ data }: { data: any }) => {
   console.log("sale-invoice", data);
   const role = useAppSelector(UserRole);
@@ -112,15 +114,15 @@ const HeadingCard = ({ data }: { data: any }) => {
 
                   <CustomDialog
                     className="w-[840px]"
-                    headerTitle="Edit profile"
+                    headerTitle="Edit invoice"
                     headerDescription="Please enter below details."
                     triggerElement={
                       <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                        Edit payroll
+                        Edit invoice
                       </div>
                     }
                   >
-                    <CreatePayrollPopUp mode="Edit payroll" edit_id={data} />
+                    <SaleInvoice mode="Edit sale invoice" edit_id={data} />
                   </CustomDialog>
                   <CustomDialog
                     className="w-[700px]"
@@ -135,12 +137,24 @@ const HeadingCard = ({ data }: { data: any }) => {
                     <ShareInvoice edit_id={data.id} shareUrl="invoice/sale/share" />
                   </CustomDialog>
                   <CustomDialog
+                    className="w-[970px]"
+                    headerTitle="Create credit note"
+                    headerDescription=""
+                    triggerElement={
+                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                        Create credit note
+                      </div>
+                    }
+                  >
+                    <CreateCreditNote edit_id={data} />
+                  </CustomDialog>
+                  <CustomDialog
                     className="w-[400px]"
                     headerTitle="Delete query"
                     headerDescription="Please note that this action is permanent and irreversible in nature."
                     triggerElement={
                       <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
-                        Delete payroll
+                        Delete Invoice
                       </div>
                     }
                   >
@@ -154,6 +168,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                             toast.error(response.error);
                           } else {
                             toast.success("Sale invoice deleted successfully");
+                            window.location.reload();
                           }
                         }}
                       >

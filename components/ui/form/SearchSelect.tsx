@@ -153,7 +153,8 @@ export function SearchSelect({
                 />
               </div>
               <CommandList className="absolute mt-11 bg-white w-full max-h-32 z-50">
-                {open &&
+                {Options &&
+                  open &&
                   Options.map((Option: any, index: number) => (
                     <CommandItem
                       value={

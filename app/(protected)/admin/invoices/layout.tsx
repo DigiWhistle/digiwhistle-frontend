@@ -13,6 +13,7 @@ import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInv
 import CreateCreditNote from "@/components/admin/invoices/CreateCreditNote";
 import InvoiceAdminFilters from "@/components/invoice/InvoiceAdminFilters";
 import DownloadList from "./DownloadList";
+import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full flex flex-col gap-10">
@@ -33,12 +34,12 @@ const layout = ({ children }: { children: React.ReactNode }) => {
             }
           >
             {/* <AddInfluencers /> */}
-            <CampaignPopup mode="Create campaign" />
+            <CreateProformaInvoice />
           </CustomDialog>
           {/* TODO: Tadvi work here  */}
 
           <CustomDialog
-            className="w-[840px]"
+            className="w-[950px]"
             headerTitle="Create Sale Invoice"
             headerDescription="Please enter below details."
             triggerElement={
@@ -50,6 +51,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           >
             {/* <AddInfluencers /> */}
             <SaleInvoice mode="Create sale invoice" />
+            {/* <CreateInvoiceModal mode="Create sale invoice"/> */}
           </CustomDialog>
         </div>
       </div>
