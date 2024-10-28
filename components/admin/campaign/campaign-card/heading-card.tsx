@@ -4,6 +4,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   ChevronDownIcon,
+  DocumentIcon,
   EllipsisVerticalIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -27,11 +28,13 @@ import {
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
-import { DELETE } from "@/lib/config/axios";
+import { DELETE, GET, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import Link from "next/link";
 
 const HeadingCard = () => {
   const form = useFormContext<TCampaignForm>();
@@ -94,6 +97,18 @@ const HeadingCard = () => {
           <Button type="submit" disabled={!form.formState.isDirty}>
             Save Changes
           </Button>
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link href={`/brand-report/${form.getValues("id")}`} target="_blank">
+                  <DocumentIcon className="w-5 h-5 text-tc-body-grey" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black-201 text-white-301">
+                <p>View Campaign Report</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className=" flex items-center cursor-pointer ">
               <button type="button">
@@ -114,6 +129,35 @@ const HeadingCard = () => {
                 <CampaignPopup mode="Edit campaign" edit_id={form.getValues("id")} />
               </CustomDialog>
 
+              <CustomDialog
+                className="w-[400px]"
+                headerTitle="Release Employee Incentive"
+                headerDescription="Please note that this action is permanent and irreversible in nature."
+                triggerElement={
+                  <div className="flex items-center w-full px-2 py-1.5 cursor-pointer text-sm rounded-md outline-none transition-colors hover:text-tc-ic-black-hover ">
+                    Release Employee Incentive
+                  </div>
+                }
+              >
+                <div className="flex w-full gap-3 pt-6 border-t-2">
+                  <CancelButton />
+                  <ActionButton
+                    onClick={async () => {
+                      const response = await POST(
+                        `campaign/release/incentive?id=${form.getValues("id")}`,
+                        {},
+                      );
+                      if (response.error) {
+                        toast.error(response.error);
+                      } else {
+                        toast.success("Salary released successfully");
+                      }
+                    }}
+                  >
+                    Release Incentive
+                  </ActionButton>
+                </div>
+              </CustomDialog>
               <CustomDialog
                 className="w-[400px]"
                 headerTitle="Delete campaign"

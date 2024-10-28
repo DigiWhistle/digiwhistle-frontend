@@ -39,15 +39,14 @@ const HeadingCard = ({ data }: { data: any }) => {
     ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
     : formatDateWithZeroTime(new Date());
 
+  console.log("PURCHASE", data);
+
   const handleClick = async () => {
-    const response: any = await POST("invoice/purchase/download", {
-      startDate: startTime,
-      endDate: endTime,
-    });
-    if (response.error) {
-      toast.error("Cannot  download invoice list");
+    if (data.file) {
+      window.open(data.file, "_blank");
+    } else {
+      toast.error("Invoice is yet to be created");
     }
-    window.open(response.data?.url, "_blank");
   };
 
   return (
@@ -154,7 +153,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                 </button>
               </TooltipTrigger>
               <TooltipContent className="bg-black-201 text-white-301">
-                <p>{role === "admin" || role === "employee" ? "Download" : "View"} Invoice</p>
+                <p>{role === "admin" || role === "employee" ? "Download" : "Download"} Invoice</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -13,6 +13,8 @@ import {
 } from "@/store/admin/payroll/PayrollTableSlice";
 import { PaymentStatus, PaymentTerms, PAYROLL_TABLE_PAGE_LIMIT } from "@/types/admin/payroll";
 import { formatDateWithZeroTime } from "@/lib/utils";
+import { UserDesignation, UserRole } from "@/store/UserSlice";
+import { createColumnsEmployee } from "./payroll-columns-employee";
 
 const PayrollTable = () => {
   const currentPath = usePathname();
@@ -21,6 +23,9 @@ const PayrollTable = () => {
   const dispatch: AppDispatch = useDispatch();
   const data = useAppSelector(PayrollTableData);
   const loading = useAppSelector(PayrollTableLoading);
+
+  const role = useAppSelector(UserRole);
+  const designation = useAppSelector(UserDesignation);
 
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
@@ -33,6 +38,9 @@ const PayrollTable = () => {
   const search = searchParams.get("search");
   const type = (searchParams.get("type") as PaymentStatus) || PaymentStatus.PENDING;
   console.log("tyyyyy", type);
+
+  const isEmployee = role === "employee" && designation !== "account";
+
   useEffect(() => {
     dispatch(
       fetchPayrollTableData({
@@ -42,9 +50,10 @@ const PayrollTable = () => {
         startTime,
         endTime,
         type,
+        isEmployee,
       }),
     );
-  }, [currentPath, dispatch, endTime, search, startTime, type]);
+  }, [currentPath, dispatch, endTime, search, startTime, type, role, designation]);
 
   const updateData = useCallback(
     (id: string, viewed: boolean) => {
@@ -60,7 +69,15 @@ const PayrollTable = () => {
     [dispatch],
   );
 
-  const columns = useMemo(() => createColumns(type, updateData, deletePayroll), [updateData, type]);
+  const columns = useMemo(() => {
+    let columns;
+    if (designation === "account" || role === "admin") {
+      columns = createColumns(type, updateData, deletePayroll);
+    } else {
+      columns = createColumnsEmployee(type, updateData, deletePayroll);
+    }
+    return columns;
+  }, [updateData, type, role, designation]);
   return (
     <div className="py-5">
       {loading ? (
@@ -68,7 +85,7 @@ const PayrollTable = () => {
           <span className="loading loading-spinner loading-sm "></span>
         </div>
       ) : (
-        <DataTable columns={columns} data={data} type={type} />
+        <DataTable columns={columns} data={data} type={type} isEmployee={isEmployee} />
       )}
     </div>
   );

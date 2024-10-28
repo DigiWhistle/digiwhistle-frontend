@@ -87,7 +87,7 @@ const CampaignTable = () => {
   const CampaignTable =
     data.data.length > 0 ? (
       data.data.map((campaign, index) => {
-        if (role === "admin") {
+        if (role === "admin" || role === "employee") {
           return <CampaignCard data={campaign as Campaign} key={campaign.code} index={index} />;
         } else if (role === "influencer") {
           return (

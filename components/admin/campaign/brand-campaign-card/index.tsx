@@ -46,7 +46,8 @@ const BrandCampaignCard = ({ data, index }: { data: TCampaignForm; index: number
         <HeadingCard data={data} />
 
         <AccordionContent className="flex flex-col-reverse gap-5">
-          {data.participants.length > 0 &&
+          {data?.participants &&
+            data.participants.length > 0 &&
             data.participants.map((participant, index) => (
               <div
                 className="border border-gray-555 p-4 flex min-w-[800px] bg-gray-553 rounded-md"

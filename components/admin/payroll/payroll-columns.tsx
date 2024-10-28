@@ -18,7 +18,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { DELETE, POST } from "@/lib/config/axios";
+import { DELETE, GET, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -71,18 +71,41 @@ export const createColumns = (
           )}
 
           {type === "All Paid" ? (
-            <CustomDialog
-              className="w-[700px]"
-              headerTitle="Share salary slip"
-              headerDescription="Please note that this action is temporary and reversible in nature."
-              triggerElement={
-                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                  Share salary slip
-                </div>
-              }
-            >
-              <ShareInvoice shareUrl="payroll/share" edit_id={row.original.id} />
-            </CustomDialog>
+            <>
+              <CustomDialog
+                className="w-[700px]"
+                headerTitle="Share salary slip"
+                headerDescription="Please note that this action is temporary and reversible in nature."
+                triggerElement={
+                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                    Share salary slip
+                  </div>
+                }
+              >
+                <ShareInvoice shareUrl="payroll/share" edit_id={row.original.id} />
+              </CustomDialog>
+              <button
+                className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
+                onClick={async () => {
+                  const response = await GET<{ url: string }>(
+                    `payroll/download?id=${row.original.id}`,
+                  );
+                  if (response.error) {
+                    toast.error(response.error);
+                    return;
+                  }
+
+                  const url = response.data?.url;
+                  if (typeof url === "string") {
+                    window.open(url, "_blank");
+                  } else {
+                    toast.error("Invalid URL");
+                  }
+                }}
+              >
+                Download Salary slip
+              </button>
+            </>
           ) : (
             <></>
           )}

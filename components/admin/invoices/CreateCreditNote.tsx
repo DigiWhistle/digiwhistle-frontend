@@ -127,7 +127,7 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
         <span className="loading loading-spinner loading-xl "></span>
-        <div>Fetching Campaign Details</div>
+        <div>Fetching Credit Details</div>
       </div>
     );
   }

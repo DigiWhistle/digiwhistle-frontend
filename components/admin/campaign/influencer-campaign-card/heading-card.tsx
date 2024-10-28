@@ -2,11 +2,15 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { DocumentIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { BrandCampaign, Campaign, CampaignSchema } from "../schema";
 import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
 import { UserRole } from "@/store/UserSlice";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import Link from "next/link";
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 
 const HeadingCard = ({ data }: { data: BrandCampaign }) => {
   const role = useAppSelector(UserRole);
@@ -56,6 +60,32 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           )} */}
         </div>
         <div className="flex gap-4 items-center">
+          <CustomDialog
+            className="w-[970px]"
+            headerTitle="Create invoice"
+            headerDescription="Please enter below details."
+            triggerElement={
+              <button className="text-sm border border-bc-grey px-2 py-1 rounded-full">
+                Raise Invoice
+              </button>
+            }
+          >
+            <CreateInvoiceModal mode="Create sale invoice" />
+          </CustomDialog>
+
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                {/* @ts-expect-error: missing type */}
+                <Link href={`/brand-report/${data.campaignId}`} target="_blank">
+                  <DocumentIcon className="w-5 h-5 text-tc-body-grey" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black-201 text-white-301">
+                <p>View Campaign Report</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {/* <Select
             value=""
             onValueChange={(value: "influencer" | "agency") => {

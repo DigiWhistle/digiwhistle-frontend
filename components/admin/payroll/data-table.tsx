@@ -14,6 +14,8 @@ import {
 import { cn } from "@/lib/utils";
 import { DataTablePagination } from "../lib/pagination";
 import { PaymentStatus, PaymentTerms } from "@/types/admin/payroll";
+import { useAppSelector } from "@/lib/config/store";
+import { UserDesignation, UserRole } from "@/store/UserSlice";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -24,15 +26,21 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
   };
   type: PaymentStatus;
+  isEmployee: boolean;
 }
 
-export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps<TData, TValue>) {
-  console.log("DATATATTA", data);
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  type,
+  isEmployee,
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: data.data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <div className="space-y-4 pb-6">
       <div className="rounded-md border">
@@ -85,7 +93,7 @@ export function DataTable<TData, TValue>({ columns, data, type }: DataTableProps
           </TableBody>
         </Table>
       </div>
-      {type === PaymentStatus.ALL_PAID && <DataTablePagination data={data} />}
+      {(type === PaymentStatus.ALL_PAID || isEmployee) && <DataTablePagination data={data} />}
     </div>
   );
 }

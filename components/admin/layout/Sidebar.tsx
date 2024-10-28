@@ -112,6 +112,12 @@ const EmployeeSidebarLinks = [
     linkText: "Explore influencers",
     keyword: "explore",
   },
+  {
+    icon: <BanknotesIcon className="text-tc-ic-black-default" />,
+    link: "/admin/payroll/1",
+    linkText: "Payroll",
+    keyword: "payroll",
+  },
 ];
 const UserSidebarLinks = [
   {
@@ -154,12 +160,6 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
             link: "/admin/invoices/sale/1",
             linkText: "All Invoices",
             keyword: "invoices",
-          },
-          {
-            icon: <BanknotesIcon className="text-tc-ic-black-default" />,
-            link: "/admin/payroll/1",
-            linkText: "Payroll",
-            keyword: "payroll",
           },
         ];
         return sidebarLinks;

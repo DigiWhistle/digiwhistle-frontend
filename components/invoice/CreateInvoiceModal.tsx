@@ -247,7 +247,7 @@ const CreateInvoiceModal = ({
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
         <span className="loading loading-spinner loading-xl "></span>
-        <div>Fetching Campaign Details</div>
+        <div>Fetching Invoice Details</div>
       </div>
     );
   }
@@ -298,22 +298,22 @@ const CreateInvoiceModal = ({
             <div className="flex gap-5">
               <FormTextInput
                 formName="campaignName"
-                placeholder=""
+                placeholder="Enter name"
                 label="Campaign name"
                 disabled={mode === "Edit sale invoice"}
               />
               <FormTextInput
                 formName="campaignCode"
-                placeholder=""
+                placeholder="Enter code"
                 label="Campaign code"
                 disabled={mode === "Edit sale invoice"}
               />
               <FormTextInput
                 formName="invoiceNo"
-                placeholder="DWT/2023-24/028/29"
+                placeholder="Enter invoice number"
                 label="Invoice number"
               />
-              <FormTextInput formName="PAN" placeholder="" label="PAN" />
+              <FormTextInput formName="PAN" placeholder="Enter PAN" label="PAN" />
               <SearchSelect
                 endpoint={"brand/search"}
                 formName="brand"
@@ -333,35 +333,35 @@ const CreateInvoiceModal = ({
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="total"
-                placeholder=""
+                placeholder="Enter amount"
                 label="Total amount"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="igst"
-                placeholder=""
+                placeholder="Enter IGST"
                 label="IGST"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="cgst"
-                placeholder=""
+                placeholder="Enter CGST"
                 label="CGST"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="sgst"
-                placeholder=""
+                placeholder="Enter SGST"
                 label="SGST"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="totalInvoiceAmount"
-                placeholder=""
+                placeholder="Enter amount"
                 label="Total invoice amount"
               />
             </div>
@@ -372,27 +372,27 @@ const CreateInvoiceModal = ({
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">%</div>}
                 formName="tdsAmount"
-                placeholder=""
+                placeholder="Enter TDS"
                 label="TDS amount"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="finalAmount"
-                placeholder=""
+                placeholder="Enter amount"
                 label="Final amount"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="amountToBeRecieved"
-                placeholder=""
+                placeholder="Enter amount"
                 label="Amount to be received"
               />
               <FormSelectInput
                 formName={"paymentTerms"}
                 label="Payment terms"
-                placeholder=""
+                placeholder="Select payment terms"
                 selectItems={DaysOptions}
                 triggerCN="h-10"
                 className="mt-1"
@@ -418,7 +418,7 @@ const CreateInvoiceModal = ({
         </div>
         <div className="flex w-full">
           <ActionButton onClick={form.handleSubmit(handleForm)}>
-            {mode === "Create sale invoice" ? "Create sale invoice" : "Confirm changes"}
+            {mode === "Create sale invoice" ? "Create invoice" : "Confirm changes"}
           </ActionButton>
         </div>
       </div>

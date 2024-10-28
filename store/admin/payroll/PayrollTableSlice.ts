@@ -26,6 +26,7 @@ export const fetchPayrollTableData = createAsyncThunk(
     endTime,
     type,
     search,
+    isEmployee = false,
   }: {
     page: number;
     limit: number;
@@ -33,14 +34,20 @@ export const fetchPayrollTableData = createAsyncThunk(
     startTime?: string | null;
     endTime?: string | null;
     type: PaymentStatus;
+    isEmployee: boolean;
   }) => {
-    let url = `payroll?page=${page}&limit=${limit}`;
+    let url;
+    if (isEmployee) {
+      url = `payroll/employee?page=${page}&limit=${limit}`;
+    } else {
+      url = `payroll?page=${page}&limit=${limit}`;
+    }
 
     if (startTime && endTime) {
       url += `&startDate=${startTime}&endDate=${endTime}`;
     }
 
-    if (type) {
+    if (type && !isEmployee) {
       url += `&type=${type}`;
     }
 
