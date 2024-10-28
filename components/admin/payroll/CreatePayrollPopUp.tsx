@@ -63,7 +63,6 @@ const CreatePayrollPopUp = ({
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
   });
-  console.log("edit_id", edit_id);
   useEffect(() => {
     if (mode === "Edit payroll") {
       const updateFunction = async () => {
@@ -74,7 +73,6 @@ const CreatePayrollPopUp = ({
           setLoading(false);
           return;
         }
-        console.log(response);
         form.reset({
           Email: response.data.employeeProfile.user.email,
           employmentType: response.data.employmentType,
@@ -111,7 +109,6 @@ const CreatePayrollPopUp = ({
       ctc: data.ctc,
       employmentType: data.employmentType,
     };
-    console.log("sendinfo", sendInfo);
     let response: any;
     response = {};
     if (mode === "Create payroll") {

@@ -92,7 +92,6 @@ const ProfileInformation = () => {
 
       if (userProfile) {
         setEmployee(userProfile.data);
-        console.log("admin", userProfile);
 
         if (userRole === "employee") {
           keyDetailsForm.reset({
@@ -153,7 +152,6 @@ const ProfileInformation = () => {
       lastName: data.lastName,
       mobileNo: data.mobileNo,
     };
-    console.log("sendd", senddata);
     const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
     if (response.error) {
       toast.error(response.error);
@@ -206,8 +204,6 @@ const ProfileInformation = () => {
 
     await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
     const url = await getDownloadURL(storageRef); // Get the download URL of the uploaded file
-    console.log(url, user.profile?.id, url);
-    console.log("this is url:", url);
     if (url) {
       let data;
 
@@ -215,8 +211,6 @@ const ProfileInformation = () => {
         profilePic: url,
       };
 
-      // console.log("this is url:",url)
-      console.log("this is data:", data);
       const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, data);
       if (response.error) {
         toast.error(response.error);

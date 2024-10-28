@@ -98,7 +98,6 @@ const SaleInvoice = ({
           setLoading(false);
           return;
         }
-        console.log(response);
         form.reset({
           campaignName: response.data.campaign.name,
           campaignCode: response.data.campaign.code,
@@ -131,7 +130,6 @@ const SaleInvoice = ({
 
   const handleForm = async (data: z.infer<typeof InvoiceSchema>, e: any) => {
     const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
-    console.log(campaignData);
     if (campaignData.error) {
       toast.error("Please enter a valid Campaign Code");
       form.reset({});

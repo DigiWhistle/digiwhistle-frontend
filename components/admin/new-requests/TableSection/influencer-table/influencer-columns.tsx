@@ -50,7 +50,6 @@ import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import PauseForm from "./PauseForm";
 import EditInfluencer from "@/components/admin/layout/EditInfluencer";
-import { profile } from "console";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,

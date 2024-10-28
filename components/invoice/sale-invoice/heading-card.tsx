@@ -24,7 +24,6 @@ import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
 import { usePathname } from "next/navigation";
 import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInvoice";
 const HeadingCard = ({ data }: { data: any }) => {
-  console.log("sale-invoice", data);
   const role = useAppSelector(UserRole);
   const currentPath = usePathname();
 

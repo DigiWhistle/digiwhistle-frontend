@@ -52,7 +52,6 @@ const AddMemberForm = ({ className }: { className?: string }) => {
   });
   const handleForm = async (data: z.infer<typeof memberAddSchema>, e: any) => {
     e.preventDefault();
-    console.log(data);
     let sendInfo;
     if (data.role === "admin") {
       sendInfo = {
@@ -86,7 +85,6 @@ const AddMemberForm = ({ className }: { className?: string }) => {
     }
     form.reset();
   };
-  // console.log("role", form.getValues("role"));
   return (
     <div>
       <Form {...form}>

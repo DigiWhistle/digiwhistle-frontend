@@ -144,27 +144,28 @@ const brandImages = [
     url: "/assets/brands/zoomcar.webp",
   },
 ];
-
+const halfIndex = Math.ceil(brandImages.length / 2);
+const firstHalf = brandImages.slice(0, halfIndex);
+const secondHalf = brandImages.slice(halfIndex);
 const BrandsMarquee = () => {
-  const [brands, setBrands] = useState([]);
-  const halfIndex = Math.ceil((brands?.length || 0) / 2);
-  const firstHalf = brands.slice(0, halfIndex);
-  const secondHalf = brands.slice(halfIndex);
+  // const [brands, setBrands] = useState([]);
+  // const halfIndex = Math.ceil((brands?.length || 0) / 2);
+  // const firstHalf = brands.slice(0, halfIndex);
+  // const secondHalf = brands.slice(halfIndex);
 
-  useLayoutEffect(() => {
-    const fetchBrands = async () => {
-      const response = await getRequest<[]>("brand/list");
+  // useLayoutEffect(() => {
+  //   const fetchBrands = async () => {
+  //     const response = await getRequest<[]>("brand/list");
 
-      if (response.data) {
-        setBrands(response.data);
-      }
-      console.log(response.data);
-    };
+  //     if (response.data) {
+  //       setBrands(response.data);
+  //     }
+  //     console.log(response.data);
+  //   };
 
-    fetchBrands();
-  }, []);
+  //   fetchBrands();
+  // }, []);
 
-  console.log(JSON.stringify(brands, null, 2));
   return (
     <div className="my-10 space-y-8 w-full h-full overflow-hidden">
       <Marquee pauseOnHover pauseOnClick gradient>
@@ -172,12 +173,12 @@ const BrandsMarquee = () => {
           firstHalf.map((brand, index) => (
             <Image
               key={index}
-              src={brand.profilePic ?? ""}
+              src={brand.url ?? ""}
               alt={brand.name}
               width={10000}
               height={10000}
               className="w-auto h-10 mx-5 place-self-center cursor-pointer transition-all duration-300 ease-in-out self-center object-cover grayscale hover:grayscale-0"
-              onClick={() => window.open(`/brand-report/${brand.id}`)}
+              // onClick={() => window.open(`/brand-report/${brand.id}`)}
             />
           ))}
       </Marquee>
@@ -186,12 +187,12 @@ const BrandsMarquee = () => {
           secondHalf.map((brand, index) => (
             <Image
               key={index}
-              src={brand.profilePic ?? ""}
+              src={brand.url ?? ""}
               alt={brand.name}
               width={10000}
               height={10000}
               className="w-auto h-10 mx-5 place-self-center cursor-pointer transition-all duration-300 ease-in-out object-fill grayscale hover:grayscale-0"
-              onClick={() => window.open(`/brand-report/${brand.id}`)}
+              // onClick={() => window.open(`/brand-report/${brand.id}`)}
             />
           ))}
       </Marquee>

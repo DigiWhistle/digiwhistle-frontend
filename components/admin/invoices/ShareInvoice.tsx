@@ -59,8 +59,6 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: any; shareUrl?: string 
       subject: data.subject,
       message: data.message,
     };
-    console.log("sendinfo", data, allEmails);
-    console.log("ssss", sendInfo);
     const response = await POST(`${shareUrl}`, sendInfo);
     if (response.error) {
       toast.error(response.error);

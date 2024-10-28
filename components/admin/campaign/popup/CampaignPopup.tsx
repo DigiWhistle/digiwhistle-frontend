@@ -158,7 +158,6 @@ const CampaignPopup = ({
       incentiveWinner: getWinner.id,
       participants: allEmails,
     };
-    console.log("sendinfo", sendInfo);
     let response: any;
     response = {};
     if (mode === "Create campaign") {

@@ -65,12 +65,10 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
   });
 
   useEffect(() => {
-    console.log(edit_id);
     const updateFunction = async () => {
       setLoading(true);
       const campaignData: any = await GET(`campaign/search?code=${edit_id.code}`);
       const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
-      console.log("camp", campaignData);
       if (response.error) {
         toast.error(response.error);
         setLoading(false);
@@ -122,7 +120,6 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
     window.location.reload();
   };
 
-  console.log(form.watch("month"));
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">

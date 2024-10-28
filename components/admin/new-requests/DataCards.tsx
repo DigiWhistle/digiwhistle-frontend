@@ -21,7 +21,6 @@ const DataCards = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await GET<TDataCard[]>("admin/stats");
-      console.log(response);
       if (response.data) {
         const iconMap: { [key: string]: typeof ExclamationCircleIcon } = {
           ExclamationCircleIcon,

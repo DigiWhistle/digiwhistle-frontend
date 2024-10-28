@@ -87,11 +87,9 @@ const CreateInvoiceModal = ({
   });
   const { resetField } = form;
   const usestore = useAppSelector(User);
-  console.log(usestore);
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
-  console.log("filee", file);
   useEffect(() => {
     if (mode === "Edit sale invoice") {
       const updateFunction = async () => {
@@ -102,7 +100,6 @@ const CreateInvoiceModal = ({
           setLoading(false);
           return;
         }
-        console.log("response", response);
         form.reset({
           campaignName: response.data.campaign.name,
           campaignCode: response.data.campaign.code,
@@ -128,10 +125,7 @@ const CreateInvoiceModal = ({
     }
   }, []);
   const handleForm = async (data: z.infer<typeof InvoiceModalSchema>, e: any) => {
-    console.log("dataa", data, file);
-
     const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
-    console.log(campaignData);
     if (campaignData.error) {
       toast.error("Please enter a valid Campaign Code");
       return;
@@ -199,7 +193,6 @@ const CreateInvoiceModal = ({
       toast.error("error uploading invoice");
       return;
     }
-    console.log("url", url);
     const sendInfo = {
       campaign: campaignData.data.id,
       invoiceNo: data.invoiceNo,

@@ -82,7 +82,6 @@ const LoginForm = ({ className }: { className?: string }) => {
 
   const handleBackendLogin = async (googleData: { idToken: string }) => {
     const result = await postRequest<ILoginResponse>("auth/login", googleData);
-    console.log("result data", result.data);
     if (result.data) {
       toast.success(result.message);
       await dispatch(setUser(result.data.user));

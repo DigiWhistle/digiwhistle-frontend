@@ -37,7 +37,6 @@ const PayrollTable = () => {
 
   const search = searchParams.get("search");
   const type = (searchParams.get("type") as PaymentStatus) || PaymentStatus.PENDING;
-  console.log("tyyyyy", type);
 
   const isEmployee = role === "employee" && designation !== "account";
 

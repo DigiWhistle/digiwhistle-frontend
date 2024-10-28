@@ -75,13 +75,10 @@ const Page = ({
       if (response.data) {
         setBrands(response.data);
       }
-      console.log(response.data);
     };
 
     fetchBrands();
   }, []);
-
-  console.log(brands);
 
   const summaryTitle = {
     name: "Total Creators",
@@ -97,7 +94,6 @@ const Page = ({
     comments: brands?.table.rows.reduce((acc, row) => acc.comments + row.comments),
   };
 
-  console.log(" summaryData", summaryData);
   return (
     <div className="flex flex-col items-center w-full h-full">
       <nav className="w-full flex justify-between items-center p-4 py-2 md:p-8 md:py-4 border bg-yellow-101 ">

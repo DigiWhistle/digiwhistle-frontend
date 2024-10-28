@@ -39,8 +39,6 @@ const HeadingCard = ({ data }: { data: any }) => {
     ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
     : formatDateWithZeroTime(new Date());
 
-  console.log("PURCHASE", data);
-
   const handleClick = async () => {
     if (data.file) {
       window.open(data.file, "_blank");

@@ -82,7 +82,6 @@ const UserProfileInformation = () => {
     const userProfileGetter = async () => {
       const userProfile: any = await GET("user");
 
-      console.log("userr", userProfile);
       if (userProfile) {
         setUser(userProfile.data);
         keyDetailsForm.reset({
@@ -184,7 +183,6 @@ const UserProfileInformation = () => {
       aadharNo: user.profile?.aadharNo,
     };
 
-    console.log("senddata", senddata);
     const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
     // let response={error:null,message:"done"};
     if (response.error) {
@@ -210,8 +208,6 @@ const UserProfileInformation = () => {
 
     await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
     const url = await getDownloadURL(storageRef); // Get the download URL of the uploaded file
-    // console.log(url, user.profile?.id, url);
-    // console.log("this is url:", url);
     if (url) {
       let data;
       if (userRole === "brand" || userRole === "agency") {
@@ -230,8 +226,6 @@ const UserProfileInformation = () => {
       } else {
         data = {};
       }
-      // console.log("this is url:",url)
-      // console.log("this is data:", data);
       const response = await PATCH(`${user.role}/profile/${user.profile.id}`, data);
       // let response={error:null,message:"done"};
 

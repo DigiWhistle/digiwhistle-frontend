@@ -32,7 +32,6 @@ const ViewRemarks = ({ userId }: { userId: string }) => {
   useEffect(() => {
     const fetchRemarks = async () => {
       const Remarks = await GET(`remarks?userId=${userId}`);
-      console.log(Remarks.data);
       setRemarks(Remarks.data);
     };
     fetchRemarks();
@@ -57,7 +56,6 @@ const ViewRemarks = ({ userId }: { userId: string }) => {
   };
   const handleClearRemarks = async (e: any) => {
     e.preventDefault();
-    console.log("called");
     const response = await DELETE(`remarks?userId=${userId}`);
     SetFetcher(fetchOrNot + 1);
     if (response.error) {

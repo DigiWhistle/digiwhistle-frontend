@@ -81,7 +81,6 @@ export function SearchSelect({
   const [initialValue, setInitialValue] = useState<string>("");
   const [Options, setOptions] = useState<any>([]);
   const role = useAppSelector(UserRole);
-  console.log("this is the role", role);
   const debouncedFetchData = debounce(async (value: string) => {
     let response: any;
     if (type === "EmailSelector" && role != "agency" && role != "influencer") {
@@ -128,9 +127,7 @@ export function SearchSelect({
     }
     return inputValue;
   };
-  if (label === "Brand") {
-    console.log(open, Options);
-  }
+
   return (
     <FormField
       control={control}

@@ -38,7 +38,6 @@ import Link from "next/link";
 
 const HeadingCard = () => {
   const form = useFormContext<TCampaignForm>();
-  console.log(getCookie("token"));
   const { remove, append } = useFieldArray({
     control: form.control,
     name: `participants`,
