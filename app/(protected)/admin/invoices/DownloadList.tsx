@@ -31,6 +31,7 @@ const DownloadList = () => {
     });
     if (response.error) {
       toast.error("Cannot  download invoice list");
+      return;
     }
     window.open(response.data?.url, "_blank");
   };
