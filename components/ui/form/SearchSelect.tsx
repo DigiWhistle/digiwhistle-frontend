@@ -30,6 +30,8 @@ import { useState } from "react";
 import { debounce } from "lodash";
 import { GET } from "@/lib/config/axios";
 import { getCookie } from "cookies-next";
+import { UserRole } from "@/store/UserSlice";
+import { useAppSelector } from "@/lib/config/store";
 interface IFormSearchSelectProps {
   formName: string;
   label: string;
@@ -78,9 +80,11 @@ export function SearchSelect({
   const [inputValue, setInputValue] = useState<string>("");
   const [initialValue, setInitialValue] = useState<string>("");
   const [Options, setOptions] = useState<any>([]);
+  const role = useAppSelector(UserRole);
+  console.log("this is the role", role);
   const debouncedFetchData = debounce(async (value: string) => {
     let response: any;
-    if (type === "EmailSelector") {
+    if (type === "EmailSelector" && role != "agency" && role != "influencer") {
       if (searchType && searchType === "employee") {
         response = await GET(`employee/search?email=${value}`);
       } else {
@@ -88,12 +92,14 @@ export function SearchSelect({
       }
     } else if (type === "email") {
       response = await GET(`employee/search?email=${value}`);
-      console.log(response);
     } else {
       response = await GET(`${endpoint}?name=${value}`);
     }
-
-    setOptions(response.data);
+    if ((role === "agency" || role === "influencer") && type === "EmailSelector") {
+      setOptions([{ name: value, email: value, id: value }]);
+    } else {
+      setOptions(response.data);
+    }
     setOpen(!!value);
   }, 1000);
   const handleValueChange = (value: string) => {
@@ -149,6 +155,7 @@ export function SearchSelect({
                   value={getValue(field.value)}
                   defaultValue={field.value}
                   onValueChange={handleValueChange}
+                  disabled={disabled}
                   className={cn("flex h-10 w-full", leftIcon ? "ps-8" : null)}
                 />
               </div>

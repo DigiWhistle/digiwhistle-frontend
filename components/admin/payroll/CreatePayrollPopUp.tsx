@@ -38,6 +38,8 @@ export const EmploymentTypeOptions = [
 const PayrollSchema = z.object({
   Email: z.string().optional() || null,
   employmentType: z.string(),
+  salaryMonth: z.string().optional(),
+  workingDays: z.number().optional(),
   basic: z.number(),
   hra: z.number(),
   others: z.number(),
@@ -45,6 +47,7 @@ const PayrollSchema = z.object({
   grossPay: z.number().optional(),
   tdsAmount: z.number().optional(),
   incentive: z.number().optional(),
+  finalPay: z.number().optional(),
 });
 
 const CreatePayrollPopUp = ({
@@ -75,10 +78,15 @@ const CreatePayrollPopUp = ({
         form.reset({
           Email: response.data.employeeProfile.user.email,
           employmentType: response.data.employmentType,
+          salaryMonth: edit_id.salaryMonth,
+          workingDays: Number(edit_id.workingDays),
           basic: response.data.basic,
           hra: response.data.hra,
           others: response.data.others,
           ctc: response.data.ctc,
+          grossPay: edit_id.grossPay,
+          tdsAmount: edit_id.tds,
+          finalPay: edit_id.finalPay,
         });
         setEmail(response.data.employeeProfile);
         setLoading(false);
@@ -126,9 +134,9 @@ const CreatePayrollPopUp = ({
       };
       response = await PATCH(`payroll/${edit_id.id}`, {
         ...sendInfo,
-        workingDays: edit_id.workingDays,
-        tds: edit_id.tds,
-        incentive: edit_id.incentive,
+        workingDays: data.workingDays,
+        tds: data.tdsAmount,
+        incentive: data.incentive,
       });
     }
     if (response.error) {
@@ -137,7 +145,7 @@ const CreatePayrollPopUp = ({
       toast.success(response.message);
     }
     form.reset({});
-    // window.location.reload();
+    window.location.reload();
   };
 
   if (isLoading) {
@@ -170,9 +178,23 @@ const CreatePayrollPopUp = ({
                 label="Employment Type"
                 placeholder="Select Employment Type"
                 selectItems={EmploymentTypeOptions}
-                triggerCN="h-10"
-                className=""
+                triggerCN="h-[42px] "
+                className="gap-1 "
               />
+              {mode === "Edit payroll" ? (
+                <>
+                  {" "}
+                  <FormTextInput
+                    type="text"
+                    leftIcon={<div className="text-tc-body-grey">₹</div>}
+                    formName="workingDays"
+                    placeholder=""
+                    label="Working days"
+                  />
+                </>
+              ) : (
+                <></>
+              )}
             </div>
             <hr className="mt-6 mb-5 " />
             <div className="flex gap-5">
@@ -205,6 +227,30 @@ const CreatePayrollPopUp = ({
                 label="CTC/ month"
               />
             </div>
+            {mode === "Edit payroll" ? (
+              <>
+                <hr className="mt-6 mb-2 " />
+                <div className="flex gap-5">
+                  {" "}
+                  <FormTextInput
+                    type="number"
+                    leftIcon={<div className="text-tc-body-grey">%</div>}
+                    formName="tdsAmount"
+                    placeholder=""
+                    label="TDS amount"
+                  />
+                  <FormTextInput
+                    type="number"
+                    leftIcon={<div className="text-tc-body-grey">₹</div>}
+                    formName="incentive"
+                    placeholder=""
+                    label="Incentive"
+                  />{" "}
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
             <hr className="mt-6 mb-2 " />
           </div>
         </form>

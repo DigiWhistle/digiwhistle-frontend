@@ -38,6 +38,7 @@ import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import CreatePayrollPopUp from "./CreatePayrollPopUp";
 import ShareInvoice from "../invoices/ShareInvoice";
 export const createColumns = (
+  type: "Pending" | "All Paid",
   updateData: (id: string, value: boolean) => void,
   deletePayroll: (id: string) => void,
 ): ColumnDef<Payroll>[] => [
@@ -52,30 +53,40 @@ export const createColumns = (
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-1" align="end">
           {/* TODO: TADVI WORK HERE*/}
-          <CustomDialog
-            className="w-[840px]"
-            headerTitle="Edit profile"
-            headerDescription="Please enter below details."
-            triggerElement={
-              <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                Edit payroll
-              </div>
-            }
-          >
-            <CreatePayrollPopUp mode="Edit payroll" edit_id={row.original} />
-          </CustomDialog>
-          <CustomDialog
-            className="w-[400px]"
-            headerTitle="Pause profile"
-            headerDescription="Please note that this action is temporary and reversible in nature."
-            triggerElement={
-              <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                Share invoice
-              </div>
-            }
-          >
-            <ShareInvoice edit_id={row.original.id} />
-          </CustomDialog>
+          {type === "Pending" ? (
+            <CustomDialog
+              className="w-[840px]"
+              headerTitle="Edit profile"
+              headerDescription="Please enter below details."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  Edit payroll
+                </div>
+              }
+            >
+              <CreatePayrollPopUp mode="Edit payroll" edit_id={row.original} />
+            </CustomDialog>
+          ) : (
+            <></>
+          )}
+
+          {type === "All Paid" ? (
+            <CustomDialog
+              className="w-[700px]"
+              headerTitle="Share salary slip"
+              headerDescription="Please note that this action is temporary and reversible in nature."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  Share salary slip
+                </div>
+              }
+            >
+              <ShareInvoice shareUrl="payroll/share" edit_id={row.original.id} />
+            </CustomDialog>
+          ) : (
+            <></>
+          )}
+
           <CustomDialog
             className="w-[400px]"
             headerTitle="Delete query"

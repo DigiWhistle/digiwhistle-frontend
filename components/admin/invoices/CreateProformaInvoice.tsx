@@ -75,7 +75,13 @@ const PayrollSchema = z.object({
   balanceAmount: z.number(),
   month: z.string(),
 });
-const CreateProformaInvoice = ({ edit_id }: { edit_id?: string }) => {
+const CreateProformaInvoice = ({
+  edit_id,
+  mode,
+}: {
+  edit_id?: any;
+  mode?: "Edit proforma invoice";
+}) => {
   const [getbrand, brandSetter] = useState<any>({});
   const [isLoading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof PayrollSchema>>({
@@ -86,7 +92,42 @@ const CreateProformaInvoice = ({ edit_id }: { edit_id?: string }) => {
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
+  useEffect(() => {
+    if (mode === "Edit proforma invoice") {
+      const updateFunction = async () => {
+        setLoading(true);
+        const response: any = await GET(`invoice/proforma/${edit_id.id}`);
+        if (response.error) {
+          toast.error(response.error);
+          setLoading(false);
+          return;
+        }
+        console.log(response);
+        form.reset({
+          campaignName: response.data.campaign.name,
+          campaignCode: response.data.campaign.code,
+          brand: response.data.campaign.brandName,
+          gstin: response.data.gstTin,
+          invoiceNo: response.data.invoiceNo,
+          billDate: new Date(response.data.billDate),
+          billNo: response.data.billNo,
+          taxableAmount: Number(response.data.amount),
+          igst: Number(response.data.igst),
+          cgst: Number(response.data.cgst),
+          sgst: Number(response.data.sgst),
+          total: Number(response.data.total),
+          tdsAmount: Number(response.data.tds),
+          recieved: Number(response.data.received),
+          balanceAmount: Number(response.data.balanceAmount),
+          month: response.data.month,
+        });
+        setLoading(false);
 
+        // SetEditData(response.data);
+      };
+      updateFunction();
+    }
+  }, []);
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
     const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
     console.log(campaignData);
@@ -113,7 +154,11 @@ const CreateProformaInvoice = ({ edit_id }: { edit_id?: string }) => {
     };
 
     let response: any;
-    response = await POST(`invoice/proforma`, sendInfo);
+    if (mode === "Edit proforma invoice") {
+      response = await PATCH(`invoice/proforma/${edit_id.id}`, sendInfo);
+    } else {
+      response = await POST(`invoice/proforma`, sendInfo);
+    }
 
     if (response.error) {
       toast.error(response.error);
@@ -214,7 +259,7 @@ const CreateProformaInvoice = ({ edit_id }: { edit_id?: string }) => {
             <div className="flex gap-5">
               <FormTextInput
                 type="number"
-                leftIcon={<div className="text-tc-body-grey">₹</div>}
+                leftIcon={<div className="text-tc-body-grey">%</div>}
                 formName="tdsAmount"
                 placeholder=""
                 label="TDS amount"
@@ -254,7 +299,7 @@ const CreateProformaInvoice = ({ edit_id }: { edit_id?: string }) => {
         </div>
         <div className="flex w-full">
           <ActionButton onClick={form.handleSubmit(handleForm)}>
-            Create proforma invoice
+            {mode === "Edit proforma invoice" ? "Confirm changes" : "Create proforma invoice"}
           </ActionButton>
         </div>
       </div>

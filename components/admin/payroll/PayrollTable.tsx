@@ -32,7 +32,7 @@ const PayrollTable = () => {
 
   const search = searchParams.get("search");
   const type = (searchParams.get("type") as PaymentStatus) || PaymentStatus.PENDING;
-
+  console.log("tyyyyy", type);
   useEffect(() => {
     dispatch(
       fetchPayrollTableData({
@@ -60,7 +60,7 @@ const PayrollTable = () => {
     [dispatch],
   );
 
-  const columns = useMemo(() => createColumns(updateData, deletePayroll), [updateData]);
+  const columns = useMemo(() => createColumns(type, updateData, deletePayroll), [updateData, type]);
   return (
     <div className="py-5">
       {loading ? (

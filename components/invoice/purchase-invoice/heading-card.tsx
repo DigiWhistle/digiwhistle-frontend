@@ -20,9 +20,13 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatDateWithZeroTime } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { POST } from "@/lib/config/axios";
+import { DELETE, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
-
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
+import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
+import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
+import CreateInvoiceModal from "../CreateInvoiceModal";
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
   const searchParams = useSearchParams();
@@ -164,6 +168,62 @@ const HeadingCard = ({ data }: { data: any }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-1" align="end">
               {/* TODO: TADVI WORK HERE*/}
+              {role === "influencer" || role === "agency" ? (
+                <CustomDialog
+                  className="w-[970px]"
+                  headerTitle="Edit invoice"
+                  headerDescription="Please enter below details."
+                  triggerElement={
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Edit invoice
+                    </div>
+                  }
+                >
+                  <CreateInvoiceModal edit_id={data.id} mode="Edit sale invoice" />
+                </CustomDialog>
+              ) : (
+                <></>
+              )}
+              <CustomDialog
+                className="w-[700px]"
+                headerTitle="Share invoice"
+                headerDescription=""
+                triggerElement={
+                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                    Share invoice
+                  </div>
+                }
+              >
+                <ShareInvoice edit_id={data.id} shareUrl="invoice/purchase/share" />
+              </CustomDialog>
+              <CustomDialog
+                className="w-[400px]"
+                headerTitle="Delete query"
+                headerDescription="Please note that this action is permanent and irreversible in nature."
+                triggerElement={
+                  <div className="flex text-destructive rounded-sm hover:text-white hover:bg-destructive items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none ">
+                    Delete Invoice
+                  </div>
+                }
+              >
+                <div className="flex w-full gap-3 pt-6 border-t-2">
+                  <CancelButton />
+                  <ActionButton
+                    className="bg-destructive text-white hover:bg-destructive/90"
+                    onClick={async () => {
+                      const response = await DELETE(`invoice/purchase/${data.id}`);
+                      if (response.error) {
+                        toast.error(response.error);
+                      } else {
+                        toast.success("Sale invoice deleted successfully");
+                        window.location.reload();
+                      }
+                    }}
+                  >
+                    Delete
+                  </ActionButton>
+                </div>
+              </CustomDialog>
             </DropdownMenuContent>
           </DropdownMenu>
           {/* <Select

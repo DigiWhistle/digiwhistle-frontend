@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
 import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
 import { usePathname } from "next/navigation";
+import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInvoice";
 const HeadingCard = ({ data }: { data: any }) => {
   console.log("sale-invoice", data);
   const role = useAppSelector(UserRole);
@@ -126,7 +127,11 @@ const HeadingCard = ({ data }: { data: any }) => {
                   </div>
                 }
               >
-                <SaleInvoice mode="Edit sale invoice" edit_id={data} />
+                {invoiceType === "sale" ? (
+                  <SaleInvoice mode="Edit sale invoice" edit_id={data} />
+                ) : (
+                  <CreateProformaInvoice mode="Edit proforma invoice" edit_id={data} />
+                )}
               </CustomDialog>
 
               <CustomDialog
@@ -139,7 +144,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                   </div>
                 }
               >
-                <ShareInvoice edit_id={data.id} shareUrl="invoice/sale/share" />
+                <ShareInvoice edit_id={data.id} shareUrl={`invoice/${invoiceType}/share`} />
               </CustomDialog>
               <button
                 className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
@@ -173,7 +178,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                     </div>
                   }
                 >
-                  <CreateCreditNote edit_id={data.id} />
+                  <CreateCreditNote edit_id={data} />
                 </CustomDialog>
               )}
               {invoiceType === "sale" && (

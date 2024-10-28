@@ -27,7 +27,7 @@ const PayrollSchema = z.object({
   message: z.string().min(1, "Enter Message"),
   shareEmail: z.string().optional() || null,
 });
-const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: string; shareUrl?: string }) => {
+const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: any; shareUrl?: string }) => {
   const [allEmails, setEmails] = useState<any>([]);
   const [sendEmails, setSendEmails] = useState<any>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -144,7 +144,7 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: string; shareUrl?: stri
           <CancelButton text="Cancel" />
         </div>
         <div className="flex w-full">
-          <ActionButton onClick={form.handleSubmit(handleForm)}>Share invoice</ActionButton>
+          <ActionButton onClick={form.handleSubmit(handleForm)}>Share</ActionButton>
         </div>
       </div>
     </div>

@@ -259,7 +259,7 @@ const SaleInvoice = ({
             <div className="flex gap-5">
               <FormTextInput
                 type="number"
-                leftIcon={<div className="text-tc-body-grey">₹</div>}
+                leftIcon={<div className="text-tc-body-grey">%</div>}
                 formName="tdsAmount"
                 placeholder=""
                 label="TDS amount"

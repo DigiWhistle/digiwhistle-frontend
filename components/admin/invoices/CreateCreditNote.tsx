@@ -44,7 +44,7 @@ const PayrollSchema = z.object({
   campaignCode: z.string(),
   brand: z.string(),
   gstin: z.string(),
-  creditNoteNumber: z.string().optional(),
+  creditNoteNumber: z.string(),
   creditNoteDate: z.date(),
   month: z.string(),
   taxableAmount: z.number(),
@@ -54,7 +54,7 @@ const PayrollSchema = z.object({
   total: z.number(),
   tdsAmount: z.number(),
   advance: z.number(),
-  remarks: z.string(),
+  remarks: z.string().optional(),
 });
 const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
   const [getbrand, brandSetter] = useState<any>({});
@@ -63,43 +63,41 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
   });
-  // useEffect(() => {
-  //   console.log(edit_id);
-  //   const updateFunction = async () => {
-  //     setLoading(true);
-  //     const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
-  //     if (response.error) {
-  //       toast.error(response.error);
-  //       setLoading(false);
-  //       return;
-  //     }
 
-  //     form.reset({});
-  //     setLoading(false);
+  useEffect(() => {
+    console.log(edit_id);
+    const updateFunction = async () => {
+      setLoading(true);
+      const campaignData: any = await GET(`campaign/search?code=${edit_id.code}`);
+      const response: any = await GET(`invoice/creditnote/${edit_id.id}`);
+      console.log("camp", campaignData);
+      if (response.error) {
+        toast.error(response.error);
+        setLoading(false);
+        return;
+      }
 
-  //     // SetEditData(response.data);
-  //   };
-  //   updateFunction();
-  // }, []);
+      form.reset({
+        campaignName: campaignData.data.name,
+        campaignCode: edit_id.code,
+        brand: campaignData.data.brand,
+      });
+      setLoading(false);
+
+      // SetEditData(response.data);
+    };
+    updateFunction();
+  }, []);
 
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
-    const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
-    console.log(campaignData);
-    if (campaignData.error) {
-      toast.error("Please enter a valid Campaign Code");
-      return;
-    }
     const sendInfo = {
-      invoice: edit_id,
-      campaign: campaignData.data.id,
+      invoice: edit_id.id,
       gstTin: data.gstin,
-      // billNo: data.billNo,
-      // billDate: data.billDate,
-      // invoiceNo: data.invoiceNo,
+      creditNoteNo: data.creditNoteNumber,
       creditNoteDate: data.creditNoteDate,
       amount: data.taxableAmount,
       sgst: data.sgst,
@@ -107,12 +105,9 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
       igst: data.igst,
       total: data.total,
       tds: data.tdsAmount,
-      creditNoteNo: data.creditNoteNumber,
       advance: data.advance,
+      remarks: data.remarks,
       month: data.month,
-      // received: data.recieved,
-      // balanceAmount: data.balanceAmount,
-      // month: data.month,
     };
 
     let response: any;
@@ -124,7 +119,7 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
       toast.success(response.message);
     }
     form.reset({});
-    // window.location.reload();
+    window.location.reload();
   };
 
   console.log(form.watch("month"));
@@ -142,8 +137,18 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
         <form action={""}>
           <div className="flex flex-col gap-2 ">
             <div className="flex gap-5">
-              <FormTextInput formName="campaignName" placeholder="" label="Campaign name" />
-              <FormTextInput formName="campaignCode" placeholder="" label="Campaign code" />
+              <FormTextInput
+                formName="campaignName"
+                placeholder=""
+                label="Campaign name"
+                disabled
+              />
+              <FormTextInput
+                formName="campaignCode"
+                placeholder=""
+                label="Campaign code"
+                disabled
+              />
               <SearchSelect
                 endpoint={"brand/search"}
                 formName="brand"
@@ -153,13 +158,14 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
                 selectedValueSetter={brandSetter}
                 setterfunction={setterfunction}
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
+                disabled
               />
             </div>
             <div className="flex gap-5">
               <FormTextInput formName="gstin" placeholder="" label="GSTIN" />
               <FormTextInput
                 formName="creditNoteNumber"
-                placeholder="DWT/2023-24/028/29"
+                placeholder=""
                 label="Credit note number"
               />
               <DatePicker
@@ -214,7 +220,7 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
               <div className="flex gap-5  w-2/3">
                 <FormTextInput
                   type="number"
-                  leftIcon={<div className="text-tc-body-grey">₹</div>}
+                  leftIcon={<div className="text-tc-body-grey">%</div>}
                   formName="tdsAmount"
                   placeholder=""
                   label="TDS amount"
@@ -237,12 +243,7 @@ const CreateCreditNote = ({ edit_id }: { edit_id?: any }) => {
                 />
               </div>
               <div className="flex gap-5 w-1/3">
-                <FormTextInput
-                  type="text"
-                  formName="remarks"
-                  placeholder="40% of invoice amount is settled."
-                  label="Remarks"
-                />
+                <FormTextInput type="text" formName="remarks" placeholder="" label="Remarks" />
               </div>
             </div>
 
