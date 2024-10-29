@@ -141,11 +141,11 @@ const UserSidebarLinks = [
 ];
 
 const Sidebar = ({ className, drawerView }: { className?: string; drawerView: boolean }) => {
+  const role = useAppSelector(UserRole);
   const [signoutcookie, signoutcookieSetter] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const role = useAppSelector(UserRole);
   const designation = useAppSelector(UserDesignation);
 
   const filteredSidebarLinks = () => {
@@ -197,26 +197,27 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
     >
       <div className="flex  flex-col w-full h-full  justify-between ">
         <div className="flex-col  w-full ">
-          {filteredSidebarLinks().map(item => (
-            <Link
-              key={item.linkText}
-              href={item.link}
-              className={cn(
-                "flex space-x-5 px-5 py-3 hover:bg-[#FCF8E9]",
-                pathname.includes(item.keyword) ? "bg-[#FCF8E9] border-r-4 border-[#8A6D31]" : "",
-              )}
-            >
-              <div className="flex justify-center items-center w-6 h-6 ">{item.icon}</div>
-              <div
+          {role &&
+            filteredSidebarLinks().map(item => (
+              <Link
+                key={item.linkText}
+                href={item.link}
                 className={cn(
-                  "lg:flex text-body-md-light text-tc-primary-default",
-                  drawerView ? "" : "md:hidden",
+                  "flex space-x-5 px-5 py-3 hover:bg-[#FCF8E9]",
+                  pathname.includes(item.keyword) ? "bg-[#FCF8E9] border-r-4 border-[#8A6D31]" : "",
                 )}
               >
-                {item.linkText}
-              </div>
-            </Link>
-          ))}
+                <div className="flex justify-center items-center w-6 h-6 ">{item.icon}</div>
+                <div
+                  className={cn(
+                    "lg:flex text-body-md-light text-tc-primary-default",
+                    drawerView ? "" : "md:hidden",
+                  )}
+                >
+                  {item.linkText}
+                </div>
+              </Link>
+            ))}
         </div>
 
         <div className="flex-col border-t-[1px] pt-2  ">

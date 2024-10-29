@@ -97,7 +97,7 @@ export function SearchSelect({
     if ((role === "agency" || role === "influencer") && type === "EmailSelector") {
       setOptions([{ name: value, email: value, id: value }]);
     } else {
-      setOptions(response.data);
+      setOptions([{ name: value, email: value, id: value }, ...response.data]);
     }
     setOpen(!!value);
   }, 1000);

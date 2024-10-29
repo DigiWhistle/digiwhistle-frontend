@@ -325,7 +325,7 @@ const ProfileInformation = () => {
                 </form>
               </Form>
               <Button className={editable ? "hidden" : ""} onClick={() => setEditor(!editable)}>
-                Edit Details
+                Click to edit personal information
               </Button>
               <Button
                 className={editable ? "" : "hidden"}
@@ -377,13 +377,13 @@ const ProfileInformation = () => {
                 </form>
               </Form>
               <Button className={editable ? "hidden" : ""} onClick={() => setEditor(!editable)}>
-                Edit Details
+                Click to edit personal information
               </Button>
               <Button
                 className={editable ? "" : "hidden"}
                 onClick={employeeForm.handleSubmit(handleEmployeeProfileUpdate)}
               >
-                Submit
+                Submit changes
               </Button>
               <Button
                 className={cn("bg-white border-slate-800 border-2", editable ? "" : "hidden")}
@@ -398,7 +398,7 @@ const ProfileInformation = () => {
         <></>
       )}
       {user && userRole != "admin" ? (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 w-[660px]">
           <div className="w-full text-display-xxs font-heading ">Key details</div>
           <Form {...keyDetailsForm}>
             <form action="" onSubmit={keyDetailsForm.handleSubmit(handleKeyDetailsFormUpdate)}>
@@ -424,14 +424,14 @@ const ProfileInformation = () => {
             className={keyDetailseditable ? "hidden" : ""}
             onClick={() => setKeyDetailsEditor(!keyDetailseditable)}
           >
-            Edit Details
+            Click to edit key details
           </Button>
           <div className="flex flex-col w-full gap-5">
             <Button
               className={keyDetailseditable ? "" : "hidden"}
               onClick={keyDetailsForm.handleSubmit(handleKeyDetailsFormUpdate)}
             >
-              Submit
+              Submit changes
             </Button>
             <Button
               className={cn(
@@ -449,7 +449,7 @@ const ProfileInformation = () => {
       )}
 
       {user && userRole != "admin" ? (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col w-[660px] gap-6">
           <div className="w-full text-display-xxs font-heading ">Bank A/C Details</div>
           <Form {...bankDetailsForm}>
             <form action="" onSubmit={bankDetailsForm.handleSubmit(handleBankDetailsFormUpdate)}>
@@ -492,14 +492,14 @@ const ProfileInformation = () => {
             className={bsnkDetailseditable ? "hidden" : ""}
             onClick={() => setBankDetailsEditor(!bsnkDetailseditable)}
           >
-            Edit Details
+            Click to edit bank details
           </Button>
           <div className="flex flex-col w-full gap-5">
             <Button
               className={bsnkDetailseditable ? "" : "hidden"}
               onClick={bankDetailsForm.handleSubmit(handleBankDetailsFormUpdate)}
             >
-              Submit
+              Submit changes
             </Button>
             <Button
               className={cn(

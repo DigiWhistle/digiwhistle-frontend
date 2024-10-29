@@ -37,6 +37,7 @@ import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import CreatePayrollPopUp from "./CreatePayrollPopUp";
 import ShareInvoice from "../invoices/ShareInvoice";
+import { uniqueId } from "lodash";
 export const createColumns = (
   type: "Pending" | "All Paid",
   updateData: (id: string, value: boolean) => void,
@@ -109,7 +110,43 @@ export const createColumns = (
           ) : (
             <></>
           )}
-
+          {type === "Pending" ? (
+            <CustomDialog
+              className="w-[400px]"
+              headerTitle="Release payroll"
+              headerDescription="Please note that this action is permanent and irreversible in nature."
+              triggerElement={
+                <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                  Release payroll
+                </div>
+              }
+            >
+              <div className="flex w-full gap-3 pt-6 border-t-2">
+                <CancelButton />
+                <ActionButton
+                  className="bg-destructive text-white hover:bg-destructive/90"
+                  onClick={async () => {
+                    const response = await POST(
+                      `payroll/release?id=${row.original.id}`,
+                      {},
+                      undefined,
+                      { "x-idempotency-key": uniqueId() },
+                    );
+                    if (response.error) {
+                      toast.error(response.error);
+                      window.location.reload();
+                    } else {
+                      toast.success("User deleted successfully");
+                    }
+                  }}
+                >
+                  Release payroll
+                </ActionButton>
+              </div>
+            </CustomDialog>
+          ) : (
+            <></>
+          )}
           <CustomDialog
             className="w-[400px]"
             headerTitle="Delete query"
@@ -138,6 +175,7 @@ export const createColumns = (
               </ActionButton>
             </div>
           </CustomDialog>
+
           {/* Add DropdownMenuItems here */}
         </DropdownMenuContent>
       </DropdownMenu>
