@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { formatDateWithZeroTime } from "@/lib/utils";
+import { cn, formatDateWithZeroTime } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { DELETE, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
@@ -52,7 +52,18 @@ const HeadingCard = ({ data }: { data: any }) => {
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
         <div className="flex items-center gap-4">
           <div className="flex gap-1 items-center">
-            <h5 className="text-heading-m-semibold text-tc-primary-default">{data.invoiceNo}</h5>
+            <h5
+              className={cn(
+                "text-heading-m-semibold text-tc-primary-default text-xl",
+                data.PaymentStatus === "All Paid"
+                  ? "text-success "
+                  : data?.isDueDateMissed
+                    ? "text-alert"
+                    : "",
+              )}
+            >
+              {data.invoiceNo}
+            </h5>
             <Popover>
               <PopoverTrigger>
                 <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
