@@ -23,6 +23,9 @@ import ShareInvoice from "@/components/admin/invoices/ShareInvoice";
 import SaleInvoice from "@/components/admin/invoices/SaleInvoice";
 import { usePathname } from "next/navigation";
 import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInvoice";
+import { cn } from "@/lib/utils";
+
+const PAID = "All Paid";
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
   const currentPath = usePathname();
@@ -35,8 +38,13 @@ const HeadingCard = ({ data }: { data: any }) => {
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
         <div className="flex items-center gap-4">
           <div className="flex gap-1 items-center">
-            <h5 className="text-heading-m-semibold text-tc-primary-default">
-              {data.invoiceNumber}
+            <h5
+              className={cn(
+                "font-semibold text-tc-primary-default text-xl",
+                data?.paymentStatus === PAID ? " text-success" : data?.isLapse ? "text-alert" : "",
+              )}
+            >
+              {data?.invoiceNumber}
             </h5>
             <Popover>
               <PopoverTrigger>
@@ -48,23 +56,23 @@ const HeadingCard = ({ data }: { data: any }) => {
                 alignOffset={-50}
                 align="start"
               >
-                <p>Campaign Code: {data.code}</p>
-                <p>Duration: {data.campaignDuration}</p>
+                <p>Campaign Code: {data?.code}</p>
+                <p>Duration: {data?.campaignDuration}</p>
               </PopoverContent>
             </Popover>
           </div>
-          {data.total && (
+          {data?.total && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
 
-              <CurrencyValueDisplay value={data.total} />
+              <CurrencyValueDisplay value={data?.total} />
             </>
           )}
 
-          {data.brand && (
+          {data?.brand && (
             <div className="flex gap-1 items-center">
               <div className="flex w-0.5  h-6 bg-bc-grey mr-2"></div>
-              <div className="">{data.brand} (Brand)</div>
+              <div className="">{data?.brand} (Brand)</div>
               <Popover>
                 <PopoverTrigger>
                   <InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />
@@ -75,31 +83,31 @@ const HeadingCard = ({ data }: { data: any }) => {
                   alignOffset={-50}
                   align="start"
                 >
-                  <p>Campaign Code: {data.campaignCode}</p>
-                  <p>Duration: {data.campaignDuration}</p>
+                  <p>Campaign Code: {data?.campaignCode}</p>
+                  <p>Duration: {data?.campaignDuration}</p>
                 </PopoverContent>
               </Popover>
             </div>
           )}
-          {data.gstTin && (
+          {data?.gstTin && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
-              <p>{data.gstTin} (GSTIN)</p>
+              <p>{data?.gstTin} (GSTIN)</p>
             </>
           )}
-          {data.issueDate && (
+          {data?.issueDate && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
-              <p>{data.issueDate} (Invoice Number)</p>
+              <p>{data?.issueDate} (Invoice Date)</p>
             </>
           )}
 
-          {/* {data.poc && (
+          {/* {data?.poc && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>
               <UserIcon className="h-5 -mr-2" />
               <p>
-                {data.poc}
+                {data?.poc}
                 {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`}
               </p>
             </>
@@ -143,13 +151,13 @@ const HeadingCard = ({ data }: { data: any }) => {
                   </div>
                 }
               >
-                <ShareInvoice edit_id={data.id} shareUrl={`invoice/${invoiceType}/share`} />
+                <ShareInvoice edit_id={data?.id} shareUrl={`invoice/${invoiceType}/share`} />
               </CustomDialog>
               <button
                 className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
                 onClick={async () => {
                   const response = await GET<{ url: string }>(
-                    `invoice/${invoiceType}/download?id=${data.id}`,
+                    `invoice/${invoiceType}/download?id=${data?.id}`,
                   );
                   if (response.error) {
                     toast.error(response.error);
@@ -185,7 +193,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                   className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
                   onClick={async () => {
                     const response = await GET<{ url: string }>(
-                      `invoice/creditnote/download?id=${data.id}`,
+                      `invoice/creditnote/download?id=${data?.id}`,
                     );
                     if (response.error) {
                       toast.error(response.error);
@@ -217,7 +225,7 @@ const HeadingCard = ({ data }: { data: any }) => {
                   <ActionButton
                     className="bg-destructive text-white hover:bg-destructive/90"
                     onClick={async () => {
-                      const response = await DELETE(`invoice/${invoiceType}/${data.id}`);
+                      const response = await DELETE(`invoice/${invoiceType}/${data?.id}`);
                       if (response.error) {
                         toast.error(response.error);
                       } else {
