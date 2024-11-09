@@ -21,8 +21,7 @@ import { useState } from "react";
 import FormTextareaInput from "@/components/ui/form/form-textarea-input";
 import { GET } from "@/lib/config/axios";
 import { useEffect } from "react";
-import { getCookie } from "cookies-next";
-const Options = ["English", "Chinese", "Hindi", "Punjabi", "Thai", "Gujarati", "Marathi"];
+
 export const PaymentStatusOptions = [
   {
     value: "All Paid",
@@ -43,9 +42,9 @@ export const PaymentStatusOptions = [
 ];
 
 const CampaignSchema = z.object({
-  campaignName: z.string(),
-  campaignCode: z.string(),
-  brand: z.string(),
+  campaignName: z.string().min(1, "Campaign name is required"),
+  campaignCode: z.string().min(1, "Campaign code is required"),
+  brand: z.string().min(1, "Campaign brand is required"),
   campaignDuration: z
     .object({
       from: z.date(),
@@ -54,14 +53,22 @@ const CampaignSchema = z.object({
     .refine(data => data.from && data.to, {
       message: "Both start and end dates are required",
     }),
-  commBrand: z.number(),
+  commBrand: z.number().positive("Commercial is required"),
   invoiceNo: z.string().optional(),
-  campaignManager: z.string(),
-  incentiveWinner: z.string(),
-  paymentStatus: z.string(),
+  campaignManager: z.string().min(1, "Select campaign manager"),
+  incentiveWinner: z.string().min(1, "Select incentive winner"),
+  paymentStatus: z.string().min(1, "Select payment status"),
+  paymentTerms: z.string().min(1, "Select payment terms"),
   additionalDetails: z.string(),
   campaignEmail: z.string().optional() || null,
 });
+
+export const DaysOptions = [
+  { value: "0 Days", label: "0 Days" },
+  { value: "30 Days", label: "30 Days" },
+  { value: "60 Days", label: "60 Days" },
+];
+
 const CampaignPopup = ({
   mode,
   edit_id,
@@ -192,11 +199,22 @@ const CampaignPopup = ({
         <form action={""}>
           <div className="flex flex-col gap-2 ">
             <div className="flex gap-5">
-              <FormTextInput formName="campaignName" placeholder="" label="Campaign name" />
-              <FormTextInput formName="campaignCode" placeholder="" label="Campaign code" />
+              <FormTextInput
+                formName="campaignName"
+                placeholder="Enter name"
+                label="Campaign name"
+                required
+              />
+              <FormTextInput
+                formName="campaignCode"
+                required
+                placeholder="Enter code"
+                label="Campaign code"
+              />
               <SearchSelect
                 endpoint={"brand/search"}
                 formName="brand"
+                required
                 searchPlaceholder="Search Brand"
                 placeholder="Select Brand"
                 label="Brand"
@@ -208,7 +226,8 @@ const CampaignPopup = ({
             <div className="flex gap-5">
               <DateRangePicker
                 formName="campaignDuration"
-                placeholder=""
+                placeholder="Select Date"
+                required
                 label="Campaign duration"
                 setterfunction={setterfunction}
               />
@@ -216,14 +235,15 @@ const CampaignPopup = ({
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="commBrand"
-                placeholder=""
+                placeholder="Enter amount"
                 label="Comm-Brand"
+                required
               />
-              <FormTextInput
+              {/* <FormTextInput
                 formName="invoiceNo"
                 placeholder="DWT/2023-24/028/29"
                 label="Invoice No."
-              />
+              /> */}
             </div>
             <div className="flex gap-5">
               <SearchSelect
@@ -234,9 +254,11 @@ const CampaignPopup = ({
                 placeholder="Select Manager"
                 label="Campaign manager"
                 setterfunction={setterfunction}
+                required
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
               />
               <SearchSelect
+                required
                 endpoint={"employee/search"}
                 formName="incentiveWinner"
                 searchPlaceholder="Search Manager"
@@ -247,12 +269,13 @@ const CampaignPopup = ({
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
               />
               <FormSelectInput
-                formName={"paymentStatus"}
-                label="Payment Status"
-                placeholder="Payment Status"
-                selectItems={PaymentStatusOptions}
+                formName={"paymentTerms"}
+                label="Payment Terms"
+                placeholder="Select terms"
+                selectItems={DaysOptions}
                 triggerCN="h-10"
                 className=""
+                required
               />
             </div>
             <FormTextareaInput
@@ -267,6 +290,7 @@ const CampaignPopup = ({
               type={"EmailSelector"}
               // Options={Options}
               formName="campaignEmail"
+              required
               searchPlaceholder="Type email ID here"
               placeholder="Type email ID here"
               label="Add influencer/ agency"

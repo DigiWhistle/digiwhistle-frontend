@@ -86,7 +86,11 @@ const HeadingCard = () => {
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
               <p>
-                {form.getValues("incentiveWinner")}
+                {form.getValues("incentiveReleased") ? (
+                  <p className="text-success">{form.getValues("incentiveWinner")}</p>
+                ) : (
+                  form.getValues("incentiveWinner")
+                )}
                 {/* {form.getValues("pocIncentive") && `(+${form.getValues("pocIncentive")}% Incentive)`} */}
               </p>
             </>
@@ -128,35 +132,41 @@ const HeadingCard = () => {
                 <CampaignPopup mode="Edit campaign" edit_id={form.getValues("id")} />
               </CustomDialog>
 
-              <CustomDialog
-                className="w-[400px]"
-                headerTitle="Release Employee Incentive"
-                headerDescription="Please note that this action is permanent and irreversible in nature."
-                triggerElement={
-                  <div className="flex items-center w-full px-2 py-1.5 cursor-pointer text-sm rounded-md outline-none transition-colors hover:text-tc-ic-black-hover ">
-                    Release Employee Incentive
-                  </div>
-                }
-              >
-                <div className="flex w-full gap-3 pt-6 border-t-2">
-                  <CancelButton />
-                  <ActionButton
-                    onClick={async () => {
-                      const response = await POST(
-                        `campaign/release/incentive?id=${form.getValues("id")}`,
-                        {},
-                      );
-                      if (response.error) {
-                        toast.error(response.error);
-                      } else {
-                        toast.success("Salary released successfully");
-                      }
-                    }}
-                  >
-                    Release Incentive
-                  </ActionButton>
+              {form.getValues("incentiveReleased") ? (
+                <div className="text-success flex items-center w-full px-2 py-1.5 text-sm rounded-md  ">
+                  Incentive Released
                 </div>
-              </CustomDialog>
+              ) : (
+                <CustomDialog
+                  className="w-[400px]"
+                  headerTitle="Release Employee Incentive"
+                  headerDescription="Please note that this action is permanent and irreversible in nature."
+                  triggerElement={
+                    <div className="flex items-center w-full px-2 py-1.5 cursor-pointer text-sm rounded-md outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Release Employee Incentive
+                    </div>
+                  }
+                >
+                  <div className="flex w-full gap-3 pt-6 border-t-2">
+                    <CancelButton />
+                    <ActionButton
+                      onClick={async () => {
+                        const response = await POST(
+                          `campaign/release/incentive?id=${form.getValues("id")}`,
+                          {},
+                        );
+                        if (response.error) {
+                          toast.error(response.error);
+                        } else {
+                          toast.success("Salary released successfully");
+                        }
+                      }}
+                    >
+                      Release Incentive
+                    </ActionButton>
+                  </div>
+                </CustomDialog>
+              )}
               <CustomDialog
                 className="w-[400px]"
                 headerTitle="Delete campaign"

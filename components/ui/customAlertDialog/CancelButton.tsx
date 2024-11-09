@@ -15,7 +15,7 @@ const CancelButton = ({
     <AlertDialogCancel
       onClick={handleClick ? handleClick : () => {}}
       className={cn(
-        "flex flex-grow rounded-3xl items-center justify-center py-3  bg-white hover:text-tc-black-hover hover:border-tc-black-hover border-[1px] border-bc-primary-black text-tc-primary-default font-sans text-body-lg-medium",
+        "flex flex-grow rounded-3xl items-center justify-center py-3 outline-none  bg-white hover:text-tc-black-hover hover:border-tc-black-hover border-[1px] border-bc-primary-black text-tc-primary-default font-sans text-body-lg-medium",
         className,
       )}
     >
