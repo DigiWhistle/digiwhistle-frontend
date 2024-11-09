@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { LinkIcon } from "@heroicons/react/24/outline";
+import { HandThumbUpIcon, LinkIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/lib/utils";
 import { debounce } from "lodash";
 import { GET } from "@/lib/config/axios";
@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
 import ExploreInfluencerCard from "../explore-influencers-card";
+import { Button } from "../ui/button";
 const ExploreInfluencer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [relatedInfluencers, setInfluencers] = useState<any>(null);
@@ -57,6 +58,7 @@ const ExploreInfluencer = () => {
         InboxArrowDownIcon,
         ChartPieIcon,
         ChartBarIcon,
+        HandThumbUpIcon,
       };
 
       const dataWithIcons = response.data.cards.map((item: any) => ({
@@ -81,25 +83,27 @@ const ExploreInfluencer = () => {
 
   const handleValueChange = (e: any) => {
     setSearchTerm(e.target.value);
-
-    debouncedFetchData(e.target.value);
   };
   return (
     <div className="flex w-full gap-9 flex-col">
-      <div className="relative flex items-center w-2/5 border border-gray-300 rounded-full">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <LinkIcon className="w-5 h-5" />
+      <div className="flex items-center gap-4">
+        <div className="relative flex items-center w-2/5 border border-gray-300 rounded-full">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <LinkIcon className="w-5 h-5" />
+          </div>
+          <Input
+            placeholder={"Search using profile link here"}
+            className={cn(
+              "min-w-40 w-full ps-10 border-none placeholder:text-muted-foreground bg-white ",
+            )}
+            onChange={handleValueChange}
+            value={searchTerm}
+            name="search"
+          />
         </div>
-        <Input
-          placeholder={"Search using profile link here"}
-          className={cn(
-            "min-w-40 w-full ps-10 border-none placeholder:text-muted-foreground bg-white ",
-          )}
-          onChange={handleValueChange}
-          value={searchTerm}
-          name="search"
-        />
+        <Button onClick={() => debouncedFetchData(searchTerm)}>Search influencer</Button>
       </div>
+
       {loading ? (
         <div className="w-full flex justify-center h-36">
           <div className="loading loading-spinner loading-md text-yellow-101 "></div>

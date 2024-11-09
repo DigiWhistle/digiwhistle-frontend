@@ -27,7 +27,7 @@ const AdminSidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
     link: "/admin/influencers/1",
-    linkText: "Influencers",
+    linkText: "Digiwhistle Influencers",
     keyword: "influencers",
   },
 
@@ -78,7 +78,7 @@ const EmployeeSidebarLinks = [
   {
     icon: <UserIcon className=" text-tc-ic-black-default" />,
     link: "/admin/influencers/1",
-    linkText: "Influencers",
+    linkText: "Digiwhistle Influencers",
     keyword: "influencers",
   },
 
@@ -99,12 +99,6 @@ const EmployeeSidebarLinks = [
     link: "/admin/queries/1",
     linkText: "Queries",
     keyword: "queries",
-  },
-  {
-    icon: <IdentificationIcon className="text-tc-ic-black-default" />,
-    link: "/admin/profile-control/1",
-    linkText: "Profile control",
-    keyword: "profile-control",
   },
   {
     icon: <MagnifyingGlassIcon className="text-tc-ic-black-default" />,
@@ -203,7 +197,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
                 key={item.linkText}
                 href={item.link}
                 className={cn(
-                  "flex space-x-5 px-5 py-3 hover:bg-[#FCF8E9]",
+                  "flex items-center space-x-5 px-5 py-3 hover:bg-[#FCF8E9]",
                   pathname.includes(item.keyword) ? "bg-[#FCF8E9] border-r-4 border-[#8A6D31]" : "",
                 )}
               >

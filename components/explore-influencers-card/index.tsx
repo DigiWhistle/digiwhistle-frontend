@@ -41,17 +41,17 @@ const ExploreInfluencerCard = ({
           <hr />
           <div className="flex gap-3 items-center">
             {urlType === "X" ? (
-              <Image src="/assets/explore/X.webp" alt="X" width={36} height={36} />
+              <Image src="/assets/icons/twitter.svg" alt="X" width={40} height={30} />
             ) : (
               <></>
             )}
             {urlType === "youtube" ? (
-              <Image src="/assets/explore/youtube.webp" alt="X" width={46} height={36} />
+              <Image src="/assets/icons/youtube.svg" alt="X" width={40} height={30} />
             ) : (
               <></>
             )}
             {urlType === "instagram" ? (
-              <Image src="/assets/explore/instagram.webp" alt="X" width={38} height={38} />
+              <Image src="/assets/icons/instagram.svg" alt="X" width={40} height={30} />
             ) : (
               <></>
             )}

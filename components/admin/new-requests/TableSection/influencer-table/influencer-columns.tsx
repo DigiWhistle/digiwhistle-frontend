@@ -114,13 +114,13 @@ export const createColumns = (
     const addColumns = [
       {
         accessorKey: "followers",
-        header: "Follower Count",
+        header: "Followers",
       },
       {
         accessorKey: "engagementRate",
         header: () => (
           <div className="flex gap-1 ">
-            Engagement Rate (%){" "}
+            ER (%){" "}
             <button onClick={() => handleSortEr(true)}>
               <ChevronUpDownIcon className="w-6 h-6" />
             </button>
@@ -152,27 +152,27 @@ export const createColumns = (
       },
       {
         accessorKey: "likes",
-        header: "Average Likes",
+        header: "Avg Likes",
       },
       {
         accessorKey: "views",
-        header: "Average Views",
+        header: "Avg Views",
       },
       {
         accessorKey: "comments",
-        header: "Average Comments",
+        header: "Avg Comments",
       },
-      {
-        accessorKey: "percentageFakeFollowers",
-        header: "Fake Followers (%)",
-        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
-          return `${
-            !Number.isInteger(row.original.percentageFakeFollowers)
-              ? row.original?.percentageFakeFollowers?.toFixed(2)
-              : row.original?.percentageFakeFollowers
-          } %`;
-        },
-      },
+      // {
+      //   accessorKey: "percentageFakeFollowers",
+      //   header: "Fake Followers (%)",
+      //   cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+      //     return `${
+      //       !Number.isInteger(row.original.percentageFakeFollowers)
+      //         ? row.original?.percentageFakeFollowers?.toFixed(2)
+      //         : row.original?.percentageFakeFollowers
+      //     } %`;
+      //   },
+      // },
     ];
 
     // @ts-ignore
@@ -181,7 +181,7 @@ export const createColumns = (
     const addColumns = [
       {
         accessorKey: "views",
-        header: "Average Views",
+        header: "Avg Views",
       },
       {
         accessorKey: "videos",

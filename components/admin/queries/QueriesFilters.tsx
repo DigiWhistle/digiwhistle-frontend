@@ -12,6 +12,9 @@ import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetchQueriesTableData } from "@/store/admin/queries/QueriesTableSlice";
 import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries";
+import { Button } from "@/components/ui/button";
+import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
+import { useForm } from "react-hook-form";
 
 const QueriesFilters = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -49,6 +52,7 @@ const QueriesFilters = () => {
     setSearchTerm(query);
     debouncedFetchData(query);
   };
+
   return (
     <div className="w-full flex items-center gap-4">
       <div className="relative flex items-center  border border-gray-300 rounded-full">
@@ -106,6 +110,14 @@ const QueriesFilters = () => {
           <Label htmlFor="influencer-only">Influencers only</Label>
         </div>
       </div>
+      <CustomDialog
+        className="w-[700px]"
+        headerTitle="Configure Contact us queries"
+        headerDescription={`Please enter below details.`}
+        triggerElement={<Button>Configure</Button>}
+      >
+        <div></div>
+      </CustomDialog>
     </div>
   );
 };
