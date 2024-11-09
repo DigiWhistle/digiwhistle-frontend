@@ -31,7 +31,7 @@ const InfluencerTypes = Object.values(InfluencerType).map(platform => ({
 
 const PaymentOption = [
   { label: "All", value: "all" },
-  { label: "All Paid", value: "All Paid" },
+  { label: "All Received", value: "All Paid" },
   { label: "Pending", value: "Pending" },
 ];
 
@@ -76,7 +76,9 @@ export function FiltersDropdown({
             {PaymentOption.map(item => (
               <div className="flex items-center space-x-2" key={item.value}>
                 <RadioGroupItem value={item.value} id={item.value} />
-                <Label htmlFor={item.value}>{item.label}</Label>
+                <Label htmlFor={item.value}>
+                  {item.value === "All Paid" && role === "brand" ? "All Paid" : item.label}
+                </Label>
               </div>
             ))}
           </RadioGroup>
@@ -219,7 +221,7 @@ const CampaignFilters = () => {
           <MagnifyingGlassIcon className="w-5 h-5" />
         </div>
         <Input
-          placeholder={"Type campaign name here"}
+          placeholder={"Search campaign"}
           className={cn(
             "min-w-40 lg:w-80 ps-10 border-none placeholder:text-muted-foreground bg-white ",
           )}

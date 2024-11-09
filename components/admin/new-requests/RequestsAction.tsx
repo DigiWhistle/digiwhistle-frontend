@@ -75,7 +75,14 @@ const RequestsAction = ({
           <ArrowUturnLeftIcon className="h-4 w-4 " />
         </button>
         <p className="text-success">Approved</p>
-        <LatestRemark />
+        <CustomDialog
+          className="w-[538px]"
+          headerTitle="View remarks"
+          headerDescription=""
+          triggerElement={<InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />}
+        >
+          <ViewRemarks userId={userId} />
+        </CustomDialog>
       </div>
     );
   }
@@ -98,7 +105,14 @@ const RequestsAction = ({
           <ArrowUturnLeftIcon className="h-4 w-4 " />
         </button>
         <p className="text-destructive">Rejected</p>
-        <LatestRemark />
+        <CustomDialog
+          className="w-[538px]"
+          headerTitle="View remarks"
+          headerDescription=""
+          triggerElement={<InformationCircleIcon className="w-5 h-5 text-tc-body-grey" />}
+        >
+          <ViewRemarks userId={userId} />
+        </CustomDialog>
       </div>
     );
   }

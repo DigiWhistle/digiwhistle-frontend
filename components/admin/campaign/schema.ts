@@ -65,6 +65,7 @@ export const CampaignSchema = z.object({
   commercial: z.number(),
   incentiveWinner: z.string(),
   invoice: z.string().nullable().optional(),
+  incentiveReleased: z.boolean().default(false),
   // status: z.enum(["active", "inactive"]).nullable().optional(),
   participants: z.array(ParticipantSchema),
 });

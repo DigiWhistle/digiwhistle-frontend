@@ -460,7 +460,7 @@ export const createColumns = (
       {
         id: "isApproved",
         accessorKey: "isApproved",
-        header: "Actions",
+        header: "Status",
         cell: ({ row }: { row: Row<Influencer> }) => {
           const isApproved = row.getValue("isApproved") as boolean | null;
           const name = row.getValue("name") as string;
