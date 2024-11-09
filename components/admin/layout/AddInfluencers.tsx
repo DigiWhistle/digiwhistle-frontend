@@ -27,6 +27,10 @@ const AddInfluencersSchema = z.object({
   twitterURL: twitterURL,
   youtubeURL: youtubeURL,
   mobileNo: mobileNoSchema,
+  location: z.string().optional(),
+  instagramCommercial: z.number().optional(),
+  twitterCommercial: z.number().optional(),
+  youtubeCommercial: z.number().optional(),
 });
 
 const AddInfluencers = () => {
@@ -42,6 +46,10 @@ const AddInfluencers = () => {
       twitterURL: data.twitterURL || undefined,
       instagramURL: data.instagramURL || undefined,
       youtubeURL: data.youtubeURL || undefined,
+      instagramCommercial: data.instagramCommercial,
+      youtubeCommercial: data.youtubeCommercial,
+      twitterCommercial: data.twitterCommercial,
+      location: data.location,
       email: data.email,
     });
     if (response.error) {
@@ -85,23 +93,52 @@ const AddInfluencers = () => {
             />
           </div>
           <div className="w-full space-y-4">
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="instagramURL"
+                label="Instagram Profile Link"
+                placeholder="https://www.instagram.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="instagramCommercial"
+                label="Instagram Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="youtubeURL"
+                label="Youtube Profile Link"
+                placeholder="https://www.youtube.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="youtubeCommercial"
+                label="Youtube Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="twitterURL"
+                label="X Profile Link"
+                placeholder="https://www.x.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="twitterCommercial"
+                label="Twitter Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
             <FormTextInput
-              formName="instagramURL"
-              label="Instagram Profile Link"
-              placeholder="https://www.instagram.com/username/"
-              leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
-            />
-            <FormTextInput
-              formName="youtubeURL"
-              label="Youtube Profile Link"
-              placeholder="https://www.youtube.com/username/"
-              leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
-            />
-            <FormTextInput
-              formName="twitterURL"
-              label="X Profile Link"
-              placeholder="https://www.x.com/username/"
-              leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              formName="location"
+              label="Influencer Location"
+              placeholder="Enter location"
             />
           </div>
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">

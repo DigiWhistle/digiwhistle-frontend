@@ -25,6 +25,10 @@ const EditInfluencerSchema = z.object({
   twitterURL: twitterURL,
   youtubeURL: youtubeURL,
   mobileNo: mobileNoSchema,
+  location: z.string().optional(),
+  instagramCommercial: z.number().optional(),
+  twitterCommercial: z.number().optional(),
+  youtubeCommercial: z.number().optional(),
 });
 
 const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
@@ -47,6 +51,10 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
           twitterURL: "",
           youtubeURL: "",
           mobileNo: "",
+          location: "",
+          instagramCommercial: 0,
+          twitterCommercial: 0,
+          youtubeCommercial: 0,
         });
       } else {
         const data = response.data as z.infer<typeof EditInfluencerSchema>;
@@ -55,6 +63,10 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
         form.setValue("instagramURL", data.instagramURL || undefined);
         form.setValue("twitterURL", data.twitterURL || undefined);
         form.setValue("youtubeURL", data.youtubeURL || undefined);
+        form.setValue("instagramCommercial", data.instagramCommercial || 0);
+        form.setValue("youtubeCommercial", data.youtubeCommercial || 0);
+        form.setValue("twitterCommercial", data.twitterCommercial || 0);
+        form.setValue("location", data.location || undefined);
       }
     };
     fetchDefaultValues();
@@ -66,6 +78,10 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
       twitterURL: data.twitterURL || undefined,
       instagramURL: data.instagramURL || undefined,
       youtubeURL: data.youtubeURL || undefined,
+      location: data.location,
+      instagramCommercial: data.instagramCommercial,
+      twitterCommercial: data.twitterCommercial,
+      youtubeCommercial: data.youtubeCommercial,
     });
     if (response.error) {
       toast.error(response.error);
@@ -89,26 +105,52 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
             formDescription={`Old mobile number: ${defaultValues?.mobileNo ?? ""}`}
           />
           <div className="w-full space-y-4">
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="instagramURL"
+                label="Instagram Profile Link"
+                placeholder="https://www.instagram.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="instagramCommercial"
+                label="Instagram Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="youtubeURL"
+                label="Youtube Profile Link"
+                placeholder="https://www.youtube.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="youtubeCommercial"
+                label="Youtube Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="twitterURL"
+                label="X Profile Link"
+                placeholder="https://www.x.com/username/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="twitterCommercial"
+                label="Twitter Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
             <FormTextInput
-              formName="instagramURL"
-              label="New Instagram Profile Link"
-              placeholder="https://www.instagram.com/username/"
-              leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old link: ${defaultValues?.instagramURL ?? ""}`}
-            />
-            <FormTextInput
-              formName="youtubeURL"
-              label="New Youtube Profile Link"
-              placeholder="https://www.youtube.com/username/"
-              leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old link: ${defaultValues?.youtubeURL ?? ""}`}
-            />
-            <FormTextInput
-              formName="twitterURL"
-              label="New X Profile Link"
-              placeholder="https://www.x.com/username/"
-              leftIcon={<LinkIcon className="text-gray-557 w-5 h-5" />}
-              formDescription={`Old link: ${defaultValues?.twitterURL ?? ""}`}
+              formName="location"
+              label="Influencer Location"
+              placeholder="Enter location"
             />
           </div>
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">
