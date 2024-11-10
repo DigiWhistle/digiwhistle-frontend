@@ -174,20 +174,25 @@ const HeadingCard = ({ data }: { data: any }) => {
               >
                 Download Invoice
               </button>
-              {invoiceType === "sale" && (
-                <CustomDialog
-                  className="w-[970px]"
-                  headerTitle="Create credit note"
-                  headerDescription=""
-                  triggerElement={
-                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                      Create credit note
-                    </div>
-                  }
-                >
-                  <CreateCreditNote edit_id={data} />
-                </CustomDialog>
-              )}
+              {invoiceType === "sale" &&
+                (!data.creditNoteGenerated ? (
+                  <CustomDialog
+                    className="w-[970px]"
+                    headerTitle="Create credit note"
+                    headerDescription=""
+                    triggerElement={
+                      <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                        Create credit note
+                      </div>
+                    }
+                  >
+                    <CreateCreditNote edit_id={data} />
+                  </CustomDialog>
+                ) : (
+                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none text-success ">
+                    Credit note generated
+                  </div>
+                ))}
               {invoiceType === "sale" && (
                 <button
                   className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover "
