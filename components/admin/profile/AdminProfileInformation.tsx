@@ -85,6 +85,7 @@ const ProfileInformation = () => {
   const uploadForm = useForm<z.infer<typeof uploadImageSchema>>({
     resolver: zodResolver(uploadImageSchema),
   });
+
   useEffect(() => {
     const userProfileGetter = async () => {
       let userProfile: any;

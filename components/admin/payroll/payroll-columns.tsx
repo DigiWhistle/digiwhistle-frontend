@@ -38,6 +38,7 @@ import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import CreatePayrollPopUp from "./CreatePayrollPopUp";
 import ShareInvoice from "../invoices/ShareInvoice";
 import { uniqueId } from "lodash";
+import { v4 as uuidv4 } from "uuid";
 export const createColumns = (
   type: "Pending" | "All Paid",
   updateData: (id: string, value: boolean) => void,
@@ -128,13 +129,13 @@ export const createColumns = (
                   onClick={async () => {
                     const response = await POST(
                       `payroll/release?id=${row.original.id}`,
-                      {},
                       undefined,
-                      { "x-idempotency-key": uniqueId() },
+                      undefined,
+                      { "x-idempotency-key": uuidv4() },
                     );
                     if (response.error) {
                       toast.error(response.error);
-                      window.location.reload();
+                      // window.location.reload();
                     } else {
                       toast.success("User deleted successfully");
                     }

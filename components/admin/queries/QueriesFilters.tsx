@@ -15,7 +15,7 @@ import { QUERY_TABLE_PAGE_LIMIT } from "@/types/admin/queries";
 import { Button } from "@/components/ui/button";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import { useForm } from "react-hook-form";
-
+import ConfigurePopUp from "./ConfigurePopUp";
 const QueriesFilters = () => {
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
@@ -111,12 +111,12 @@ const QueriesFilters = () => {
         </div>
       </div>
       <CustomDialog
-        className="w-[700px]"
+        className="w-[970px]"
         headerTitle="Configure Contact us queries"
         headerDescription={`Please enter below details.`}
         triggerElement={<Button>Configure</Button>}
       >
-        <div></div>
+        <ConfigurePopUp />
       </CustomDialog>
     </div>
   );
