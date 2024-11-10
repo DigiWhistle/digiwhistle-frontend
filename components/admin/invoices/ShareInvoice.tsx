@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import {} from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Form } from "@/components/ui/form";
 import Image from "next/image";
 import { UserIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -22,6 +22,8 @@ import FormTextareaInput from "@/components/ui/form/form-textarea-input";
 import { GET } from "@/lib/config/axios";
 import { useEffect } from "react";
 
+const AddEmailSchema = z.object({ email: z.string().email("Invalid email address") });
+
 const PayrollSchema = z.object({
   subject: z.string().min(1, "Enter Subject"),
   message: z.string().min(1, "Enter Message"),
@@ -34,6 +36,10 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: any; shareUrl?: string 
   const form = useForm<z.infer<typeof PayrollSchema>>({
     resolver: zodResolver(PayrollSchema),
     defaultValues: {},
+  });
+
+  const emailForm = useForm<z.infer<typeof AddEmailSchema>>({
+    resolver: zodResolver(AddEmailSchema),
   });
   useEffect(() => {}, []);
 
@@ -53,9 +59,13 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: any; shareUrl?: string 
   };
 
   const handleForm = async (data: z.infer<typeof PayrollSchema>, e: any) => {
+    if (allEmails.length <= 0) {
+      toast.error("Please enter atleast 1 email");
+      return;
+    }
     const sendInfo = {
       invoiceId: edit_id,
-      emails: sendEmails,
+      emails: allEmails,
       subject: data.subject,
       message: data.message,
     };
@@ -81,47 +91,56 @@ const ShareInvoice = ({ edit_id, shareUrl }: { edit_id?: any; shareUrl?: string 
       </div>
     );
   }
+
+  const handleEmailAdd = (data: z.infer<typeof AddEmailSchema>) => {
+    setEmails([...allEmails, data.email]);
+    emailForm.reset();
+  };
+
   return (
     <div className="flex flex-col max-h-[570px] overflow-y-auto pb-3">
+      <Form {...emailForm}>
+        <form action="" className="flex flex-col gap-6 items-center w-full">
+          <FormTextInput
+            formName="email"
+            label=""
+            placeholder="Type email ID of user you want to invite"
+            leftIcon={<MagnifyingGlassIcon className="text-[#0F172A] w-5 h-5" />}
+            inputProps={{
+              onKeyDown: e => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  emailForm.handleSubmit(handleEmailAdd)(e);
+                }
+              },
+            }}
+            rightIcon={
+              <PlusCircleIcon
+                onClick={emailForm.handleSubmit(handleEmailAdd)}
+                className="text-[#0F172A] w-5 h-5"
+              />
+            }
+          />
+        </form>
+      </Form>
+      <div className="flex flex-wrap gap-3 max-h-[80px] w-full overflow-y-auto my-4">
+        {allEmails.map((item: string) => (
+          <div
+            key={item}
+            className="border-2 rounded-full px-1.5 py-1.5 gap-1 flex items-center text-body-sm-light"
+          >
+            {item}
+            <XMarkIcon
+              onClick={() => handleDeleteEmail(item)}
+              cursor={"pointer"}
+              className="text-[#0F172A] w-3.5 h-3.5"
+            />
+          </div>
+        ))}
+      </div>
       <Form {...form}>
         <form action={""}>
           <div className="flex flex-col gap-2 ">
-            <SearchSelect
-              popoverclassname="w-[500px]"
-              type={"EmailSelector"}
-              searchType="employee"
-              // Options={Options}
-              formName="shareEmail"
-              searchPlaceholder="Type email ID here"
-              placeholder="Type email ID here"
-              label=""
-              setterfunction={setterfunction}
-              leftIcon={<MagnifyingGlassIcon className="text-tc-body-grey w-5 h-5" />}
-            />
-            <div className="flex flex-wrap gap-3 mt-3 max-h-[40px] w-full overflow-y-auto">
-              {allEmails.map((item: any) => (
-                <div
-                  key={item.email}
-                  className="border-2 rounded-full px-1.5 py-1.5 gap-1 flex items-center text-body-sm-light"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center rounded-full border object-cover w-6 h-6">
-                      {item.profilePic ? (
-                        <Image className="" src={item.profilePic} alt="" />
-                      ) : (
-                        <UserIcon className="text-tc-body-grey w-3 h-3" />
-                      )}
-                    </div>
-                    {item.email}
-                  </div>
-                  <XMarkIcon
-                    onClick={() => handleDeleteEmail(item.email)}
-                    cursor={"pointer"}
-                    className="text-[#0F172A] w-3.5 h-3.5"
-                  />
-                </div>
-              ))}
-            </div>
             <hr className="mt-2 mb-2 " />
             <FormTextInput
               formName="subject"

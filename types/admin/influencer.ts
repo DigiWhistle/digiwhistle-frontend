@@ -37,6 +37,7 @@ export const enum InfluencerPlatforms {
   INSTAGRAM = "instagram",
   YOUTUBE = "youtube",
   X = "x",
+  LINKEDIN = "linkedIn",
 }
 
 export const enum InfluencerNiche {
@@ -76,4 +77,6 @@ export type Influencer = {
   isApproved: boolean | null;
   isPaused: boolean;
   isVerified: boolean;
+  commercial: number;
+  location: string;
 };

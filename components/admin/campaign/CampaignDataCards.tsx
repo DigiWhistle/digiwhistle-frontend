@@ -44,7 +44,7 @@ const CampaignDataCards = () => {
   }, [tableData?.data, startTime, endTime]);
 
   return (
-    <div className="flex gap-5 items-center">
+    <div className="flex gap-5 items-center flex-wrap">
       {data.map((d, i) => (
         <DataCard key={i} {...d} />
       ))}
