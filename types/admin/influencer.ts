@@ -37,7 +37,7 @@ export const enum InfluencerPlatforms {
   INSTAGRAM = "instagram",
   YOUTUBE = "youtube",
   X = "x",
-  LINKEDIN = "linkedIn",
+  LINKEDIN = "linkedin",
 }
 
 export const enum InfluencerNiche {

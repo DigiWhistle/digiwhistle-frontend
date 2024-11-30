@@ -12,7 +12,7 @@ import DeliverableForm from "./deliverable-form";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { getNewDeliverable } from "./utils";
-import { DELETE } from "@/lib/config/axios";
+import { DELETE, POST } from "@/lib/config/axios";
 import { toast } from "sonner";
 
 export const PaymentStatusOptions = [
@@ -35,6 +35,8 @@ export const PaymentStatusOptions = [
 ];
 
 const AgencyForm = ({ index }: { index: number }) => {
+  const [confirmation, setConfirmation] = useState(false);
+
   const [selectedItems, setSelectedItems] = useState<
     { type: "influencer" | "deliverable"; id: number | string; influencerIndex?: number }[]
   >([]);
@@ -101,6 +103,7 @@ const AgencyForm = ({ index }: { index: number }) => {
   };
 
   const accessorString = `participants.${index}`;
+
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000">
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
@@ -256,6 +259,27 @@ const AgencyForm = ({ index }: { index: number }) => {
         >
           Add Influencer
         </Button>
+        {form.watch(`participants.${index}`).confirmationSent || confirmation ? (
+          <div className="text-success">Confirmation Sent</div>
+        ) : (
+          <Button
+            type="button"
+            variant={"secondary"}
+            onClick={async () => {
+              const response = await POST("campaign/sendEmail", {
+                id: form.watch(`participants.${index}`).id,
+              });
+              if (response.error) {
+                toast.error("Failed to send confirmation email");
+              } else {
+                toast.success("Confirmation email sent");
+                setConfirmation(true);
+              }
+            }}
+          >
+            Send Confirmation Email
+          </Button>
+        )}
       </div>
     </div>
   );

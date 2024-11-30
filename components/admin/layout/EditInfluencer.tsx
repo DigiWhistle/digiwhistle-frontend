@@ -9,6 +9,7 @@ import { Form } from "@/components/ui/form";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import {
   instagramURL,
+  linkedinURL,
   mobileNoSchema,
   termsCheckSchema,
   twitterURL,
@@ -24,11 +25,14 @@ const EditInfluencerSchema = z.object({
   instagramURL: instagramURL,
   twitterURL: twitterURL,
   youtubeURL: youtubeURL,
+  linkedInURL: linkedinURL,
   mobileNo: mobileNoSchema,
   location: z.string().optional(),
+  rating: z.number().optional(),
   instagramCommercial: z.number().optional(),
   twitterCommercial: z.number().optional(),
   youtubeCommercial: z.number().optional(),
+  linkedInCommercial: z.number().optional(),
 });
 
 const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
@@ -50,9 +54,12 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
           instagramURL: "",
           twitterURL: "",
           youtubeURL: "",
+          linkedInURL: "",
           mobileNo: "",
           location: "",
+          rating: 0,
           instagramCommercial: 0,
+          linkedInCommercial: 0,
           twitterCommercial: 0,
           youtubeCommercial: 0,
         });
@@ -63,9 +70,12 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
         form.setValue("instagramURL", data.instagramURL || undefined);
         form.setValue("twitterURL", data.twitterURL || undefined);
         form.setValue("youtubeURL", data.youtubeURL || undefined);
-        form.setValue("instagramCommercial", data.instagramCommercial || 0);
-        form.setValue("youtubeCommercial", data.youtubeCommercial || 0);
-        form.setValue("twitterCommercial", data.twitterCommercial || 0);
+        form.setValue("linkedInURL", data.linkedInURL || undefined);
+        form.setValue("linkedInCommercial", Number(data.linkedInCommercial) || 0);
+        form.setValue("instagramCommercial", Number(data.instagramCommercial) || 0);
+        form.setValue("youtubeCommercial", Number(data.youtubeCommercial) || 0);
+        form.setValue("twitterCommercial", Number(data.twitterCommercial) || 0);
+        form.setValue("rating", data.rating || 0);
         form.setValue("location", data.location || undefined);
       }
     };
@@ -78,10 +88,13 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
       twitterURL: data.twitterURL || undefined,
       instagramURL: data.instagramURL || undefined,
       youtubeURL: data.youtubeURL || undefined,
+      linkedInURL: data.linkedInURL || undefined,
       location: data.location,
+      rating: data.rating,
       instagramCommercial: data.instagramCommercial,
       twitterCommercial: data.twitterCommercial,
       youtubeCommercial: data.youtubeCommercial,
+      linkedInCommercial: data.linkedInCommercial,
     });
     if (response.error) {
       toast.error(response.error);
@@ -147,11 +160,33 @@ const EditInfluencer = ({ influencer }: { influencer: Influencer }) => {
                 type="number"
               />
             </div>
-            <FormTextInput
-              formName="location"
-              label="Influencer Location"
-              placeholder="Enter location"
-            />
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="linkedInURL"
+                label="Linkedin Profile Link"
+                placeholder="https://www.linkedin.com/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="linkedInCommercial"
+                label="Linkedin Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="location"
+                label="Influencer Location"
+                placeholder="Enter location"
+              />
+              <FormTextInput
+                formName="rating"
+                label="DW Rating"
+                placeholder="Enter rating"
+                type="number"
+              />
+            </div>
           </div>
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">
             <CancelButton />

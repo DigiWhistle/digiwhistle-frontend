@@ -45,3 +45,15 @@ export const twitterURL = z
       message: "Please provide a valid X (Twitter) URL",
     },
   );
+
+export const linkedinURL = z
+  .string()
+  .optional()
+  .refine(
+    value =>
+      !value ||
+      /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[A-Za-z0-9_-]+\/?$/.test(value),
+    {
+      message: "Please provide a valid LinkedIn URL",
+    },
+  );
