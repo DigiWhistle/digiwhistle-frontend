@@ -120,7 +120,7 @@ const HeadingCard = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-1 px-2 mt-4" align="end">
               <CustomDialog
-                className="w-[700px]"
+                className="w-[840px]"
                 headerTitle="Edit campaign"
                 headerDescription={`Please enter below details.`}
                 triggerElement={

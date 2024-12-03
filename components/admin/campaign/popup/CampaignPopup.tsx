@@ -57,7 +57,7 @@ const CampaignSchema = z.object({
   invoiceNo: z.string().optional(),
   campaignManager: z.string().min(1, "Select campaign manager"),
   incentiveWinner: z.string().min(1, "Select incentive winner"),
-  paymentStatus: z.string().min(1, "Select payment status"),
+  paymentStatus: z.string().optional(),
   paymentTerms: z.string().min(1, "Select payment terms"),
   additionalDetails: z.string(),
   campaignEmail: z.string().optional() || null,
@@ -124,6 +124,7 @@ const CampaignPopup = ({
           campaignManager: response.data.manager.name || "",
           incentiveWinner: response.data.incentiveWinner.name || "",
           paymentStatus: response.data.paymentStatus,
+          paymentTerms: response.data.paymentTerms,
           additionalDetails: response.data.details,
           campaignEmail: "",
         });
@@ -167,10 +168,14 @@ const CampaignPopup = ({
     };
     let response: any;
     response = {};
+    console.log(sendInfo);
     if (mode === "Create campaign") {
       response = await POST("campaign", sendInfo);
     } else {
-      response = await PATCH(`campaign/${edit_id}`, sendInfo);
+      response = await PATCH(`campaign/${edit_id}`, {
+        ...sendInfo,
+        paymentStatus: data.paymentStatus,
+      });
     }
     if (response.error) {
       toast.error(response.error);
@@ -178,8 +183,8 @@ const CampaignPopup = ({
       toast.success(response.message);
     }
     setEmails([]);
-    form.reset({});
-    window.location.reload();
+    // form.reset({});
+    // window.location.reload();
   };
   const handleDeleteEmail = (email: string) => {
     setEmails((prevEmails: any) => prevEmails.filter((item: any) => item.email !== email));
@@ -277,6 +282,19 @@ const CampaignPopup = ({
                 className=""
                 required
               />
+              {mode != "Create campaign" ? (
+                <FormSelectInput
+                  formName={"paymentStatus"}
+                  label="Payment Status"
+                  placeholder="Select Status"
+                  selectItems={PaymentStatusOptions}
+                  triggerCN="h-10"
+                  className=""
+                  required
+                />
+              ) : (
+                <></>
+              )}
             </div>
             <FormTextareaInput
               inputCN="h-20 min-h-[30px]"

@@ -127,6 +127,10 @@ const ExploreInfluencer = () => {
       ) : (
         <div>No Influencers Found</div>
       )}
+      <div className="text-body-sm-light italic">
+        *Data provided here originate from rapid apis sources, and we are not responsible for any
+        discrepancies, inaccuracies, or delays in this information
+      </div>
     </div>
   );
 };
