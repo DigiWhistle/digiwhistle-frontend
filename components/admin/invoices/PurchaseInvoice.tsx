@@ -43,43 +43,31 @@ export const PaymentStatusOptions = [
     ),
   },
 ];
-export const MonthOptions = [
-  { value: "January", label: "January" },
-  { value: "February", label: "February" },
-  { value: "March", label: "March" },
-  { value: "April", label: "April" },
-  { value: "May", label: "May" },
-  { value: "June", label: "June" },
-  { value: "July", label: "July" },
-  { value: "August", label: "August" },
-  { value: "September", label: "September" },
-  { value: "October", label: "October" },
-  { value: "November", label: "November" },
-  { value: "December", label: "December" },
+export const DaysOptions = [
+  { value: "0 Days", label: "0 Days" },
+  { value: "30 Days", label: "30 Days" },
+  { value: "60 Days", label: "60 Days" },
 ];
+
 const InvoiceSchema = z.object({
-  campaignName: z.string(),
-  campaignCode: z.string(),
-  brand: z.string(),
-  gstin: z.string(),
-  invoiceNo: z.string().optional(),
-  invoiceDate: z.date(),
-  taxableAmount: z.number(),
+  invoiceNo: z.string(),
+  pan: z.string(),
+  amount: z.number(),
   igst: z.number(),
   cgst: z.number(),
   sgst: z.number(),
-  total: z.number(),
-  tdsAmount: z.number(),
-  recieved: z.number(),
-  balanceAmount: z.number(),
+  totalAmount: z.number(),
+  tds: z.number(),
+  finalAmount: z.number(),
+  amountToBeReceived: z.number(),
   paymentStatus: z.string(),
-  month: z.string(),
+  paymentTerms: z.string(),
 });
-const SaleInvoice = ({
+const PurchaseInvoice = ({
   mode,
   edit_id,
 }: {
-  mode: "Create sale invoice" | "Edit sale invoice";
+  mode: "Create purchase invoice" | "Edit purchase invoice";
   edit_id?: any;
 }) => {
   const [getbrand, brandSetter] = useState<any>({});
@@ -89,32 +77,29 @@ const SaleInvoice = ({
     defaultValues: {},
   });
   useEffect(() => {
-    if (mode === "Edit sale invoice") {
+    if (mode === "Edit purchase invoice") {
       const updateFunction = async () => {
         setLoading(true);
-        const response: any = await GET(`invoice/sale/${edit_id.id}`);
+        const response: any = await GET(`invoice/purchase/${edit_id.id}`);
         if (response.error) {
           toast.error(response.error);
           setLoading(false);
           return;
         }
+        console.log("bhailog data", response);
         form.reset({
-          campaignName: response.data.campaign.name,
-          campaignCode: response.data.campaign.code,
-          brand: response.data.campaign.brandName,
-          gstin: response.data.gstTin,
           invoiceNo: response.data.invoiceNo,
-          invoiceDate: new Date(response.data.invoiceDate),
-          taxableAmount: Number(response.data.amount),
+          pan: response.data.pan,
+          amount: Number(response.data.amount),
           igst: Number(response.data.igst),
           cgst: Number(response.data.cgst),
           sgst: Number(response.data.sgst),
-          total: Number(response.data.total),
-          tdsAmount: Number(response.data.tds),
-          recieved: Number(response.data.received),
-          balanceAmount: Number(response.data.balanceAmount),
+          totalAmount: Number(response.data.totalAmount),
+          tds: Number(response.data.tds),
+          finalAmount: Number(response.data.finalAmount),
+          amountToBeReceived: Number(response.data.amountToBeReceived),
           paymentStatus: response.data.paymentStatus,
-          month: response.data.month,
+          paymentTerms: response.data.paymentTerms,
         });
         setLoading(false);
 
@@ -129,34 +114,24 @@ const SaleInvoice = ({
   };
 
   const handleForm = async (data: z.infer<typeof InvoiceSchema>, e: any) => {
-    const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
-    if (campaignData.error) {
-      toast.error("Please enter a valid Campaign Code");
-      form.reset({});
-      window.location.reload();
-      return;
-    }
     const sendInfo = {
-      gstTin: data.gstin,
       invoiceNo: data.invoiceNo,
-      invoiceDate: data.invoiceDate,
-      amount: data.taxableAmount,
-      sgst: data.sgst,
-      cgst: data.cgst,
+      pan: data.pan,
+      amount: data.amount,
       igst: data.igst,
-      total: data.total,
-      tds: data.tdsAmount,
-      received: data.recieved,
-      balanceAmount: data.balanceAmount,
-      month: data.month,
+      cgst: data.cgst,
+      sgst: data.sgst,
+      totalAmount: data.totalAmount,
+      tds: data.tds,
+      finalAmount: data.finalAmount,
+      amountToBeReceived: data.amountToBeReceived,
       paymentStatus: data.paymentStatus,
+      paymentTerms: data.paymentTerms,
     };
 
     let response: any;
-    if (mode === "Edit sale invoice") {
-      response = await PATCH(`invoice/sale/${edit_id.id}`, sendInfo);
-    } else {
-      response = await POST(`invoice/sale`, { ...sendInfo, campaign: campaignData.data.id });
+    if (mode === "Edit purchase invoice") {
+      response = await PATCH(`invoice/purchase/${edit_id.id}`, sendInfo);
     }
 
     if (response.error) {
@@ -165,9 +140,6 @@ const SaleInvoice = ({
       toast.success(response.message);
     }
 
-    // if (mode === "Edit sale invoice") {
-    //   return;
-    // }
     form.reset({});
     window.location.reload();
   };
@@ -186,43 +158,27 @@ const SaleInvoice = ({
         <form action={""}>
           <div className="flex flex-col gap-2 ">
             <div className="flex gap-5">
-              <FormTextInput formName="campaignName" placeholder="" label="Campaign name" />
-              <FormTextInput formName="campaignCode" placeholder="" label="Campaign code" />
-              <SearchSelect
-                endpoint={"brand/search"}
-                formName="brand"
-                searchPlaceholder="Search Brand"
-                placeholder="Select Brand"
-                label="Brand name"
-                selectedValueSetter={brandSetter}
-                setterfunction={setterfunction}
-                leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
-              />
-            </div>
-            <div className="flex gap-5">
-              <FormTextInput formName="gstin" placeholder="" label="GSTIN" />
-              <FormTextInput
-                formName="invoiceNo"
-                placeholder="DWT/2023-24/028/29"
-                label="Invoice number"
-              />
-              <DatePicker
-                label="Invoice date"
-                placeholder=""
-                setterfunction={setterfunction}
-                formName="invoiceDate"
-              />
-            </div>
-            <hr className="mt-6 mb-2 " />
-
-            <div className="flex gap-5">
+              <FormTextInput formName="invoiceNo" placeholder="" label="Invoice No." />
+              <FormTextInput formName="pan" placeholder="" label="PAN" />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="taxableAmount"
+                formName="amount"
                 placeholder=""
-                label="Taxable amount"
+                label="Amount"
               />
+              <FormTextInput
+                type="number"
+                leftIcon={<div className="text-tc-body-grey">%</div>}
+                formName="tds"
+                placeholder=""
+                label="TDS amount"
+              />
+            </div>
+
+            <hr className="mt-6 mb-2 " />
+
+            <div className="flex gap-5">
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
@@ -247,9 +203,9 @@ const SaleInvoice = ({
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="total"
+                formName="totalAmount"
                 placeholder=""
-                label="Total"
+                label="Total Amount"
               />
             </div>
             <hr className="mt-6 mb-2 " />
@@ -257,24 +213,17 @@ const SaleInvoice = ({
             <div className="flex gap-5">
               <FormTextInput
                 type="number"
-                leftIcon={<div className="text-tc-body-grey">%</div>}
-                formName="tdsAmount"
+                leftIcon={<div className="text-tc-body-grey">₹</div>}
+                formName="finalAmount"
                 placeholder=""
-                label="TDS amount"
+                label="Final Amount"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="recieved"
+                formName="amountToBeReceived"
                 placeholder=""
-                label="Received"
-              />
-              <FormTextInput
-                type="number"
-                leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="balanceAmount"
-                placeholder=""
-                label="Balance amount"
+                label="Amount Received"
               />
               <FormSelectInput
                 formName={"paymentStatus"}
@@ -285,10 +234,10 @@ const SaleInvoice = ({
                 className=""
               />
               <FormSelectInput
-                formName={"month"}
-                label="Month"
-                placeholder="Select Month"
-                selectItems={MonthOptions}
+                formName={"paymentTerms"}
+                label="Payment Terms"
+                placeholder="Payment Terms"
+                selectItems={DaysOptions}
                 triggerCN="h-10"
                 className=""
               />
@@ -304,13 +253,11 @@ const SaleInvoice = ({
           <CancelButton text="Cancel" />
         </div>
         <div className="flex w-full">
-          <ActionButton onClick={form.handleSubmit(handleForm)}>
-            {mode === "Create sale invoice" ? "Create sale invoice" : "Confirm changes"}
-          </ActionButton>
+          <ActionButton onClick={form.handleSubmit(handleForm)}>{"Confirm changes"}</ActionButton>
         </div>
       </div>
     </div>
   );
 };
 
-export default SaleInvoice;
+export default PurchaseInvoice;

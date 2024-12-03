@@ -67,6 +67,13 @@ const InfluencerCampaignCard = ({ data, index }: { data: TCampaignForm; index: n
                   )}
                   {data.paymentStatus}
                 </DeliverableItem>
+                {data.invoiceStatus === "Generated" && data.paymentStatus != "All Paid" ? (
+                  <DeliverableItem classname="min-w-[100px]" title="Due date">
+                    {data.invoiceDueDate ? data.invoiceDueDate : ""}
+                  </DeliverableItem>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="gap-2 mb-4">
                 {"deliverable" in data &&

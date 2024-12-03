@@ -166,7 +166,7 @@ const SaleInvoiceCard = ({
                 {invoiceType === "sale" && (
                   <DeliverableItem title="Payment Status">
                     <>
-                      {data.status === "All Paid" ? (
+                      {data.status === "All Received" ? (
                         <CheckIcon className="w-4 h-4 text-success" />
                       ) : (
                         <MinusCircleIcon className="w-4 h-4 text-warning" />

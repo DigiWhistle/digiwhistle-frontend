@@ -74,6 +74,7 @@ export const BrandCampaignSchema = z.object({
   id: z.string().uuid(),
   name: z.string({ message: "required" }),
   code: z.string(),
+  commercial: z.string(),
   brandName: z.string(),
   startDate: z.string(),
   endDate: z.string(),

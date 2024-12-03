@@ -14,6 +14,7 @@ import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 
 const HeadingCard = ({ data }: { data: BrandCampaign }) => {
   const role = useAppSelector(UserRole);
+  console.log("hello kitty", data);
   return (
     <div>
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
@@ -47,7 +48,12 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
               <p> {data.code} (Campaign Code)</p>
             </>
           )}
-
+          {data.commercial && (
+            <>
+              <div className="flex w-0.5  h-6 bg-bc-grey"></div>
+              <p> {data.commercial} (Commercial)</p>
+            </>
+          )}
           {/* {data.poc && (
             <>
               <div className="flex w-0.5  h-6 bg-bc-grey"></div>

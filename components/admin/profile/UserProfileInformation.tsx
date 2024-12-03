@@ -442,7 +442,6 @@ const UserProfileInformation = () => {
                       formName="gstin"
                       label="GSTIN"
                       placeholder=""
-                      required
                       disabled={!keyDetailseditable}
                     />
                     {userRole === "brand" ? (

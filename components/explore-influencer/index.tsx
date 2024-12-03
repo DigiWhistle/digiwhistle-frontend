@@ -25,6 +25,7 @@ const ExploreInfluencer = () => {
   const [data, setData] = useState<TDataCard[]>([]);
   const [urlType, setUrlTYpe] = useState<"youtube" | "instagram" | "X" | undefined>("instagram");
   const [loading, setLoading] = useState(false);
+  const [isDigiwhistle, setIsDigiwhistle] = useState<boolean>(false);
   const debouncedFetchData = debounce(async (value: string) => {
     setLoading(true);
     const response: any = await GET(`influencer/explore?url=${value}`);
@@ -60,7 +61,7 @@ const ExploreInfluencer = () => {
         ChartBarIcon,
         HandThumbUpIcon,
       };
-
+      setIsDigiwhistle(response.data.IsDigiwhistle);
       const dataWithIcons = response.data.cards.map((item: any) => ({
         ...item,
         iconName: iconMap[item.iconName as string] ?? UsersIcon,
@@ -116,7 +117,11 @@ const ExploreInfluencer = () => {
                 <DataCard key={i} {...d} />
               ))}
             </div>
-            <ExploreInfluencerCard urlType={urlType} relatedInfluencers={relatedInfluencers} />
+            <ExploreInfluencerCard
+              urlType={urlType}
+              relatedInfluencers={relatedInfluencers}
+              IsDigiwhistle={isDigiwhistle}
+            />
           </div>
         </>
       ) : (

@@ -60,15 +60,15 @@ const InvoiceModalSchema = z.object({
   PAN: z.string(),
   brand: z.string().optional(),
   total: z.number(),
-  igst: z.number(),
-  cgst: z.number(),
-  sgst: z.number(),
+  igst: z.number().optional(),
+  cgst: z.number().optional(),
+  sgst: z.number().optional(),
   totalInvoiceAmount: z.number(),
   tdsAmount: z.number(),
   finalAmount: z.number(),
   amountToBeRecieved: z.number(),
-  paymentTerms: z.string(),
-  paymentStatus: z.string(),
+  paymentTerms: z.string().optional(),
+  paymentStatus: z.string().optional(),
 });
 const CreateInvoiceModal = ({
   mode,
@@ -86,7 +86,7 @@ const CreateInvoiceModal = ({
     defaultValues: {},
   });
   const { resetField } = form;
-  const usestore = useAppSelector(User);
+  const usestore: any = useAppSelector(User);
   const setterfunction = (formname: any, Option: any) => {
     form.setValue(formname, Option.name);
   };
@@ -273,6 +273,7 @@ const CreateInvoiceModal = ({
                   className="w-full  "
                   inputCN="border-2 rounded-xl border-dashed  "
                   setFile={setFile}
+                  accept="application/pdf"
                   inputProps={{
                     onKeyDown: e => {
                       if (e.key === "Enter") {
@@ -333,22 +334,25 @@ const CreateInvoiceModal = ({
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="igst"
-                placeholder="Enter IGST"
+                placeholder={usestore?.profile.gstNo ? "Enter IGST" : "--/--"}
                 label="IGST"
+                disabled={usestore?.profile.gstNo ? false : true}
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="cgst"
-                placeholder="Enter CGST"
+                placeholder={usestore?.profile.gstNo ? "Enter CGST" : "--/--"}
                 label="CGST"
+                disabled={usestore?.profile.gstNo ? false : true}
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
                 formName="sgst"
-                placeholder="Enter SGST"
+                placeholder={usestore?.profile.gstNo ? "Enter SGST" : "--/--"}
                 label="SGST"
+                disabled={usestore?.profile.gstNo ? false : true}
               />
               <FormTextInput
                 type="number"
@@ -385,7 +389,8 @@ const CreateInvoiceModal = ({
               <FormSelectInput
                 formName={"paymentTerms"}
                 label="Payment terms"
-                placeholder="Select payment terms"
+                placeholder=""
+                disabled
                 selectItems={DaysOptions}
                 triggerCN="h-10"
                 className="mt-1"
@@ -393,10 +398,11 @@ const CreateInvoiceModal = ({
               <FormSelectInput
                 formName={"paymentStatus"}
                 label="Payment Status"
-                placeholder="Payment Status"
+                placeholder=""
                 selectItems={PaymentStatusOptions}
                 triggerCN="h-10"
                 className="mt-1"
+                disabled
               />
             </div>
 

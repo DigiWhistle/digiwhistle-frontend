@@ -137,7 +137,7 @@ const PurchaseInvoiceCard = ({ data, index }: { data: TCampaignForm; index: numb
                     </DeliverableItem>
                     <DeliverableItem title="Payment Status">
                       <>
-                        {data.PaymentStatus === "All Paid" ? (
+                        {data.PaymentStatus === "All Received" ? (
                           <CheckIcon className="w-4 h-4 text-success" />
                         ) : (
                           <MinusCircleIcon className="w-4 h-4 text-warning" />
