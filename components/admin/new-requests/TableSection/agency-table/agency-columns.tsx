@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColumnDef, TableMeta } from "@tanstack/react-table";
+import type { ColumnDef, Row, TableMeta } from "@tanstack/react-table";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ import ApproveForm from "../brand-table/ApproveForm";
 import RejectForm from "../brand-table/RejectForm";
 import ViewRemarks from "../brand-table/ViewRemarks";
 import RequestsAction from "../../RequestsAction";
+import SendAgreement from "../../SendAgreement";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -102,6 +103,17 @@ export const createColumns = (
           </p>
         </div>
       );
+    },
+  },
+  {
+    id: "isAgreementSent",
+    accessorKey: "isAgreementSent",
+    header: "Agreement",
+    cell: ({ row }: { row: Row<Agency> }) => {
+      const isAgreementSent = row.getValue("isAgreementSent") as boolean;
+      const userId = row.original?.user?.id;
+
+      return <SendAgreement isAgreementSent={isAgreementSent} userId={userId} />;
     },
   },
   {

@@ -16,6 +16,7 @@ export const createNewParticipant = (
     paymentStatus: "Pending",
     invoiceStatus: "Not Generated",
     invoice: "",
+    confirmationSent: false,
     ...commonData,
   };
 

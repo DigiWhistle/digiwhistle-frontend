@@ -9,6 +9,7 @@ import { Form } from "@/components/ui/form";
 import FormPhoneInput from "@/components/ui/form/form-phone-input";
 import {
   instagramURL,
+  linkedinURL,
   mobileNoSchema,
   termsCheckSchema,
   twitterURL,
@@ -27,7 +28,10 @@ const AddInfluencersSchema = z.object({
   twitterURL: twitterURL,
   youtubeURL: youtubeURL,
   mobileNo: mobileNoSchema,
+  linkedInURL: linkedinURL,
+  linkedInCommercial: z.number().optional(),
   location: z.string().optional(),
+  rating: z.number().optional(),
   instagramCommercial: z.number().optional(),
   twitterCommercial: z.number().optional(),
   youtubeCommercial: z.number().optional(),
@@ -50,7 +54,10 @@ const AddInfluencers = () => {
       youtubeCommercial: data.youtubeCommercial,
       twitterCommercial: data.twitterCommercial,
       location: data.location,
+      rating: data.rating,
       email: data.email,
+      linkedInURL: data.linkedInURL || undefined,
+      linkedInCommercial: data.linkedInCommercial,
     });
     if (response.error) {
       toast.error(response.error);
@@ -135,11 +142,33 @@ const AddInfluencers = () => {
                 type="number"
               />
             </div>
-            <FormTextInput
-              formName="location"
-              label="Influencer Location"
-              placeholder="Enter location"
-            />
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="linkedInURL"
+                label="Linkedin Profile Link"
+                placeholder="https://www.linkedin.com/"
+                leftIcon={<LinkIcon className="text-[#0F172A] w-5 h-5" />}
+              />
+              <FormTextInput
+                formName="linkedInCommercial"
+                label="Linkedin Commercial"
+                placeholder="Enter commercial"
+                type="number"
+              />
+            </div>
+            <div className="flex gap-4 items-center">
+              <FormTextInput
+                formName="location"
+                label="Influencer Location"
+                placeholder="Enter location"
+              />
+              <FormTextInput
+                formName="rating"
+                label="DW Rating"
+                placeholder="Enter rating"
+                type="number"
+              />
+            </div>
           </div>
           <div className="flex w-full gap-3 pt-6 border-t-2 mt-3">
             <CancelButton />

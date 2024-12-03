@@ -13,21 +13,47 @@ const OfferingsArray = [
     name: "Influencer Marketing",
     image: "/assets/Offerings/influencer-marketing-desktop.svg",
     icon: SpeakerWaveIcon,
+    description: [
+      "Data-Driven Influencer Campaigns",
+      "Authentic and Organic Brand Integration",
+      "Full-Service Campaign Management",
+      "Specialised in Niche Audiences",
+      "Transparent Reporting and ROI Focus",
+    ],
   },
   {
     name: "Talent Management",
     image: "/assets/Offerings/talent-management-desktop.svg",
     icon: StarIcon,
+    description: [
+      "End to End Solution",
+      "Data-Driven Decision Making",
+      "Proven Success and Client Impact",
+      "Industry Expertise & Network",
+    ],
   },
   {
     name: "Public Relations",
     image: "/assets/Offerings/public-relations-desktop.svg",
     icon: HandThumbUpIcon,
+    description: [
+      "Strategic, Results-Driven PR",
+      "Strong Media Relationships & Exclusive Access",
+      "Creative & Compelling Storytelling",
+      "Personalised, Client-Centric Approach",
+      "Comprehensive Brand Building & Positioning",
+    ],
   },
   {
     name: "Performance Marketing",
     image: "/assets/Offerings/performance-marketing-desktop.svg",
     icon: BoltIcon,
+    description: [
+      "Omnichannel Performance Marketing",
+      "Cost-Efficient, Results-Oriented Approach",
+      "Scalable Campaigns for Growing Businesses",
+      "Data-Driven Campaigns with Measurable ROI",
+    ],
   },
 ];
 
@@ -76,7 +102,7 @@ const Offerings = () => {
         <div className="relative w-full flex flex-col items-center" data-aos="fade-up">
           <div className="absolute h-32 w-32 md:h-44  md:w-44 bg-[#FFEEA3] rounded-full -z-10 top-14 transform -translate-x-20 lg:-translate-x-32  "></div>
           <div className="absolute  h-32 w-32 md:h-44 md:w-44 bg-[#F4BBEA] rounded-full -z-10 bottom-14  transform translate-x-20 lg:translate-x-32"></div>
-          <div className="relative flex flex-col items-center w-full h-full  bg-clip-content backdrop-filter backdrop-blur-2xl bg-opacity-100 ">
+          <div className="relative flex flex-col gap-5 items-center w-full h-full  bg-clip-content backdrop-filter backdrop-blur-2xl bg-opacity-100 ">
             <Image
               src={OfferingsArray[selectedIndex].image}
               alt={OfferingsArray[selectedIndex].name}
@@ -86,6 +112,16 @@ const Offerings = () => {
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             />
+            <div className="max-w-2xl flex flex-wrap gap-4 items-center justify-center">
+              {OfferingsArray[selectedIndex].description.map((text, index) => (
+                <p
+                  key={index}
+                  className="border-brown-641 bg-focus-yellow-shadow border p-2 px-4 rounded-full"
+                >
+                  {text}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
         <CountingCards section={"offerings"} />

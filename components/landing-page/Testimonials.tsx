@@ -8,7 +8,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useCallback } from "react";
 import { useEffect } from "react";
+import { LandingInfluencerData } from "./Influencers";
+
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 const head_buttons = ["Influencers", "Brands"];
 const dummy_testimonials = [
   {
@@ -87,6 +90,19 @@ const Testimonials = () => {
         setPagination(res);
       });
   }, [emblaApi]);
+
+  const chunkArray = (array: any[], chunkSize: number) => {
+    const result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const [firstChunk, secondChunk, thirdChunk] = chunkArray(
+    LandingInfluencerData,
+    Math.ceil(LandingInfluencerData.length / 3),
+  );
   return (
     <>
       <section
@@ -97,38 +113,38 @@ const Testimonials = () => {
         <div className=" relative flex flex-col  md:h-[776px] sm:h-[512px] justify-center items-center">
           <div className="absolute top-0 -z-20 flex flex-col justify-center items-center  md:gap-7 gap-4">
             <Marquee direction="right">
-              {arr.map((item, index) => (
+              {firstChunk.map((item, index) => (
                 <Image
                   key={index}
-                  className=" sm:mr-7  md:w-[240px] sm:w-[160px]"
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px] h-[240px] object-cover rounded-2xl"
                   alt=""
-                  width={320}
-                  height={100}
-                  src="/assets/testimonials/card.webp"
+                  height={200}
+                  width={328}
+                  src={item.influencer_url}
                 />
               ))}
             </Marquee>
             <Marquee direction="left">
-              {arr.map((item, index) => (
+              {secondChunk.map((item, index) => (
                 <Image
                   key={index}
-                  className=" sm:mr-7  md:w-[240px] sm:w-[160px] "
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px] h-[240px] object-cover rounded-2xl"
                   alt=""
-                  width={320}
-                  height={100}
-                  src="/assets/testimonials/card.webp"
+                  height={200}
+                  width={328}
+                  src={item.influencer_url}
                 />
               ))}
             </Marquee>
             <Marquee direction="right">
-              {arr.map((item, index) => (
+              {thirdChunk.map((item, index) => (
                 <Image
                   key={index}
-                  className=" sm:mr-7  md:w-[240px] sm:w-[160px]"
+                  className=" sm:mr-7  md:w-[240px] sm:w-[160px] h-[240px] object-cover rounded-2xl"
                   alt=""
-                  width={240}
-                  height={100}
-                  src="/assets/testimonials/card.webp"
+                  height={200}
+                  width={328}
+                  src={item.influencer_url}
                 />
               ))}
             </Marquee>

@@ -36,6 +36,8 @@ const ParticipantBaseSchema = z.object({
   margin: z.number({ message: "required" }),
   paymentStatus: z.enum(["Pending", "All Paid"]),
   invoiceStatus: z.enum(["Not Generated", "Generated"]),
+  confirmationSent: z.boolean().default(false),
+
   invoice: z.string().nullable(),
 });
 
@@ -66,6 +68,7 @@ export const CampaignSchema = z.object({
   incentiveWinner: z.string(),
   invoice: z.string().nullable().optional(),
   incentiveReleased: z.boolean().default(false),
+
   // status: z.enum(["active", "inactive"]).nullable().optional(),
   participants: z.array(ParticipantSchema),
 });

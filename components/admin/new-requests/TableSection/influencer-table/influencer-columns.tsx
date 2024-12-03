@@ -50,6 +50,8 @@ import CancelButton from "@/components/ui/customAlertDialog/CancelButton";
 import ActionButton from "@/components/ui/customAlertDialog/ActionButton";
 import PauseForm from "./PauseForm";
 import EditInfluencer from "@/components/admin/layout/EditInfluencer";
+import { Button } from "@/components/ui/button";
+import SendAgreement from "../../SendAgreement";
 
 export const createColumns = (
   updateData: (id: string, value: boolean | null) => void,
@@ -108,14 +110,6 @@ export const createColumns = (
         );
       },
     },
-    {
-      accessorKey: "commercial",
-      header: "Commercial",
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
-    },
   ];
 
   if (platform === InfluencerPlatforms.INSTAGRAM) {
@@ -146,7 +140,7 @@ export const createColumns = (
                 className={cn(
                   label === "High"
                     ? "bg-[#D2FFD1]"
-                    : label === "Medium"
+                    : label === "Moderate"
                       ? "bg-yellow-561"
                       : "bg-error",
                   "text-body-xs-light px-2 py-1 rounded-full ",
@@ -224,10 +218,47 @@ export const createColumns = (
     ];
     // @ts-ignore
     columns.splice(1, 0, ...addColumns);
+  } else if (platform === InfluencerPlatforms.LINKEDIN) {
+    const addColumns = [
+      {
+        accessorKey: "followers",
+        header: "Followers",
+      },
+      {
+        accessorKey: "likes",
+        header: "Likes",
+      },
+      {
+        accessorKey: "shares",
+        header: "Shares",
+      },
+      {
+        accessorKey: "comments",
+        header: "Comments",
+      },
+      {
+        accessorKey: "reactions",
+        header: "Reactions",
+      },
+    ];
+    // @ts-ignore
+    columns.splice(1, 0, ...addColumns);
   }
 
   if (isMainTable) {
     const addColumns = [
+      {
+        accessorKey: "commercial",
+        header: "Commercial",
+      },
+      {
+        accessorKey: "location",
+        header: "Location",
+      },
+      {
+        accessorKey: "rating",
+        header: "Rating",
+      },
       {
         accessorKey: "exclusive",
         header: "Exclusive",
@@ -455,6 +486,17 @@ export const createColumns = (
               </p>
             </div>
           );
+        },
+      },
+      {
+        id: "isAgreementSent",
+        accessorKey: "isAgreementSent",
+        header: "Agreement",
+        cell: ({ row }: { row: Row<Influencer> }) => {
+          const isAgreementSent = row.getValue("isAgreementSent") as boolean;
+          const userId = row.original?.userId;
+
+          return <SendAgreement isAgreementSent={isAgreementSent} userId={userId} />;
         },
       },
       {
