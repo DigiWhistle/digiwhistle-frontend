@@ -110,6 +110,14 @@ export const createColumns = (
         );
       },
     },
+    {
+      accessorKey: "commercial",
+      header: "Commercial",
+    },
+    {
+      accessorKey: "location",
+      header: "Location",
+    },
   ];
 
   if (platform === InfluencerPlatforms.INSTAGRAM) {
