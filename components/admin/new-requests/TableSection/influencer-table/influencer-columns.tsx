@@ -127,6 +127,91 @@ export const createColumns = (
         header: "Followers",
       },
       {
+        accessorKey: "ages",
+        header: "Age Groups",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          const ages = row.original.ages;
+          return (
+            <div className="flex flex-col gap-1.5">
+              {ages.map((age, index) => (
+                <div key={index} className="flex gap-1 items-center">
+                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "reach",
+        header: "Average Reach",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          const reach = row.original.reach;
+          return (
+            <div className="flex flex-col gap-1.5">
+              {reach.map((age, index) => (
+                <div key={index} className="flex gap-1 items-center">
+                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "cities",
+        header: "Cities",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          const cities = row.original.cities;
+          return (
+            <div className="flex flex-col gap-1.5">
+              {cities.map((age, index) => (
+                <div key={index} className="flex gap-1 items-center">
+                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "countries",
+        header: "Countries",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          const countries = row.original.countries;
+          return (
+            <div className="flex flex-col gap-1.5">
+              {countries.map((age, index) => (
+                <div key={index} className="flex gap-1 items-center">
+                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "genders",
+        header: "Genders",
+        cell: ({ row }: { row: Row<Influencer & InstagramProfileStats> }) => {
+          const genders = row.original.genders;
+          return (
+            <div className="flex flex-col gap-1.5">
+              {genders.map((age, index) => (
+                <div key={index} className="flex gap-1 items-center">
+                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "engagementRate",
         header: () => (
           <div className="flex gap-1 ">

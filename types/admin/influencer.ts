@@ -5,6 +5,11 @@ export type InstagramProfileStats = {
   engagementRate: { value: number; label: string };
   percentageFakeFollowers: number;
   views: number;
+  genders: any[];
+  cities: any[];
+  countries: any[];
+  ages: any[];
+  reach: any[];
 };
 
 export type InstagramPostStats = {
