@@ -31,7 +31,8 @@ import PurchaseInvoice from "@/components/admin/invoices/PurchaseInvoice";
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
   const searchParams = useSearchParams();
-  console.log("dagta", data);
+  const date = data.dueDate.split("T")[0];
+  console.log("dagta", date);
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
     : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
@@ -94,7 +95,12 @@ const HeadingCard = ({ data }: { data: any }) => {
               <p>{data.invoiceDate} (Invoice Date)</p>
             </>
           )}
-
+          {data.dueDate && (
+            <>
+              <div className="flex w-0.5  h-6 bg-bc-grey"></div>
+              <p>{date} (Due Date)</p>
+            </>
+          )}
           {data.brand && (
             <div className="flex gap-1 items-center">
               <div className="flex w-0.5  h-6 bg-bc-grey mr-2"></div>

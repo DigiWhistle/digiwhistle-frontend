@@ -2,7 +2,11 @@ import { AccordionTrigger } from "@/components/ui/accordion";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DocumentIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownTrayIcon,
+  DocumentIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
 import { BrandCampaign, Campaign, CampaignSchema } from "../schema";
 import { CheckCircleIcon, ExclamationCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useAppSelector } from "@/lib/config/store";
@@ -11,10 +15,19 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import Link from "next/link";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
+import { toast } from "sonner";
 
 const HeadingCard = ({ data }: { data: BrandCampaign }) => {
   const role = useAppSelector(UserRole);
   console.log("hello kitty", data);
+  const doWeDiasble = data.invoiceStatus === "Generated";
+  const handleClick = async () => {
+    if (data.file) {
+      window.open(data.file, "_blank");
+    } else {
+      toast.error("Invoice is yet to be created");
+    }
+  };
   return (
     <div>
       <div className="w-full flex gap-4 items-center  justify-between text-tc-body-grey font-medium">
@@ -68,24 +81,33 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
         <div className="flex gap-4 items-center">
           <CustomDialog
             className="w-[970px]"
-            headerTitle="Create invoice"
-            headerDescription="Please enter below details."
+            headerTitle={!doWeDiasble ? "Create invoice" : ""}
+            headerDescription={
+              !doWeDiasble
+                ? "Please enter below details."
+                : "When the campaign is completed you can raise invoice"
+            }
             triggerElement={
               <button className="text-sm border border-bc-grey px-2 py-1 rounded-full">
                 Raise Invoice
               </button>
             }
           >
-            <CreateInvoiceModal mode="Create sale invoice" />
+            {doWeDiasble ? "" : <CreateInvoiceModal mode="Create sale invoice" />}
           </CustomDialog>
 
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
-                {/* @ts-expect-error: missing type */}
-                <Link href={`/brand-report/${data.campaignId}`} target="_blank">
-                  <DocumentIcon className="w-5 h-5 text-tc-body-grey" />
-                </Link>
+                {doWeDiasble ? (
+                  <button onClick={handleClick}>
+                    <ArrowDownTrayIcon className="w-5 h-5 text-tc-body-grey" />
+                  </button>
+                ) : (
+                  <Link href={`/brand-report/${data.campaignId}`} target="_blank">
+                    <DocumentIcon className="w-5 h-5 text-tc-body-grey" />
+                  </Link>
+                )}
               </TooltipTrigger>
               <TooltipContent className="bg-black-201 text-white-301">
                 <p>View Campaign Report</p>

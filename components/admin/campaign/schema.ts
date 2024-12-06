@@ -77,6 +77,7 @@ export const BrandCampaignSchema = z.object({
   id: z.string().uuid(),
   name: z.string({ message: "required" }),
   code: z.string(),
+  campaignId: z.string().nullable().optional(),
   commercial: z.string(),
   brandName: z.string(),
   startDate: z.string(),
@@ -86,6 +87,8 @@ export const BrandCampaignSchema = z.object({
   invoice: z.string().nullable().optional(),
   status: z.enum(["Live", "Pending"]).nullable().optional(),
   participants: z.array(ParticipantSchema),
+  invoiceStatus: z.string().nullable().optional(),
+  file: z.string().nullable().optional(),
 });
 
 export const CampaignsSchema = z.array(CampaignSchema);
