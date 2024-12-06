@@ -66,6 +66,7 @@ export const CampaignSchema = z.object({
   endDate: z.string(),
   commercial: z.number(),
   incentiveWinner: z.string(),
+  paymentStatus: z.enum(["Pending", "All Paid"]),
   invoice: z.string().nullable().optional(),
   incentiveReleased: z.boolean().default(false),
 

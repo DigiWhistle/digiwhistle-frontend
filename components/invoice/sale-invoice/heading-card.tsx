@@ -25,7 +25,7 @@ import { usePathname } from "next/navigation";
 import CreateProformaInvoice from "@/components/admin/invoices/CreateProformaInvoice";
 import { cn } from "@/lib/utils";
 
-const PAID = "All Paid";
+const PAID = "All Received";
 const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
   const currentPath = usePathname();
@@ -41,7 +41,7 @@ const HeadingCard = ({ data }: { data: any }) => {
             <h5
               className={cn(
                 "font-semibold text-tc-primary-default text-xl",
-                data?.paymentStatus === PAID ? " text-success" : data?.isLapse ? "text-alert" : "",
+                data?.status === PAID ? " text-success" : data?.isLapse ? "text-alert" : "",
               )}
             >
               {data?.invoiceNumber}

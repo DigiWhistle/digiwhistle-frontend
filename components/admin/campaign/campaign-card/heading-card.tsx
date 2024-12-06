@@ -82,6 +82,12 @@ const HeadingCard = () => {
               <p>{form.getValues("invoice")}</p>
             </>
           )}
+          {form.getValues("paymentStatus") && (
+            <>
+              <div className="w-[1px] h-6 bg-bc-grey"></div>
+              <p>{form.getValues("paymentStatus")}</p>
+            </>
+          )}
           {form.getValues("incentiveWinner") && (
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
@@ -120,7 +126,7 @@ const HeadingCard = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-1 px-2 mt-4" align="end">
               <CustomDialog
-                className="w-[840px]"
+                className="w-[700px]"
                 headerTitle="Edit campaign"
                 headerDescription={`Please enter below details.`}
                 triggerElement={
