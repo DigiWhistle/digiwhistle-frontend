@@ -30,7 +30,7 @@ const PurchaseInvoiceTable = () => {
     ? formatDateWithZeroTime(new Date(searchParams.get("endTime")!))
     : formatDateWithZeroTime(new Date());
 
-  const invoiceNo = searchParams.get("invoiceNo");
+  const invoiceNo = searchParams.get("search");
 
   useEffect(() => {
     dispatch(

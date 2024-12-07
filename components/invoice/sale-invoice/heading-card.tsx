@@ -41,7 +41,7 @@ const HeadingCard = ({ data }: { data: any }) => {
             <h5
               className={cn(
                 "font-semibold text-tc-primary-default text-xl",
-                data?.status === PAID ? " text-success" : data?.isLapse ? "text-alert" : "",
+                data?.paymentStatus === PAID ? " text-success" : data?.isLapse ? "text-alert" : "",
               )}
             >
               {data?.invoiceNumber}

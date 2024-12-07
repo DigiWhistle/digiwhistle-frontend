@@ -86,6 +86,7 @@ const HeadingCard = () => {
             <>
               <div className="w-[1px] h-6 bg-bc-grey"></div>
               <p>{form.getValues("paymentStatus")}</p>
+              <p>{form.getValues("paymentPercent") ? form.getValues("paymentPercent") : ""}</p>
             </>
           )}
           {form.getValues("incentiveWinner") && (

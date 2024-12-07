@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/lib/config/store";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -14,6 +14,7 @@ import { DataTablePagination } from "@/components/admin/lib/pagination";
 import PurchaseInvoiceCard from "./purchase-invoice-card";
 import { fetchSaleInvoiceTableData } from "@/store/admin/invoice/SaleInvoiceTableSlice";
 import SaleInvoiceCard from "./sale-invoice-card";
+import { debounce } from "lodash";
 
 const SaleInvoiceTable = () => {
   const currentPath = usePathname();
@@ -22,6 +23,9 @@ const SaleInvoiceTable = () => {
   const dispatch: AppDispatch = useDispatch();
   const data = useAppSelector(SaleInvoiceTableData);
   const loading = useAppSelector(SaleInvoiceTableLoading);
+  const prevName = useRef<string | null>("");
+
+  const name = searchParams.get("search");
 
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
@@ -36,18 +40,31 @@ const SaleInvoiceTable = () => {
     | "sale"
     | "proforma";
 
+  const debouncedFetch = useCallback(
+    debounce(params => {
+      dispatch(fetchSaleInvoiceTableData(params));
+    }, 300),
+    [dispatch],
+  );
+
   useEffect(() => {
-    dispatch(
-      fetchSaleInvoiceTableData({
-        page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
-        limit: PURCHASE_INVOICE_TABLE_PAGE_LIMIT,
-        invoiceNo,
-        startTime,
-        endTime,
-        invoiceType,
-      }),
-    );
-  }, [currentPath, dispatch, endTime, invoiceNo, startTime, invoiceType]);
+    const params = {
+      page: Number(currentPath.split("/")[currentPath.split("/").length - 1]),
+      limit: PURCHASE_INVOICE_TABLE_PAGE_LIMIT,
+      startTime,
+      endTime,
+      name,
+      invoiceNo,
+    };
+
+    if (name !== prevName.current) {
+      debouncedFetch(params);
+    } else {
+      dispatch(fetchSaleInvoiceTableData(params));
+    }
+
+    prevName.current = name;
+  }, [currentPath, dispatch, endTime, invoiceNo, startTime, invoiceType, name]);
 
   const InvoiceTable =
     data.data.length > 0 ? (

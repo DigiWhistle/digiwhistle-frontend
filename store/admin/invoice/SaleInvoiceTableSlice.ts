@@ -26,6 +26,7 @@ export const fetchSaleInvoiceTableData = createAsyncThunk(
     endTime,
     invoiceNo,
     invoiceType = "sale",
+    name,
   }: {
     page: number;
     limit: number;
@@ -33,6 +34,7 @@ export const fetchSaleInvoiceTableData = createAsyncThunk(
     startTime?: string | null;
     endTime?: string | null;
     invoiceType?: "proforma" | "sale";
+    name?: string | null;
   }) => {
     let url = `invoice/${invoiceType}?page=${page}&limit=${limit}`;
 
@@ -40,8 +42,8 @@ export const fetchSaleInvoiceTableData = createAsyncThunk(
       url += `&startDate=${startTime}&endDate=${endTime}`;
     }
 
-    if (invoiceNo) {
-      url += `&invoiceNo=${invoiceNo}`;
+    if (name) {
+      url += `&invoiceNo=${name}`;
     }
 
     const response = await GET<ISaleInvoiceTable>(url);

@@ -134,7 +134,7 @@ export const createColumns = (
           return (
             <div className="flex flex-col gap-1.5">
               {ages.map((age, index) => (
-                <div key={index} className="flex gap-1 items-center">
+                <div key={index} className="flex gap-1 items-center  w-max">
                   <span className="text-tc-body-grey font-semibold">{age.label}:</span>
                   <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
                 </div>
@@ -152,7 +152,7 @@ export const createColumns = (
             <div className="flex flex-col gap-1.5">
               {reach.map((age, index) => (
                 <div key={index} className="flex gap-1 items-center">
-                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey font-semibold w-max">{age.label}:</span>
                   <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
                 </div>
               ))}
@@ -186,7 +186,7 @@ export const createColumns = (
             <div className="flex flex-col gap-1.5">
               {countries.map((age, index) => (
                 <div key={index} className="flex gap-1 items-center">
-                  <span className="text-tc-body-grey font-semibold">{age.label}:</span>
+                  <span className="text-tc-body-grey font-semibold w-max">{age.label}:</span>
                   <span className="text-tc-body-grey w-max">{age.value?.toFixed(2)} %</span>
                 </div>
               ))}
