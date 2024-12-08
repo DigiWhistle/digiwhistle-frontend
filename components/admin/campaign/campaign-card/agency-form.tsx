@@ -1,7 +1,7 @@
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import FormTextInput from "@/components/ui/form/form-text-input";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TCampaignForm } from ".";
 import { Label } from "@/components/ui/label";
@@ -104,6 +104,20 @@ const AgencyForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
 
+  // Use useEffect to update margin when commercialBrand or toBeGiven changes
+  useEffect(() => {
+    // Calculate margin
+    const calculatedMargin =
+      (form.watch(`participants.${index}.commercialBrand`) || 0) -
+      (form.watch(`participants.${index}.toBeGiven`) || 0);
+
+    // Set the margin value
+    form.setValue(`participants.${index}.margin`, calculatedMargin);
+  }, [
+    form.watch(`participants.${index}.commercialBrand`),
+    form.watch(`participants.${index}.toBeGiven`),
+  ]);
+
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000">
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
@@ -143,6 +157,7 @@ const AgencyForm = ({ index }: { index: number }) => {
             placeholder=""
             inputCN="h-8"
             type="number"
+            disabled
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">
