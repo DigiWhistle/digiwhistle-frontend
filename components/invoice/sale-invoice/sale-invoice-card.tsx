@@ -171,7 +171,7 @@ const SaleInvoiceCard = ({
                       ) : (
                         <MinusCircleIcon className="w-4 h-4 text-warning" />
                       )}
-                      {data.status}
+                      {data.paymentStatus}
                     </>
                   </DeliverableItem>
                 )}

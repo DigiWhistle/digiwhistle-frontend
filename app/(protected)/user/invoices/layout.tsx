@@ -13,7 +13,7 @@ import PurchaseInvoiceFilters from "@/components/invoice/purchase-invoice/Purcha
 import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const role = useAppSelector(UserRole);
-  console.log(role);
+
   return (
     <div className="w-full flex flex-col gap-10">
       <div className="flex justify-between items-start">

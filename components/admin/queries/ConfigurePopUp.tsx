@@ -31,7 +31,6 @@ const ConfigurePopUp = () => {
     const fetchDefaultValues = async () => {
       const response: any = await GET(`contactUs/config`);
       if (response) {
-        console.log("get response", response);
         response.data.forEach((item: any) => {
           switch (item.followersCount) {
             case "Less than 250K":
@@ -57,7 +56,6 @@ const ConfigurePopUp = () => {
   }, []);
 
   const setterfunction1 = (formname: any, Option: any) => {
-    console.log("option", Option, formname);
     if (formname === "shareEmailLessThan250") {
       const emailExists = sendShareEmailLessThan250.some(
         (email: any) => email.email === Option.email,

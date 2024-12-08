@@ -19,7 +19,6 @@ import { toast } from "sonner";
 
 const HeadingCard = ({ data }: { data: BrandCampaign }) => {
   const role = useAppSelector(UserRole);
-  console.log("hello kitty", data);
   const doWeDiasble = data.invoiceStatus === "Generated";
   const handleClick = async () => {
     if (data.file) {

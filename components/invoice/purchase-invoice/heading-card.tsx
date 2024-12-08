@@ -32,7 +32,6 @@ const HeadingCard = ({ data }: { data: any }) => {
   const role = useAppSelector(UserRole);
   const searchParams = useSearchParams();
   const date = data.dueDate.split("T")[0];
-  console.log("dagta", date);
   const startTime = searchParams.get("startTime ")
     ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
     : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));

@@ -168,7 +168,6 @@ const CampaignPopup = ({
     };
     let response: any;
     response = {};
-    console.log(sendInfo);
     if (mode === "Create campaign") {
       response = await POST("campaign", sendInfo);
     } else {

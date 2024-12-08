@@ -86,7 +86,6 @@ const PurchaseInvoice = ({
           setLoading(false);
           return;
         }
-        console.log("bhailog data", response);
         form.reset({
           invoiceNo: response.data.invoiceNo,
           pan: response.data.pan,

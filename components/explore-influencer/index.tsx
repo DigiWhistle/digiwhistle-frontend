@@ -61,7 +61,6 @@ const ExploreInfluencer = () => {
         ChartBarIcon,
         HandThumbUpIcon,
       };
-      console.log("this is idsigi", response);
       setIsDigiwhistle(response.data.isDigiwhistle);
       const dataWithIcons = response.data.cards.map((item: any) => ({
         ...item,
