@@ -201,18 +201,23 @@ const HeadingCard = ({ data }: { data: any }) => {
               ) : (
                 <></>
               )} */}
-              <CustomDialog
-                className="w-[840px]"
-                headerTitle="Edit invoice"
-                headerDescription="Please enter below details."
-                triggerElement={
-                  <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
-                    Edit invoice
-                  </div>
-                }
-              >
-                <PurchaseInvoice mode="Edit purchase invoice" edit_id={data} />
-              </CustomDialog>
+              {role != "influencer" ? (
+                <CustomDialog
+                  className="w-[840px]"
+                  headerTitle="Edit invoice"
+                  headerDescription="Please enter below details."
+                  triggerElement={
+                    <div className="flex rounded-sm items-center w-full px-2 py-1.5 cursor-pointer text-sm outline-none transition-colors hover:text-tc-ic-black-hover ">
+                      Edit invoice
+                    </div>
+                  }
+                >
+                  <PurchaseInvoice mode="Edit purchase invoice" edit_id={data} />
+                </CustomDialog>
+              ) : (
+                <></>
+              )}
+
               <CustomDialog
                 className="w-[700px]"
                 headerTitle="Share invoice"

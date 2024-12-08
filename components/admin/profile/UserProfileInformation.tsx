@@ -45,13 +45,13 @@ const uploadImageSchema = z.object({
 });
 const keyDetailsSchema = z.object({
   aadharNumber: z.string(),
-  PAN: z.string(),
+  PAN: z.string().optional(),
   gstin: z.string().optional(),
   MSMENumber: z.string().optional(),
 });
 const bankDetailsSchema = z.object({
-  bankName: z.string(),
-  accountNumber: z.string(),
+  bankName: z.string().optional(),
+  accountNumber: z.string().optional(),
   accountHolderName: z.string().optional(),
   IFSC: z.string().optional(),
 });
@@ -120,16 +120,8 @@ const UserProfileInformation = () => {
   const handleKeyDetailsFormUpdate = async (data: z.infer<typeof keyDetailsSchema>) => {
     let senddata: any;
     senddata = {
-      pocFirstName: user.profile.firstName,
-      pocLastName: user.profile.lastName,
-      mobileNo: user.profile.mobileNo,
-      profilePic: user.profile?.profilePic,
       panNo: data.PAN,
       aadharNo: data.aadharNumber,
-      city: user.profile.city,
-      state: user.profile.state,
-      pincode: user.profile.pincode,
-      address: user.profile.address,
       gstNo: data.gstin,
     };
     let response: any;
@@ -171,10 +163,7 @@ const UserProfileInformation = () => {
   const handleBrandProfileUpdate = async (data: z.infer<typeof brandAndAgencyProfileSchema>) => {
     let senddata: any;
     senddata = {
-      pocFirstName: data.firstName,
-      pocLastName: data.lastName,
       mobileNo: data.mobileNo,
-      profilePic: user.profile?.profilePic,
       city: data.city,
       state: data.state,
       pincode: data.pincode,
@@ -182,8 +171,20 @@ const UserProfileInformation = () => {
       panNo: user.profile?.panNo,
       aadharNo: user.profile?.aadharNo,
     };
-
-    const response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, senddata);
+    let response;
+    if (userRole === "brand" || userRole === "agency") {
+      response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, {
+        ...senddata,
+        pocFirstName: data.firstName,
+        pocLastName: data.lastName,
+      });
+    } else {
+      response = await PATCH(`${userRole}/profile/${user?.profile?.id}`, {
+        ...senddata,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
+    }
     // let response={error:null,message:"done"};
     if (response.error) {
       toast.error(response.error);
@@ -212,16 +213,7 @@ const UserProfileInformation = () => {
       let data;
       if (userRole === "brand" || userRole === "agency") {
         data = {
-          pocFirstName: user.profile.firstName,
-          pocLastName: user.profile.lastName,
-          mobileNo: user.profile.mobileNo,
           profilePic: url,
-          city: user.profile.city,
-          state: user.profile.state,
-          pincode: user.profile.pincode,
-          address: user.profile.address,
-          panNo: user.profile?.panNo,
-          aadharNo: user.profile?.aadharNo,
         };
       } else {
         data = {};
@@ -341,7 +333,7 @@ const UserProfileInformation = () => {
                         label="Email Id"
                         placeholder="Enter email"
                         required
-                        disabled={!editable}
+                        disabled
                         leftIcon={<EnvelopeIcon className="text-[#0F172A] w-5 h-5" />}
                       />
                       <FormPhoneInput
@@ -431,7 +423,6 @@ const UserProfileInformation = () => {
                   formName="PAN"
                   label="PAN"
                   placeholder=""
-                  required
                   disabled={!keyDetailseditable}
                 />
               </div>
@@ -449,7 +440,6 @@ const UserProfileInformation = () => {
                         formName="MSMENumber"
                         label="MSME number"
                         placeholder=""
-                        required
                         disabled={!keyDetailseditable}
                       />
                     ) : (
@@ -499,14 +489,12 @@ const UserProfileInformation = () => {
                   formName="bankName"
                   label="Bank name"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
                 <FormTextInput
                   formName="accountNumber"
                   label="Account number"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
               </div>
@@ -515,7 +503,6 @@ const UserProfileInformation = () => {
                   formName="accountHolderName"
                   label="Account holder name"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
 
@@ -523,7 +510,6 @@ const UserProfileInformation = () => {
                   formName="IFSC"
                   label="IFSC code"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
               </div>

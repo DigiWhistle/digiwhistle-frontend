@@ -46,13 +46,13 @@ const employeeProfileSchema = z.object({
 });
 const keyDetailsSchema = z.object({
   aadharNumber: z.string(),
-  PAN: z.string(),
+  PAN: z.string().optional(),
 });
 const bankDetailsSchema = z.object({
-  bankName: z.string(),
-  accountNumber: z.string(),
+  bankName: z.string().optional(),
+  accountNumber: z.string().optional(),
   accountHolderName: z.string().optional(),
-  IFSC: z.string().optional(),
+  IFSC: z.string().optional().optional(),
 });
 const ProfileInformation = () => {
   const userstore = useAppSelector(User);
@@ -415,7 +415,6 @@ const ProfileInformation = () => {
                   formName="PAN"
                   label="PAN"
                   placeholder=""
-                  required
                   disabled={!keyDetailseditable}
                 />
               </div>
@@ -459,14 +458,12 @@ const ProfileInformation = () => {
                   formName="bankName"
                   label="Bank name"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
                 <FormTextInput
                   formName="accountNumber"
                   label="Account number"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
               </div>
@@ -475,7 +472,6 @@ const ProfileInformation = () => {
                   formName="accountHolderName"
                   label="Account holder name"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
 
@@ -483,7 +479,6 @@ const ProfileInformation = () => {
                   formName="IFSC"
                   label="IFSC code"
                   placeholder=""
-                  required
                   disabled={!bsnkDetailseditable}
                 />
               </div>

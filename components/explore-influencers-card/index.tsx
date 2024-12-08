@@ -13,6 +13,7 @@ const ExploreInfluencerCard = ({
   urlType: "youtube" | "instagram" | "X" | undefined;
   IsDigiwhistle: boolean;
 }) => {
+  console.log("yo boi", IsDigiwhistle);
   return (
     <>
       <div className="flex gap-6">
