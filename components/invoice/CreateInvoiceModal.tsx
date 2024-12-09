@@ -56,7 +56,7 @@ const InvoiceModalSchema = z.object({
   doc: z.any(),
   campaignName: z.string(),
   campaignCode: z.string(),
-  invoiceNo: z.string().optional(),
+  invoiceNo: z.string(),
   PAN: z.string().nullable(),
   brand: z.string().optional(),
   total: z.number(),
@@ -157,115 +157,127 @@ const CreateInvoiceModal = ({
     }
   }, []);
   const handleForm = async (data: z.infer<typeof InvoiceModalSchema>, e: any) => {
-    const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
-    if (campaignData.error) {
-      toast.error("Please enter a valid Campaign Code");
-      return;
-    }
-    if (mode === "Edit sale invoice") {
-      let sendInfo: any;
-      if (!file && !editfileurl) {
-        toast.error("Please choose a file");
-      } else if (file) {
+    try {
+      const campaignData: any = await GET(`campaign/search?code=${data.campaignCode}`);
+      if (campaignData.error) {
+        toast.error("Please enter a valid Campaign Code");
+        return;
+      }
+
+      if (mode === "Edit sale invoice") {
+        let sendInfo: any;
+        if (!file && !editfileurl) {
+          toast.error("Please choose a file");
+        } else if (file) {
+          const storageRef = ref(storage, `invoice/${file.name}`); // Create a reference to the file in Firebase Storage
+
+          await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
+          const url = await getDownloadURL(storageRef);
+          if (!url) {
+            toast.error("error uploading invoice");
+            return;
+          }
+          sendInfo = {
+            invoiceNo: data.invoiceNo,
+            pan: data.PAN,
+            amount: data.total,
+            igst: data.igst,
+            cgst: data.cgst,
+            sgst: data.sgst,
+            totalAmount: data.totalInvoiceAmount,
+            tds: data.tdsAmount,
+            finalAmount: data.finalAmount,
+            amountToBeReceived: data.amountToBeRecieved,
+            paymentTerms: data.paymentTerms,
+            paymentStatus: data.paymentStatus,
+            file: url,
+          };
+        } else {
+          sendInfo = {
+            invoiceNo: data.invoiceNo,
+            pan: data.PAN,
+            amount: data.total,
+            igst: data.igst,
+            cgst: data.cgst,
+            sgst: data.sgst,
+            totalAmount: data.totalInvoiceAmount,
+            tds: data.tdsAmount,
+            finalAmount: data.finalAmount,
+            amountToBeReceived: data.amountToBeRecieved,
+            paymentTerms: data.paymentTerms,
+            paymentStatus: data.paymentStatus,
+            file: editfileurl,
+          };
+        }
+        const response = await PATCH(`invoice/purchase/${edit_id}`, sendInfo);
+        if (response.error) {
+          toast.error(response.error);
+        } else {
+          toast.success(response.message);
+        }
+        window.location.reload();
+        return;
+      }
+
+      let url = null;
+
+      console.log(" WE ARE Looking", file);
+
+      if (file) {
         const storageRef = ref(storage, `invoice/${file.name}`); // Create a reference to the file in Firebase Storage
 
         await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
-        const url = await getDownloadURL(storageRef);
+        url = await getDownloadURL(storageRef);
         if (!url) {
           toast.error("error uploading invoice");
           return;
         }
-        sendInfo = {
-          invoiceNo: data.invoiceNo,
-          pan: data.PAN,
-          amount: data.total,
-          igst: data.igst,
-          cgst: data.cgst,
-          sgst: data.sgst,
-          totalAmount: data.totalInvoiceAmount,
-          tds: data.tdsAmount,
-          finalAmount: data.finalAmount,
-          amountToBeReceived: data.amountToBeRecieved,
-          paymentTerms: data.paymentTerms,
-          paymentStatus: data.paymentStatus,
-          file: url,
-        };
-      } else {
-        sendInfo = {
-          invoiceNo: data.invoiceNo,
-          pan: data.PAN,
-          amount: data.total,
-          igst: data.igst,
-          cgst: data.cgst,
-          sgst: data.sgst,
-          totalAmount: data.totalInvoiceAmount,
-          tds: data.tdsAmount,
-          finalAmount: data.finalAmount,
-          amountToBeReceived: data.amountToBeRecieved,
-          paymentTerms: data.paymentTerms,
-          paymentStatus: data.paymentStatus,
-          file: editfileurl,
-        };
       }
-      const response = await PATCH(`invoice/purchase/${edit_id}`, sendInfo);
-      if (response.error) {
-        toast.error(response.error);
-      } else {
-        toast.success(response.message);
+
+      const sendInfo = {
+        campaign: campaignData.data.id,
+        invoiceNo: data.invoiceNo,
+        pan: data.PAN,
+        amount: data.total,
+        igst: data.igst,
+        cgst: data.cgst,
+        sgst: data.sgst,
+        totalAmount: data.totalInvoiceAmount,
+        tds: data.tdsAmount,
+        finalAmount: data.finalAmount,
+        amountToBeReceived: data.amountToBeRecieved,
+        paymentTerms: data.paymentTerms,
+        paymentStatus: data.paymentStatus,
+        file: url,
+        invoiceDate: new Date().toISOString(),
+      };
+
+      let response: any;
+      if (usestore) {
+        if (usestore.role === "agency") {
+          response = await POST(`invoice/purchase`, {
+            ...sendInfo,
+            agencyProfile: usestore.profile?.id,
+          });
+        }
+        if (usestore.role === "influencer") {
+          response = await POST(`invoice/purchase`, {
+            ...sendInfo,
+            influencerProfile: usestore.profile?.id,
+          });
+        }
+        if (response.error) {
+          toast.error(response.error);
+        } else {
+          toast.success(response.message);
+        }
       }
+
+      form.reset({});
       window.location.reload();
-      return;
+    } catch (error) {
+      console.log(error);
     }
-    if (!file) return; // Return if no file is selected
-    const storageRef = ref(storage, `invoice/${file.name}`); // Create a reference to the file in Firebase Storage
-
-    await uploadBytes(storageRef, file); // Upload the file to Firebase Storage
-    const url = await getDownloadURL(storageRef);
-    if (!url) {
-      toast.error("error uploading invoice");
-      return;
-    }
-    const sendInfo = {
-      campaign: campaignData.data.id,
-      invoiceNo: data.invoiceNo,
-      pan: data.PAN,
-      amount: data.total,
-      igst: data.igst,
-      cgst: data.cgst,
-      sgst: data.sgst,
-      totalAmount: data.totalInvoiceAmount,
-      tds: data.tdsAmount,
-      finalAmount: data.finalAmount,
-      amountToBeReceived: data.amountToBeRecieved,
-      paymentTerms: data.paymentTerms,
-      paymentStatus: data.paymentStatus,
-      file: url,
-      invoiceDate: new Date().toISOString(),
-    };
-
-    let response: any;
-    if (usestore) {
-      if (usestore.role === "agency") {
-        response = await POST(`invoice/purchase`, {
-          ...sendInfo,
-          agencyProfile: usestore.profile?.id,
-        });
-      }
-      if (usestore.role === "influencer") {
-        response = await POST(`invoice/purchase`, {
-          ...sendInfo,
-          influencerProfile: usestore.profile?.id,
-        });
-      }
-      if (response.error) {
-        toast.error(response.error);
-      } else {
-        toast.success(response.message);
-      }
-    }
-
-    form.reset({});
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -463,7 +475,7 @@ const CreateInvoiceModal = ({
           <CancelButton text="Cancel" />
         </div>
         <div className="flex w-full">
-          <ActionButton onClick={form.handleSubmit(handleForm)}>
+          <ActionButton onClick={form.handleSubmit(handleForm, error => console.log(error))}>
             {mode === "Create sale invoice" ? "Create invoice" : "Confirm changes"}
           </ActionButton>
         </div>
