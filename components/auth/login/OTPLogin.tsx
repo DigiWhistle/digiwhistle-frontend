@@ -88,9 +88,9 @@ const OTPLogin = () => {
           id: response.data.user.id,
           role: response.data.user.role,
           email: response.data.user.email,
-          isOnBoarded: response.data.isOnBoarded,
-          isVerified: response.data.user.isVerified,
-          isPaused: response.data.user.isPaused,
+          isOnBoarded: response.data.user.isOnBoarded,
+          isVerified: response.data.user.profile.user.isVerified,
+          isPaused: response.data.user.profile.user.isPaused,
         };
 
         if (!user_data.isOnBoarded) {
