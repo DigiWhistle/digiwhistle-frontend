@@ -91,6 +91,7 @@ export const BrandCampaignSchema = z.object({
   participants: z.array(ParticipantSchema),
   invoiceStatus: z.string().nullable().optional(),
   file: z.string().nullable().optional(),
+  isRaiseInvoice: z.boolean().default(false),
 });
 
 export const CampaignsSchema = z.array(CampaignSchema);

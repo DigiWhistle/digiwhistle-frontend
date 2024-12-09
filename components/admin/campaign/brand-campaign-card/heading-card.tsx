@@ -80,12 +80,12 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           )}
         </div>
         <div className="flex gap-4 items-center">
-          {role === "agency" && !doWeDiasble && (
+          {role === "agency" && !data.isRaiseInvoice && (
             <CustomDialog
               className="w-[970px]"
-              headerTitle={!doWeDiasble ? "Create invoice" : ""}
+              headerTitle={!!data.isRaiseInvoice ? "Create invoice" : ""}
               headerDescription={
-                !doWeDiasble
+                !!data.isRaiseInvoice
                   ? "Please enter below details."
                   : "When the campaign is completed you can raise invoice"
               }
@@ -95,7 +95,7 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
                 </button>
               }
             >
-              {doWeDiasble ? (
+              {!data.isRaiseInvoice ? (
                 ""
               ) : (
                 <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />

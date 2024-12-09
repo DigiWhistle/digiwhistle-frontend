@@ -22,8 +22,8 @@ const PurchaseInvoiceTable = () => {
   const data = useAppSelector(PurchaseInvoiceTableData);
   const loading = useAppSelector(PurchaseInvoiceTableLoading);
 
-  const startTime = searchParams.get("startTime ")
-    ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
+  const startTime = searchParams.get("startTime")
+    ? formatDateWithZeroTime(new Date(searchParams.get("startTime")!))
     : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
 
   const endTime = searchParams.get("endTime")

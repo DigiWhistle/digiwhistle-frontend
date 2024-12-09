@@ -17,8 +17,8 @@ export function DateFilter({ className }: React.HTMLAttributes<HTMLDivElement>) 
   const router = useRouter();
   const currentPath = usePathname();
 
-  const startTime = searchParams.get("startTime ")
-    ? new Date(searchParams.get("startTime ")!)
+  const startTime = searchParams.get("startTime")
+    ? new Date(searchParams.get("startTime")!)
     : new Date(new Date().setFullYear(new Date().getFullYear() - 1));
   const endTime = searchParams.get("endTime") ? new Date(searchParams.get("endTime")!) : new Date();
 

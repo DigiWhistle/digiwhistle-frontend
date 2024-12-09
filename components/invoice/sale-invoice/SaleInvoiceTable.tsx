@@ -27,8 +27,8 @@ const SaleInvoiceTable = () => {
 
   const name = searchParams.get("search");
 
-  const startTime = searchParams.get("startTime ")
-    ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
+  const startTime = searchParams.get("startTime")
+    ? formatDateWithZeroTime(new Date(searchParams.get("startTime")!))
     : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
 
   const endTime = searchParams.get("endTime")

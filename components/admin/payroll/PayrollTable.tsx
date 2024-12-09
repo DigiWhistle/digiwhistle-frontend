@@ -27,8 +27,8 @@ const PayrollTable = () => {
   const role = useAppSelector(UserRole);
   const designation = useAppSelector(UserDesignation);
 
-  const startTime = searchParams.get("startTime ")
-    ? formatDateWithZeroTime(new Date(searchParams.get("startTime ")!))
+  const startTime = searchParams.get("startTime")
+    ? formatDateWithZeroTime(new Date(searchParams.get("startTime")!))
     : formatDateWithZeroTime(new Date(new Date().setFullYear(new Date().getFullYear() - 2)));
 
   const endTime = searchParams.get("endTime")
