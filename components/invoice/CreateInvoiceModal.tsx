@@ -57,7 +57,7 @@ const InvoiceModalSchema = z.object({
   campaignName: z.string(),
   campaignCode: z.string(),
   invoiceNo: z.string().optional(),
-  PAN: z.string(),
+  PAN: z.string().nullable(),
   brand: z.string().optional(),
   total: z.number(),
   igst: z.number().optional(),
@@ -73,9 +73,11 @@ const InvoiceModalSchema = z.object({
 const CreateInvoiceModal = ({
   mode,
   edit_id,
+  campaignCode,
 }: {
   mode: "Create sale invoice" | "Edit sale invoice";
   edit_id?: string;
+  campaignCode?: string;
 }) => {
   const [getbrand, brandSetter] = useState<any>({});
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -119,6 +121,36 @@ const CreateInvoiceModal = ({
         });
         setLoading(false);
         seteditfileurl(response.data.file);
+        // SetEditData(response.data);
+      };
+      updateFunction();
+    } else if (campaignCode) {
+      const updateFunction = async () => {
+        setLoading(true);
+        const response: any = await GET(`campaign/search?code=${campaignCode}&type=invoice`);
+        if (response.error) {
+          toast.error(response.error);
+          setLoading(false);
+          return;
+        }
+        form.reset({
+          campaignName: response.data.campaignName,
+          campaignCode: response.data.campaignCode,
+          // invoiceNo: response.data.invoiceNo,
+          PAN: response.data.panNo,
+          brand: response.data.brand.name,
+          total: Number(response.data.totalAmount),
+          igst: Number(response.data.igst),
+          cgst: Number(response.data.cgst),
+          sgst: Number(response.data.sgst),
+          totalInvoiceAmount: Number(response.data.totalInvoiceAmount),
+          // tdsAmount: Number(response.data.tds),
+          finalAmount: Number(response.data.totalInvoiceAmount),
+          amountToBeRecieved: Number(response.data.amountToBeReceived),
+          paymentTerms: response.data.paymentTerms,
+          paymentStatus: response.data.paymentStatus,
+        });
+        setLoading(false);
         // SetEditData(response.data);
       };
       updateFunction();
@@ -236,6 +268,17 @@ const CreateInvoiceModal = ({
     window.location.reload();
   };
 
+  useEffect(() => {
+    // Calculate margin
+    const calculatedMargin =
+      form.watch(`totalInvoiceAmount`) -
+      ((form.watch(`tdsAmount`) || 0) * form.watch(`totalInvoiceAmount`)) / 100 -
+      (form.watch(`amountToBeRecieved`) || 0);
+
+    // Set the margin value
+    form.setValue(`finalAmount`, calculatedMargin);
+  }, [form.watch(`tdsAmount`), form.watch(`amountToBeRecieved`)]);
+
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] overflow-y-auto">
@@ -294,20 +337,20 @@ const CreateInvoiceModal = ({
                 formName="campaignName"
                 placeholder="Enter name"
                 label="Campaign name"
-                disabled={mode === "Edit sale invoice"}
+                disabled
               />
               <FormTextInput
                 formName="campaignCode"
                 placeholder="Enter code"
                 label="Campaign code"
-                disabled={mode === "Edit sale invoice"}
+                disabled
               />
               <FormTextInput
                 formName="invoiceNo"
                 placeholder="Enter invoice number"
                 label="Invoice number"
               />
-              <FormTextInput formName="PAN" placeholder="Enter PAN" label="PAN" />
+              {/* <FormTextInput formName="PAN" placeholder="Enter PAN" label="PAN" /> */}
               <SearchSelect
                 endpoint={"brand/search"}
                 formName="brand"
@@ -317,6 +360,7 @@ const CreateInvoiceModal = ({
                 selectedValueSetter={brandSetter}
                 setterfunction={setterfunction}
                 leftIcon={<UserIcon className="text-tc-body-grey w-5 h-5" />}
+                disabled
               />
             </div>
 
@@ -329,6 +373,7 @@ const CreateInvoiceModal = ({
                 formName="total"
                 placeholder="Enter amount"
                 label="Total amount"
+                disabled
               />
               <FormTextInput
                 type="number"
@@ -336,7 +381,7 @@ const CreateInvoiceModal = ({
                 formName="igst"
                 placeholder={usestore?.profile.gstNo ? "Enter IGST" : "--/--"}
                 label="IGST"
-                disabled={usestore?.profile.gstNo ? false : true}
+                disabled
               />
               <FormTextInput
                 type="number"
@@ -344,7 +389,7 @@ const CreateInvoiceModal = ({
                 formName="cgst"
                 placeholder={usestore?.profile.gstNo ? "Enter CGST" : "--/--"}
                 label="CGST"
-                disabled={usestore?.profile.gstNo ? false : true}
+                disabled
               />
               <FormTextInput
                 type="number"
@@ -352,7 +397,7 @@ const CreateInvoiceModal = ({
                 formName="sgst"
                 placeholder={usestore?.profile.gstNo ? "Enter SGST" : "--/--"}
                 label="SGST"
-                disabled={usestore?.profile.gstNo ? false : true}
+                disabled
               />
               <FormTextInput
                 type="number"
@@ -360,6 +405,7 @@ const CreateInvoiceModal = ({
                 formName="totalInvoiceAmount"
                 placeholder="Enter amount"
                 label="Total invoice amount"
+                disabled
               />
             </div>
             <hr className="mt-6 mb-2 " />
@@ -375,16 +421,17 @@ const CreateInvoiceModal = ({
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="finalAmount"
+                formName="amountToBeRecieved"
                 placeholder="Enter amount"
-                label="Final amount"
+                label="Amount to be received"
               />
               <FormTextInput
                 type="number"
                 leftIcon={<div className="text-tc-body-grey">₹</div>}
-                formName="amountToBeRecieved"
+                formName="finalAmount"
                 placeholder="Enter amount"
-                label="Amount to be received"
+                label="Final amount"
+                disabled
               />
               <FormSelectInput
                 formName={"paymentTerms"}

@@ -89,7 +89,7 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
                 </button>
               }
             >
-              <CreateInvoiceModal mode="Create sale invoice" />
+              <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />
             </CustomDialog>
           )}
           <TooltipProvider delayDuration={300}>
