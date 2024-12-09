@@ -37,7 +37,7 @@ const ParticipantBaseSchema = z.object({
   paymentStatus: z.enum(["Pending", "All Paid"]),
   invoiceStatus: z.enum(["Not Generated", "Generated"]),
   confirmationSent: z.boolean().default(false),
-  paymentTerms: z.string().nullable(),
+  paymentTerms: z.enum(["Advance", "30 Days", "60 Days"]).default("30 Days"),
   invoice: z.string().nullable(),
 });
 

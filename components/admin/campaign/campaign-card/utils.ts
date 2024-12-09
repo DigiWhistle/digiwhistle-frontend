@@ -17,6 +17,7 @@ export const createNewParticipant = (
     invoiceStatus: "Not Generated",
     invoice: "",
     confirmationSent: false,
+    paymentTerms: "30 Days",
     ...commonData,
   };
 
