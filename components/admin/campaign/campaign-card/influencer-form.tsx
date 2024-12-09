@@ -120,6 +120,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
             placeholder=""
             inputCN="h-8"
             type="number"
+            disabled
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">
