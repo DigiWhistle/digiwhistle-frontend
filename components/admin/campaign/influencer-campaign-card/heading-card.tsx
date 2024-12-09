@@ -78,26 +78,26 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           )} */}
         </div>
         <div className="flex gap-4 items-center">
-          <CustomDialog
-            className="w-[970px]"
-            headerTitle={!doWeDiasble ? "Create invoice" : ""}
-            headerDescription={
-              !doWeDiasble
-                ? "Please enter below details."
-                : "When the campaign is completed you can raise invoice"
-            }
-            triggerElement={
-              <button className="text-sm border border-bc-grey px-2 py-1 rounded-full">
-                Raise Invoice
-              </button>
-            }
-          >
-            {doWeDiasble ? (
-              ""
-            ) : (
-              <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />
-            )}
-          </CustomDialog>
+          {doWeDiasble ? (
+            <></>
+          ) : (
+            <CustomDialog
+              className="w-[970px]"
+              headerTitle={!doWeDiasble ? "Create invoice" : ""}
+              headerDescription={
+                !doWeDiasble
+                  ? "Please enter below details."
+                  : "When the campaign is completed you can raise invoice"
+              }
+              triggerElement={
+                <button className="text-sm border border-bc-grey px-2 py-1 rounded-full">
+                  Raise Invoice
+                </button>
+              }
+            >
+              {doWeDiasble ? "" : <CreateInvoiceModal mode="Create sale invoice" />}
+            </CustomDialog>
+          )}
 
           <TooltipProvider delayDuration={300}>
             <Tooltip>
