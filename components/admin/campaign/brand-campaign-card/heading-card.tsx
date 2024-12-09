@@ -13,6 +13,8 @@ import CreateInvoiceModal from "@/components/invoice/CreateInvoiceModal";
 import CustomDialog from "@/components/ui/customAlertDialog/CustomDialog";
 
 const HeadingCard = ({ data }: { data: BrandCampaign }) => {
+  const doWeDiasble = data.invoiceStatus === "Generated";
+
   const role = useAppSelector(UserRole);
   return (
     <div>
@@ -81,15 +83,23 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           {role === "agency" && (
             <CustomDialog
               className="w-[970px]"
-              headerTitle="Create invoice"
-              headerDescription="Please enter below details."
+              headerTitle={!doWeDiasble ? "Create invoice" : ""}
+              headerDescription={
+                !doWeDiasble
+                  ? "Please enter below details."
+                  : "When the campaign is completed you can raise invoice"
+              }
               triggerElement={
                 <button className="text-sm border border-bc-grey px-2 py-1 rounded-full">
                   Raise Invoice
                 </button>
               }
             >
-              <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />
+              {doWeDiasble ? (
+                ""
+              ) : (
+                <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />
+              )}
             </CustomDialog>
           )}
           <TooltipProvider delayDuration={300}>
