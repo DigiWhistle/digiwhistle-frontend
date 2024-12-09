@@ -146,7 +146,7 @@ const Sidebar = ({ className, drawerView }: { className?: string; drawerView: bo
     if (role === "admin") {
       return AdminSidebarLinks;
     } else if (role === "employee") {
-      if (designation === "account") {
+      if (designation === "Account Manager") {
         const sidebarLinks = [
           ...EmployeeSidebarLinks,
           {

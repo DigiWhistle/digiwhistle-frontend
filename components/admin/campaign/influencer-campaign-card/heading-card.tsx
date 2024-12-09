@@ -92,7 +92,11 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
               </button>
             }
           >
-            {doWeDiasble ? "" : <CreateInvoiceModal mode="Create sale invoice" />}
+            {doWeDiasble ? (
+              ""
+            ) : (
+              <CreateInvoiceModal mode="Create sale invoice" campaignCode={data.code} />
+            )}
           </CustomDialog>
 
           <TooltipProvider delayDuration={300}>

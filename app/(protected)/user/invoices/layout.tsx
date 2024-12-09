@@ -21,19 +21,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex space-x-3">
           <DateFilter />
           {role != "influencer" ? (
-            <CustomDialog
-              className="w-[970px]"
-              headerTitle="Create invoice"
-              headerDescription="Please enter below details."
-              triggerElement={
-                <Button>
-                  <PlusCircleIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
-                  Create new invoice
-                </Button>
-              }
-            >
-              <CreateInvoiceModal mode="Create sale invoice" />
-            </CustomDialog>
+            // <CustomDialog
+            //   className="w-[970px]"
+            //   headerTitle="Create invoice"
+            //   headerDescription="Please enter below details."
+            //   triggerElement={
+            //     <Button>
+            //       <PlusCircleIcon className="mr-2 w-5 h-5 text-tc-ic-black-default" />
+            //       Create new invoice
+            //     </Button>
+            //   }
+            // >
+            //   <CreateInvoiceModal mode="Create sale invoice" />
+            // </CustomDialog>
+            <></>
           ) : (
             <></>
           )}

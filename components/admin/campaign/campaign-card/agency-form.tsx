@@ -1,7 +1,7 @@
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import FormTextInput from "@/components/ui/form/form-text-input";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TCampaignForm } from ".";
 import { Label } from "@/components/ui/label";
@@ -31,6 +31,20 @@ export const PaymentStatusOptions = [
         <ExclamationCircleIcon className="w-4 h-4 text-warning" /> Pending
       </div>
     ),
+  },
+];
+export const PaymentTermsOptions = [
+  {
+    value: "Advance",
+    label: <div className="flex items-center gap-2">Advance</div>,
+  },
+  {
+    value: "30 Days",
+    label: <div className="flex items-center gap-2">30 Days</div>,
+  },
+  {
+    value: "60 Days",
+    label: <div className="flex items-center gap-2">60 Days</div>,
   },
 ];
 
@@ -104,18 +118,32 @@ const AgencyForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
 
+  // Use useEffect to update margin when commercialBrand or toBeGiven changes
+  useEffect(() => {
+    // Calculate margin
+    const calculatedMargin =
+      (form.watch(`participants.${index}.commercialBrand`) || 0) -
+      (form.watch(`participants.${index}.toBeGiven`) || 0);
+
+    // Set the margin value
+    form.setValue(`participants.${index}.margin`, calculatedMargin);
+  }, [
+    form.watch(`participants.${index}.commercialBrand`),
+    form.watch(`participants.${index}.toBeGiven`),
+  ]);
+
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 transition-all duration-1000">
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
-        <FormTextInput
-          formName={`${accessorString}.name`}
-          label="Agency Name"
-          placeholder="Enter name"
-          className="max-w-[320px]"
-          inputCN="h-8"
-          disabled
-        />
         <div className="flex gap-1">
+          <FormTextInput
+            formName={`${accessorString}.name`}
+            label="Agency Name"
+            placeholder="Enter name"
+            className="max-w-[320px]"
+            inputCN="h-8"
+            disabled
+          />
           <FormTextInput
             formName={`${accessorString}.commercialBrand`}
             label="Comm-brand"
@@ -143,6 +171,7 @@ const AgencyForm = ({ index }: { index: number }) => {
             placeholder=""
             inputCN="h-8"
             type="number"
+            disabled
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">
@@ -153,6 +182,14 @@ const AgencyForm = ({ index }: { index: number }) => {
             selectItems={PaymentStatusOptions}
             triggerCN="h-[34px]"
             className="mt-1/2 "
+          />
+          <FormSelectInput
+            formName={`${accessorString}.paymentTerms`}
+            label="Payment Terms"
+            placeholder="Payment Terms"
+            selectItems={PaymentTermsOptions}
+            triggerCN="w-min"
+            className=""
           />
           <div className=" flex flex-col gap-4 mt-[3px] flex-shrink-0 self-start">
             <Label>Invoice status</Label>

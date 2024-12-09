@@ -141,7 +141,12 @@ export function SearchSelect({
 
           <FormControl className="  ">
             <Command>
-              <div className="relative flex items-center  border border-gray-300 rounded-full">
+              <div
+                className={cn(
+                  "relative flex items-center  border border-gray-300 rounded-full",
+                  disabled ? "bg-[#D0D0D3]" : "",
+                )}
+              >
                 {leftIcon && (
                   <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     {leftIcon}
@@ -156,7 +161,7 @@ export function SearchSelect({
                   className={cn("flex h-10 w-full", leftIcon ? "ps-8" : null)}
                 />
               </div>
-              <CommandList className="absolute mt-11 bg-white w-full max-h-32 z-50">
+              <CommandList className={cn("absolute mt-11 bg-white w-full max-h-32 z-50")}>
                 {Options &&
                   open &&
                   Options.map((Option: any, index: number) => (
@@ -165,7 +170,7 @@ export function SearchSelect({
                         type === "EmailSelector" || type === "email" ? Option.email : Option.name
                       }
                       key={index}
-                      className="cursor-pointer"
+                      className={cn("cursor-pointer")}
                       onSelect={() => {
                         setterfunction(formName, Option);
 

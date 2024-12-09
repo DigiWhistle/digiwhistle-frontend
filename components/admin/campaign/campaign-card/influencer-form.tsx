@@ -1,6 +1,6 @@
 import FormSelectInput from "@/components/ui/form/form-select-input";
 import FormTextInput from "@/components/ui/form/form-text-input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TCampaignForm } from ".";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { InformationCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import DeliverableForm from "./deliverable-form";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
-import { PaymentStatusOptions } from "./agency-form";
+import { PaymentStatusOptions, PaymentTermsOptions } from "./agency-form";
 import { Switch } from "@/components/ui/switch";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { DELETE, POST } from "@/lib/config/axios";
@@ -52,18 +52,31 @@ const InfluencerForm = ({ index }: { index: number }) => {
 
   const accessorString = `participants.${index}`;
 
+  useEffect(() => {
+    // Calculate margin
+    const calculatedMargin =
+      (form.watch(`participants.${index}.commercialBrand`) || 0) -
+      (form.watch(`participants.${index}.toBeGiven`) || 0);
+
+    // Set the margin value
+    form.setValue(`participants.${index}.margin`, calculatedMargin);
+  }, [
+    form.watch(`participants.${index}.commercialBrand`),
+    form.watch(`participants.${index}.toBeGiven`),
+  ]);
+
   return (
     <div className="border rounded-2xl  flex flex-col gap-3 ">
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
-          label="Influencer Name"
+          label={`Influencer Name ${form.watch(`participants.${index}.exclusive`) ? "(Exclusive)" : ""}`}
           placeholder="Enter name"
           className="max-w-44"
           inputCN="h-8"
           disabled
         />
-        <div className="w-px h-8 bg-gray-300 mt-6"></div>
+        {/* <div className="w-px h-8 bg-gray-300 mt-6"></div>
         <FormField
           control={form.control}
           name={`participants.${index}.exclusive`}
@@ -77,7 +90,8 @@ const InfluencerForm = ({ index }: { index: number }) => {
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
+
         <div className="flex gap-1">
           <FormTextInput
             formName={`${accessorString}.commercialBrand`}
@@ -106,6 +120,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
             placeholder=""
             inputCN="h-8"
             type="number"
+            disabled
           />
         </div>
         <div className="flex gap-3 items-center flex-shrink-0">
@@ -115,6 +130,14 @@ const InfluencerForm = ({ index }: { index: number }) => {
             placeholder="Payment Status"
             selectItems={PaymentStatusOptions}
             triggerCN="h-[34px]"
+            className=""
+          />
+          <FormSelectInput
+            formName={`${accessorString}.paymentTerms`}
+            label="Payment Terms"
+            placeholder="Payment Terms"
+            selectItems={PaymentTermsOptions}
+            triggerCN="w-min"
             className=""
           />
           <div className=" flex flex-col gap-4 mt-[3px] flex-shrink-0 self-start">

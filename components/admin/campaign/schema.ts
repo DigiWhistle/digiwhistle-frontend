@@ -37,7 +37,7 @@ const ParticipantBaseSchema = z.object({
   paymentStatus: z.enum(["Pending", "All Paid"]),
   invoiceStatus: z.enum(["Not Generated", "Generated"]),
   confirmationSent: z.boolean().default(false),
-
+  paymentTerms: z.enum(["Advance", "30 Days", "60 Days"]).default("30 Days"),
   invoice: z.string().nullable(),
 });
 
@@ -66,8 +66,8 @@ export const CampaignSchema = z.object({
   endDate: z.string(),
   commercial: z.number(),
   incentiveWinner: z.string(),
-  paymentStatus: z.enum(["Pending", "All Paid"]),
-  paymentPercent: z.string(),
+  paymentStatus: z.enum(["Pending", "All Received"]),
+  paymentPercent: z.string().optional().nullable(),
   invoice: z.string().nullable().optional(),
   incentiveReleased: z.boolean().default(false),
 
