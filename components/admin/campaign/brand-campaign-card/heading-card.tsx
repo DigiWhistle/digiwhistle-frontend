@@ -80,7 +80,7 @@ const HeadingCard = ({ data }: { data: BrandCampaign }) => {
           )}
         </div>
         <div className="flex gap-4 items-center">
-          {role === "agency" && !data.isRaiseInvoice && (
+          {role === "agency" && !!data.isRaiseInvoice && (
             <CustomDialog
               className="w-[970px]"
               headerTitle={!!data.isRaiseInvoice ? "Create invoice" : ""}
