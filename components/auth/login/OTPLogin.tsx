@@ -86,7 +86,7 @@ const OTPLogin = () => {
       if (response.data) {
         const user_data = {
           id: response.data.user.id,
-          role: response.data.user.role.name,
+          role: response.data.user.role,
           email: response.data.user.email,
           isOnBoarded: response.data.isOnBoarded,
           isVerified: response.data.user.isVerified,
