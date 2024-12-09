@@ -70,7 +70,7 @@ const InfluencerForm = ({ index }: { index: number }) => {
       <div className="flex items-start gap-2 bg-sb-blue-580 p-4 rounded-t-2xl">
         <FormTextInput
           formName={`${accessorString}.name`}
-          label="Influencer Name"
+          label={`Influencer Name ${form.watch(`participants.${index}.exclusive`) ? "(Exclusive)" : ""}`}
           placeholder="Enter name"
           className="max-w-44"
           inputCN="h-8"
