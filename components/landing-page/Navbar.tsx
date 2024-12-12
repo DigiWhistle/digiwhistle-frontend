@@ -74,7 +74,7 @@ const Navbar = () => {
             <Button variant={"secondary-dark"} onClick={() => handleScroll("#contact-us")}>
               Contact Us
             </Button>
-            <Link href={"/login"}>
+            <Link href={"/#"}>
               <Button>Login/ Signup</Button>
             </Link>
           </div>
