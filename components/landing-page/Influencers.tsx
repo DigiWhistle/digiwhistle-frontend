@@ -63,7 +63,7 @@ export const LandingInfluencerData = [
     category: "Infotainment",
     sociallinks: {
       instagram: "https://www.instagram.com/kk.create/",
-      youtube: "https://www.youtube.com/@ca.sakchijain",
+      youtube: "/#",
       linkedin:
         "https://www.linkedin.com/in/kavya-karnatac?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
       X: "https://x.com/kavya_karnatac?t=5ch9AWS7lCQGcMUjUpf5nQ&s=08",
@@ -71,15 +71,14 @@ export const LandingInfluencerData = [
   },
   {
     influencer_url: "/assets/influencers/neha.webp",
-    name: "Kavya",
-    tagname: "kk.create",
-    category: "Infotainment",
+    name: "Neha Nagar",
+    tagname: "iamnehanagar",
+    category: "Finance",
     sociallinks: {
-      instagram: "https://www.instagram.com/kk.create/",
-      youtube: "https://www.youtube.com/@ca.sakchijain",
-      linkedin:
-        "https://www.linkedin.com/in/kavya-karnatac?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-      X: "https://x.com/kavya_karnatac?t=5ch9AWS7lCQGcMUjUpf5nQ&s=08",
+      instagram: "https://www.instagram.com/iamnehanagar/",
+      youtube: "https://www.youtube.com/@nehanagar",
+      linkedin: "https://www.linkedin.com/in/iamnehanagar/",
+      X: "https://twitter.com/nehanagarr",
     },
   },
   {
@@ -112,7 +111,7 @@ export const LandingInfluencerData = [
     tagname: "lastnighttech",
     category: "Tech",
     sociallinks: {
-      instagram: "https://www.instagram.com/lastnighttech/reels/",
+      instagram: "https://www.instagram.com/lastnighttech/",
       youtube: null,
       linkedin: null,
       X: null,
@@ -765,7 +764,7 @@ const Influencers = () => {
             </div>
           ))}
         </Marquee>
-        <Link href={"/login"}>
+        <Link href={"/#"}>
           <Button className="md:w-[352px] w-[280px]" size={"xl"}>
             EXPLORE MORE TALENTS
           </Button>
